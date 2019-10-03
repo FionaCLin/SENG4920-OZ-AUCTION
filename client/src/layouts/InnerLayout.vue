@@ -2,8 +2,8 @@
   <q-layout view="hHh lpR lFf">
     <q-header elevated class="bg-light-green-8 text-white" height-hint="98">
       <q-toolbar class="GPL__toolbar">
-        <q-btn flat to='/dashboard' push>
-        <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
+        <q-btn flat to="/dashboard" push>
+          <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
         </q-btn>
         <q-toolbar-title>Bid Your Way Auction</q-toolbar-title>
 
@@ -17,11 +17,16 @@
           >
             <template v-slot:prepend>
               <q-icon v-if="search === ''" name="search" />
-              <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
+              <q-icon
+                v-else
+                name="clear"
+                class="cursor-pointer"
+                @click="search = ''"
+              />
             </template>
           </q-input>
         </q-toolbar-title>
-        <q-space/>
+        <q-space />
         <div class="q-gutter-sm row items-center no-wrap">
           <!-- <q-btn round dense flat color="text-grey-7" icon="apps">
             <q-tooltip>Google Apps</q-tooltip>
@@ -42,7 +47,12 @@
       <q-tabs align="left">
         <q-route-tab icon="home" to="/dashboard" replace label="Dashboard" />
         <q-route-tab icon="gavel" to="/auctions" replace label="My Auction" />
-        <q-route-tab icon="search" to="/search" replace label="Search Auctions" />
+        <q-route-tab
+          icon="search"
+          to="/search"
+          replace
+          label="Search Auctions"
+        />
       </q-tabs>
     </q-header>
     <q-page-container>

@@ -5,7 +5,10 @@
     <p>Create Auction button to go to create auction pages</p>
     <p>List of my auctions</p>
     <p>pagination</p>
-    <p>when click on one auction, it will expand the detail view including the accept bid actions.</p>
+    <p>
+      when click on one auction, it will expand the detail view including the
+      accept bid actions.
+    </p>
   </q-page>
 </template>
 

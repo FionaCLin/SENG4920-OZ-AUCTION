@@ -6,7 +6,12 @@
       </q-card-section>
       <q-separator />
       <q-card-section class="q-pa-md">
-        <q-form ref="LoginForm" class="q-gutter-md" @submit="onSubmit" @reset="onReset">
+        <q-form
+          ref="LoginForm"
+          class="q-gutter-md"
+          @submit="onSubmit"
+          @reset="onReset"
+        >
           <q-input
             v-model="email"
             filled
@@ -14,7 +19,9 @@
             label="Your email *"
             hint="Email"
             lazy-rules
-            :rules="[ val => (val && val.length > 10) || 'Please enter valid Email']"
+            :rules="[
+              val => (val && val.length > 10) || 'Please enter valid Email'
+            ]"
           ></q-input>
           <q-input
             v-model="password"
@@ -33,7 +40,13 @@
           </q-input>
           <div>
             <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+            <q-btn
+              label="Reset"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm"
+            />
           </div>
         </q-form>
       </q-card-section>
