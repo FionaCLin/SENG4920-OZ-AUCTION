@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="flex flex-center bg-grey-9">
+  <q-page padding class="flex flex-center bg-grey-1">
     <q-card style="min-width: 800px">
       <q-card-section>
         <div class="text-h6">Login</div>

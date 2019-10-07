@@ -1,18 +1,36 @@
 <template>
-  <q-page padding>
-    <h1>This Page is coming soon!! You are authenticated!</h1>
-    <h3>Components of this page</h3>
-    <p>List of lastest created auctions</p>
-    <p>pagination</p>
-    <p>List of my auctions</p>
-    <p>pagination</p>
-    <p>List of my bids</p>
-    <p>pagination</p>
+  <q-page padding class="row q-pa-sm q-ma-sm bg-grey-1 q-gutter-xl">
+    <div class="col-2">
+      <SideNav />
+    </div>
+    <q-page-container class="col-9">
+      <div>
+        <h3>Lastest Created Auctions</h3>
+        <NewAuction />
+      </div>
+      <div>
+        <h3>My Auctions List</h3>
+        <MyAuctionsList />
+      </div>
+      <div>
+        <h3>My Bids List</h3>
+        <MyAuctionsList />
+      </div>
+    </q-page-container>
   </q-page>
 </template>
 
 <script>
+import SideNav from "../components/DashboardSideNav";
+import NewAuction from "../components/NewAuctionsList";
+import MyAuctionsList from "../components/MyAuctionsList";
+
 export default {
-  name: "Dashboard"
+  name: "Dashboard",
+  components: {
+    SideNav,
+    NewAuction,
+    MyAuctionsList
+  }
 };
 </script>
