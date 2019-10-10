@@ -7,7 +7,7 @@
         <q-btn flat to="/dashboard" push>
           <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
         </q-btn>
-        <q-toolbar-title>Bid Your Way Auction</q-toolbar-title>
+        <q-toolbar-title>Pro Auction Bidder</q-toolbar-title>
 
         <q-toolbar-title>
           <q-input

@@ -5,7 +5,7 @@
         <q-btn flat :to="logged ? '/dashboard' : '/'" push>
           <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
         </q-btn>
-        <q-toolbar-title>Your Way Auction</q-toolbar-title>
+        <q-toolbar-title>Pro Auction Bidder</q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left">

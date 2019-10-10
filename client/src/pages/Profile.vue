@@ -24,7 +24,7 @@
             class="self-center full-width no-outline text-right"
             tabindex="0"
           >{{val.replace(/./g, '*')}}</div>
-          <div v-else class="     -center full-width no-outline text-right" tabindex="0">{{val}}</div>
+          <div v-else class="self-center full-width no-outline text-right" tabindex="0">{{val}}</div>
         </template>
       </q-field>
     </div>
