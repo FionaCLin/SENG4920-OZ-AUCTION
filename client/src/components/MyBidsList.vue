@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <h5><a name="myAuctions">My Auctionst</a></h5>
+    <h5><a name="myBids">My Bids</a></h5>
     <q-table
       title="My Auctions"
       :data="data"

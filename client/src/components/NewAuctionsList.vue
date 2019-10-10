@@ -1,5 +1,8 @@
 <template>
   <div class="q-pa-md">
+    <h5>
+      <a name="newAuctions">New Auctions</a>
+    </h5>
     <q-carousel
       animated
       v-model="slide"
@@ -9,29 +12,22 @@
       autoplay
       transition-prev="slide-right"
       transition-next="slide-left"
+      q-pa-none
+      q-ma-none
     >
-      <q-carousel-slide
-        name="first"
-        img-src="https://cdn.quasar.dev/img/mountains.jpg"
-      >
+      <q-carousel-slide name="first" img-src="https://cdn.quasar.dev/img/mountains.jpg">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">First Auction</div>
           <div class="text-subtitle1">Mountains</div>
         </div>
       </q-carousel-slide>
-      <q-carousel-slide
-        name="second"
-        img-src="https://cdn.quasar.dev/img/parallax1.jpg"
-      >
+      <q-carousel-slide name="second" img-src="https://cdn.quasar.dev/img/parallax1.jpg">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">Second Auction</div>
           <div class="text-subtitle1">Famous City</div>
         </div>
       </q-carousel-slide>
-      <q-carousel-slide
-        name="third"
-        img-src="https://cdn.quasar.dev/img/parallax2.jpg"
-      >
+      <q-carousel-slide name="third" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
         <div class="absolute-bottom custom-caption">
           <div class="text-h2">Third Auction</div>
           <div class="text-subtitle1">Famous Bridge</div>
