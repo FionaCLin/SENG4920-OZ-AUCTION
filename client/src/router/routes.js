@@ -40,6 +40,9 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/MyLayout.vue"),
+    props: {
+      logged: false
+    },
     children: [
       {
         path: "",

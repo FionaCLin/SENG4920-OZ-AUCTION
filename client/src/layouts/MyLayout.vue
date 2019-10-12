@@ -22,6 +22,7 @@
 
 <script>
 export default {
-  name: "Index"
+  name: "Index",
+  props: ["logged"]
 };
 </script>

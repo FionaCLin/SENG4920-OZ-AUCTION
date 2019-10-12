@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import NewAuction from "../components/NewAuctionsList";
-import MyAuctionsList from "../components/MyAuctionsList";
-import MyBidsList from "../components/MyBidsList";
+import NewAuction from "../components/dashboard/NewAuctionsList";
+import MyAuctionsList from "../components/dashboard/MyAuctionsList";
+import MyBidsList from "../components/dashboard/MyBidsList";
 
 export default {
   name: "Dashboard",

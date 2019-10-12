@@ -1,20 +1,27 @@
 <template>
-  <q-page padding class="flex flex-center bg-grey-1">
-    <q-card style="min-width: 800px">
+  <q-page padding class="row justify-evenly q-gutter-xs bg-grey-1">
+    <q-card
+      class="col-xs-12 col-sm-10 col-md-8 col-lg-6"
+      style="min-width: 320px;"
+    >
       <q-card-section>
         <div class="text-h6">
+          Sign Up
+        </div>
+        <q-separator />
+        <div class="text-h9">
           Already a user?
           <q-btn flat text-color="primary" to="/login" push>Log In</q-btn>To
-          AuctionSystem! <q-separator />Sign Up
+          AuctionSystem!
         </div>
       </q-card-section>
       <q-separator />
       <div class="q-pa-md">
         <q-form
           ref="SignUpForm"
+          class="q-gutter-md"
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md"
         >
           <q-input
             v-model="name"
@@ -52,8 +59,8 @@
             </template>
           </q-input>
           <q-input
-            filled
             v-model="passwordConfirm"
+            filled
             type="password"
             label="Confirm password"
             hint="Enter Login Password"
@@ -62,9 +69,9 @@
             ]"
           ></q-input>
           <q-input
+            v-model="age"
             filled
             type="number"
-            v-model="age"
             label="Your age *"
             lazy-rules
             :rules="[
@@ -92,8 +99,6 @@
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
-
 export default {
   data() {
     return {
@@ -105,20 +110,6 @@ export default {
       password: null,
       passwordConfirm: null
     };
-  },
-  validations: {
-    form: {
-      name: {
-        required
-      },
-      email: {
-        required,
-        email
-      },
-      password: {
-        required
-      }
-    }
   },
   methods: {
     onSubmit() {
@@ -151,9 +142,13 @@ export default {
     },
 
     onReset() {
-      this.name = null;
       this.age = null;
-      this.accept = false;
+      this.name = null;
+      this.isPwd = true;
+      this.seller = false;
+      this.email = null;
+      this.password = null;
+      this.passwordConfirm = null;
     }
   }
 };

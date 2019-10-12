@@ -1,62 +1,70 @@
 <template>
-  <q-page padding class="flex flex-center bg-grey-1">
-    <q-card style="min-width: 800px">
-      <q-card-section>
-        <div class="text-h6">Login</div>
-      </q-card-section>
-      <q-separator />
-      <q-card-section class="q-pa-md">
-        <q-form
-          ref="LoginForm"
-          class="q-gutter-md"
-          @submit="onSubmit"
-          @reset="onReset"
-        >
-          <q-input
-            v-model="email"
-            filled
-            type="email"
-            label="Your email *"
-            hint="Email"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 10) || 'Please enter valid Email'
-            ]"
-          ></q-input>
-          <q-input
-            v-model="password"
-            filled
-            :type="isPwd ? 'password' : 'text'"
-            label="Login password"
-            hint="Password with toggle"
+  <q-page padding>
+    <div class="row justify-evenly bg-grey-1">
+      <q-card
+        class="col-xs-12 col-sm-10 col-md-8 col-lg-6"
+        style="min-width: 320px;"
+      >
+        <q-card-section>
+          <div class="text-h6">Login</div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <q-form
+            ref="LoginForm"
+            class="q-gutter-md"
+            @submit="onSubmit"
+            @reset="onReset"
           >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
+            <q-input
+              v-model="email"
+              filled
+              type="email"
+              label="Your email *"
+              hint="Email"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 10) || 'Please enter valid Email'
+              ]"
+            ></q-input>
+            <q-input
+              v-model="password"
+              filled
+              :type="isPwd ? 'password' : 'text'"
+              label="Login password"
+              hint="Password with toggle"
+              :rules="[
+                val =>
+                  (val && val.length > 8) ||
+                  'Password must be at least 8 characters'
+              ]"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+            <div>
+              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn
+                label="Reset"
+                type="reset"
+                color="primary"
+                flat
+                class="q-ml-sm"
               />
-            </template>
-          </q-input>
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn
-              label="Reset"
-              type="reset"
-              color="primary"
-              flat
-              class="q-ml-sm"
-            />
-          </div>
-        </q-form>
-      </q-card-section>
-    </q-card>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
-
 export default {
   data() {
     return {
@@ -68,45 +76,32 @@ export default {
       password: null
     };
   },
-  validations: {
-    form: {
-      name: {
-        required
-      },
-      email: {
-        required,
-        email
-      },
-      password: {
-        required
-      }
-    }
-  },
   methods: {
     onSubmit() {
-      this.$refs.LoginForm.validate().then(
-        success => {
-          if (success) {
-            // yay, models are correct
-            this.$q.notify({
-              color: "green-4",
-              textColor: "white",
-              icon: "cloud_done",
-              message: "Submitted"
-            });
-          }
-        },
-        err => {
-          // oh no, user has filled in
-          // at least an invalid value
-          this.$q.notify({
-            color: "red-5",
-            textColor: "white",
-            icon: "warning",
-            message: err.message
-          });
-        }
-      );
+      if (this.$data.email !== this.$data.password) {
+        console.log("problems~~~~!");
+
+        // oh no, user has filled in
+        // at least an invalid value
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Incorrect username and password"
+          // message: err.message
+        });
+      } else {
+        this.$q.notify({
+          color: "brown-4",
+          textColor: "white",
+          position: "top",
+          icon: "cloud_done",
+          message: "Submitted"
+        });
+        setTimeout(() => {
+          this.$router.push("/dashboard");
+        }, 1000);
+      }
     },
 
     onReset() {
