@@ -1,0 +1,51 @@
+{
+  "user": {
+    "user_entries": [
+      {
+        "user_id": "u001",
+        "user_name": "john",
+        "user_email": "john@gmail.com",
+        "password": "john123",
+        "rating": null,
+        "payment_info": null
+      },
+      {
+        "user_id": "u002",
+        "user_name": "sara",
+        "user_email": "sara@gmail.com",
+        "password": "sara123",
+        "rating": null,
+        "payment_info": null
+      }
+    ]
+  },
+  "auction": {
+    "auction_entries": [
+      {
+        "auction_item_id": "a00001",
+        "item": "phone case",
+        "description": "brand new phone case",
+        "category": "other",
+        "starting_price": 10,
+        "deadline": "2019-12-01",
+        "bidding_entries": [
+          {
+            "user_id": "u001",
+            "proposal_price": 15,
+            "comment": null
+          },
+          {
+            "user_id": "u002",
+            "proposal_price": 25,
+            "comment": null
+          },
+          {
+            "user_id": "u003",
+            "proposal_price": 30,
+            "comment": null
+          }
+        ]
+      }
+    ]    
+  }
+}
