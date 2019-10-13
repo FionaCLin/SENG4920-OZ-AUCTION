@@ -7,7 +7,7 @@
       :label="index"
       stack-label
     >
-      <template v-if="index !== 'Avatar'">
+      <template>
         <div
           v-if="index == 'Seller'"
           class="self-center full-width no-outline text-left"
@@ -54,12 +54,18 @@ export default {
       return val.replace(/./g, "*");
     }
   },
-  props: ["detail", "avatarurl"],
+  props: ["detail"],
   data() {
     return {
       edit: false,
-      user: this.detail,
-      avatar: this.avatarurl
+      user: {
+        "First Name": this.detail.firstName,
+        "Last Name": this.detail.lastName,
+        Email: this.detail.email,
+        Age: this.detail.age,
+        Password: this.detail.password,
+        Seller: this.detail.seller
+      }
     };
   }
 };

@@ -79,7 +79,7 @@ const routes = [
     },
     children: [
       {
-        path: "/",
+        path: "",
         component: () => import("pages/Profile")
       },
       {

@@ -7,7 +7,7 @@
       <q-item>
         <q-item-section avatar>
           <q-avatar class="self-center" size="100px" font-size="52px">
-            <img :src="avatar" />
+            <img :src="userProfile.avatar" />
           </q-avatar>
           <q-card-actions>
             <q-btn flat>Upload</q-btn>
@@ -17,15 +17,14 @@
         <q-item-section>
           <ProfileDisplay
             v-if="!edit"
-            :detail="user"
-            :avatarurl="avatar"
+            :detail="userProfile"
             @updateEdit="edit = $event"
           />
           <ProfileEdit
             v-else
-            :detail="user"
-            :avatarurl="avatar"
+            :detail="userProfile"
             @updateEdit="edit = $event"
+            @editDetail="updateDetail"
           />
         </q-item-section>
       </q-item>
@@ -34,18 +33,6 @@
 </template>
 
 <script>
-const user = {
-  Avatar: "https://cdn.quasar.dev/img/boy-avatar.png",
-  detail: {
-    "First Name": "Fiona",
-    "Last Name": "Lin",
-    "E-mail": "fiona.lin@student.unsw.edu.au",
-    Password: "Bitmd?",
-    Age: 18,
-    Seller: true
-  }
-};
-
 import ProfileDisplay from "../components/Profile/ProfileDisplay";
 import ProfileEdit from "../components/Profile/ProfileEdit";
 
@@ -55,22 +42,36 @@ export default {
     ProfileDisplay,
     ProfileEdit
   },
-  props: {
-    userDetail: {
-      type: Object,
-      default: null
-    }
-  },
   data() {
     return {
-      edit: false,
-      user: user.detail,
-      avatar: user.Avatar
+      edit: false
     };
+  },
+  computed: {
+    userProfile: {
+      get() {
+        // this.$store.state.user.foreach(element => console.log(element));
+        console.log(typeof this.$store.state.user);
+        return Object.keys(this.$store.state.user)
+          .filter(k => !["logged", "token"].includes(k))
+          .reduce((obj, key) => {
+            obj[key] = this.$store.state.user[key];
+            return obj;
+          }, {});
+      }
+    }
   },
   methods: {
     onUpdate(val) {
       console.log(val, "Profile");
+    },
+    updateDetail(val) {
+      Object.keys(val).forEach(k => {
+        if (val[k] !== this.$store.state.user[k]) {
+          // todo add mutation method to update user state
+          console.log(k, val[k], this.$store.state.user[k]);
+        }
+      });
     }
   }
 };

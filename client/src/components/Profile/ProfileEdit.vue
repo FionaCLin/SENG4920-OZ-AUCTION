@@ -7,7 +7,7 @@
       @reset="onReset"
     >
       <q-input
-        v-model="fName"
+        v-model="firstName"
         filled
         label="First name *"
         hint="First Name"
@@ -17,12 +17,11 @@
         ]"
       />
       <q-input
-        v-model="lName"
+        v-model="lastName"
         filled
         label="Last name *"
         hint="Last Name"
         lazy-rules
-        :value="lName"
         :rules="[
           val => (val && val.length > 0) || 'Please type your full name'
         ]"
@@ -72,7 +71,7 @@
         ]"
       />
 
-      <q-toggle v-model="seller" label="Seller" />
+      <q-toggle v-model="seller" filled label="Seller" left-label />
 
       <q-card-actions>
         <q-btn label="Submit" type="Submit" color="green" flat />
@@ -101,17 +100,16 @@ export default {
       return val.replace(/./g, "*");
     }
   },
-  props: ["detail", "avatarurl"],
+  props: ["detail"],
   data() {
     return {
       edit: true,
-      avatar: this.avatarurl,
-      fName: this.detail["First Name"],
-      lName: this.detail["Last Name"],
-      email: this.detail["E-mail"],
-      age: this.detail.Age,
+      firstName: this.detail.firstName,
+      lastName: this.detail.lastName,
+      email: this.detail.email,
+      age: this.detail.age,
       password: this.detail.password,
-      seller: this.detail.Seller
+      seller: this.detail.seller
     };
   },
 
@@ -121,8 +119,8 @@ export default {
         success => {
           if (success) {
             // yay, models are correct
-            console.log(success);
-            console.log("updateEdit", this.$data);
+            this.$emit("editDetail", this.$data);
+
             this.$emit("updateEdit", false);
           }
         },
@@ -142,12 +140,12 @@ export default {
     },
 
     onReset() {
-      this.fName = this.detail["First Name"];
-      this.lName = this.detail["Last Name"];
-      this.$data.email = this.detail["E-mail"];
-      this.$data.age = this.detail.Age;
-      this.$data.password = this.detail.Password;
-      this.$data.seller = this.detail.Seller;
+      this.$data.firstName = this.detail.firstName;
+      this.$data.lastName = this.detail.lastName;
+      this.$data.email = this.detail.email;
+      this.$data.age = this.detail.age;
+      this.$data.password = this.detail.password;
+      this.$data.seller = this.detail.seller;
     }
   }
 };
