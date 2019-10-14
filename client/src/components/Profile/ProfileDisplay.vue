@@ -8,15 +8,15 @@
       stack-label
     >
       <template>
-        <div
+        <!-- <div
           v-if="index == 'Seller'"
           class="self-center full-width no-outline text-left"
           tabindex="0"
         >
           <q-toggle v-model="user.Seller" />
-        </div>
+        </div> -->
         <div
-          v-else-if="index === 'Password'"
+          v-if="index === 'Password'"
           class="self-center full-width no-outline text-left"
           tabindex="0"
         >
@@ -64,7 +64,8 @@ export default {
         Email: this.detail.email,
         Age: this.detail.age,
         Password: this.detail.password,
-        Seller: this.detail.seller
+        "Payment Method": this.detail.paymentMethod.join(", ")
+        // Seller: this.detail.seller
       }
     };
   }

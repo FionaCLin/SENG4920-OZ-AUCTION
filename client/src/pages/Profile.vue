@@ -53,7 +53,7 @@ export default {
         // this.$store.state.user.foreach(element => console.log(element));
         console.log(typeof this.$store.state.user);
         return Object.keys(this.$store.state.user)
-          .filter(k => !["logged", "token"].includes(k))
+          .filter(k => !["logged", "token", "userId"].includes(k))
           .reduce((obj, key) => {
             obj[key] = this.$store.state.user[key];
             return obj;

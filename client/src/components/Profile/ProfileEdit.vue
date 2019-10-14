@@ -71,7 +71,46 @@
         ]"
       />
 
-      <q-toggle v-model="seller" filled label="Seller" left-label />
+      <q-field filled label="Payment Method" stack-label>
+        <strong>{{ paymentMethod.join(", ") }}</strong>
+      </q-field>
+      <div class="q-pa-md">
+        <div class="q-px-sm"></div>
+        <div class="q-gutter-sm">
+          <q-checkbox
+            v-model="paymentMethod"
+            val="Visa"
+            label="Visa"
+            color="teal"
+          />
+          <q-checkbox
+            v-model="paymentMethod"
+            val="Master"
+            label="Master"
+            color="teal"
+          />
+          <q-checkbox
+            v-model="paymentMethod"
+            val="Wechat"
+            label="Wechat"
+            color="teal"
+          />
+          <q-checkbox
+            v-model="paymentMethod"
+            val="AliPay"
+            label="AliPay"
+            color="teal"
+          />
+          <q-checkbox
+            v-model="paymentMethod"
+            val="PayPal"
+            label="PayPal"
+            color="teal"
+          />
+        </div>
+      </div>
+
+      <!-- <q-toggle v-model="seller" filled label="Seller" left-label /> -->
 
       <q-card-actions>
         <q-btn label="Submit" type="Submit" color="green" flat />
@@ -109,7 +148,8 @@ export default {
       email: this.detail.email,
       age: this.detail.age,
       password: this.detail.password,
-      seller: this.detail.seller
+      paymentMethod: this.detail.paymentMethod
+      // seller: this.detail.seller
     };
   },
 

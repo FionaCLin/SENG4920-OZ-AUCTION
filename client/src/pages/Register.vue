@@ -80,7 +80,7 @@
             ]"
           />
 
-          <q-toggle v-model="seller" label="Seller" />
+          <!-- <q-toggle v-model="seller" label="Seller" /> -->
 
           <div>
             <q-btn label="Submit" type="submit" color="primary" />
