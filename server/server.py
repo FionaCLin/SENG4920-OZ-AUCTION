@@ -8,17 +8,32 @@ from flask_restplus import Resource, Api, fields, inputs, reqparse
 from setup_database import *
 
 
+# global variables
 col = Collection()
 # upload_local_items(col)
 
+# db = userDatabase()
+SECRET_KEY = "SENG4920"
+expires_in = 1000
+# auth = AuthenticationToken(SECRET_KEY, expires_in)
 app = Flask(__name__)
-api = Api(app, default="Auction", title="Auction")
+api = Api(app, authorizations={
+                'API-KEY': {
+                    'type': 'apiKey',
+                    'in': 'header',
+                    'name': 'AUTH-TOKEN'
+                }
+            },
+          security='API-KEY',
+          default="predict",  
+          title="Auction", 
+          description="Auction Website")
 
-indicator_model = api.model('Indicator', {
-    'indicator_id': fields.String
+
+indicator_model = api.model('credential', {
+    'username': fields.String,
+    'password': fields.String
 })
-
-
 
 def upload_local_items(col):
     with open('../data/data1.json', 'r') as f:
@@ -97,6 +112,9 @@ class SortedIndicatorByYearCountry(Resource):
         
         return response,200
 
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    app.run(host='0.0.0.0', port=9999, debug=True)
 
