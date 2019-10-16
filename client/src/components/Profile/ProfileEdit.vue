@@ -78,12 +78,14 @@
         <div class="q-px-sm"></div>
         <div class="q-gutter-sm">
           <q-checkbox
+            v-for="(k, m) in methods"
+            :key="m"
             v-model="paymentMethod"
-            val="Visa"
-            label="Visa"
+            :val="k"
+            :label="k"
             color="teal"
           />
-          <q-checkbox
+          <!-- <q-checkbox
             v-model="paymentMethod"
             val="Master"
             label="Master"
@@ -106,7 +108,7 @@
             val="PayPal"
             label="PayPal"
             color="teal"
-          />
+          /> -->
         </div>
       </div>
 
@@ -148,8 +150,9 @@ export default {
       email: this.detail.email,
       age: this.detail.age,
       password: this.detail.password,
-      paymentMethod: this.detail.paymentMethod
+      paymentMethod: this.detail.paymentMethod,
       // seller: this.detail.seller
+      methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
     };
   },
 
