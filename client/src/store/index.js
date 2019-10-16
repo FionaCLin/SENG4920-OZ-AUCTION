@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import user from "./user";
+import auction from "./auction";
+import bid from "./bid";
 
 // import example from './module-example'
 
@@ -12,11 +14,13 @@ Vue.use(Vuex);
  * directly export the Store instantiation
  */
 
-export default function ( /* { ssrContext } */ ) {
+export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       // example
-      user
+      user,
+      auction,
+      bid
     },
 
     // enable strict mode (adds overhead!)
