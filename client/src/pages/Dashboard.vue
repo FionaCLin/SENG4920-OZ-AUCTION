@@ -1,20 +1,24 @@
 <template>
   <q-page padding class="bg-grey-1 q-pa-none q-ma-none">
-    <NewAuction />
-    <MyAuctionsList :items="myAuction_items" />
-    <MyBidsList />
+    <!-- <NewAuction /> -->
+    <a name="myAuctions">
+      <MyAuctionsList :items="myAuction_items" />
+    </a>
+    <a name="myBids">
+      <MyBidsList :items="myAuction_items" />
+    </a>
   </q-page>
 </template>
 
 <script>
-import NewAuction from "../components/dashboard/NewAuctionsList";
+// import NewAuction from "../components/dashboard/NewAuctionsList";
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
 import MyBidsList from "../components/dashboard/MyBidsList";
 
 export default {
   name: "Dashboard",
   components: {
-    NewAuction,
+    // NewAuction,
     MyAuctionsList,
     MyBidsList
   },

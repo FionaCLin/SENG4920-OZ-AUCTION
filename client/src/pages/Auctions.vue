@@ -1,19 +1,27 @@
 <template>
   <q-page padding>
-    <h1>This Page is coming soon!! You are authenticated!</h1>
-    <h3>Components of this page</h3>
-    <p>Create Auction button to go to create auction pages</p>
-    <p>List of my auctions</p>
-    <p>pagination</p>
-    <p>
-      when click on one auction, it will expand the detail view including the
-      accept bid actions.
-    </p>
+    <q-toolbar>
+      <q-btn to="/create"> <q-icon name="add" />Create Auction </q-btn>
+    </q-toolbar>
+    <MyAuctionsList :items="myAuction_items" />
   </q-page>
 </template>
 
 <script>
+import MyAuctionsList from "../components/dashboard/MyAuctionsList";
+
 export default {
-  // name: 'PageName',
+  name: "AuctionsPages",
+  components: {
+    MyAuctionsList
+  },
+  computed: {
+    myAuction_items: {
+      get() {
+        console.log(this.$store.state.auction.myAuctions);
+        return this.$store.state.auction.myAuctions.auction_items;
+      }
+    }
+  }
 };
 </script>

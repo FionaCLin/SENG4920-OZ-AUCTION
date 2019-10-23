@@ -85,30 +85,6 @@
             :label="k"
             color="teal"
           />
-          <!-- <q-checkbox
-            v-model="paymentMethod"
-            val="Master"
-            label="Master"
-            color="teal"
-          />
-          <q-checkbox
-            v-model="paymentMethod"
-            val="Wechat"
-            label="Wechat"
-            color="teal"
-          />
-          <q-checkbox
-            v-model="paymentMethod"
-            val="AliPay"
-            label="AliPay"
-            color="teal"
-          />
-          <q-checkbox
-            v-model="paymentMethod"
-            val="PayPal"
-            label="PayPal"
-            color="teal"
-          /> -->
         </div>
       </div>
 

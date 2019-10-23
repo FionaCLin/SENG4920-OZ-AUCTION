@@ -2,7 +2,14 @@
   <q-layout view="hHh Lpr lff">
     <q-header elevated class="bg-light-green-8 text-white" height-hint="98">
       <q-toolbar class="GPL__toolbar">
-        <q-btn v-if="menu" flat @click="drawer = !drawer" round dense icon="menu" />
+        <q-btn
+          v-if="menu"
+          flat
+          round
+          dense
+          icon="menu"
+          @click="drawer = !drawer"
+        />
 
         <q-btn flat to="/dashboard" push>
           <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
@@ -19,7 +26,12 @@
           >
             <template v-slot:prepend>
               <q-icon v-if="search === ''" name="search" />
-              <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
+              <q-icon
+                v-else
+                name="clear"
+                class="cursor-pointer"
+                @click="search = ''"
+              />
             </template>
           </q-input>
         </q-toolbar-title>
@@ -34,7 +46,11 @@
           </q-btn>
           <q-btn round flat to="/profile">
             <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img
+                v-if="avatarUrl"
+                src="https://cdn.quasar.dev/img/boy-avatar.png"
+              />
+              <q-icon name="person" />
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
           </q-btn>
@@ -43,7 +59,12 @@
       <q-tabs align="left">
         <q-route-tab icon="home" to="/dashboard" replace label="Dashboard" />
         <q-route-tab icon="gavel" to="/auctions" replace label="My Auction" />
-        <q-route-tab icon="search" to="/search" replace label="Search Auctions" />
+        <q-route-tab
+          icon="search"
+          to="/search"
+          replace
+          label="Search Auctions"
+        />
       </q-tabs>
     </q-header>
 
@@ -52,22 +73,22 @@
       v-model="drawer"
       show-if-above
       :mini="miniState"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
       mini-to-overlay
       :width="200"
       :breakpoint="500"
       bordered
       content-class="bg-grey-3"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
     >
       <q-scroll-area class="fit">
         <q-list padding>
-          <q-item v-for="(item, index) in menu" clickable v-ripple :key="index">
+          <q-item v-for="(item, index) in menu" :key="index" v-ripple clickable>
             <q-item-section avatar>
               <q-icon :name="item.icon" />
             </q-item-section>
             <a :href="`#${item.href}`">
-              <q-item-section>{{item.name}}</q-item-section>
+              <q-item-section>{{ item.name }}</q-item-section>
             </a>
           </q-item>
         </q-list>
@@ -83,20 +104,26 @@
 
 <script>
 // import Nav from "../components/DashboardSideNav";
+// import mapState from "vuex";
 
 export default {
   name: "HomeLayout",
   props: ["menu"],
   data() {
     console.log(this.$route.path);
+    console.log(this.$store.state.user.avatar);
     return {
       drawer: false,
       miniState: true,
-      search: null
+      search: null,
+      avatarUrl: this.$store.state.user.avatar
     };
     // },
     // components: {
     //   Nav
   }
+  // computed: {
+  //   ...mapState(["user"])
+  // }
 };
 </script>

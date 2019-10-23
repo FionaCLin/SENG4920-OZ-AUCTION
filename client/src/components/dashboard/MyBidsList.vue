@@ -1,26 +1,39 @@
 <template>
   <div class="q-pa-md">
-    <h5><a name="myBids">My Bids</a></h5>
     <q-table
       title="My Auctions"
       :data="data"
       :columns="columns"
       row-key="name"
+      :pagination.sync="pagination"
       lazy
-    />
+    >
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="image" auto-width :props="props">
+            <q-img :src="props.row.image" />
+          </q-td>
+          <q-td v-for="f in fields" :key="f" auto-width :props="props">
+            {{ props.row[f] }}
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
   </div>
 </template>
 <script>
 export default {
+  props: ["items"],
   data() {
     return {
+      pagination: {},
+      fields: ["title", "created", "price", "seller_name"],
       columns: [
         {
           name: "image",
           required: true,
           label: "Images",
-          // field: row => row.name,
-          // format: val => `${val}`,
+          field: "image",
           sortable: false
         },
         {
@@ -28,127 +41,42 @@ export default {
           required: true,
           label: "Title",
           align: "left",
-          field: row => row.name,
-          format: val => `${val}`,
+          field: "title",
           sortable: true
         },
+        // {
+        //   name: "description",
+        //   align: "center",
+        //   label: "Description",
+        //   field: "description",
+        //   sortable: true
+        // },
         {
-          name: "desc",
+          name: "created",
           align: "center",
-          label: "Description",
-          field: "name",
+          label: "Created at",
+          field: "created",
+          // format: v => date(v, ""),
           sortable: true
         },
         {
           name: "price",
           label: "Price(Aud)",
+          align: "center",
           field: "price",
+          sortable: true,
+          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+        },
+        {
+          name: "seller_name",
+          label: "Seller",
+          field: "seller_name",
+          align: "left",
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         }
       ],
-      data: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          price: 4.0,
-          sodium: 87,
-          calcium: "14%",
-          iron: "1%"
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          price: 4.3,
-          sodium: 129,
-          calcium: "8%",
-          iron: "1%"
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          price: 6.0,
-          sodium: 337,
-          calcium: "6%",
-          iron: "7%"
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          price: 4.3,
-          sodium: 413,
-          calcium: "3%",
-          iron: "8%"
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          price: 3.9,
-          sodium: 327,
-          calcium: "7%",
-          iron: "16%"
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          price: 0.0,
-          sodium: 50,
-          calcium: "0%",
-          iron: "0%"
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          price: 0,
-          sodium: 38,
-          calcium: "0%",
-          iron: "2%"
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          price: 6.5,
-          sodium: 562,
-          calcium: "0%",
-          iron: "45%"
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          price: 4.9,
-          sodium: 326,
-          calcium: "2%",
-          iron: "22%"
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          price: 7,
-          sodium: 54,
-          calcium: "12%",
-          iron: "6%"
-        }
-      ]
+      data: this.items
     };
   }
 };
