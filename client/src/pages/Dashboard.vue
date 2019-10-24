@@ -1,6 +1,9 @@
 <template>
   <q-page padding class="bg-grey-1 q-pa-none q-ma-none">
-    <!-- <NewAuction /> -->
+    <a name="newAuctions">
+      <NewAuction />
+    </a>
+
     <a name="myAuctions">
       <MyAuctionsList :items="myAuction_items" />
     </a>
@@ -11,14 +14,14 @@
 </template>
 
 <script>
-// import NewAuction from "../components/dashboard/NewAuctionsList";
+import NewAuction from "../components/dashboard/NewAuctionsList";
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
 import MyBidsList from "../components/dashboard/MyBidsList";
 
 export default {
   name: "Dashboard",
   components: {
-    // NewAuction,
+    NewAuction,
     MyAuctionsList,
     MyBidsList
   },
