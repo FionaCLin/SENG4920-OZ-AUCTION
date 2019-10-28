@@ -115,6 +115,11 @@ const routes = [
       {
         path: "/",
         component: () => import("pages/Auctions")
+      },
+      {
+        path: "/:id",
+        name: "auctiionItem",
+        component: () => import("pages/Auction")
       }
     ]
   },
