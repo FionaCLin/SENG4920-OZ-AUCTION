@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      title="My Auctions"
+      title="My Bids"
       :data="data"
       :columns="columns"
       row-key="name"
