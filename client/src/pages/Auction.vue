@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-toolbar>
-      <q-btn to="/create"> <q-icon name="add" />Create Auction </q-btn>
+      <q-btn :to="`edit/${id}`"> <q-icon name="edit" />Update</q-btn>
     </q-toolbar>
     {{ auction }}
   </q-page>
@@ -19,6 +19,7 @@ export default {
   },
   created() {
     console.log("to", this.$route.params.id);
+    this.id = this.$route.params.id;
   }
 };
 </script>
