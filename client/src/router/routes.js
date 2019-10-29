@@ -101,7 +101,7 @@ const routes = [
     children: [
       {
         path: "/",
-        component: () => import("pages/CreateAuction")
+        component: () => import("pages/AuctionForm")
       }
     ]
   },
@@ -117,9 +117,17 @@ const routes = [
         component: () => import("pages/Auctions")
       },
       {
-        path: "/:id",
+        path: "/auctions/:id",
         name: "auctiionItem",
         component: () => import("pages/Auction")
+      },
+      {
+        path: "/auctions/edit/:id",
+        name: "auctiionItemEdit ",
+        component: () => import("pages/AuctionForm"),
+        props: {
+          edit: true
+        }
       }
     ]
   },
