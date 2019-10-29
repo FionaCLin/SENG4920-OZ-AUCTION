@@ -8,21 +8,13 @@
       :pagination.sync="pagination"
       lazy
     >
-      <template v-slot:body="props" @click="auuctionItem">
+      <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" auto-width :props="props">
-            <q-img :src="props.row.image" @click="auctionItem" />
+            <q-img :src="props.row.image" @click="auctionItem(props.row.id)" />
           </q-td>
           <q-td v-for="f in fields" :key="f" auto-width :props="props">
-            <p
-              v-if="f === 'title'"
-              dense
-              flat
-              @click="auctionItem(props.row.id)"
-            >
-              {{ props.row[f] }}
-            </p>
-            <p v-else>{{ props.row[f] }}</p>
+            <p @click="auctionItem(props.row.id)" v-html="props.row[f]"></p>
           </q-td>
         </q-tr>
       </template>
@@ -34,7 +26,6 @@ export default {
   props: ["items"],
   data() {
     return {
-      selected: [],
       pagination: {},
       fields: ["title", "created", "price", "seller_name"],
       columns: [
