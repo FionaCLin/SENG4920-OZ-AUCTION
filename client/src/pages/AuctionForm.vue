@@ -17,7 +17,7 @@
         </q-item-section>
         <q-item-section>
           <q-form
-            ref="CreateAuctionForm"
+            :ref="edit ? 'EditAuctionForm' : 'CreateAuctionForm'"
             class="q-gutter-md"
             @submit="onSubmit"
             @reset="onReset"
@@ -50,7 +50,7 @@
         <q-btn label="Reset" type="reset" color="warning" flat />
         <q-space />
 
-        <q-btn label="Cancel" type="cancel" color="red" flat to="/auctions" />
+        <q-btn label="Cancel" type="cancel" color="red" flat @click="goBack" />
       </q-card-actions>
     </q-card>
   </q-page>
@@ -59,6 +59,7 @@
 <script>
 export default {
   name: "AuctionCreateForm",
+  props: ["edit"],
   data() {
     return {
       categoryId: "",
@@ -70,10 +71,30 @@ export default {
       options: ["Handicraft", "Second hand"]
     };
   },
+  created() {
+    if (this.edit) {
+      console.log("edit", this.edit);
+      this.id = Number(this.$route.params.id);
+
+      let auction = this.$store.state.auction.myAuctions.auction_items.find(
+        x => x.id === this.id
+      );
+
+      this.$data.categoryId = auction.category_id;
+      this.$data.title = auction.title;
+      this.$data.description = auction.description;
+      // this.$data.endTime = auction.endTime;
+      this.$data.price = auction.price;
+      // this.$data.images = auction.images;
+    }
+  },
   methods: {
     onSubmit() {
       // sellerName: "",
       // sellerId: "",
+      if (this.edit) {
+        return;
+      }
       this.$refs.CreateAuctionForm.validate().then(
         success => {
           if (success) {
@@ -106,6 +127,20 @@ export default {
       this.$data.endTime = "";
       this.$data.price = 0;
       this.$data.images = "";
+    },
+    goBack() {
+      if (this.edit) {
+        this.$router.push({
+          name: "auctiionItem",
+          params: {
+            id: this.id
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/auctions"
+        });
+      }
     }
   }
 };
