@@ -29,7 +29,12 @@ export default {
     myAuction_items: {
       get() {
         console.log(this.$store.state.auction.myAuctions);
-        return this.$store.state.auction.myAuctions.auction_items;
+        let items = [...this.$store.state.auction.myAuctions.auction_items];
+        items.map(
+          x =>
+            (x.location = this.$store.state.auction.myAuctions.sellers.location)
+        );
+        return items;
       }
     }
   }

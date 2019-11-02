@@ -3,20 +3,84 @@
     <q-table
       title="My Auctions"
       :data="data"
+      :grid="grid"
       :columns="columns"
       row-key="name"
       :pagination.sync="pagination"
       lazy
     >
+      <template v-slot:top="props">
+        <div class="col-2 q-table__title">My Auctions</div>
+        <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
+        <q-space />
+        <q-input
+          v-model="filter"
+          borderless
+          dense
+          debounce="300"
+          placeholder="Search"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" auto-width :props="props">
             <q-img :src="props.row.image" @click="auctionItem(props.row.id)" />
           </q-td>
+          <q-td key="title" auto-width :props="props">
+            <div>
+              <q-badge
+                color="green-4"
+                class="text-white"
+                :label="props.row.title"
+              />
+            </div>
+            <div class="my-table-details" @click="auctionItem(props.row.id)">
+              {{ props.row.description }}
+            </div>
+          </q-td>
+
           <q-td v-for="f in fields" :key="f" auto-width :props="props">
             <p @click="auctionItem(props.row.id)" v-html="props.row[f]"></p>
           </q-td>
         </q-tr>
+      </template>
+
+      <template v-slot:item="props">
+        <div
+          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
+          :style="props.selected ? 'transform: scale(0.95);' : ''"
+        >
+          <q-card @click="auctionItem(props.row.id)">
+            <q-img
+              class="auction-item"
+              :src="props.cols.find(col => col.name === 'image').value"
+            >
+              <div
+                class="text-subtitle2 absolute-bottom text-center"
+                v-html="props.row.title"
+              />
+            </q-img>
+            <q-list dense>
+              <q-item
+                v-for="col in props.cols.filter(
+                  col => col.name !== 'image' && col.name !== 'title'
+                )"
+                :key="col.name"
+              >
+                <q-item-section>
+                  <q-item-label>{{ col.label }}</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-item-label caption>{{ col.value }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card>
+        </div>
       </template>
     </q-table>
   </div>
@@ -26,8 +90,10 @@ export default {
   props: ["items"],
   data() {
     return {
+      grid: false,
       pagination: {},
-      fields: ["title", "created", "price", "seller_name"],
+      filter: "",
+      fields: ["created", "price", "seller_name", "location"],
       columns: [
         {
           name: "image",
@@ -74,6 +140,14 @@ export default {
           align: "left",
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+        },
+        {
+          name: "location",
+          required: true,
+          label: "Location",
+          align: "left",
+          field: "location",
+          sortable: true
         }
       ],
       data: this.items
@@ -92,3 +166,23 @@ export default {
   }
 };
 </script>
+
+<style>
+.my-table-details {
+  font-size: 0.85em;
+  font-style: italic;
+  max-width: 200px;
+  white-space: normal;
+  color: #555;
+  margin-top: 4px;
+}
+
+.auction-item {
+  width: 100%;
+  position: relative;
+}
+.grid-style-transition {
+  transition: transform 0.28s;
+  background-color: 0.28s;
+}
+</style>

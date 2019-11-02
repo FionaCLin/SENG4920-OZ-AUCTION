@@ -33,7 +33,8 @@
             <q-input
               v-model="endTime"
               label="End Time"
-              filledtype="date"
+              filled
+              type="date"
             ></q-input>
             <q-select
               v-model="categoryId"
@@ -79,11 +80,12 @@ export default {
       let auction = this.$store.state.auction.myAuctions.auction_items.find(
         x => x.id === this.id
       );
+      console.log(auction);
 
       this.$data.categoryId = auction.category_id;
       this.$data.title = auction.title;
       this.$data.description = auction.description;
-      // this.$data.endTime = auction.endTime;
+      this.$data.endTime = auction.end_time;
       this.$data.price = auction.price;
       // this.$data.images = auction.images;
     }
@@ -93,6 +95,7 @@ export default {
       // sellerName: "",
       // sellerId: "",
       if (this.edit) {
+        this.$emit("editDetail", this.$data);
         return;
       }
       this.$refs.CreateAuctionForm.validate().then(
@@ -100,7 +103,6 @@ export default {
           if (success) {
             // yay, models are correct
             this.$emit("editDetail", this.$data);
-
             this.$emit("updateEdit", false);
           }
         },
