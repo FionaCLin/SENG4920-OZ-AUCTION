@@ -34,7 +34,6 @@
             <div>
               <q-badge
                 color="green-4"
-                style="max-width: 200px;"
                 class="text-bold text-white"
                 :label="props.row.title"
                 @click="auctionItem(props.row.id)"
@@ -46,7 +45,7 @@
           </q-td>
 
           <q-td v-for="f in fields" :key="f" auto-width :props="props">
-            <p @click="auctionItem(props.row.id)" v-html="props.row[f]"></p>
+            <p @click="auctionItem(props.row.id)">{{ props.row[f] }}</p>
           </q-td>
         </q-tr>
       </template>
@@ -60,10 +59,9 @@
               class="auction-item"
               :src="props.cols.find(col => col.name === 'image').value"
             >
-              <div
-                class="text-subtitle2 absolute-bottom text-center"
-                v-html="props.row.title"
-              />
+              <div class="text-subtitle2 absolute-bottom text-center">
+                {{ props.row.title }}
+              </div>
             </q-img>
             <q-list dense>
               <q-item
