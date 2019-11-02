@@ -34,8 +34,10 @@
             <div>
               <q-badge
                 color="green-4"
-                class="text-white"
+                style="max-width: 200px;"
+                class="text-bold text-white"
                 :label="props.row.title"
+                @click="auctionItem(props.row.id)"
               />
             </div>
             <div class="my-table-details" @click="auctionItem(props.row.id)">
@@ -52,7 +54,6 @@
       <template v-slot:item="props">
         <div
           class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-          :style="props.selected ? 'transform: scale(0.95);' : ''"
         >
           <q-card @click="auctionItem(props.row.id)">
             <q-img
@@ -181,8 +182,8 @@ export default {
   width: 100%;
   position: relative;
 }
-.grid-style-transition {
-  transition: transform 0.28s;
-  background-color: 0.28s;
+
+.grid-style-transition :hover {
+  transform: scale(0.95);
 }
 </style>
