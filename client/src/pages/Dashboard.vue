@@ -4,26 +4,34 @@
       <NewAuction />
     </a>
 
-    <a name="myAuctions">
-      <MyAuctionsList :items="myAuction_items" />
-    </a>
-    <a name="myBids">
-      <MyBidsList :items="myAuction_items" />
-    </a>
+    <MyAuctionsList
+      :alink="`auctions`"
+      :title="`My Auctions`"
+      :items="myAuction_items"
+    />
+
+    <MyAuctionsList
+      :alink="`bids`"
+      :title="`My Bids`"
+      :items="myAuction_items"
+    />
+    <MyAuctionsList
+      :alink="`favorites`"
+      :title="`My Favorites`"
+      :items="myAuction_items"
+    />
   </q-page>
 </template>
 
 <script>
 import NewAuction from "../components/dashboard/NewAuctionsList";
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
-import MyBidsList from "../components/dashboard/MyBidsList";
 
 export default {
   name: "Dashboard",
   components: {
     NewAuction,
-    MyAuctionsList,
-    MyBidsList
+    MyAuctionsList
   },
   computed: {
     myAuction_items: {

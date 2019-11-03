@@ -8,16 +8,21 @@ const menu_list = {
     {
       icon: "gavel",
       name: "My Auctions",
-      href: "myAuctions"
+      href: "auctions"
     },
     {
       icon: "collections_bookmark",
       name: "My Bids",
-      href: "myBids"
+      href: "bids"
     },
     {
-      icon: "delete",
-      name: "Trash"
+      icon: "favorite",
+      name: "Favorites",
+      href: "favorites"
+      // },
+      // {
+      //   icon: "delete",
+      //   name: "Trash"
     }
   ],
   profile: [

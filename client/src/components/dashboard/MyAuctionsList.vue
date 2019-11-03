@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md">
+    <a :name="alink"> </a>
     <q-table
-      title="My Auctions"
+      :title="title"
       :data="data"
       :grid="grid"
       :columns="columns"
@@ -9,8 +10,11 @@
       :pagination.sync="pagination"
       lazy
     >
+      <!-- table tool bar -->
       <template v-slot:top="props">
-        <div class="col-2 q-table__title">My Auctions</div>
+        <div class="col-2 q-table__title">
+          {{ title }}
+        </div>
         <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
         <q-space />
         <q-input
@@ -25,6 +29,7 @@
           </template>
         </q-input>
       </template>
+      <!-- table list view -->
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" auto-width :props="props">
@@ -49,7 +54,7 @@
           </q-td>
         </q-tr>
       </template>
-
+      <!-- table grid view -->
       <template v-slot:item="props">
         <div
           class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
@@ -86,7 +91,7 @@
 </template>
 <script>
 export default {
-  props: ["items"],
+  props: ["items", "title", "alink"],
   data() {
     return {
       grid: false,
