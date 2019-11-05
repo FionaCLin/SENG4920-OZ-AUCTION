@@ -128,6 +128,7 @@ auction_info = api.model(
         "price": fields.Float,
         "image_url": fields.String,
         "bidding_info": fields.List(fields.Nested(user_input_bidding_info))
+        "status": fields.String
     }
 )
 
@@ -163,7 +164,8 @@ class CreateSingleAuctionItem(Resource):
             "end_date":end_date,
             "price":price,
             "image_url":image_url,
-            "bidding_info":[]
+            "bidding_info":[],
+            "status":"bidding"
         }
         message = "Auction create successfully"
         response = \
@@ -184,29 +186,28 @@ class RetrieveSingleAuctionItem(Resource):
     @api.doc(description="get information of an auction item")
     def get(self,item_id):
         item_id = int(item_id)
+        status_code = 200
         try:
             retrieved_item = dummy_database[item_id]
             message = "OK"
         except IndexError:
             retrieved_item = ""
             message = "Specified item does not exist"
-
+            status_code = 404
         response = \
             {
                 "message": message,
                 "data":retrieved_item
             }
 
-        return response,200
+        return response,status_code
 
 
 ###################################
 #  Routes for bidding management  #
 ###################################
 
-
-# Note:
-# The user may leave the "overbid" field empty
+# Propose a bidding
 
 @api.route('/bidding/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
@@ -222,6 +223,7 @@ class BiddingManagement(Resource):
         new_bidding_info = user_input_json
         if_overbid = False
         message = "The bidding has been created successfully"
+        status_code = 200
         # update database
         try:
             if_no_bidding = True if len(dummy_database[item_id]["bidding_info"]) == 0 else False
@@ -238,6 +240,7 @@ class BiddingManagement(Resource):
 
         except IndexError:
             message = "Specified item does not exist"
+            status_code = 404
 
         data = {
             "item_id":item_id,
@@ -249,8 +252,42 @@ class BiddingManagement(Resource):
                 "message": message,
                 "data":data
             }
-        return response, 200
+        return response, status_code
 
+# DOING
+# Accept or decline a bidding
+@api.route('/bidding_operations/<item_id>/<operation>')
+@api.param('item_id','Item ID given when the auction is created')
+@api.doc(params={
+    'item_id': 'Item ID given when the auction is created',
+    'operation': '\"accept\"\: accept a bid, \"decline\"\: decline a bid '
+     })
+
+
+class AcceptOrDeclineBiddings(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Requested Resource Does Not Exist')
+    @api.doc(description="Accept or decline a the highest bidding on an item")
+    def put(self,item_id,operation):
+        item_id = int(item_id)
+        status_code = 200
+        try:
+            if operation == "accept":
+                dummy_database[item_id]["status"] = "Accepted"
+                message = "The bid has been accepted"
+            elif operation == "decline":
+                dummy_database[item_id]["status"] = "Declined"
+                message = "The bid has been declined"
+            else :
+                message = "Invalid operation"
+        except IndexError:
+            message = "Specified item does not exist"
+            status_code = 404
+        response = \
+            {
+                "message": message
+            }
+        return response, status_code
 
 
 # TODO
