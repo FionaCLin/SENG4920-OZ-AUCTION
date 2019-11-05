@@ -70,7 +70,7 @@ class Dashboard(Resource):
 
 
 #######################################
-#  Routes for a single auction item.   #
+#  Routes for a single auction item.  #
 #######################################
 
 """
@@ -81,18 +81,58 @@ GET: Get auction information by item id
 """
 dummy_database = []
 
-user_input_single_auction_item = api.model(
-    'credential',
+# this is also the data model stored in server
+user_input_bidding_info = api.model(
+    "Bidding proposal user input & bidding info stored in server",
     {
-        "ItemName":fields.String,
-        "Price":fields.Float,
-        "Location":fields.String,
-        "Description":fields.String
+        "user_id": fields.Integer,
+        "proposal_price": fields.Float,
+    }
+)
+returned_bidding_info = api.model(
+    "Bidding response returned",
+    {
+        "item_id": fields.Integer,
+        "user_id": fields.Integer,
+        "proposal_price": fields.Float,
+        "overbid": fields.Boolean,
+    }
+)
+
+user_input_single_auction_item = api.model(
+    'Create auction user input',
+    {
+        "seller_name":fields.String,
+        "seller_id":fields.Integer,
+        "category_id":fields.Integer,
+        "title":fields.String,
+        "description":fields.String,
+        "end_date":fields.String,
+        "price":fields.Float,
+        "image_url":fields.String,
+    }
+)
+
+auction_info = api.model(
+    'Auction item information',
+    {
+        "item_id": fields.Integer,
+        "seller_name": fields.String,
+        "seller_id": fields.Integer,
+        "category_id": fields.Integer,
+        "title": fields.String,
+        "description": fields.String,
+        "updated": fields.String,
+        "created": fields.String,
+        "end_date": fields.String,
+        "price": fields.Float,
+        "image_url": fields.String,
+        "bidding_info": fields.List(fields.Nested(user_input_bidding_info))
     }
 )
 
 
-@api.route('/auction_item/')
+@api.route('/auction/')
 class CreateSingleAuctionItem(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Failed to create a new auction')
@@ -101,31 +141,42 @@ class CreateSingleAuctionItem(Resource):
     def post(self):
 
         user_input_json = request.json
-        description = user_input_json["Description"]
-        price = user_input_json["Price"]
-        item_name = user_input_json["ItemName"]
-        location = user_input_json["Location"]
+        seller_name = user_input_json['seller_name']
+        seller_id = user_input_json['seller_id']
+        category_id = user_input_json['category_id']
+        title = user_input_json['title']
+        description = user_input_json["description"]
+        end_date = user_input_json["end_date"]
+        price = user_input_json["price"]
+        image_url = user_input_json["image_url"]
 
         new_auction = \
         {
-            "ItemId": 0,
-            "ItemName":item_name,
-            "Price":price,
-            "Description":description,
-            "Location":location,
-            "CreatedTime":datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            "item_id": 0,
+            "seller_name": seller_name,
+            "seller_id":seller_id,
+            "category_id":category_id,
+            "title":title,
+            "description": description,
+            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "end_date":end_date,
+            "price":price,
+            "image_url":image_url,
+            "bidding_info":[]
         }
         message = "Auction create successfully"
         response = \
         {
             "message":message,
-            "result":new_auction
+            "data":new_auction
         }
 
         dummy_database.append(new_auction)
         return response,200
 
-@api.route('/auction_item/<item_id>')
+
+@api.route('/auction/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
 class RetrieveSingleAuctionItem(Resource):
     @api.response(200, 'OK')
@@ -143,10 +194,62 @@ class RetrieveSingleAuctionItem(Resource):
         response = \
             {
                 "message": message,
-                "result":retrieved_item
+                "data":retrieved_item
             }
 
         return response,200
+
+
+#########################################
+#  Routes for bidding management item.  #
+#########################################
+
+
+# Note:
+# The user may leave the "overbid" field empty
+
+@api.route('/bidding/<item_id>')
+@api.param('item_id','Item ID given when the auction is created')
+class BiddingManagement(Resource):
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Requested Resource Does Not Exist')
+    @api.expect(user_input_bidding_info)
+    @api.doc(description="Propose a bid on an item")
+    def post(self,item_id):
+        item_id = int(item_id)
+        user_input_json = request.json
+        new_bidding_info = user_input_json
+        if_overbid = False
+        message = "The bidding has been created successfully"
+        # update database
+        try:
+            if_no_bidding = True if len(dummy_database[item_id]["bidding_info"]) == 0 else False
+            if if_no_bidding:
+                dummy_database[item_id]["bidding_info"].append(new_bidding_info)
+            else:
+                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"];
+                new_proposed_price = new_bidding_info["proposal_price"]
+                if_overbid = True if new_proposed_price > current_highest_price else False
+                if if_overbid:
+                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
+                else:
+                    message = "Bidding failed, the new price is not higher than the current price"
+
+        except IndexError:
+            message = "Specified item does not exist"
+
+        data = {
+            "item_id":item_id,
+            "overbid":if_overbid,
+            "bidding_info":new_bidding_info
+        }
+        response = \
+            {
+                "message": message,
+                "data":data
+            }
+        return response, 200
 
 
 
@@ -163,7 +266,6 @@ class OnOneCollection(Resource):
 
         response = {};
         return response, 200
-
 
     @api.response(200, 'OK')
     @api.response(404, 'Requested Resource Does Not Exist')
