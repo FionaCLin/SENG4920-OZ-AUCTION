@@ -200,9 +200,9 @@ class RetrieveSingleAuctionItem(Resource):
         return response,200
 
 
-#########################################
-#  Routes for bidding management item.  #
-#########################################
+###################################
+#  Routes for bidding management  #
+###################################
 
 
 # Note:
