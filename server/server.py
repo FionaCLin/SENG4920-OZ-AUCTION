@@ -127,7 +127,7 @@ auction_info = api.model(
         "end_date": fields.String,
         "price": fields.Float,
         "image_url": fields.String,
-        "bidding_info": fields.List(fields.Nested(user_input_bidding_info))
+        "bidding_info": fields.List(fields.Nested(user_input_bidding_info)),
         "status": fields.String
     }
 )
@@ -272,6 +272,7 @@ class AcceptOrDeclineBiddings(Resource):
         item_id = int(item_id)
         status_code = 200
         try:
+            print(operation)
             if operation == "accept":
                 dummy_database[item_id]["status"] = "Accepted"
                 message = "The bid has been accepted"
