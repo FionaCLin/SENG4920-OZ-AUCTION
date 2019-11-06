@@ -8,16 +8,21 @@ const menu_list = {
     {
       icon: "gavel",
       name: "My Auctions",
-      href: "myAuctions"
+      href: "auctions"
     },
     {
       icon: "collections_bookmark",
       name: "My Bids",
-      href: "myBids"
+      href: "bids"
     },
     {
-      icon: "delete",
-      name: "Trash"
+      icon: "favorite",
+      name: "Favorites",
+      href: "favorites"
+      // },
+      // {
+      //   icon: "delete",
+      //   name: "Trash"
     }
   ],
   profile: [
@@ -101,7 +106,7 @@ const routes = [
     children: [
       {
         path: "/",
-        component: () => import("pages/CreateAuction")
+        component: () => import("pages/AuctionForm")
       }
     ]
   },
@@ -115,6 +120,19 @@ const routes = [
       {
         path: "/",
         component: () => import("pages/Auctions")
+      },
+      {
+        path: "/auctions/:id",
+        name: "auctiionItem",
+        component: () => import("pages/Auction")
+      },
+      {
+        path: "/auctions/edit/:id",
+        name: "auctiionItemEdit ",
+        component: () => import("pages/AuctionForm"),
+        props: {
+          edit: true
+        }
       }
     ]
   },

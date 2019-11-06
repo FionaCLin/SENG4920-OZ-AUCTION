@@ -17,7 +17,7 @@
         </q-item-section>
         <q-item-section>
           <q-form
-            ref="CreateAuctionForm"
+            :ref="edit ? 'EditAuctionForm' : 'CreateAuctionForm'"
             class="q-gutter-md"
             @submit="onSubmit"
             @reset="onReset"
@@ -33,7 +33,8 @@
             <q-input
               v-model="endTime"
               label="End Time"
-              filledtype="date"
+              filled
+              type="date"
             ></q-input>
             <q-select
               v-model="categoryId"
@@ -50,7 +51,7 @@
         <q-btn label="Reset" type="reset" color="warning" flat />
         <q-space />
 
-        <q-btn label="Cancel" type="cancel" color="red" flat to="/auctions" />
+        <q-btn label="Cancel" type="cancel" color="red" flat @click="goBack" />
       </q-card-actions>
     </q-card>
   </q-page>
@@ -59,6 +60,7 @@
 <script>
 export default {
   name: "AuctionCreateForm",
+  props: ["edit"],
   data() {
     return {
       categoryId: "",
@@ -70,16 +72,37 @@ export default {
       options: ["Handicraft", "Second hand"]
     };
   },
+  created() {
+    if (this.edit) {
+      console.log("edit", this.edit);
+      this.id = Number(this.$route.params.id);
+
+      let auction = this.$store.state.auction.myAuctions.auction_items.find(
+        x => x.id === this.id
+      );
+      console.log(auction);
+
+      this.$data.categoryId = auction.category_id;
+      this.$data.title = auction.title;
+      this.$data.description = auction.description;
+      this.$data.endTime = auction.end_time;
+      this.$data.price = auction.price;
+      // this.$data.images = auction.images;
+    }
+  },
   methods: {
     onSubmit() {
       // sellerName: "",
       // sellerId: "",
+      if (this.edit) {
+        this.$emit("editDetail", this.$data);
+        return;
+      }
       this.$refs.CreateAuctionForm.validate().then(
         success => {
           if (success) {
             // yay, models are correct
             this.$emit("editDetail", this.$data);
-
             this.$emit("updateEdit", false);
           }
         },
@@ -106,6 +129,20 @@ export default {
       this.$data.endTime = "";
       this.$data.price = 0;
       this.$data.images = "";
+    },
+    goBack() {
+      if (this.edit) {
+        this.$router.push({
+          name: "auctiionItem",
+          params: {
+            id: this.id
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/auctions"
+        });
+      }
     }
   }
 };
