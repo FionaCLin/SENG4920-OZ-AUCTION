@@ -40,7 +40,7 @@ indicator_model = api.model('credential', {
     'password': fields.String
 })
 
-db = local_database()
+db = local_user_account_database()
 
 
 def upload_local_items(col):
@@ -75,7 +75,7 @@ class Register(Resource):
             return {'message': 'Bad Request!'}, 400
         
         try:
-            if db.is_in_userDatabase(accountInfo['username']):
+            if db.is_in_database(accountInfo['username']):
                 return {'message': 'Username Already Exists'}, 200
 
             db.save_user(accountInfo['username'], accountInfo['password'])

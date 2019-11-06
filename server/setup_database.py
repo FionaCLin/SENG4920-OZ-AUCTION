@@ -49,32 +49,28 @@ class Collection(Auction_db_client):
 
 
 
-# user account database
-class local_database:
+# temporary user account
+class local_user_account_database:
     def __init__(self):
         self.users = {}
-
-        # load account info from local csv file
         if not os.path.isfile('user_accounts.csv'):
-            with open('user_accounts.csv', 'w', newline='') as csvfile:
-                accountWriter = csv.writer(csvfile)
+            with open('user_accounts.csv', 'w', newline='') as csvf:
+                accountWriter = csv.writer(csvf)
                 accountWriter.writerow(['username', 'password'])
         else:
-            usr_info_df = pd.read_csv('user_accounts.csv')
-            for index, row in usr_info_df.iterrows():
+            acc = pd.read_csv('user_accounts.csv')
+            for index, row in acc.iterrows():
                 username, password = row['username'], row['password']
                 if username not in self.users:
                     self.users[username] = password
 
     def save_user(self, username, password):
         self.users.setdefault(username, password)
-
-        # save account info to local csv file
-        with open('user_accounts.csv', 'a', newline='') as csvfile:
-            accountWriter = csv.writer(csvfile)
+        with open('user_accounts.csv', 'a', newline='') as csvf:
+            accountWriter = csv.writer(csvf)
             accountWriter.writerow([username, password])
     
-    def varifyUser(self, username, password):
+    def varify_user(self, username, password):
         if username in self.users and self.users[username] == password:
             return True
         else:
@@ -83,7 +79,7 @@ class local_database:
     def get_all_users(self):
         return self.users
 
-    def is_in_userDatabase(self, username):
+    def is_in_database(self, username):
         return username in self.users
 
 
