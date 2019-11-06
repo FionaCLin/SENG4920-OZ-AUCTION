@@ -4,19 +4,98 @@ import uuid
 from flask_cors import CORS
 import re
 import pandas as pd
+import os, csv, base64,requests
 from flask import Flask, request, Response
-from flask_restplus import Resource, Api, fields, inputs, reqparse
+from flask_restplus import Resource, Api, fields, inputs, reqparse, abort
 from setup_database import *
-# import server.setup_database as db_setup
+from functools import wraps
+from time import time
+from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
 
-# global variables
+
+
+class Token_authentication:
+    def __init__(self, secret_key, expire_time):
+        self.secret_key = secret_key
+        self.expire_time = expire_time
+        self.active_token = set()
+        self.serializer = JSONWebSignatureSerializer(secret_key)
+
+
+    def generate_token(self, username):
+        info = {
+            'username': username,
+            'creation_time': time()
+        }
+
+        token = self.serializer.dumps(info)
+        print('token serializer is '+str(token))
+
+        new_token = token.decode()
+        self.active_token.add(new_token)
+        print(f'adding a new token {new_token}')
+        print(f'active tokens are {self.active_token}')
+        return new_token
+
+
+    def validate_token(self, token):
+        print(f'validating token {token}')
+        info = self.serializer.loads(token.encode())
+
+        if token not in self.active_token:
+            raise SignatureExpired("The Token is no longer active!")
+        elif time() - info['creation_time'] > self.expire_time:
+            self.active_token.discard(token)
+            print(f'now deleting token {token}')
+            print(f'now active tokens are {self.active_token}')
+            raise SignatureExpired("The Token has been expired; get a new token!")
+        return info['username']
+
+
+    def delete_token(self, token):
+        print ('--- now active tokens are '+str(self.active_token))
+        self.active_token.discard(token)
+        print(f'now deleting token {token}')
+        print(f'now active tokens are {self.active_token}')
+        return True
+
+
+
+def upload_local_items(col):
+    with open('../data/data1.json', 'r') as f:
+        content = json.load(f)
+        col.insert_many_collections([content])
+
+
+
+
+def requires_authentication(authen):
+    @wraps(authen)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('AUTH-TOKEN')
+        print(f'geting token {token}')
+        if not token:
+            abort(401, 'Authentication token is missing')
+        try:
+            user = auth.validate_token(token)
+        except SignatureExpired as e:
+            abort(401, e.message)
+        except BadSignature as e:
+            abort(401, e.message)
+        return f(*args, **kwargs)
+    return decorated
+
+
+
+
 col = Collection()
 # upload_local_items(col)
 
-# db = userDatabase()
 SECRET_KEY = "SENG4920"
-expires_in = 1000
-# auth = AuthenticationToken(SECRET_KEY, expires_in)
+
+expire_time = 1000
+auth = Token_authentication(SECRET_KEY, expire_time)
+
 app = Flask(__name__)
 api = Api(app, authorizations={
                 'API-KEY': {
@@ -26,8 +105,7 @@ api = Api(app, authorizations={
                 }
             },
           security='API-KEY',
-          #default="predict",
-          title="Auction", 
+          title="Online Auction", 
           description="Auction Website")
 
 
@@ -36,21 +114,27 @@ CORS(app)
 ns_auction = api.namespace('auction',description='Operations related to auction information management')
 ns_account = api.namespace('account',description='Operations related to user accounts')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
-ns_dashboard = api.namespace('dashboard',description='Operations related to dashboard (doing)')
 
-indicator_model = api.model('credential', {
+indicator_model = api.model('credentials', {
     'username': fields.String,
     'password': fields.String
 })
 
+indicator_parser = reqparse.RequestParser()
+indicator_parser.add_argument('username', type=str)
+indicator_parser.add_argument('password', type=str)
+
+
+# signin_model = api.model('signin_info', {
+#     'username': fields.String,
+#     'password': fields.String
+# })
+
+# signin_parser = reqparse.RequestParser()
+# signin_parser.add_argument('username', type=str)
+# signin_parser.add_argument('password', type=str)
+
 db = local_user_account_database()
-
-
-def upload_local_items(col):
-    with open('../data/data1.json', 'r') as f:
-        content = json.load(f)
-        col.insert_many_collections([content])
-
 
 
 
@@ -68,19 +152,15 @@ class Register(Resource):
     @api.expect(indicator_model, validate=True)
     def post(self):
         global db
-        
         print(f'register request is {request}')
         print(f'before request, the urers in database are {db.get_all_users()}')
-
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!'}, 400
-        
         try:
             if db.is_in_database(accountInfo['username']):
                 return {'message': 'Username Already Exists'}, 200
-
             db.save_user(accountInfo['username'], accountInfo['password'])
             return {'message': 'Account Created Successfully!'}, 201
 
@@ -89,32 +169,64 @@ class Register(Resource):
 
 
 
+@ns_account.route('/signin')
+class Signin(Resource):
+    @api.response(200, 'Successful')
+    @api.response(401, 'Unauthorized')
+    @api.doc(description="Generates a authentication token")
+    @api.expect(indicator_model, validate=True)
+    def post(self):
+        global db
+
+        try:
+            account_info = request.json
+        except:
+            return {'message': 'Bad Request!'}, 400
+        try:
+            if db.varify_user(account_info['username'], account_info['password']):
+                return {"token": auth.generate_token(account_info['username'])}, 200
+        except KeyError:
+            return {"message": "authorization has been refused for those credentials."}, 401
+
+
+
+
+
+@ns_account.route('/signout/<string:token>')
+class Signout(Resource):
+    @api.response(200, 'Successful')
+    @api.doc(description="Signout current user.")
+    # @requires_authentication
+    def delete(self, token):
+        auth.delete_token(token)
+        return {'message': 'Deletion Successful'}, 200
+
 
 
 
 
 # TODO
-@ns_dashboard.route('')
-class Dashboard(Resource):
+# @ns_dashboard.route('')
+# class Dashboard(Resource):
 
-    @api.response(200, 'OK')
-    @api.doc(description='Retrieve auction items')
-    def get(self):
+#     @api.response(200, 'OK')
+#     @api.doc(description='Retrieve auction items')
+#     def get(self):
 
-        result = {};
-        return result,200
+#         result = {}
+#         return result,200
 
 
 
-    @api.response(200, 'OK')
-    @api.response(201, 'Created')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.doc(description='Import auction items from local database')
-    @api.expect(indicator_model)
-    def post(self):
+#     @api.response(200, 'OK')
+#     @api.response(201, 'Created')
+#     @api.response(404, 'Requested Resource Does Not Exist')
+#     @api.doc(description='Import auction items from local database')
+#     @api.expect(indicator_model)
+#     def post(self):
 
-        response = {}
-        return response, 200
+#         response = {}
+#         return response, 200
 
 
 #######################################
@@ -487,7 +599,7 @@ class BiddingManagement(Resource):
             if if_no_bidding:
                 dummy_database[item_id]["bidding_info"].append(new_bidding_info)
             else:
-                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"];
+                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
                 new_proposed_price = new_bidding_info["proposal_price"]
                 if_overbid = True if new_proposed_price > current_highest_price else False
                 if if_overbid:
