@@ -8,7 +8,6 @@ from flask_restplus import Resource, Api, fields, inputs, reqparse
 from setup_database import *
 # import server.setup_database as db_setup
 
-
 # global variables
 col = Collection()
 # upload_local_items(col)
@@ -30,7 +29,10 @@ api = Api(app, authorizations={
           title="Auction", 
           description="Auction Website")
 
-
+# define namespaces
+ns_auction = api.namespace('auction',description='Operations related to auction information management')
+ns_bidding = api.namespace('bidding',description='Operations related to management')
+ns_dashboard = api.namespace('dashboard',description='Operations related to dashboard (doing)')
 indicator_model = api.model('credential', {
     'username': fields.String,
     'password': fields.String
@@ -46,7 +48,7 @@ def upload_local_items(col):
 
 
 # TODO
-@api.route('/dashboard')
+@ns_dashboard.route('')
 class Dashboard(Resource):
 
     @api.response(200, 'OK')
@@ -145,7 +147,7 @@ auction_info = api.model(
 )
 
 
-@api.route('/auction/')
+@ns_auction.route('')
 class CreateSingleAuctionItem(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Failed to create a new auction')
@@ -190,7 +192,7 @@ class CreateSingleAuctionItem(Resource):
         return response,200
 
 
-@api.route('/auction/<item_id>')
+@ns_auction.route('/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
     @api.response(200, 'OK')
@@ -254,8 +256,7 @@ class SingleAuctionItemOperations(Resource):
 ###################################
 
 # Propose a bidding
-
-@api.route('/bidding/<item_id>')
+@ns_bidding.route('/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
 class BiddingManagement(Resource):
 
@@ -301,14 +302,12 @@ class BiddingManagement(Resource):
         return response, status_code
 
 # Accept or decline a bidding
-@api.route('/bidding_operations/<item_id>/<operation>')
+@ns_bidding.route('/operations/<item_id>/<operation>')
 @api.param('item_id','Item ID given when the auction is created')
 @api.doc(params={
     'item_id': 'Item ID given when the auction is created',
     'operation': '\"accept\"\: accept a bid, \"decline\"\: decline a bid '
      })
-
-
 class AcceptOrDeclineBiddings(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Requested Resource Does Not Exist')
@@ -334,6 +333,7 @@ class AcceptOrDeclineBiddings(Resource):
                 "message": message
             }
         return response, status_code
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9999, debug=True)
