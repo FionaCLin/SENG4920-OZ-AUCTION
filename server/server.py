@@ -31,20 +31,63 @@ api = Api(app, authorizations={
 
 # define namespaces
 ns_auction = api.namespace('auction',description='Operations related to auction information management')
+ns_account = api.namespace('account',description='Operations related to user accounts')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
 ns_dashboard = api.namespace('dashboard',description='Operations related to dashboard (doing)')
+
 indicator_model = api.model('credential', {
     'username': fields.String,
     'password': fields.String
 })
 
-
+db = local_user_account_database()
 
 
 def upload_local_items(col):
     with open('../data/data1.json', 'r') as f:
         content = json.load(f)
         col.insert_many_collections([content])
+
+
+
+
+########################################
+#  Routes for user account management  #
+########################################
+
+
+@ns_account.route('/register')
+class Register(Resource):
+    @api.response(200, 'Username Already Exists')
+    @api.response(201, 'Account Created Successfully')
+    @api.response(400, 'Bad Request Error')
+    @api.doc(description="Register an account")
+    @api.expect(indicator_model, validate=True)
+    def post(self):
+        global db
+        
+        print(f'register request is {request}')
+        print(f'before request, the urers in database are {db.get_all_users()}')
+
+        try:
+            accountInfo = request.json
+        except:
+            return {'message': 'Bad Request!'}, 400
+        
+        try:
+            if db.is_in_database(accountInfo['username']):
+                return {'message': 'Username Already Exists'}, 200
+
+            db.save_user(accountInfo['username'], accountInfo['password'])
+            return {'message': 'Account Created Successfully!'}, 201
+
+        except KeyError:
+            return {'message': 'Bad Request!'}, 400
+
+
+
+
+
 
 
 # TODO
@@ -301,6 +344,171 @@ class BiddingManagement(Resource):
             }
         return response, status_code
 
+
+@ns_auction.route('')
+class CreateSingleAuctionItem(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Failed to create a new auction')
+    @api.expect(user_input_single_auction_item)
+    @api.doc(description="create an auction item")
+    def post(self):
+
+        user_input_json = request.json
+        seller_name = user_input_json['seller_name']
+        seller_id = user_input_json['seller_id']
+        category_id = user_input_json['category_id']
+        title = user_input_json['title']
+        description = user_input_json["description"]
+        end_date = user_input_json["end_date"]
+        price = user_input_json["price"]
+        image_url = user_input_json["image_url"]
+
+        new_auction = \
+        {
+            "item_id": 0,
+            "seller_name": seller_name,
+            "seller_id":seller_id,
+            "category_id":category_id,
+            "title":title,
+            "description": description,
+            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "end_date":end_date,
+            "price":price,
+            "image_url":image_url,
+            "bidding_info":[],
+            "status":"bidding"
+        }
+        message = "Auction create successfully"
+        response = \
+        {
+            "message":message,
+            "data":new_auction
+        }
+
+        dummy_database.append(new_auction)
+        return response,200
+
+
+
+
+
+
+@ns_auction.route('/<item_id>')
+@api.param('item_id','Item ID given when the auction is created')
+class SingleAuctionItemOperations(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.doc(description="get information of an auction item")
+    def get(self,item_id):
+        item_id = int(item_id)
+        status_code = 200
+        try:
+            retrieved_item = dummy_database[item_id]
+            message = "OK"
+        except IndexError:
+            retrieved_item = ""
+            message = "Specified item does not exist"
+            status_code = 404
+        response = \
+            {
+                "message": message,
+                "data":retrieved_item
+            }
+
+        return response,status_code
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(auction_info_update)
+    @api.doc(description="Update auction item details")
+    def put(self,item_id):
+        item_id = int(item_id)
+        status_code = 200
+        user_input_json = request.json
+        message = "Auction details have been updated"
+        try:
+            target_auction = dummy_database[item_id]
+        except IndexError:
+            target_auction = ""
+            message = "Specified item does not exist"
+            status_code = 404
+
+        if len(user_input_json.keys()) != 0:
+            # update auction details
+            for k in user_input_json.keys():
+                target_auction[k] = user_input_json[k]
+
+            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            dummy_database[item_id] = target_auction
+            updated_auction = target_auction
+        else:
+            message = "User did not specify any field to update"
+            updated_auction = ""
+        response = \
+            {
+                "message":message,
+                "data":updated_auction
+            }
+        return response, status_code
+
+
+
+
+
+
+###################################
+#  Routes for bidding management  #
+###################################
+
+# Propose a bidding
+@ns_bidding.route('/<item_id>')
+@api.param('item_id','Item ID given when the auction is created')
+class BiddingManagement(Resource):
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Requested Resource Does Not Exist')
+    @api.expect(user_input_bidding_info)
+    @api.doc(description="Propose a bid on an item")
+    def post(self,item_id):
+        item_id = int(item_id)
+        user_input_json = request.json
+        new_bidding_info = user_input_json
+        if_overbid = False
+        message = "The bidding has been created successfully"
+        status_code = 200
+        # update database
+        try:
+            if_no_bidding = True if len(dummy_database[item_id]["bidding_info"]) == 0 else False
+            if if_no_bidding:
+                dummy_database[item_id]["bidding_info"].append(new_bidding_info)
+            else:
+                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"];
+                new_proposed_price = new_bidding_info["proposal_price"]
+                if_overbid = True if new_proposed_price > current_highest_price else False
+                if if_overbid:
+                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
+                else:
+                    message = "Bidding failed, the new price is not higher than the current price"
+
+        except IndexError:
+            message = "Specified item does not exist"
+            status_code = 404
+
+        data = {
+            "item_id":item_id,
+            "overbid":if_overbid,
+            "bidding_info":new_bidding_info
+        }
+        response = \
+            {
+                "message": message,
+                "data":data
+            }
+        return response, status_code
+
+
 # Accept or decline a bidding
 @ns_bidding.route('/operations/<item_id>/<operation>')
 @api.param('item_id','Item ID given when the auction is created')
@@ -337,4 +545,3 @@ class AcceptOrDeclineBiddings(Resource):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9999, debug=True)
-
