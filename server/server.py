@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 import uuid
+from flask_cors import CORS
 import re
 import pandas as pd
 from flask import Flask, request, Response
@@ -29,6 +30,8 @@ api = Api(app, authorizations={
           title="Auction", 
           description="Auction Website")
 
+
+CORS(app)
 # define namespaces
 ns_auction = api.namespace('auction',description='Operations related to auction information management')
 ns_account = api.namespace('account',description='Operations related to user accounts')
