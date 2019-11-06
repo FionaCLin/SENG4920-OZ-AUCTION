@@ -38,6 +38,7 @@
             filled
             label="Your email *"
             hint="Email"
+            type="email"
             lazy-rules
             :rules="[
               val => (val && val.length > 0) || 'Please enter valid Email'
@@ -125,20 +126,26 @@ export default {
                 username: this.$data.email,
                 password: this.$data.password
               })
-              .then(
-                response => {
-                  console.log(response);
-                  this.$q.notify({
-                    color: "green-4",
-                    textColor: "white",
-                    icon: "cloud_done",
-                    message: "Submitted"
-                  });
-                },
-                error => {
-                  console.log(error);
-                }
-              );
+              .then(response => {
+                console.log(response);
+                this.$q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  icon: "cloud_done",
+                  message: response.data.message
+                });
+                this.$router.push("/login");
+              })
+              .catch(error => {
+                console.log(error.response);
+
+                this.$q.notify({
+                  color: "red-4",
+                  textColor: "white",
+                  icon: "cloud_done",
+                  message: error.response.data.message
+                });
+              });
           }
         },
         err => {

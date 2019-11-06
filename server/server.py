@@ -160,7 +160,7 @@ class Register(Resource):
             return {'message': 'Bad Request!'}, 400
         try:
             if db.is_in_database(accountInfo['username']):
-                return {'message': 'Username Already Exists'}, 200
+                return {'message': 'Username Already Exists'}, 400
             db.save_user(accountInfo['username'], accountInfo['password'])
             return {'message': 'Account Created Successfully!'}, 201
 
