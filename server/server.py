@@ -45,7 +45,7 @@ def upload_local_items(col):
         col.insert_many_collections([content])
 
 
-
+# TODO
 @api.route('/dashboard')
 class Dashboard(Resource):
 
@@ -83,7 +83,7 @@ dummy_database = []
 
 # this is also the data model stored in server
 user_input_bidding_info = api.model(
-    "Bidding proposal user input & bidding info stored in server",
+    "User input to propose a bid & bidding info stored in server",
     {
         "user_id": fields.Integer,
         "proposal_price": fields.Float,
@@ -100,10 +100,22 @@ returned_bidding_info = api.model(
 )
 
 user_input_single_auction_item = api.model(
-    'Create auction user input',
+    'User input to create auction',
     {
         "seller_name":fields.String,
         "seller_id":fields.Integer,
+        "category_id":fields.Integer,
+        "title":fields.String,
+        "description":fields.String,
+        "end_date":fields.String,
+        "price":fields.Float,
+        "image_url":fields.String,
+    }
+)
+
+auction_info_update = api.model(
+    'Update auction details (user may specify only some of the fields)',
+    {
         "category_id":fields.Integer,
         "title":fields.String,
         "description":fields.String,
@@ -180,7 +192,7 @@ class CreateSingleAuctionItem(Resource):
 
 @api.route('/auction/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
-class RetrieveSingleAuctionItem(Resource):
+class SingleAuctionItemOperations(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="get information of an auction item")
@@ -202,6 +214,40 @@ class RetrieveSingleAuctionItem(Resource):
 
         return response,status_code
 
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(auction_info_update)
+    @api.doc(description="Update auction item details")
+    def put(self,item_id):
+        item_id = int(item_id)
+        status_code = 200
+        user_input_json = request.json
+        message = "Auction details have been updated"
+        try:
+            target_auction = dummy_database[item_id]
+        except IndexError:
+            target_auction = ""
+            message = "Specified item does not exist"
+            status_code = 404
+
+        if len(user_input_json.keys()) != 0:
+            # update auction details
+            for k in user_input_json.keys():
+                target_auction[k] = user_input_json[k]
+
+            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            dummy_database[item_id] = target_auction
+            updated_auction = target_auction
+        else:
+            message = "User did not specify any field to update"
+            updated_auction = ""
+        response = \
+            {
+                "message":message,
+                "data":updated_auction
+            }
+        return response, status_code
 
 ###################################
 #  Routes for bidding management  #
@@ -254,7 +300,6 @@ class BiddingManagement(Resource):
             }
         return response, status_code
 
-# DOING
 # Accept or decline a bidding
 @api.route('/bidding_operations/<item_id>/<operation>')
 @api.param('item_id','Item ID given when the auction is created')
@@ -289,61 +334,6 @@ class AcceptOrDeclineBiddings(Resource):
                 "message": message
             }
         return response, status_code
-
-
-# TODO
-
-@api.route('/auction_items/<string:cid>')
-@api.doc(params={'cid': 'collection id'})
-class OnOneCollection(Resource):
-
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.doc(description="Delete one auction item")
-    def delete(self,cid):
-
-        response = {};
-        return response, 200
-
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.doc(description="Retrieve one auction item")
-    def get(self,cid):
-        response = {};
-        return response, 200
-
-
-
-
-
-@api.route('/auction_items/<string:cid>/<string:time>/<string:owner>')
-class IndicatorByYearCountry(Resource):
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.doc(description="Retrieve specific auction items")    
-    def get(self,cid,year,country):
-
-        response = {};
-        return response, 200
-
-
-
-
-parser = reqparse.RequestParser()
-parser.add_argument('query')
-
-@api.route('/auction_items/<string:cid>/<int:time>')
-@api.expect(parser)
-class SortedIndicatorByYearCountry(Resource):
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist') 
-    @api.doc(description="Retrieve specific items")
-    def get(self,cid,year):
-
-        response = {};
-        return response,200
-
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9999, debug=True)
