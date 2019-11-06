@@ -23,7 +23,7 @@
           @submit="onSubmit"
           @reset="onReset"
         >
-          <q-input
+          <!-- <q-input
             v-model="name"
             filled
             label="Your name *"
@@ -32,7 +32,7 @@
             :rules="[
               val => (val && val.length > 0) || 'Please type your full name'
             ]"
-          />
+          /> -->
           <q-input
             v-model="email"
             filled
@@ -65,10 +65,10 @@
             label="Confirm password"
             hint="Enter Login Password"
             :rules="[
-              val => (val && val != password) || 'Password does not match'
+              val => (val && val == password) || 'Please enter valid Email'
             ]"
           ></q-input>
-          <q-input
+          <!-- <q-input
             v-model="age"
             filled
             type="number"
@@ -78,7 +78,7 @@
               val => (val !== null && val !== '') || 'Please type your age',
               val => (val > 0 && val < 100) || 'Please type a real age'
             ]"
-          />
+          /> -->
 
           <!-- <q-toggle v-model="seller" label="Seller" /> -->
 
@@ -99,6 +99,8 @@
 </template>
 
 <script>
+import { axiosInstance } from "boot/axios";
+
 export default {
   data() {
     return {
@@ -118,12 +120,25 @@ export default {
           if (success) {
             // yay, models are correct
             console.log(success);
-            // this.$q.notify({
-            //   color: 'green-4',
-            //   textColor: 'white',
-            //   icon: 'cloud_done',
-            //   message: 'Submitted'
-            // })
+            axiosInstance
+              .post("/account/register", {
+                username: this.$data.email,
+                password: this.$data.password
+              })
+              .then(
+                response => {
+                  console.log(response);
+                  this.$q.notify({
+                    color: "green-4",
+                    textColor: "white",
+                    icon: "cloud_done",
+                    message: "Submitted"
+                  });
+                },
+                error => {
+                  console.log(error);
+                }
+              );
           }
         },
         err => {
