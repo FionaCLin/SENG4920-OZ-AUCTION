@@ -28,7 +28,7 @@ class Token_authentication:
         }
 
         token = self.serializer.dumps(info)
-        print(f'token serializer is {token}')
+        print('token serializer is '+str(token))
 
         new_token = token.decode()
         self.active_token.add(new_token)
@@ -50,7 +50,9 @@ class Token_authentication:
             raise SignatureExpired("The Token has been expired; get a new token!")
         return info['username']
 
-    def delte_token(self, token):
+
+    def delete_token(self, token):
+        print ('--- now active tokens are '+str(self.active_token))
         self.active_token.discard(token)
         print(f'now deleting token {token}')
         print(f'now active tokens are {self.active_token}')
@@ -66,7 +68,7 @@ def upload_local_items(col):
 
 
 
-def requires_auth(authen):
+def requires_authentication(authen):
     @wraps(authen)
     def decorated(*args, **kwargs):
         token = request.headers.get('AUTH-TOKEN')
@@ -109,7 +111,6 @@ api = Api(app, authorizations={
 ns_account = api.namespace('account',description='Operations related to user accounts')
 ns_auction = api.namespace('auction',description='Operations related to auction information management')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
-ns_dashboard = api.namespace('dashboard',description='Operations related to dashboard (doing)')
 
 indicator_model = api.model('credential', {
     'username': fields.String,
@@ -170,9 +171,7 @@ class Signin(Resource):
         username = args.get('username')
         password = args.get('password')
 
-        # >>>>>> debug
         print(f'The args for requesting token is {args}, username = {username}, password = {password}')
-        # <<<<<< debug
 
         if db.varify_user(username, password):
             return {"token": auth.generate_token(username)}
@@ -181,32 +180,41 @@ class Signin(Resource):
 
 
 
+@ns_account.route('/signout/<string:token>')
+class Signout(Resource):
+    @api.response(200, 'Successful')
+    @api.doc(description="Signout current user.")
+    # @requires_authentication
+    def delete(self, token):
+        auth.delete_token(token)
+        return {'message': 'Deletion Successful'}, 200
+
 
 
 
 
 # TODO
-@ns_dashboard.route('')
-class Dashboard(Resource):
+# @ns_dashboard.route('')
+# class Dashboard(Resource):
 
-    @api.response(200, 'OK')
-    @api.doc(description='Retrieve auction items')
-    def get(self):
+#     @api.response(200, 'OK')
+#     @api.doc(description='Retrieve auction items')
+#     def get(self):
 
-        result = {}
-        return result,200
+#         result = {}
+#         return result,200
 
 
 
-    @api.response(200, 'OK')
-    @api.response(201, 'Created')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.doc(description='Import auction items from local database')
-    @api.expect(indicator_model)
-    def post(self):
+#     @api.response(200, 'OK')
+#     @api.response(201, 'Created')
+#     @api.response(404, 'Requested Resource Does Not Exist')
+#     @api.doc(description='Import auction items from local database')
+#     @api.expect(indicator_model)
+#     def post(self):
 
-        response = {}
-        return response, 200
+#         response = {}
+#         return response, 200
 
 
 #######################################
