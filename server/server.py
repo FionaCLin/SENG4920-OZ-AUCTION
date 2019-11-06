@@ -115,7 +115,7 @@ ns_auction = api.namespace('auction',description='Operations related to auction 
 ns_account = api.namespace('account',description='Operations related to user accounts')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
 
-indicator_model = api.model('credential', {
+indicator_model = api.model('credentials', {
     'username': fields.String,
     'password': fields.String
 })
@@ -125,8 +125,16 @@ indicator_parser.add_argument('username', type=str)
 indicator_parser.add_argument('password', type=str)
 
 
-db = local_user_account_database()
+# signin_model = api.model('signin_info', {
+#     'username': fields.String,
+#     'password': fields.String
+# })
 
+# signin_parser = reqparse.RequestParser()
+# signin_parser.add_argument('username', type=str)
+# signin_parser.add_argument('password', type=str)
+
+db = local_user_account_database()
 
 
 
@@ -166,20 +174,21 @@ class Signin(Resource):
     @api.response(200, 'Successful')
     @api.response(401, 'Unauthorized')
     @api.doc(description="Generates a authentication token")
-    @api.expect(indicator_parser, validate=True)
-    def get(self):
+    @api.expect(indicator_model, validate=True)
+    def post(self):
         global db
-        args = indicator_parser.parse_args()
 
-        username = args.get('username')
-        password = args.get('password')
+        try:
+            account_info = request.json
+        except:
+            return {'message': 'Bad Request!'}, 400
+        try:
+            if db.varify_user(account_info['username'], account_info['password']):
+                return {"token": auth.generate_token(account_info['username'])}, 200
+        except KeyError:
+            return {"message": "authorization has been refused for those credentials."}, 401
 
-        print(f'The args for requesting token is {args}, username = {username}, password = {password}')
 
-        if db.varify_user(username, password):
-            return {"token": auth.generate_token(username)}
-
-        return {"message": "authorization has been refused for those credentials."}, 401
 
 
 
