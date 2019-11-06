@@ -137,6 +137,20 @@ const routes = [
     ]
   },
   {
+    path: "/users",
+    component: () => import("layouts/InnerLayout.vue"),
+    props: {
+      menu: menu_list.auctions
+    },
+    children: [
+      {
+        path: "/users/:id",
+        name: "userProfile",
+        component: () => import("pages/UserProfile")
+      }
+    ]
+  },
+  {
     path: "/search",
     component: () => import("layouts/InnerLayout.vue"),
     props: {
