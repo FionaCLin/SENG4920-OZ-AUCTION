@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime as dt
 import uuid
 import re
 import pandas as pd
@@ -112,15 +112,6 @@ ns_account = api.namespace('account',description='Operations related to user acc
 ns_auction = api.namespace('auction',description='Operations related to auction information management')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
 
-indicator_model = api.model('credentials', {
-    'username': fields.String,
-    'password': fields.String
-})
-
-indicator_parser = reqparse.RequestParser()
-indicator_parser.add_argument('username', type=str)
-indicator_parser.add_argument('password', type=str)
-
 
 # signin_model = api.model('signin_info', {
 #     'username': fields.String,
@@ -132,12 +123,89 @@ indicator_parser.add_argument('password', type=str)
 # signin_parser.add_argument('password', type=str)
 
 db = local_user_account_database()
-
+user_tmp_database = []
 
 
 ########################################
 #  Routes for user account management  #
 ########################################
+
+
+indicator_model = api.model(
+    'credentials', {
+        'username': fields.String,
+        'password': fields.String
+    }
+)
+
+indicator_parser = reqparse.RequestParser()
+indicator_parser.add_argument('username', type=str)
+indicator_parser.add_argument('password', type=str)
+
+
+payment_method_visa = api.model(
+    'Payment method: visa',
+    {
+        "card_number":fields.Integer,
+        "name_on_card":fields.String,
+        "expiry_month":fields.Integer,
+        "expiry_year":fields.Integer,
+        "cvv":fields.Integer
+    }
+)
+
+
+payment_method_master = api.model(
+    'Payment method: master',
+    {
+        "card_number":fields.Integer,
+        "name_on_card":fields.String,
+        "expiry_month":fields.Integer,
+        "expiry_year":fields.Integer,
+        "cvv":fields.Integer
+    }
+)
+
+
+payment_method_wechat = api.model(
+    'Payment method: wechat',
+    {
+        "payment_number":fields.Integer
+    }
+)
+
+
+user_profile_visiable = api.model(
+    "User profile visiable",{
+        "first_name":fields.String,
+        "last_name":fields.String,
+        "email":fields.String,
+        "age":fields.Integer,
+        "password":fields.String,
+        "payment_method":fields.String,
+        "payment_method_visa":fields.List(fields.Nested(payment_method_visa)),
+        "payment_method_master":fields.List(fields.Nested(payment_method_master)),
+        "payment_method_wechat":fields.List(fields.Nested(payment_method_wechat))
+    }
+)
+
+
+user_profile_invisiable = api.model(
+    "User profile invisiable",{
+        "first_name":fields.String,
+        "last_name":fields.String,
+        "email":fields.String,
+    }
+)
+
+
+user_profile = api.model(
+    'User profile',{
+        "invisiable":fields.List(fields.Nested(user_profile_invisiable)),
+        "visiable":fields.List(fields.Nested(user_profile_visiable))
+    }
+)
+
 
 
 @ns_account.route('/register')
@@ -188,7 +256,6 @@ class Signin(Resource):
 
 
 
-
 @ns_account.route('/signout/<string:token>')
 class Signout(Resource):
     @api.response(200, 'Successful')
@@ -199,6 +266,43 @@ class Signout(Resource):
         return {'message': 'Deletion Successful'}, 200
 
 
+
+@ns_account.route('/manage_profile/<string:token>')
+class Manage_profile(Resource):
+    @api.response(200, 'OK')
+    @api.response(400, 'Bad Request Error')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="get user's profile")
+    def get(self,token):
+        item_id = int(item_id)
+        status_code = 200
+        try:
+            retrieved_item = dummy_database[item_id]
+            message = "OK"
+        except IndexError:
+            retrieved_item = ""
+            message = "Specified item does not exist"
+            status_code = 404
+        response = \
+            {
+                "message": message,
+                "data":retrieved_item
+            }
+
+        return response,status_code
+
+
+
+    @api.response(200, 'User Profile Updated Successfully')
+    @api.response(400, 'Bad Request Error')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="manage user profile")
+    @api.expect(user_profile, validate=True)
+    def put(self, token):
+        try:
+            account_info = request.json
+        except:
+            return {'message': 'Bad Request!'}, 400
 
 
 
@@ -246,6 +350,7 @@ user_input_bidding_info = api.model(
         "proposal_price": fields.Float,
     }
 )
+
 returned_bidding_info = api.model(
     "Bidding response returned",
     {
@@ -331,8 +436,8 @@ class CreateSingleAuctionItem(Resource):
             "category_id":category_id,
             "title":title,
             "description": description,
-            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "created":dt.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "updated":dt.now().strftime('%Y-%m-%d %H:%M:%S'),
             "end_date":end_date,
             "price":price,
             "image_url":image_url,
@@ -347,6 +452,8 @@ class CreateSingleAuctionItem(Resource):
         }
 
         dummy_database.append(new_auction)
+        print ('-------')
+        print (dummy_database)
         return response,200
 
 
@@ -400,7 +507,7 @@ class SingleAuctionItemOperations(Resource):
                 target_auction[k] = user_input_json[k]
 
             target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+            # hhhhhhhh
             dummy_database[item_id] = target_auction
             updated_auction = target_auction
         else:
