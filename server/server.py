@@ -128,7 +128,6 @@ ns_bidding = api.namespace('bidding',description='Operations related to manageme
 # signin_parser.add_argument('username', type=str)
 # signin_parser.add_argument('password', type=str)
 
-db = local_user_account_database()
 user_tmp_database = []
 
 
@@ -222,21 +221,23 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
-        print(f'register request is {request}')
-        print(f'before request, the urers in database are {db.get_all_users()}')
+        print(f'before request, the users in database are {user_tmp_database}')
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!'}, 400
         try:
-            # for single_user in user_tmp_database:
-            #     if single_user[]
-
-
-            if db.is_in_database(accountInfo['username']):
-                return {'message': 'Username Already Exists'}, 200
-            db.save_user(accountInfo['username'], accountInfo['password'])
+            for single_user in user_tmp_database:
+                if single_user["username"] == accountInfo['username']:
+                    return {'message': 'Username Already Exists'}, 200
+            
+            new_user = {
+                "user_id":len(user_tmp_database),
+                "username":accountInfo['username'],
+                "password":accountInfo['password']
+            }
+            user_tmp_database.append(new_user)
+            print(f'after request, the users in database are {user_tmp_database}')
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
@@ -251,18 +252,17 @@ class Signin(Resource):
     @api.doc(description="Generates a authentication token")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
         try:
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
         
         try:
-            if db.varify_user(account_info['username'], account_info['password']):
-                
-                return {"token": auth.generate_token(account_info['username'])}, 200
-        except KeyError:
-            return {"message": "authorization has been refused for those credentials."}, 401
+            for single_user in user_tmp_database:
+                if single_user["username"] == account_info['username'] and single_user["password"] == account_info['password']:            
+                    return {"token": auth.generate_token(account_info['username'])}, 200
+        except:
+            return {"message": "authorization has been refused."}, 401
 
 
 
