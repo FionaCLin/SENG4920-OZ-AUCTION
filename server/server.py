@@ -180,12 +180,8 @@ payment_method_wechat = api.model(
 )
 
 
-user_profile_visiable = api.model(
-    "User profile visiable",{
-        "first_name":fields.String,
-        "last_name":fields.String,
-        "email":fields.String,
-        "age":fields.Integer,
+user_profile_invisiable = api.model(
+    "User profile invisiable",{
         "password":fields.String,
         "payment_method":fields.String,
         "payment_method_visa":fields.List(fields.Nested(payment_method_visa)),
@@ -195,19 +191,16 @@ user_profile_visiable = api.model(
 )
 
 
-user_profile_invisiable = api.model(
-    "User profile invisiable",{
-        "first_name":fields.String,
-        "last_name":fields.String,
-        "email":fields.String,
-    }
-)
-
 
 user_profile = api.model(
     'User profile',{
-        "invisiable":fields.List(fields.Nested(user_profile_invisiable)),
-        "visiable":fields.List(fields.Nested(user_profile_visiable))
+        "username":fields.String,
+        "first_name":fields.String,
+        "last_name":fields.String,
+        "email":fields.String,
+        "age":fields.String,
+        "phone_number":fields.String,
+        "invisiable":fields.List(fields.Nested(user_profile_invisiable))
     }
 )
 
@@ -235,9 +228,16 @@ class Register(Resource):
                 "user_id":len(user_tmp_database),
                 "username":accountInfo['username'],
                 "password":accountInfo['password'],
+                "first_name":"",
+                "last_name":"",
                 "email":"",
                 "age":"",
-                "payment_method":""
+                "phone_number":"",
+                "payment_method":"",
+                "payment_method_visa":[],
+                "payment_method_master":[],
+                "payment_method_wechat":[]
+
             }
             user_tmp_database.append(new_user)
             print(f'after request, the users in database are {user_tmp_database}')
@@ -287,15 +287,24 @@ class Signout(Resource):
 class Manage_profile(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Profile Does Not Exist')
-    @api.doc(description="get user's profile")
+    @api.doc(description="get other user's profile")
     def get(self,request_user_id):
         for single_user in user_tmp_database:
             if str(single_user["user_id"]) == str(request_user_id):
+                new_user_profile = dict()
+                new_user_profile["email"] = single_user["email"]
+                new_user_profile["age"] = single_user["age"]
+                new_user_profile["phone_number"] = single_user["phone_number"]
+                new_user_profile["username"] = single_user["username"]
+                new_user_profile["first_name"] = single_user["first_name"]
+                new_user_profile["last_name"] = single_user["last_name"]
+
                 response = {
                     "message": "OK",
-                    "data":single_user
+                    "data":new_user_profile
                 }
                 return response,200
+
         response = {
             "message": "Profile does not exists",
             "data":""
@@ -317,13 +326,14 @@ class Manage_profile(Resource):
         for single_user in user_tmp_database:
             if str(single_user["user_id"]) == str(request_user_id):
                 if len(user_profile_json.keys()) != 0:
-                    new_user_profile = single_user
+                    new_user_profile = dict()
                     for item in user_profile_json.keys():
+                        print ('----'+item)
                         new_user_profile[item] = user_profile_json[item]
 
                     user_tmp_database[int(request_user_id)] = new_user_profile
                     response = {
-                        "message":"Profile updated successfully",
+                        "message":"OK",
                         "data":new_user_profile
                     }
                     return response,200
