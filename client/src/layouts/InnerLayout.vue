@@ -17,7 +17,7 @@
         <q-toolbar-title>Pro Auction Bidder</q-toolbar-title>
 
         <q-toolbar-title>
-          <q-input
+          <!-- <q-input
             v-model="search"
             class="bg-white text-grey-8 GPL__toolbar-input"
             dense
@@ -33,7 +33,7 @@
                 @click="search = ''"
               />
             </template>
-          </q-input>
+          </q-input> -->
         </q-toolbar-title>
         <q-space />
         <div class="q-gutter-sm row items-center no-wrap">

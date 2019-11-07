@@ -297,7 +297,7 @@ auction_info = api.model(
         "updated": fields.String,
         "created": fields.String,
         "end_date": fields.String,
-        "price": fields.Float,
+        "price": fields.Float, #start price
         "image_url": fields.String,
         "bidding_info": fields.List(fields.Nested(user_input_bidding_info)),
         "status": fields.String
