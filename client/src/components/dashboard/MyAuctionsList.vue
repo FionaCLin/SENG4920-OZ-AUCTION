@@ -12,7 +12,7 @@
     >
       <!-- table tool bar -->
       <template v-slot:top="props">
-        <div class="col-2 q-table__title">{{ title }}</div>
+        <div v-if="title" class="col-2 q-table__title">{{ title }}</div>
         <q-btn v-if="tool" flat dense to="/create">
           <q-icon name="add" />Create Auction
         </q-btn>
@@ -225,12 +225,23 @@ export default {
     },
     auctionItem: function(id) {
       console.log("from", id);
-      this.$router.push({
-        name: "auctiionItem",
-        params: {
-          id: id
-        }
-      });
+      console.log("to", this.$route.params.id);
+
+      if (this.title && this.title !== "My Auctions") {
+        this.$router.push({
+          name: "biddingItem",
+          params: {
+            id: id
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "auctiionItem",
+          params: {
+            id: id
+          }
+        });
+      }
     },
     userProfile: function(id) {
       console.log("from", id);
