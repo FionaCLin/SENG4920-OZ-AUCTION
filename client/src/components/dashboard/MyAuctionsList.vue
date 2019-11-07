@@ -260,7 +260,7 @@ export default {
 .my-table-details {
   font-size: 0.85em;
   font-style: italic;
-  max-width: 200px;
+  max-width: 500px;
   white-space: normal;
   color: #555;
   margin-top: 4px;
