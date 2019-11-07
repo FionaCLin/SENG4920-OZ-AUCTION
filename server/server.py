@@ -234,7 +234,10 @@ class Register(Resource):
             new_user = {
                 "user_id":len(user_tmp_database),
                 "username":accountInfo['username'],
-                "password":accountInfo['password']
+                "password":accountInfo['password'],
+                "email":"",
+                "age":"",
+                "payment_method":""
             }
             user_tmp_database.append(new_user)
             print(f'after request, the users in database are {user_tmp_database}')
@@ -249,6 +252,7 @@ class Register(Resource):
 class Signin(Resource):
     @api.response(200, 'Successful')
     @api.response(401, 'Unauthorized')
+    @api.response(400, 'Bad Request Error')
     @api.doc(description="Generates a authentication token")
     @api.expect(indicator_model, validate=True)
     def post(self):
@@ -278,74 +282,64 @@ class Signout(Resource):
 
 
 
-@ns_account.route('/manage_profile/<string:token>')
+
+@ns_account.route('/manage_profile/<string:request_user_id>')
 class Manage_profile(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get user's profile")
-    def get(self,token):
-        try:
-            user = auth.get_token_info(token)
-            response = \
-                {
+    def get(self,request_user_id):
+        for single_user in user_tmp_database:
+            if str(single_user["user_id"]) == str(request_user_id):
+                response = {
                     "message": "OK",
-                    "data":db.get_all_users()
+                    "data":single_user
                 }
-            return response,200
-        except SignatureExpired as e:
-            abort(401, e.message)
-
-        except:
-            response = \
-                {
-                    "message": "Profile does not exists",
-                    "data":""
-                }
-            return response,404
-
+                return response,200
+        response = {
+            "message": "Profile does not exists",
+            "data":""
+        }
+        return response,404
 
 
 
     @api.response(200, 'User Profile Updated Successfully')
+    @api.response(400, 'Bad Request Error')
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="manage user's profile")
     @api.expect(user_profile, validate=True)
-    def put(self, token):
-        # user_profile_json = request.json
-        # try:
-        #     curr_profile = 
-        # except:
-
-
-
-        status_code = 200
-        # user_input_json = request.json
-        message = "Auction details have been updated"
+    def put(self, request_user_id):
         try:
-            target_auction = dummy_database[item_id]
-        except IndexError:
-            target_auction = ""
-            message = "Specified item does not exist"
-            status_code = 404
+            user_profile_json = request.json
+        except:
+            return {'message': 'Bad Request!',"data":""}, 400
+        for single_user in user_tmp_database:
+            if str(single_user["user_id"]) == str(request_user_id):
+                if len(user_profile_json.keys()) != 0:
+                    new_user_profile = single_user
+                    for item in user_profile_json.keys():
+                        new_user_profile[item] = user_profile_json[item]
 
-        if len(user_input_json.keys()) != 0:
-            # update auction details
-            for k in user_input_json.keys():
-                target_auction[k] = user_input_json[k]
+                    user_tmp_database[int(request_user_id)] = new_user_profile
+                    response = {
+                        "message":"Profile updated successfully",
+                        "data":new_user_profile
+                    }
+                    return response,200
+                else:
+                    response = {
+                        "message":"User did not specify any field to update",
+                        "data":single_user
+                    }
+                    return response,200
+        
+        response = {
+            "message":"Specified user id does not exist",
+            "data":""
+        }
+        return response,404
 
-            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            # hhhhhhhh
-            dummy_database[item_id] = target_auction
-            updated_auction = target_auction
-        else:
-            message = "User did not specify any field to update"
-            updated_auction = ""
-        response = \
-            {
-                "message":message,
-                "data":updated_auction
-            }
-        return response, status_code
 
 
 
