@@ -129,7 +129,7 @@ ns_bidding = api.namespace('bidding',description='Operations related to manageme
 # signin_parser.add_argument('password', type=str)
 
 db = local_user_account_database()
-profile_tmp_database = []
+user_tmp_database = []
 
 
 ########################################
@@ -230,6 +230,10 @@ class Register(Resource):
         except:
             return {'message': 'Bad Request!'}, 400
         try:
+            # for single_user in user_tmp_database:
+            #     if single_user[]
+
+
             if db.is_in_database(accountInfo['username']):
                 return {'message': 'Username Already Exists'}, 200
             db.save_user(accountInfo['username'], accountInfo['password'])
@@ -285,7 +289,7 @@ class Manage_profile(Resource):
             response = \
                 {
                     "message": "OK",
-                    "data":user
+                    "data":db.get_all_users()
                 }
             return response,200
         except SignatureExpired as e:
@@ -303,15 +307,45 @@ class Manage_profile(Resource):
 
 
     @api.response(200, 'User Profile Updated Successfully')
-    @api.response(400, 'Bad Request Error')
     @api.response(404, 'Profile Does Not Exist')
-    @api.doc(description="manage user profile")
+    @api.doc(description="manage user's profile")
     @api.expect(user_profile, validate=True)
     def put(self, token):
+        # user_profile_json = request.json
+        # try:
+        #     curr_profile = 
+        # except:
+
+
+
+        status_code = 200
+        # user_input_json = request.json
+        message = "Auction details have been updated"
         try:
-            account_info = request.json
-        except:
-            return {'message': 'Bad Request!'}, 400
+            target_auction = dummy_database[item_id]
+        except IndexError:
+            target_auction = ""
+            message = "Specified item does not exist"
+            status_code = 404
+
+        if len(user_input_json.keys()) != 0:
+            # update auction details
+            for k in user_input_json.keys():
+                target_auction[k] = user_input_json[k]
+
+            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # hhhhhhhh
+            dummy_database[item_id] = target_auction
+            updated_auction = target_auction
+        else:
+            message = "User did not specify any field to update"
+            updated_auction = ""
+        response = \
+            {
+                "message":message,
+                "data":updated_auction
+            }
+        return response, status_code
 
 
 

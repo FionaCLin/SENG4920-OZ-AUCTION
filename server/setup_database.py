@@ -53,6 +53,7 @@ class Collection(Auction_db_client):
 class local_user_account_database:
     def __init__(self):
         self.users = {}
+        self.num_users = 0
         if not os.path.isfile('user_accounts.csv'):
             with open('user_accounts.csv', 'w', newline='') as csvf:
                 accountWriter = csv.writer(csvf)
@@ -63,12 +64,14 @@ class local_user_account_database:
                 username, password = row['username'], row['password']
                 if username not in self.users:
                     self.users[username] = password
+                self.num_users = index + 1
 
     def save_user(self, username, password):
         self.users.setdefault(username, password)
         with open('user_accounts.csv', 'a', newline='') as csvf:
             accountWriter = csv.writer(csvf)
             accountWriter.writerow([username, password])
+            self.num_users += 1
     
     def varify_user(self, username, password):
         if username in self.users and self.users[username] == password:
@@ -78,6 +81,10 @@ class local_user_account_database:
 
     def get_all_users(self):
         return self.users
+
+    def get_users_num(self):
+        return self.num_users
+
 
     def is_in_database(self, username):
         return username in self.users
