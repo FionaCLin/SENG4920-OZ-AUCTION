@@ -329,10 +329,11 @@ class Manage_profile(Resource):
                     new_user_profile = dict()
                     update_single_user = single_user
                     for key, value in user_profile_json.items():
-                        print ('----'+key+'----'+value)
+                        print ('----'+key)
+                        print (value)
                         new_user_profile[key] = value
                         
-                        if isinstance(value,dict):
+                        if isinstance(value,list):
                             update_single_user["password"] = value[0]["password"]
                             update_single_user["payment_method"] = value[0]["payment_method"]
                             update_single_user["payment_method_visa"] = value[0]["payment_method_visa"]
