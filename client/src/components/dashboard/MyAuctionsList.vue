@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <a :name="alink"> </a>
+  <div>
+    <a :name="alink"></a>
     <q-table
       :title="title"
       :data="data"
@@ -12,10 +12,12 @@
     >
       <!-- table tool bar -->
       <template v-slot:top="props">
-        <div class="col-2 q-table__title">
-          {{ title }}
-        </div>
+        <div v-if="title" class="col-2 q-table__title">{{ title }}</div>
+        <q-btn v-if="tool" flat dense to="/create">
+          <q-icon name="add" />Create Auction
+        </q-btn>
         <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
+
         <q-space />
         <q-input
           v-model="filter"
@@ -52,6 +54,31 @@
           <q-td v-for="f in fields" :key="f" auto-width :props="props">
             <p @click="auctionItem(props.row.id)">{{ props.row[f] }}</p>
           </q-td>
+          <q-td key="seller_name" auto-width :props="props">
+            <div>
+              <q-item
+                v-ripple
+                clickable
+                @click="userProfile(props.row.seller_id)"
+              >
+                <q-item-section avatar>
+                  <q-avatar>
+                    <img :src="user_avatar(props.row.seller_id)" />
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ props.row.seller_name }}</q-item-label>
+                  <q-item-label caption>
+                    <q-icon
+                      v-for="n in user_rating(props.row.seller_id)"
+                      :key="n"
+                      name="star"
+                    ></q-icon>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </div>
+          </q-td>
         </q-tr>
       </template>
       <!-- table grid view -->
@@ -59,10 +86,11 @@
         <div
           class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
         >
-          <q-card @click="auctionItem(props.row.id)">
+          <q-card>
             <q-img
               class="auction-item"
               :src="props.cols.find(col => col.name === 'image').value"
+              @click="auctionItem(props.row.id)"
             >
               <div class="text-subtitle2 absolute-bottom text-center">
                 {{ props.row.title }}
@@ -78,8 +106,37 @@
                 <q-item-section>
                   <q-item-label>{{ col.label }}</q-item-label>
                 </q-item-section>
-                <q-item-section side>
-                  <q-item-label caption>{{ col.value }}</q-item-label>
+                <q-item-section
+                  v-ripple
+                  side
+                  clickable
+                  @click="auctionItem(props.row.id)"
+                >
+                  <q-item-label v-if="col.name !== 'seller_name'" caption>{{
+                    col.value
+                  }}</q-item-label>
+                  <q-item
+                    v-else
+                    v-ripple
+                    clickable
+                    @click="userProfile(props.row.seller_id)"
+                  >
+                    <q-item-section avatar>
+                      <q-avatar>
+                        <img :src="user_avatar(props.row.seller_id)" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ props.row.seller_name }}</q-item-label>
+                      <q-item-label caption>
+                        <q-icon
+                          v-for="n in user_rating(props.row.seller_id)"
+                          :key="n"
+                          name="star"
+                        ></q-icon>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -91,13 +148,13 @@
 </template>
 <script>
 export default {
-  props: ["items", "title", "alink"],
+  props: ["items", "title", "alink", "tool"],
   data() {
     return {
       grid: false,
       pagination: {},
       filter: "",
-      fields: ["created", "price", "seller_name", "location"],
+      fields: ["created", "price", "location"],
       columns: [
         {
           name: "image",
@@ -138,30 +195,58 @@ export default {
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         },
         {
-          name: "seller_name",
-          label: "Seller",
-          field: "seller_name",
-          align: "left",
-          sortable: true,
-          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-        },
-        {
           name: "location",
           required: true,
           label: "Location",
           align: "left",
           field: "location",
           sortable: true
+        },
+        {
+          name: "seller_name",
+          label: "Seller",
+          field: "seller_name",
+          align: "left",
+          sortable: true,
+          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         }
       ],
       data: this.items
     };
   },
   methods: {
+    user_avatar(id) {
+      console.log(id, 9999999);
+      return this.$store.state.auction.myAuctions.sellers.avatar;
+    },
+    user_rating(id) {
+      console.log(id, 9999999);
+      return this.$store.state.auction.myAuctions.sellers.rating;
+    },
     auctionItem: function(id) {
       console.log("from", id);
+      console.log("to", this.$route.params.id);
+
+      if (this.title && this.title !== "My Auctions") {
+        this.$router.push({
+          name: "biddingItem",
+          params: {
+            id: id
+          }
+        });
+      } else {
+        this.$router.push({
+          name: "auctiionItem",
+          params: {
+            id: id
+          }
+        });
+      }
+    },
+    userProfile: function(id) {
+      console.log("from", id);
       this.$router.push({
-        name: "auctiionItem",
+        name: "userProfile",
         params: {
           id: id
         }

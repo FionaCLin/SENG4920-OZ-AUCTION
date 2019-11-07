@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { axiosInstance } from "boot/axios";
+
 export default {
   data() {
     return {
@@ -78,30 +80,64 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.$data.email !== this.$data.password) {
-        console.log("problems~~~~!");
+      this.$refs.LoginForm.validate().then(
+        success => {
+          if (success) {
+            // yay, models are correct
+            console.log(success);
+            axiosInstance
+              .post("/account/signin", {
+                username: this.$data.email,
+                password: this.$data.password
+              })
+              .then(response => {
+                console.log(response);
+                this.$q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  position: "top",
+                  icon: "cloud_done",
+                  message: response.data.message
+                });
+                setTimeout(() => {
+                  this.$router.push("/dashboard");
+                }, 1000);
+              })
+              .catch(error => {
+                console.log(error.response);
 
-        // oh no, user has filled in
-        // at least an invalid value
-        this.$q.notify({
-          color: "red-5",
-          textColor: "white",
-          icon: "warning",
-          message: "Incorrect username and password"
-          // message: err.message
-        });
-      } else {
-        this.$q.notify({
-          color: "brown-4",
-          textColor: "white",
-          position: "top",
-          icon: "cloud_done",
-          message: "Submitted"
-        });
-        setTimeout(() => {
-          this.$router.push("/dashboard");
-        }, 1000);
-      }
+                this.$q.notify({
+                  color: "red-4",
+                  textColor: "white",
+                  icon: "cloud_done",
+                  message: error.response.data.message
+                });
+              });
+          }
+        },
+        err => {
+          console.log(err);
+          console.log("problems~~~~!");
+
+          // oh no, user has filled in
+          // at least an invalid value
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            // message: "Incorrect username and password"
+            message: err.message
+          });
+          // oh no, user has filled in
+          // at least an invalid value
+          // this.$q.notify({
+          //   color: 'red-5',
+          //   textColor: 'white',
+          //   icon: 'warning',
+          //   message: err.message
+          // })
+        }
+      );
     },
 
     onReset() {

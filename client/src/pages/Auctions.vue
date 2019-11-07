@@ -1,9 +1,6 @@
 <template>
-  <q-page padding>
-    <q-toolbar>
-      <q-btn to="/create"> <q-icon name="add" />Create Auction </q-btn>
-    </q-toolbar>
-    <MyAuctionsList :items="myAuction_items" />
+  <q-page>
+    <MyAuctionsList :tool="true" :items="myAuction_items" />
   </q-page>
 </template>
 

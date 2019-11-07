@@ -1,6 +1,5 @@
 const menu_list = {
-  dashboard: [
-    {
+  dashboard: [{
       icon: "fiber_new",
       name: "New Auctions",
       href: "newAuctions"
@@ -25,8 +24,7 @@ const menu_list = {
       //   name: "Trash"
     }
   ],
-  profile: [
-    {
+  profile: [{
       icon: "person",
       name: "Profile"
     },
@@ -41,15 +39,13 @@ const menu_list = {
   ]
 };
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     component: () => import("layouts/MyLayout.vue"),
     props: {
       logged: false
     },
-    children: [
-      {
+    children: [{
         path: "",
         component: () => import("pages/Login")
       },
@@ -69,12 +65,10 @@ const routes = [
     props: {
       menu: menu_list.dashboard
     },
-    children: [
-      {
-        path: "/",
-        component: () => import("pages/DashBoard")
-      }
-    ]
+    children: [{
+      path: "/",
+      component: () => import("pages/DashBoard")
+    }]
   },
   {
     path: "/profile",
@@ -82,8 +76,7 @@ const routes = [
     props: {
       menu: menu_list.profile
     },
-    children: [
-      {
+    children: [{
         path: "",
         component: () => import("pages/Profile")
       },
@@ -103,12 +96,10 @@ const routes = [
     props: {
       menu: menu_list.auctions
     },
-    children: [
-      {
-        path: "/",
-        component: () => import("pages/AuctionForm")
-      }
-    ]
+    children: [{
+      path: "/",
+      component: () => import("pages/AuctionForm")
+    }]
   },
   {
     path: "/auctions",
@@ -116,15 +107,25 @@ const routes = [
     props: {
       menu: menu_list.auctions
     },
-    children: [
-      {
+    children: [{
         path: "/",
         component: () => import("pages/Auctions")
       },
       {
         path: "/auctions/:id",
         name: "auctiionItem",
-        component: () => import("pages/Auction")
+        component: () => import("pages/Auction"),
+        props: {
+          pageTitle: "My Auctions"
+        }
+      },
+      {
+        path: "/bids/:id",
+        name: "biddingItem",
+        component: () => import("pages/Bid"),
+        props: {
+          pageTitle: "My Bids"
+        }
       },
       {
         path: "/auctions/edit/:id",
@@ -137,17 +138,27 @@ const routes = [
     ]
   },
   {
+    path: "/users",
+    component: () => import("layouts/InnerLayout.vue"),
+    props: {
+      menu: menu_list.auctions
+    },
+    children: [{
+      path: "/users/:id",
+      name: "userProfile",
+      component: () => import("pages/UserProfile")
+    }]
+  },
+  {
     path: "/search",
     component: () => import("layouts/InnerLayout.vue"),
     props: {
       menu: menu_list.search
     },
-    children: [
-      {
-        path: "/",
-        component: () => import("pages/SearchAuction")
-      }
-    ]
+    children: [{
+      path: "/",
+      component: () => import("pages/SearchAuction")
+    }]
   }
 ];
 

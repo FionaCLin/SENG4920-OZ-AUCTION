@@ -63,11 +63,11 @@
       <div class="col-sm-6 q-pa-md">
         <q-list class="my-card col-sm-6">
           <q-item>
-            <q-img :src="auction.image" />
+            <img :src="auction.image" />
           </q-item>
 
           <q-item>
-            <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update</q-btn>
+            <q-btn flat :disable="!favorite"> <q-icon name="favorite"/></q-btn>
           </q-item>
         </q-list>
       </div>
@@ -96,6 +96,11 @@ export default {
     this.id = this.$route.params.id;
   },
   methods: {
+    initializePlayer: function() {
+      console.log("here");
+      // var cld = cloudinary.Cloudinary.new({ cloud_name: "og-tech", secure: true});
+      //var demoplayer = cld.videoPlayer('video-player');
+    },
     user_avatar(id) {
       console.log(id, 9999999);
       return this.$store.state.auction.myAuctions.sellers.avatar;
