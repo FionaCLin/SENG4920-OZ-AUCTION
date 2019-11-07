@@ -37,6 +37,12 @@ class Token_authentication:
         return new_token
 
 
+    def get_token_info(self, token):
+        print(f'validating token {token}')
+        info = self.serializer.loads(token.encode())
+        return info['username']
+
+
     def validate_token(self, token):
         print(f'validating token {token}')
         info = self.serializer.loads(token.encode())
@@ -123,7 +129,7 @@ ns_bidding = api.namespace('bidding',description='Operations related to manageme
 # signin_parser.add_argument('password', type=str)
 
 db = local_user_account_database()
-user_tmp_database = []
+profile_tmp_database = []
 
 
 ########################################
@@ -242,13 +248,14 @@ class Signin(Resource):
     @api.expect(indicator_model, validate=True)
     def post(self):
         global db
-
         try:
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
+        
         try:
             if db.varify_user(account_info['username'], account_info['password']):
+                
                 return {"token": auth.generate_token(account_info['username'])}, 200
         except KeyError:
             return {"message": "authorization has been refused for those credentials."}, 401
@@ -270,26 +277,28 @@ class Signout(Resource):
 @ns_account.route('/manage_profile/<string:token>')
 class Manage_profile(Resource):
     @api.response(200, 'OK')
-    @api.response(400, 'Bad Request Error')
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get user's profile")
     def get(self,token):
-        item_id = int(item_id)
-        status_code = 200
         try:
-            retrieved_item = dummy_database[item_id]
-            message = "OK"
-        except IndexError:
-            retrieved_item = ""
-            message = "Specified item does not exist"
-            status_code = 404
-        response = \
-            {
-                "message": message,
-                "data":retrieved_item
-            }
+            user = auth.get_token_info(token)
+            response = \
+                {
+                    "message": "OK",
+                    "data":user
+                }
+            return response,200
+        except SignatureExpired as e:
+            abort(401, e.message)
 
-        return response,status_code
+        except:
+            response = \
+                {
+                    "message": "Profile does not exists",
+                    "data":""
+                }
+            return response,404
+
 
 
 
