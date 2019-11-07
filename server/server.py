@@ -151,11 +151,11 @@ indicator_parser.add_argument('password', type=str)
 payment_method_visa = api.model(
     'Payment method: visa',
     {
-        "card_number":fields.Integer,
+        "card_number":fields.String,
         "name_on_card":fields.String,
-        "expiry_month":fields.Integer,
-        "expiry_year":fields.Integer,
-        "cvv":fields.Integer
+        "expiry_month":fields.String,
+        "expiry_year":fields.String,
+        "cvv":fields.String
     }
 )
 
@@ -163,11 +163,11 @@ payment_method_visa = api.model(
 payment_method_master = api.model(
     'Payment method: master',
     {
-        "card_number":fields.Integer,
+        "card_number":fields.String,
         "name_on_card":fields.String,
-        "expiry_month":fields.Integer,
-        "expiry_year":fields.Integer,
-        "cvv":fields.Integer
+        "expiry_month":fields.String,
+        "expiry_year":fields.String,
+        "cvv":fields.String
     }
 )
 
@@ -175,7 +175,7 @@ payment_method_master = api.model(
 payment_method_wechat = api.model(
     'Payment method: wechat',
     {
-        "payment_number":fields.Integer
+        "payment_number":fields.String
     }
 )
 
@@ -327,15 +327,26 @@ class Manage_profile(Resource):
             if str(single_user["user_id"]) == str(request_user_id):
                 if len(user_profile_json.keys()) != 0:
                     new_user_profile = dict()
-                    for item in user_profile_json.keys():
-                        print ('----'+item)
-                        new_user_profile[item] = user_profile_json[item]
+                    update_single_user = single_user
+                    for key, value in user_profile_json.items():
+                        print ('----'+key+'----'+value)
+                        new_user_profile[key] = value
+                        
+                        if isinstance(value,dict):
+                            update_single_user["password"] = value[0]["password"]
+                            update_single_user["payment_method"] = value[0]["payment_method"]
+                            update_single_user["payment_method_visa"] = value[0]["payment_method_visa"]
+                            update_single_user["payment_method_master"] = value[0]["payment_method_master"]
+                            update_single_user["payment_method_wechat"] = value[0]["payment_method_wechat"]
+                        else:
+                            update_single_user[key] = value
 
-                    user_tmp_database[int(request_user_id)] = new_user_profile
+                    user_tmp_database[int(request_user_id)] = update_single_user
                     response = {
                         "message":"OK",
                         "data":new_user_profile
                     }
+                    print(f'after update request, the users in database are {user_tmp_database}')
                     return response,200
                 else:
                     response = {
