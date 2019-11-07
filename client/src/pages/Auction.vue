@@ -1,7 +1,9 @@
 <template>
   <q-page>
     <div class="row">
-      <div class="my-card col-sm-12">{{ pageTitle }}</div>
+      <div class="my-card col-sm-12">
+        <div class="q-pa-lg text-subtitle">{{ pageTitle }}</div>
+      </div>
       <div class="my-card col-sm-6">
         <q-list class="q-pa-md">
           <q-item>
@@ -61,7 +63,7 @@
       <div class="col-sm-6 q-pa-md">
         <q-list class="my-card col-sm-6">
           <q-item>
-            <img :src="auction.image" />
+            <q-img :src="auction.image" />
           </q-item>
 
           <q-item>

@@ -1,7 +1,9 @@
 <template>
   <q-page>
     <div class="row">
-      <div class="my-card col-sm-12">{{ pageTitle }}</div>
+      <div class="my-card col-sm-12">
+        <div class="q-pa-lg text-subtitle">{{ pageTitle }}</div>
+      </div>
       <div class="my-card col-sm-6">
         <q-list class="q-pa-md">
           <q-item>
@@ -65,9 +67,7 @@
           </q-item>
 
           <q-item>
-            <q-btn flat :disable="!favorite">
-              <q-icon name="favorite" />Update</q-btn
-            >
+            <q-btn flat :disable="!favorite"> <q-icon name="favorite"/></q-btn>
           </q-item>
         </q-list>
       </div>
