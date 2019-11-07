@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div>
     <a :name="alink"></a>
     <q-table
       :title="title"
@@ -13,7 +13,11 @@
       <!-- table tool bar -->
       <template v-slot:top="props">
         <div class="col-2 q-table__title">{{ title }}</div>
+        <q-btn v-if="tool" flat dense to="/create">
+          <q-icon name="add" />Create Auction
+        </q-btn>
         <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
+
         <q-space />
         <q-input
           v-model="filter"
@@ -103,8 +107,8 @@
                   <q-item-label>{{ col.label }}</q-item-label>
                 </q-item-section>
                 <q-item-section
-                  side
                   v-ripple
+                  side
                   clickable
                   @click="auctionItem(props.row.id)"
                 >
@@ -144,7 +148,7 @@
 </template>
 <script>
 export default {
-  props: ["items", "title", "alink"],
+  props: ["items", "title", "alink", "tool"],
   data() {
     return {
       grid: false,
