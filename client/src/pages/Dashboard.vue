@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-none q-ma-none">
+  <q-page class="bg-grey-1">
     <a name="newAuctions">
       <NewAuction />
     </a>
