@@ -31,11 +31,11 @@ class Collection(Auction_db_client):
     def insert_many_collections(self, data):
         self.col.insert_many(data)
 
-    def update_one_selected_collection(self, query, newdata):
-        self.col.update_one(query, newdata)
+    def add_one_dict_to_array(self, query, newdata):
+        self.col.update(query, newdata)
 
-    def update_all_selected_collections(self, query, newdata):
-        self.col.update_many(query, newdata)
+    # def add_all_selected_collections(self, query, newdata):
+    #     self.col.update_many(query, newdata)
 
     def delete_one_collection(self, query):
         self.col.delete_one(query)
@@ -101,12 +101,14 @@ col = Collection()
 
 if __name__ == '__main__':
     user_profile = {
-        "user_profile": [
+        "col_id":"c1",
+        "user_profile":[
         ]
     }
     col.insert_many_collections([user_profile])
 
     auction_items = {
+        "col_id":"c2",
         "auction_items": [
         ]
     }

@@ -219,7 +219,7 @@ class Register(Resource):
             for single_user in selected_data:
                 if single_user["username"] == accountInfo['username']:
                     return {'message': 'Username Already Exists'}, 200
-            print ('-----'+str(len(selected_data)))
+
             new_user = {
                 "user_id":len(selected_data),
                 "username":accountInfo['username'],
@@ -234,10 +234,8 @@ class Register(Resource):
                 "payment_method_master":[],
                 "payment_method_wechat":[]
             }
-            print ('=============')
-            print (new_user)
-            selected_data.append(new_user)
-            col.insert_many_collections(selected_data)
+            col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":new_user}})
+
             print(f'after request, the users in database are {selected_data}')
             return {'message': 'Account Created Successfully!'}, 201
 
@@ -260,9 +258,16 @@ class Signin(Resource):
             return {'message': 'Bad Request!'}, 400
         
         try:
-            for single_user in user_tmp_database:
+            alldata = col.select_all_collection()
+            selected_data = []
+            for item in alldata:
+                if "user_profile" in item:
+                    selected_data = item["user_profile"]
+
+            for single_user in selected_data:
                 if single_user["username"] == account_info['username'] and single_user["password"] == account_info['password']:            
                     return {"token": auth.generate_token(account_info['username'])}, 200
+            return {"message": "authorization has been refused."}, 401
         except:
             return {"message": "authorization has been refused."}, 401
 
