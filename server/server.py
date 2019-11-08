@@ -292,7 +292,13 @@ class Manage_profile(Resource):
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get other user's profile")
     def get(self,request_user_id):
-        for single_user in user_tmp_database:
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+
+        for single_user in selected_data:
             if str(single_user["user_id"]) == str(request_user_id):
                 new_user_profile = dict()
                 new_user_profile["email"] = single_user["email"]
@@ -309,7 +315,7 @@ class Manage_profile(Resource):
                 return response,200
 
         response = {
-            "message": "Profile does not exists",
+            "message": "Profile does not exist",
             "data":""
         }
         return response,404
@@ -326,7 +332,14 @@ class Manage_profile(Resource):
             user_profile_json = request.json
         except:
             return {'message': 'Bad Request!',"data":""}, 400
-        for single_user in user_tmp_database:
+        
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+
+        for single_user in selected_data:
             if str(single_user["user_id"]) == str(request_user_id):
                 if len(user_profile_json.keys()) != 0:
                     new_user_profile = dict()
