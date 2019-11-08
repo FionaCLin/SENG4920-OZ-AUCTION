@@ -28,6 +28,10 @@ class Collection(Auction_db_client):
         super().__init__()
         self.col = self.auction_db['project']
 
+    def select_all_collection(self):
+        return self.col.find({})
+
+
     def insert_many_collections(self, data):
         self.col.insert_many(data)
 
@@ -46,9 +50,6 @@ class Collection(Auction_db_client):
 
     # def select_all_collection_query(self, query):
     #     return self.col.find(query)
-
-    # def select_all_collection(self):
-    #     return self.col.find({})
 
     # def select_one_collection(self, query):
     #     return self.col.find_one(query)
