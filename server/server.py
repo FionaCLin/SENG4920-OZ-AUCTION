@@ -363,7 +363,7 @@ class Manage_profile(Resource):
                         "message":"OK",
                         "data":new_user_profile
                     }
-                    print(f'after update request, the users in database are {user_tmp_database}')
+                    # print(f'after update request, the users in database are {user_tmp_database}')
                     return response,200
                 else:
                     response = {

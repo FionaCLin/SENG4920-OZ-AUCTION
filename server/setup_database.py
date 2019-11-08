@@ -34,23 +34,24 @@ class Collection(Auction_db_client):
     def add_one_dict_to_array(self, query, newdata):
         self.col.update(query, newdata)
 
-    # def add_all_selected_collections(self, query, newdata):
-    #     self.col.update_many(query, newdata)
+    def delete_specific_collection(self, query, data):
+        self.col.update(query, data)
 
-    def delete_one_collection(self, query):
-        self.col.delete_one(query)
 
-    def select_count_collection(self, query):
-        return self.col.find(query).count()
+    # def delete_one_collection(self, query):
+    #     self.col.delete_one(query)
 
-    def select_all_collection_query(self, query):
-        return self.col.find(query)
+    # def select_count_collection(self, query):
+    #     return self.col.find(query).count()
 
-    def select_all_collection(self):
-        return self.col.find({})
+    # def select_all_collection_query(self, query):
+    #     return self.col.find(query)
 
-    def select_one_collection(self, query):
-        return self.col.find_one(query)
+    # def select_all_collection(self):
+    #     return self.col.find({})
+
+    # def select_one_collection(self, query):
+    #     return self.col.find_one(query)
 
 
 
