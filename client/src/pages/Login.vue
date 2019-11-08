@@ -1,20 +1,20 @@
 <template>
-  <q-page padding class="myPage" >
-    <div class="row myFlex" style="justify-content:flex-end">
+  <q-page padding class="myPage">
+    <div class="row myFlex" style="justify-content:flex-start">
       <q-card
-        class="col-5"
+        class="col-4"
         style="min-width: 200px;"
       >
         <q-card-section>
           <div class="text-h6">Login</div>
         </q-card-section>
         <q-separator />
+        <q-separator />
         <q-card-section>
           <q-form
             ref="LoginForm"
             class="q-gutter-md"
             @submit="onSubmit"
-            @reset="onReset"
           >
             <q-input
               v-model="email"
@@ -24,7 +24,7 @@
               hint="Email"
               lazy-rules
               :rules="[
-                val => (val && val.length > 10) || 'Please enter valid Email'
+                val => (val && val.length > 5 && value.includes('@')) || 'Please enter valid Email'
               ]"
             ></q-input>
             <q-input
@@ -48,21 +48,10 @@
               </template>
             </q-input>
 
-            <div>
-              New user?
-              <q-btn flat text-color="primary" to="/register" push class="myRe">Register</q-btn>
-              Here!
-            </div>
-
-            <div>
-              <q-btn label="Submit" type="submit" color="primary" />
-              <q-btn
-                label="Reset"
-                type="reset"
-                color="primary"
-                flat
-                class="q-ml-sm"
-              />
+            <div style="overflow:hidden">
+               New user?
+              <q-btn flat text-color="primary" to="/register" push class="myRe">Register</q-btn> here.
+              <q-btn label="Login" type="submit" color="primary" style="float:right;" />
             </div>
           </q-form>
         </q-card-section>

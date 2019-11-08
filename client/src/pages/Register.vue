@@ -1,85 +1,82 @@
 <template>
   <q-page padding class="myPage">
-    <q-card class="row" style="justify-content:flex-end">
-      <q-card-section>
-        <div class="text-h6">
-          Sign Up
-        </div>
-        <q-separator />
-        <div class="text-h9">
-          Already a user?
-          <q-btn flat text-color="primary" to="/login" push>Log In</q-btn>To
-          AuctionSystem!
-        </div>
-      </q-card-section>
-      <q-separator />
-      <div class="q-pa-md">
-        <q-form
-          ref="SignUpForm"
-          class="q-gutter-md"
-          @submit="onSubmit"
-          @reset="onReset"
-        >
-          <q-input
-            v-model="name"
-            filled
-            label="Your name *"
-            hint="Name and surname"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Please type your full name'
-            ]"
-          />
-          <q-input
-            v-model="email"
-            filled
-            label="Your email *"
-            hint="Email"
-            type="email"
-            lazy-rules
-            :rules="[
-              val => (val && val.length > 0) || 'Please enter valid Email'
-            ]"
-          />
-          <q-input
-            v-model="password"
-            filled
-            :type="isPwd ? 'password' : 'text'"
-            label="Login password"
-            hint="Password with toggle"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              />
-            </template>
-          </q-input>
-          <q-input
-            v-model="passwordConfirm"
-            filled
-            type="password"
-            label="Confirm password"
-            hint="Enter Login Password"
-            :rules="[
-              val => (val && val == password) || 'Please enter valid Email'
-            ]"
-          ></q-input>
-
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn
-              label="Reset"
-              type="reset"
-              color="primary"
-              flat
-              class="q-ml-sm"
-            />
+    <div class="row myFlex justify-evenly">
+      <q-card
+        class="col-xs-12 col-sm-10 col-md-8 col-lg-6"
+        style="min-width: 320px;"
+      >
+        <q-card-section>
+          <div class="text-h6">
+            Sign Up
           </div>
-        </q-form>
-      </div>
-    </q-card>
+
+        </q-card-section>
+        <q-separator />
+        <div class="q-pa-md" style="margin:10px 20px;">
+          <q-form
+            ref="SignUpForm"
+            class="q-gutter-md"
+            @submit="onSubmit"
+          >
+            <q-input
+              v-model="name"
+              filled
+              label="Your full name"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 0) || 'Please type your full name'
+              ]"
+            />
+            <q-input
+              v-model="email"
+              filled
+              label="Your email"
+              type="email"
+              lazy-rules
+              :rules="[
+                val => (val && val.length > 5 && value.includes('@')) || 'Please enter valid Email'
+              ]"
+            />
+            <q-input
+              v-model="password"
+              filled
+              :type="isPwd ? 'password' : 'text'"
+              label="Login password"
+              :rules="[
+                val => (val && /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(val)
+                        && val.length > 8)
+                        || 'Password must have at least one digit and one character and length of more than 8'
+              ]"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+
+            <q-input
+              v-model="passwordConfirm"
+              filled
+              type="password"
+              label="Confirm password"
+              :rules="[
+                val => (val && val == password) || 'Password not matching'
+              ]"
+            ></q-input>
+
+            <div class="text-h9" style="overflow:hidden">
+              Already a user?
+              <q-btn flat text-color="primary" to="/login" style="padding:0px" push>Log In</q-btn> here.
+              <q-btn class="myButton" label="Register" type="submit" color="primary" />
+            </div>
+
+          </q-form>
+        </div>
+      </q-card>
+    </div>
   </q-page>
 
 
@@ -165,14 +162,17 @@ export default {
 </script>
 
 <style scoped>
-
   .myPage {
     background-image: url("../statics/register.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
   }
-  .myFlex {
-    margin: 10% 5%;
-
+  .myFlex{
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  .myButton{
+    /* position: relative; */
+    float: right;
   }
 </style>
