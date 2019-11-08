@@ -1,9 +1,6 @@
 <template>
-  <q-page padding class="row justify-evenly q-gutter-xs bg-grey-1">
-    <q-card
-      class="col-xs-12 col-sm-10 col-md-8 col-lg-6"
-      style="min-width: 320px;"
-    >
+  <q-page padding class="myPage">
+    <q-card class="row" style="justify-content:flex-end">
       <q-card-section>
         <div class="text-h6">
           Sign Up
@@ -166,3 +163,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+  .myPage {
+    background-image: url("../statics/register.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .myFlex {
+    margin: 10% 5%;
+
+  }
+</style>

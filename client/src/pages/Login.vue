@@ -1,9 +1,9 @@
 <template>
-  <q-page padding>
-    <div class="row justify-evenly bg-grey-1">
+  <q-page padding class="myPage" >
+    <div class="row myFlex" style="justify-content:flex-end">
       <q-card
-        class="col-xs-12 col-sm-10 col-md-8 col-lg-6"
-        style="min-width: 320px;"
+        class="col-5"
+        style="min-width: 200px;"
       >
         <q-card-section>
           <div class="text-h6">Login</div>
@@ -163,5 +163,13 @@ export default {
   .myRe {
     padding: 0px 0px;
   }
+  .myPage {
+    background-image: url("../statics/login_background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .myFlex {
+    margin: 10% 5%;
 
+  }
 </style>
