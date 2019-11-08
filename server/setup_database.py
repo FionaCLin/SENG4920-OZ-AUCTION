@@ -9,6 +9,7 @@ import re
 import os
 import pandas as pd
 
+
 class Client():
     # connecting mlab
     def __init__(self):
@@ -27,10 +28,14 @@ class Collection(Auction_db_client):
         super().__init__()
         self.col = self.auction_db['project']
 
-
-
     def insert_many_collections(self, data):
         self.col.insert_many(data)
+
+    def update_one_selected_collection(self, query, newdata):
+        self.col.update_one(query, newdata)
+
+    def update_all_selected_collections(self, query, newdata):
+        self.col.update_many(query, newdata)
 
     def delete_one_collection(self, query):
         self.col.delete_one(query)
@@ -88,5 +93,24 @@ class local_user_account_database:
 
     def is_in_database(self, username):
         return username in self.users
+
+
+col = Collection()
+
+
+
+if __name__ == '__main__':
+    user_profile = {
+        "user_profile": [
+        ]
+    }
+    col.insert_many_collections([user_profile])
+
+    auction_items = {
+        "auction_items": [
+        ]
+    }
+    col.insert_many_collections([auction_items])
+
 
 

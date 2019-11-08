@@ -66,14 +66,6 @@ class Token_authentication:
 
 
 
-def upload_local_items(col):
-    with open('../data/data1.json', 'r') as f:
-        content = json.load(f)
-        col.insert_many_collections([content])
-
-
-
-
 def requires_authentication(authen):
     @wraps(authen)
     def decorated(*args, **kwargs):
@@ -93,7 +85,6 @@ def requires_authentication(authen):
 
 
 
-col = Collection()
 # upload_local_items(col)
 
 SECRET_KEY = "SENG4920"
@@ -214,18 +205,23 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        print(f'before request, the users in database are {user_tmp_database}')
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+        print(f'before request, the users in database are {selected_data}')
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!'}, 400
         try:
-            for single_user in user_tmp_database:
+            for single_user in selected_data:
                 if single_user["username"] == accountInfo['username']:
                     return {'message': 'Username Already Exists'}, 200
-            
+            print ('-----'+str(len(selected_data)))
             new_user = {
-                "user_id":len(user_tmp_database),
+                "user_id":len(selected_data),
                 "username":accountInfo['username'],
                 "password":accountInfo['password'],
                 "first_name":"",
@@ -237,10 +233,12 @@ class Register(Resource):
                 "payment_method_visa":[],
                 "payment_method_master":[],
                 "payment_method_wechat":[]
-
             }
-            user_tmp_database.append(new_user)
-            print(f'after request, the users in database are {user_tmp_database}')
+            print ('=============')
+            print (new_user)
+            selected_data.append(new_user)
+            col.insert_many_collections(selected_data)
+            print(f'after request, the users in database are {selected_data}')
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
@@ -672,4 +670,5 @@ class AcceptOrDeclineBiddings(Resource):
 
 
 if __name__ == '__main__':
+
     app.run(host='0.0.0.0', port=9999, debug=True)
