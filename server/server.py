@@ -339,14 +339,19 @@ class Manage_profile(Resource):
             if "user_profile" in item:
                 selected_data = item["user_profile"]
 
+        found = False
+        col.delete_specific_collection({"col_id":"c1"},{"$unset":{"user_profile":1}})
         for single_user in selected_data:
-            if str(single_user["user_id"]) == str(request_user_id):
+            if str(single_user["user_id"]) != str(request_user_id):
+                col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":single_user}})
+            else:
+                found = True
                 if len(user_profile_json.keys()) != 0:
                     new_user_profile = dict()
                     update_single_user = single_user
                     for key, value in user_profile_json.items():
-                        print ('----'+key)
-                        print (value)
+                        # print ('----'+key)
+                        # print (value)
                         new_user_profile[key] = value
                         
                         if isinstance(value,list):
@@ -358,19 +363,22 @@ class Manage_profile(Resource):
                         else:
                             update_single_user[key] = value
 
-                    user_tmp_database[int(request_user_id)] = update_single_user
+                    # selected_data[index] = update_single_user
+                    col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":update_single_user}})
                     response = {
                         "message":"OK",
                         "data":new_user_profile
                     }
                     # print(f'after update request, the users in database are {user_tmp_database}')
-                    return response,200
                 else:
                     response = {
                         "message":"User did not specify any field to update",
                         "data":single_user
                     }
                     return response,200
+        
+        if found == True:
+            return response,200
         
         response = {
             "message":"Specified user id does not exist",

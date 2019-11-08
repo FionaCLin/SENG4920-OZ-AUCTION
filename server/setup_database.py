@@ -31,7 +31,6 @@ class Collection(Auction_db_client):
     def select_all_collection(self):
         return self.col.find({})
 
-
     def insert_many_collections(self, data):
         self.col.insert_many(data)
 
