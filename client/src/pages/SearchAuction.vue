@@ -5,11 +5,6 @@
       <div class="col-2"></div>
       <div class="col-8">
         <q-card class="col-xs-12 col-sm-11 col-md-10 col-lg-9">
-          <!-- <q-card-section>
-            <div class="text-h6">Our Changing Planet</div>
-            <div class="text-subtitle2">by John Doe</div>
-          </q-card-section> -->
-
           <q-tabs v-model="tab" class="text-teal">
             <q-tab label="Search" name="one" />
             <q-tab label="Advanced Search" name="two" />

@@ -1,5 +1,105 @@
 <template>
-  <q-layout view="hHh Lpr lff">
+
+  <q-layout view="hhh Lpr fff">
+
+    <q-header elevated class="shadow-2 myColor" height-hint="98">
+      <q-toolbar class="glossy myToolbar">
+        <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+        <q-icon @click="$router.replace('/dashboard')" push
+          name="img:statics/logo.png"
+          :ratio="16/9" class="myLogo">
+        </q-icon>
+
+
+        <q-space />
+        <div class="q-gutter-sm row items-center no-wrap">
+          <q-btn round dense flat color="grey-8" icon="notifications">
+            <q-badge color="red" text-color="white" floating>2</q-badge>
+            <q-tooltip>Notifications</q-tooltip>
+          </q-btn>
+          <q-btn round flat to="/profile">
+            <q-avatar size="26px">
+              <img
+                v-if="avatarUrl"
+                src="https://cdn.quasar.dev/img/boy-avatar.png"
+              />
+              <q-icon name="person" />
+            </q-avatar>
+            <q-tooltip>Account</q-tooltip>
+          </q-btn>
+        </div>
+
+      </q-toolbar>
+    </q-header>
+
+    <q-footer elevated class="myColor">
+      <q-toolbar>
+        <q-toolbar-title class="myFooter">Copyright © 2019 Awesome Group Co. All Rights Reserved.</q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+
+    <q-drawer
+      v-model="drawer"
+      show-if-above
+
+      :mini="miniState"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+
+      :width="200"
+      :breakpoint="500"
+      bordered
+      content-class="bg-grey-3"
+    >
+      <q-list padding>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="inbox" />
+          </q-item-section>
+
+          <q-item-section>
+            Inbox
+          </q-item-section>
+        </q-item>
+
+        <q-item active clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="star" />
+          </q-item-section>
+
+          <q-item-section>
+            Star
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="send" />
+          </q-item-section>
+
+          <q-item-section>
+            Send
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="drafts" />
+          </q-item-section>
+
+          <q-item-section>
+            Drafts
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+
+  <!-- <q-layout view="hHh Lpr lff">
     <q-header elevated class="bg-light-green-8 text-white" height-hint="98">
       <q-toolbar class="GPL__toolbar">
         <q-btn
@@ -17,29 +117,9 @@
         <q-toolbar-title>Pro Auction Bidder</q-toolbar-title>
 
         <q-toolbar-title>
-          <!-- <q-input
-            v-model="search"
-            class="bg-white text-grey-8 GPL__toolbar-input"
-            dense
-            standout="bg-primary"
-            placeholder="Search"
-          >
-            <template v-slot:prepend>
-              <q-icon v-if="search === ''" name="search" />
-              <q-icon
-                v-else
-                name="clear"
-                class="cursor-pointer"
-                @click="search = ''"
-              />
-            </template>
-          </q-input> -->
         </q-toolbar-title>
         <q-space />
         <div class="q-gutter-sm row items-center no-wrap">
-          <!-- <q-btn round dense flat color="text-grey-7" icon="apps">
-            <q-tooltip>Google Apps</q-tooltip>
-          </q-btn>-->
           <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating>2</q-badge>
             <q-tooltip>Notifications</q-tooltip>
@@ -93,13 +173,13 @@
           </q-item>
         </q-list>
       </q-scroll-area>
-    </q-drawer>
+    </q-drawer> -->
 
-    <q-page-container>
-      <!-- This is where pages get injected -->
+    <!-- <q-page-container>
+      commoent This is where pages get injected
       <router-view />
-    </q-page-container>
-  </q-layout>
+    </!-->
+  <!-- </q-layout>  -->
 </template>
 
 <script>
@@ -127,3 +207,28 @@ export default {
   // }
 };
 </script>
+
+
+
+<style scoped>
+.myColor {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.myToolbar {
+  margin-top: 10px 0px;
+  padding: 12px 10px;
+}
+
+.myLogo {
+  height: 60px;
+  width: 210px;
+  margin-left: 10px;
+  padding: 5px 5px;
+}
+
+.myFooter {
+  text-align: center;
+  font-size: 0.9em;
+}
+</style>

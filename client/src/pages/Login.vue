@@ -47,6 +47,13 @@
                 />
               </template>
             </q-input>
+
+            <div>
+              New user?
+              <q-btn flat text-color="primary" to="/register" push class="myRe">Register</q-btn>
+              Here!
+            </div>
+
             <div>
               <q-btn label="Submit" type="submit" color="primary" />
               <q-btn
@@ -62,6 +69,8 @@
       </q-card>
     </div>
   </q-page>
+
+
 </template>
 
 <script>
@@ -75,7 +84,8 @@ export default {
       isPwd: true,
       seller: false,
       email: null,
-      password: null
+      password: null,
+      tab: 'login'
     };
   },
   methods: {
@@ -148,3 +158,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .myRe {
+    padding: 0px 0px;
+  }
+
+</style>

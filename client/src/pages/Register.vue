@@ -23,7 +23,7 @@
           @submit="onSubmit"
           @reset="onReset"
         >
-          <!-- <q-input
+          <q-input
             v-model="name"
             filled
             label="Your name *"
@@ -32,7 +32,7 @@
             :rules="[
               val => (val && val.length > 0) || 'Please type your full name'
             ]"
-          /> -->
+          />
           <q-input
             v-model="email"
             filled
@@ -69,19 +69,6 @@
               val => (val && val == password) || 'Please enter valid Email'
             ]"
           ></q-input>
-          <!-- <q-input
-            v-model="age"
-            filled
-            type="number"
-            label="Your age *"
-            lazy-rules
-            :rules="[
-              val => (val !== null && val !== '') || 'Please type your age',
-              val => (val > 0 && val < 100) || 'Please type a real age'
-            ]"
-          /> -->
-
-          <!-- <q-toggle v-model="seller" label="Seller" /> -->
 
           <div>
             <q-btn label="Submit" type="submit" color="primary" />
@@ -97,6 +84,9 @@
       </div>
     </q-card>
   </q-page>
+
+
+
 </template>
 
 <script>
@@ -111,7 +101,8 @@ export default {
       seller: false,
       email: null,
       password: null,
-      passwordConfirm: null
+      passwordConfirm: null,
+      register: "register"
     };
   },
   methods: {
