@@ -159,7 +159,32 @@ const routes = [{
     path: "/",
     component: () => import("pages/SearchAuction")
   }]
-}
+},
+{
+  path: "/user",
+  component: () => import("layouts/InnerLayout.vue"),
+  props: {
+    menu: menu_list.auctions
+  },
+  children: [{
+    path: "/user/myAuctions",
+    name: "myAuctions",
+    component: () => import("pages/MyAuctions")
+  },
+  {
+    path: "/user/myBiddings",
+    name: "myBiddings",
+    component: () => import("pages/MyBiddings")
+  },
+  {
+    path: "/user/myWishlist",
+    name: "myWishlist",
+    component: () => import("pages/MyWishlist")
+  }
+  ]
+},
+
+
 ];
 
 // Always leave this as last one

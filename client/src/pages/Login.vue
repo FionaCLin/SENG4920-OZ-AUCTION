@@ -20,7 +20,7 @@
               v-model="email"
               filled
               type="email"
-              label="Your email *"
+              label="Your email"
               hint="Email"
               lazy-rules
               :rules="[

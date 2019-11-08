@@ -52,43 +52,52 @@
       content-class="bg-grey-3"
     >
       <q-list padding>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple
+                :active="selected === 'inbox'"
+                @click="selected = 'inbox';$router.replace('/user/myAuctions')" push>
           <q-item-section avatar>
             <q-icon name="inbox" />
           </q-item-section>
 
           <q-item-section>
-            Inbox
+            My Auctions
           </q-item-section>
         </q-item>
 
-        <q-item active clickable v-ripple>
+        <q-item clickable v-ripple
+                :active="selected === 'star'"
+                @click="selected = 'star';$router.replace('/user/myBiddings')"
+                push>
           <q-item-section avatar>
             <q-icon name="star" />
           </q-item-section>
 
           <q-item-section>
-            Star
+            My Biddings
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple
+                :active="selected === 'send'"
+                @click="selected = 'send';$router.replace('/user/myWishlist')" push>
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>
 
           <q-item-section>
-            Send
+            My Wishlist
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple
+                :active="selected === 'drafts'"
+                @click="selected = 'drafts';$router.replace('/search')" push>
           <q-item-section avatar>
             <q-icon name="drafts" />
           </q-item-section>
 
           <q-item-section>
-            Drafts
+            Search
           </q-item-section>
         </q-item>
       </q-list>
@@ -196,7 +205,8 @@ export default {
       drawer: false,
       miniState: true,
       search: null,
-      avatarUrl: this.$store.state.user.avatar
+      avatarUrl: this.$store.state.user.avatar,
+      selected: ""
     };
     // },
     // components: {
