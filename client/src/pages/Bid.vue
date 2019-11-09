@@ -3,7 +3,7 @@
     <div class="row">
       <div class="my-card col-sm-12"></div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-6 q-pa-md">
         <q-list class="my-card col-sm-6 flex flex-center">
           <q-img :src="auction.image" style="width: 60%;" />
           <q-item>
@@ -17,7 +17,7 @@
         </q-list>
       </div>
       <div class="my-card col-sm-6">
-        <q-list>
+        <q-list class="q-pa-md">
           <q-item v-for="(f, k) in fields" :key="k">
             <q-item-section>
               <q-item-label>{{ k }}</q-item-label>
