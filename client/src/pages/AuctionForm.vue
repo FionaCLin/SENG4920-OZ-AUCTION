@@ -1,16 +1,8 @@
 <template>
-  <q-page class="bg-grey-1">
+  <!-- <q-page class="bg-grey-1">
     <div class="q-pa-md">
       <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
-          <h3>Basic Information</h3>
-        </div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
+        <div class="col-10">
           <q-card
             class="col-xs-12 col-sm-11 col-md-10 col-lg-9"
             style="min-width: 300px;"
@@ -36,12 +28,7 @@
                   <q-input v-model="title" label="Title" filled type="text" />
                   <q-input v-model="description" label="Description" filled type="text" />
                   <q-input v-model="price" label="Starting Price" filled type="number" />
-                  <!-- <q-input
-                    v-model="endTime"
-                    label="End Time"
-                    filled
-                    type="date"
-                  ></q-input> -->
+
                   <q-input filled v-model="date" label="Deadline" mask="date" :rules="['date']">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
@@ -62,10 +49,92 @@
             </q-card-actions>
           </q-card>
         </div>
-        <div class="col-2"></div>
       </div>
     </div>
-  </q-page>
+  </q-page> -->
+
+
+  <div class="q-pa-md">
+    <q-stepper
+      v-model="step"
+      ref="stepper"
+      color="primary"
+      animated
+    >
+      <q-step
+        :name="1"
+        title="Basic Information"
+        icon="settings"
+        :done="step > 1"
+      >
+        <q-item class="myItem">
+          <q-item-section>
+            <q-form
+              :ref="edit ? 'EditAuctionForm' : 'CreateAuctionForm'"
+              class="q-gutter-md"
+              @submit="onSubmit"
+            >
+              <q-input v-model="title" label="Product title" filled type="text" />
+              <q-input v-model="price" label="Starting Price" filled type="number" />
+              <q-input v-model="location" label="Location" filled type="text" />
+
+              <q-input filled v-model="date" label="Deadline" mask="date" :rules="['date']" style="padding-bottom:0px;">
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                      <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-select filled label="Category" v-model="categoryId" :options="options" />
+            </q-form>
+          </q-item-section>
+        </q-item>
+      </q-step>
+
+      <q-step
+        :name="2"
+        title="Images and Description"
+        icon="create_new_folder"
+        :done="step > 2"
+      >
+        <div>
+          <div class="row">
+            <div class="col-4">
+              <q-uploader
+                url="http://localhost:4444/upload"
+                label="Batch upload"
+                multiple
+                batch
+                style="width:100%"
+              />
+            </div>
+            <div class="col-8" style="padding-left: 20px;">
+              <q-editor
+                v-model="editor"
+              />
+            </div>
+          </div>
+        </div>
+      </q-step>
+
+      <q-step
+        :name="3"
+        title="Auction Created"
+        icon="assignment"
+      >
+        Auction is created! Check your new Auctioon here!
+      </q-step>
+
+      <template v-slot:navigation>
+        <q-stepper-navigation  style="overflow: hidden;">
+          <q-btn style="float:right;" @click="$refs.stepper.next()" color="primary" :label="step === 3 ? 'Finish' : 'Continue'" />
+          <q-btn style="float:right;" v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Back" class="q-ml-sm" />
+        </q-stepper-navigation>
+      </template>
+    </q-stepper>
+  </div>
 </template>
 
 <script>
@@ -83,7 +152,9 @@ export default {
       price: "",
       images: [],
       options: ["Handicraft", "Second hand"],
-      date: ""
+      date: "",
+      step: 1,
+      location:""
     };
   },
   created() {
@@ -101,7 +172,7 @@ export default {
       this.$data.description = auction.description;
       this.$data.endTime = auction.end_time;
       this.$data.price = auction.price;
-      // this.$data.images = auction.images;
+      this.$data.location = auction.location;
     }
   },
   methods: {
@@ -135,16 +206,6 @@ export default {
       );
     },
 
-    onReset() {
-      this.$data.sellerId = "";
-      this.$data.categoryId = "";
-      this.$data.title = "";
-      this.$data.description = "";
-      this.$data.endTime = "";
-      this.$data.price = 0;
-      this.$data.images = "";
-      this.$data.data = "";
-    },
     goBack() {
       if (this.edit) {
         this.$router.push({
@@ -162,3 +223,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .myItem {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+</style>

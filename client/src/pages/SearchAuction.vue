@@ -150,7 +150,7 @@ export default {
 
 <style lang="css" scoped>
 .mybox { margin: 5% 10px; }
-.myForm { margin: 45px 20px 30px 20px; }
+.myForm { margin: 20px 20px; }
 .myItem { padding-right: 10px;}
 .titles { padding: 0px 5px; }
 .myPage {
