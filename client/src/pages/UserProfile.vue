@@ -26,15 +26,6 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <!-- 
-        <q-avatar class="self-center" size="100px" font-size="52px">
-          <img :src="userProfile.avatar" />
-        </q-avatar>
-       
-      </q-card-seciont>
-      <q-card-seciont>
-        <ProfileDisplay :detail="userProfile" />
-      -->
       </q-card-seciont>
     </q-card>
   </q-page>
