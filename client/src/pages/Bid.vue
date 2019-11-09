@@ -1,46 +1,36 @@
 <template>
   <q-page>
     <div class="row">
-      <div class="my-card col-sm-12">
-        <div class="q-pa-lg text-subtitle">{{ pageTitle }}</div>
+      <div class="my-card col-sm-12"></div>
+
+      <div class="col-sm-6">
+        <q-list class="my-card col-sm-6 flex flex-center">
+          <q-img :src="auction.image" style="width: 60%;" />
+          <q-item>
+            <q-btn v-if="favorite" flat @click="removeFavorite">
+              <q-icon name="favorite_border" />
+            </q-btn>
+            <q-btn v-else flat @click="addFavorite">
+              <q-icon name="favorite" />
+            </q-btn>
+          </q-item>
+        </q-list>
       </div>
       <div class="my-card col-sm-6">
-        <q-list class="q-pa-md">
-          <q-item>
+        <q-list>
+          <q-item v-for="(f, k) in fields" :key="k">
             <q-item-section>
-              <q-item-label>Title</q-item-label>
-              <q-item-label caption>{{ auction.title }}</q-item-label>
+              <q-item-label>{{ k }}</q-item-label>
+              <q-item-label v-if="k === 'Price'" caption
+                >${{ auction[f] }}</q-item-label
+              >
+              <q-item-label v-else caption>{{ auction[f] }}</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item>
-            <q-item-section>
-              <q-item-label>Price</q-item-label>
-              <q-item-label caption>${{ auction.price }}</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
-              <q-item-label>Create Time</q-item-label>
-              <q-item-label caption>{{ auction.created }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label>End Time</q-item-label>
-              <q-item-label caption>{{ auction.end_time }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label side>Location</q-item-label>
-              <q-item-label caption>{{ auction.location }}</q-item-label>
-            </q-item-section>
-          </q-item>
           <q-item>
             <q-item-section @click="userProfile(auction.seller_id)">
-              <q-item-label side>Seller</q-item-label>
+              <q-item-label>Seller</q-item-label>
               <q-item-section avatar>
                 <q-avatar>
                   <img :src="user_avatar(auction.seller_id)" />
@@ -60,17 +50,6 @@
           </q-item>
         </q-list>
       </div>
-      <div class="col-sm-6 q-pa-md">
-        <q-list class="my-card col-sm-6">
-          <q-item>
-            <img :src="auction.image" />
-          </q-item>
-
-          <q-item>
-            <q-btn flat :disable="!favorite"> <q-icon name="favorite"/></q-btn>
-          </q-item>
-        </q-list>
-      </div>
       <div class="col-sm-12">
         <!--  this part will contain the images -->
         <!-- Indicators -->
@@ -85,12 +64,22 @@ export default {
   props: ["pageTitle"],
   data() {
     return {
-      auction: null
+      auction: null,
+      fields: {
+        Title: "title",
+        Description: "description",
+        Price: "price",
+        "Create Time": "created",
+        "End Time": "end_time",
+        Location: "location"
+      },
+      favorite: this.$store.state.user.favorites.indexOf(this.id) !== -1
     };
   },
   mounted: function() {},
   created() {
     console.log("to", this.$route.params.id);
+    console.log(this.$store.state.user);
     this.id = this.$route.params.id;
 
     for (let i of this.$store.state.auction.auctions) {
@@ -128,7 +117,16 @@ export default {
           id: id
         }
       });
+    },
+    addFavorite: function() {
+      this.$store.state.user.favorites.push(this.id);
+    },
+    removeFavorite: function() {
+      this.$store.state.user.favorites.slice(
+        this.$store.state.user.favorites.indexOf(this.id)
+      );
     }
+    // ...mapActions(["addFavorite", "removeFavorite"])
   }
 };
 </script>

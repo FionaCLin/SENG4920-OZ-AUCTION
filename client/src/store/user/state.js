@@ -10,6 +10,7 @@ export default {
   paymentMethod: ["Visa", "Master", "Wechat"],
   userID: "user001",
   rating: 4,
+  favorites: [],
   // seller: true
   users: [
     {
