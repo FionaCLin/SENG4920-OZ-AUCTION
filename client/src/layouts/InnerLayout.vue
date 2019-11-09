@@ -6,8 +6,8 @@
         <q-icon
           push
           name="img:statics/logo.png"
-          @click="$router.replace('/dashboard')"
           :ratio="16 / 9"
+          @click="$router.replace('/dashboard')"
           class="myLogo"
         ></q-icon>
 
@@ -33,9 +33,10 @@
 
     <q-footer elevated class="myColor">
       <q-toolbar>
-        <q-toolbar-title class="myFooter">
-          Copyright © 2019 Awesome Group Co. All Rights Reserved.
-        </q-toolbar-title>
+        <q-toolbar-title class="myFooter"
+          >Copyright © 2019 Awesome Group Co. All Rights
+          Reserved.</q-toolbar-title
+        >
       </q-toolbar>
     </q-footer>
 
@@ -45,10 +46,10 @@
       :mini="miniState"
       :width="200"
       :breakpoint="500"
-      @mouseover="miniState = false"
       bordered
-      @mouseout="miniState = true"
+      @mouseover="miniState = false"
       content-class="bg-grey-3"
+      @mouseout="miniState = true"
     >
       <q-list padding>
         <q-item

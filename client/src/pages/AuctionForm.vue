@@ -69,10 +69,10 @@
         </div>
       </div>
     </div>
-  </q-page> -->
+  </q-page>-->
 
   <div class="q-pa-md">
-    <q-stepper v-model="step" ref="stepper" color="primary" animated>
+    <q-stepper ref="stepper" v-model="step" color="primary" animated>
       <q-step
         :name="1"
         title="Basic Information"
@@ -101,8 +101,8 @@
               <q-input v-model="location" label="Location" filled type="text" />
 
               <q-input
-                filled
                 v-model="date"
+                filled
                 label="Deadline"
                 mask="date"
                 :rules="['date']"
@@ -158,25 +158,25 @@
         </div>
       </q-step>
 
-      <q-step :name="3" title="Auction Created" icon="assignment">
-        Auction is created! Check your new Auctioon here!
-      </q-step>
+      <q-step :name="3" title="Auction Created" icon="assignment"
+        >Auction is created! Check your new Auctioon here!</q-step
+      >
 
       <template v-slot:navigation>
         <q-stepper-navigation style="overflow: hidden;">
           <q-btn
             style="float:right;"
-            @click="$refs.stepper.next()"
             color="primary"
+            @click="$refs.stepper.next()"
             :label="step === 3 ? 'Finish' : 'Continue'"
           />
           <q-btn
-            style="float:right;"
             v-if="step > 1"
+            style="float:right;"
             flat
             color="primary"
-            @click="$refs.stepper.previous()"
             label="Back"
+            @click="$refs.stepper.previous()"
             class="q-ml-sm"
           />
         </q-stepper-navigation>
