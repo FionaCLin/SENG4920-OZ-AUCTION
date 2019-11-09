@@ -228,20 +228,16 @@ export default {
       console.log("from", id);
       console.log("to", this.$route.params.id, this.$route.name);
 
-      if (
-        this.title === "" ||
-        this.title !== "My Auctions" ||
-        this.$route.name !== "myAuctions"
-      ) {
+      if (this.title === "My Auctions" || this.$route.name === "myAuctions") {
         this.$router.push({
-          name: "biddingItem",
+          name: "auctiionItem",
           params: {
             id: id
           }
         });
       } else {
         this.$router.push({
-          name: "auctiionItem",
+          name: "biddingItem",
           params: {
             id: id
           }

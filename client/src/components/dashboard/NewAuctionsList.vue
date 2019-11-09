@@ -51,9 +51,8 @@ export default {
   },
   methods: {
     auctionItem: function(id) {
-      console.log("from", id);
       this.$router.push({
-        name: "auctiionItem",
+        name: "biddingItem",
         params: {
           id: id
         }
