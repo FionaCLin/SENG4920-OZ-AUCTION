@@ -171,13 +171,6 @@ export default {
           field: "title",
           sortable: true
         },
-        // {
-        //   name: "description",
-        //   align: "center",
-        //   label: "Description",
-        //   field: "description",
-        //   sortable: true
-        // },
         {
           name: "created",
           align: "center",
@@ -215,19 +208,28 @@ export default {
     };
   },
   methods: {
+    getUser(id) {
+      let auctions = this.$store.state.auction.auctions.find(
+        x => x.sellers.seller_id === id
+      );
+      console.log(auctions);
+      let user = auctions.sellers;
+      user.name = auctions.auction_items[0].seller_name;
+      return user;
+    },
     user_avatar(id) {
-      console.log(id, 9999999);
-      return this.$store.state.auction.myAuctions.sellers.avatar;
+      let user = this.getUser(id);
+      return user.avatar;
     },
     user_rating(id) {
-      console.log(id, 9999999);
-      return this.$store.state.auction.myAuctions.sellers.rating;
+      let user = this.getUser(id);
+      return user.rating;
     },
     auctionItem: function(id) {
       console.log("from", id);
       console.log("to", this.$route.params.id);
 
-      if (this.title && this.title !== "My Auctions") {
+      if (this.title === "" && this.title !== "My Auctions") {
         this.$router.push({
           name: "biddingItem",
           params: {

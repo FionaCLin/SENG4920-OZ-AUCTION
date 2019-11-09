@@ -85,29 +85,40 @@ export default {
   props: ["pageTitle"],
   data() {
     return {
-      auction: this.$store.state.auction.myAuctions.auction_items.find(
-        x => x.id === this.$route.params.id
-      )
+      auction: null
     };
   },
   mounted: function() {},
   created() {
     console.log("to", this.$route.params.id);
     this.id = this.$route.params.id;
+
+    for (let i of this.$store.state.auction.auctions) {
+      let auction = i.auction_items.find(x => x.id === this.id);
+      console.log(i, auction);
+      if (auction) {
+        this.$data.auction = auction;
+        break;
+      }
+    }
   },
   methods: {
-    initializePlayer: function() {
-      console.log("here");
-      // var cld = cloudinary.Cloudinary.new({ cloud_name: "og-tech", secure: true});
-      //var demoplayer = cld.videoPlayer('video-player');
+    getUser(id) {
+      let auctions = this.$store.state.auction.auctions.find(
+        x => x.sellers.seller_id === id
+      );
+      console.log(auctions);
+      let user = auctions.sellers;
+      user.name = auctions.auction_items[0].seller_name;
+      return user;
     },
     user_avatar(id) {
-      console.log(id, 9999999);
-      return this.$store.state.auction.myAuctions.sellers.avatar;
+      let user = this.getUser(id);
+      return user.avatar;
     },
     user_rating(id) {
-      console.log(id, 9999999);
-      return this.$store.state.auction.myAuctions.sellers.rating;
+      let user = this.getUser(id);
+      return user.rating;
     },
     userProfile: function(id) {
       console.log("from", id);
