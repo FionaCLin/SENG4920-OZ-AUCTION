@@ -43,7 +43,9 @@
           </q-item>
 
           <q-item>
-            <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update</q-btn>
+            <q-btn flat :to="`edit/${id}`">
+              <q-icon name="edit" />Update
+            </q-btn>
           </q-item>
         </q-list>
       </div>

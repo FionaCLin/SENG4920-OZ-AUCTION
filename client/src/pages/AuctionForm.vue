@@ -18,7 +18,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar class="self-center" size="100px" font-size="52px">
-                  <q-img v-if="images.length" src="" />
+                  <q-img v-if="images.length" src />
                   <q-icon v-else name="image" />
                 </q-avatar>
                 <q-card-actions>
@@ -34,31 +34,65 @@
                   @reset="onReset"
                 >
                   <q-input v-model="title" label="Title" filled type="text" />
-                  <q-input v-model="description" label="Description" filled type="text" />
-                  <q-input v-model="price" label="Starting Price" filled type="number" />
+                  <q-input
+                    v-model="description"
+                    label="Description"
+                    filled
+                    type="text"
+                  />
+                  <q-input
+                    v-model="price"
+                    label="Starting Price"
+                    filled
+                    type="number"
+                  />
                   <!-- <q-input
                     v-model="endTime"
                     label="End Time"
                     filled
                     type="date"
-                  ></q-input> -->
-                  <q-input filled v-model="date" label="Deadline" mask="date" :rules="['date']">
+                  ></q-input>-->
+                  <q-input
+                    filled
+                    v-model="date"
+                    label="Deadline"
+                    mask="date"
+                    :rules="['date']"
+                  >
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                        <q-popup-proxy
+                          ref="qDateProxy"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="date"
+                            @input="() => $refs.qDateProxy.hide()"
+                          />
                         </q-popup-proxy>
                       </q-icon>
                     </template>
                   </q-input>
                 </q-form>
-                <q-select filled label="Category" v-model="categoryId" :options="options" />
+                <q-select
+                  filled
+                  label="Category"
+                  v-model="categoryId"
+                  :options="options"
+                />
               </q-item-section>
             </q-item>
             <q-card-actions>
               <q-btn color="primary" label="Submit" type="Submit" />
               <q-btn color="amber" glossy label="Reset" type="reset" />
-              <q-btn color="deep-orange" glossy label="Cancel" type="cancel" @click="goBack"/>
+              <q-btn
+                color="deep-orange"
+                glossy
+                label="Cancel"
+                type="cancel"
+                @click="goBack"
+              />
             </q-card-actions>
           </q-card>
         </div>

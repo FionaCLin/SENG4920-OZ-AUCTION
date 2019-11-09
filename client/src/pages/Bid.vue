@@ -4,7 +4,7 @@
       <div class="my-card col-sm-12"></div>
 
       <div class="col-sm-6 q-pa-md">
-        <q-list class="my-card col-sm-6 flex flex-center">
+        <q-list class="my-card col-sm-6 row">
           <q-img :src="auction.image" style="width: 60%;" />
           <q-item>
             <q-btn v-if="favorite" flat @click="removeFavorite">
@@ -61,7 +61,6 @@
 <script>
 export default {
   name: "AuctionPage",
-  props: ["pageTitle"],
   data() {
     return {
       auction: null,
@@ -72,12 +71,18 @@ export default {
         "Create Time": "created",
         "End Time": "end_time",
         Location: "location"
-      },
-      favorite: this.$store.state.user.favorites.indexOf(this.id) !== -1
+      }
     };
   },
+  computed: {
+    favorite: {
+      get() {
+        return this.$store.state.user.favorites.indexOf(this.id) !== -1;
+      }
+    }
+  },
   mounted: function() {},
-  created() {
+  beforeMount() {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
@@ -119,12 +124,10 @@ export default {
       });
     },
     addFavorite: function() {
-      this.$store.state.user.favorites.push(this.id);
+      this.$store.commit("user/addFavorite", this.id);
     },
     removeFavorite: function() {
-      this.$store.state.user.favorites.slice(
-        this.$store.state.user.favorites.indexOf(this.id)
-      );
+      this.$store.commit("user/removeFavorite", this.id);
     }
     // ...mapActions(["addFavorite", "removeFavorite"])
   }

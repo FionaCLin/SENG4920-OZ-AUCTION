@@ -9,15 +9,10 @@
           <div class="text-h6">
             Sign Up
           </div>
-
         </q-card-section>
         <q-separator />
         <div class="q-pa-md" style="margin:10px 20px;">
-          <q-form
-            ref="SignUpForm"
-            class="q-gutter-md"
-            @submit="onSubmit"
-          >
+          <q-form ref="SignUpForm" class="q-gutter-md" @submit="onSubmit">
             <q-input
               v-model="name"
               filled
@@ -34,7 +29,9 @@
               type="email"
               lazy-rules
               :rules="[
-                val => (val && val.length > 5 && value.includes('@')) || 'Please enter valid Email'
+                val =>
+                  (val && val.length > 5 && value.includes('@')) ||
+                  'Please enter valid Email'
               ]"
             />
             <q-input
@@ -43,9 +40,11 @@
               :type="isPwd ? 'password' : 'text'"
               label="Login password"
               :rules="[
-                val => (val && /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(val)
-                        && val.length > 8)
-                        || 'Password must have at least one digit and one character and length of more than 8'
+                val =>
+                  (val &&
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(val) &&
+                    val.length > 8) ||
+                  'Password must have at least one digit and one character and length of more than 8'
               ]"
             >
               <template v-slot:append>
@@ -69,18 +68,27 @@
 
             <div class="text-h9" style="overflow:hidden">
               Already a user?
-              <q-btn flat text-color="primary" to="/login" style="padding:0px" push>Log In</q-btn> here.
-              <q-btn class="myButton" label="Register" type="submit" color="primary" />
+              <q-btn
+                flat
+                text-color="primary"
+                to="/login"
+                style="padding:0px"
+                push
+                >Log In</q-btn
+              >
+              here.
+              <q-btn
+                class="myButton"
+                label="Register"
+                type="submit"
+                color="primary"
+              />
             </div>
-
           </q-form>
         </div>
       </q-card>
     </div>
   </q-page>
-
-
-
 </template>
 
 <script>
@@ -162,17 +170,17 @@ export default {
 </script>
 
 <style scoped>
-  .myPage {
-    background-image: url("../statics/register.jpg");
-    background-repeat: no-repeat;
-    background-size: 100%;
-  }
-  .myFlex{
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-  .myButton{
-    /* position: relative; */
-    float: right;
-  }
+.myPage {
+  background-image: url("../statics/register.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.myFlex {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.myButton {
+  /* position: relative; */
+  float: right;
+}
 </style>

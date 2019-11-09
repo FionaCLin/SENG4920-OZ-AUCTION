@@ -1,20 +1,22 @@
 export default {
   token: localStorage.getItem("token") || " ",
   logged: false,
-  avatar: "https://cdn.quasar.dev/img/boy-avatar.png",
+  avatar:
+    "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
   password: "Bitmd?",
   firstName: "Fiona",
   lastName: "Lin",
   email: "fiona.lin@student.unsw.edu.au",
   age: 18,
   paymentMethod: ["Visa", "Master", "Wechat"],
-  userID: "user001",
+  userID: "11829",
   rating: 4,
   favorites: [],
-  // seller: true
+  location: "United States",
   users: [
     {
-      username: "AzureDandelion",
+      seller_id: 27056,
+      username: "Jaqui",
       avatar:
         "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/99/ae/99ae3d9bb8f1927e868aac0974a02d7bcf023123ce838527425649a4b887d2f0.jpg",
       favorites: [
@@ -45,7 +47,8 @@ export default {
       ]
     },
     {
-      username: "bellasgems",
+      seller_id: 120844,
+      username: "cornsilkscreations",
       avatar:
         "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/1a/93/1a937a2ac1cd1d36c820275af161976142455c9ba6cb9e031dac9e0ceb82b465.jpg",
       favorites: [

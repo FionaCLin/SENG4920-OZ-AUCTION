@@ -1,15 +1,15 @@
 <template>
-
   <q-layout view="hhh Lpr fff">
-
     <q-header elevated class="shadow-2 myColor" height-hint="98">
       <q-toolbar class="glossy myToolbar">
-        <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-        <q-icon @click="$router.replace('/dashboard')" push
+        <q-btn flat round dense icon="menu" @click="drawer = !drawer" />
+        <q-icon
+          push
           name="img:statics/logo.png"
-          :ratio="16/9" class="myLogo">
-        </q-icon>
-
+          @click="$router.replace('/dashboard')"
+          :ratio="16 / 9"
+          class="myLogo"
+        ></q-icon>
 
         <q-space />
         <div class="q-gutter-sm row items-center no-wrap">
@@ -28,77 +28,95 @@
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
-
       </q-toolbar>
     </q-header>
 
     <q-footer elevated class="myColor">
       <q-toolbar>
-        <q-toolbar-title class="myFooter">Copyright © 2019 Awesome Group Co. All Rights Reserved.</q-toolbar-title>
+        <q-toolbar-title class="myFooter">
+          Copyright © 2019 Awesome Group Co. All Rights Reserved.
+        </q-toolbar-title>
       </q-toolbar>
     </q-footer>
 
     <q-drawer
       v-model="drawer"
       show-if-above
-
       :mini="miniState"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
-
       :width="200"
       :breakpoint="500"
+      @mouseover="miniState = false"
       bordered
+      @mouseout="miniState = true"
       content-class="bg-grey-3"
     >
       <q-list padding>
-        <q-item clickable v-ripple
-                :active="selected === 'inbox'"
-                @click="selected = 'inbox';$router.replace('/user/myAuctions')" push>
+        <q-item
+          v-ripple
+          clickable
+          :active="selected === 'inbox'"
+          push
+          @click="
+            selected = 'inbox';
+            $router.replace('/user/myAuctions');
+          "
+        >
           <q-item-section avatar>
             <q-icon name="inbox" />
           </q-item-section>
 
-          <q-item-section>
-            My Auctions
-          </q-item-section>
+          <q-item-section>My Auctions</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple
-                :active="selected === 'star'"
-                @click="selected = 'star';$router.replace('/user/myBiddings')"
-                push>
+        <q-item
+          v-ripple
+          clickable
+          :active="selected === 'star'"
+          push
+          @click="
+            selected = 'star';
+            $router.replace('/user/myBiddings');
+          "
+        >
           <q-item-section avatar>
             <q-icon name="star" />
           </q-item-section>
 
-          <q-item-section>
-            My Biddings
-          </q-item-section>
+          <q-item-section>My Biddings</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple
-                :active="selected === 'send'"
-                @click="selected = 'send';$router.replace('/user/myWishlist')" push>
+        <q-item
+          v-ripple
+          clickable
+          :active="selected === 'send'"
+          push
+          @click="
+            selected = 'send';
+            $router.replace('/user/myWishlist');
+          "
+        >
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>
 
-          <q-item-section>
-            My Wishlist
-          </q-item-section>
+          <q-item-section>My Wishlist</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple
-                :active="selected === 'drafts'"
-                @click="selected = 'drafts';$router.replace('/search')" push>
+        <q-item
+          v-ripple
+          clickable
+          :active="selected === 'drafts'"
+          push
+          @click="
+            selected = 'drafts';
+            $router.replace('/search');
+          "
+        >
           <q-item-section avatar>
             <q-icon name="drafts" />
           </q-item-section>
 
-          <q-item-section>
-            Search
-          </q-item-section>
+          <q-item-section>Search</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -182,12 +200,12 @@
           </q-item>
         </q-list>
       </q-scroll-area>
-    </q-drawer> -->
+  </q-drawer>-->
 
-    <!-- <q-page-container>
+  <!-- <q-page-container>
       commoent This is where pages get injected
       <router-view />
-    </!-->
+  </!-->
   <!-- </q-layout>  -->
 </template>
 
@@ -217,8 +235,6 @@ export default {
   // }
 };
 </script>
-
-
 
 <style scoped>
 .myColor {
