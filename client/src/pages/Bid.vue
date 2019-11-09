@@ -4,7 +4,7 @@
       <div class="my-card col-sm-12"></div>
 
       <div class="col-sm-6 q-pa-md">
-        <q-list class="my-card col-sm-6 row">
+        <q-list class="my-card col-sm-6 row-inline">
           <q-img :src="auction.image" style="width: 60%;" />
           <q-item>
             <q-btn v-if="favorite" flat @click="removeFavorite">

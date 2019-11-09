@@ -212,7 +212,6 @@ export default {
       let auctions = this.$store.state.auction.auctions.find(
         x => x.sellers.seller_id === id
       );
-      console.log(auctions);
       let user = auctions.sellers;
       user.name = auctions.auction_items[0].seller_name;
       return user;
@@ -227,9 +226,13 @@ export default {
     },
     auctionItem: function(id) {
       console.log("from", id);
-      console.log("to", this.$route.params.id);
+      console.log("to", this.$route.params.id, this.$route.name);
 
-      if (this.title === "" || this.title !== "My Auctions") {
+      if (
+        this.title === "" ||
+        this.title !== "My Auctions" ||
+        this.$route.name !== "myAuctions"
+      ) {
         this.$router.push({
           name: "biddingItem",
           params: {
@@ -246,7 +249,6 @@ export default {
       }
     },
     userProfile: function(id) {
-      console.log("from", id);
       this.$router.push({
         name: "userProfile",
         params: {
