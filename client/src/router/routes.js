@@ -1,46 +1,3 @@
-const menu_list = {
-  dashboard: [
-    {
-      icon: "fiber_new",
-      name: "New Auctions",
-      href: "newAuctions"
-    },
-    {
-      icon: "gavel",
-      name: "My Auctions",
-      href: "auctions"
-    },
-    {
-      icon: "collections_bookmark",
-      name: "My Bids",
-      href: "bids"
-    },
-    {
-      icon: "favorite",
-      name: "Favorites",
-      href: "favorites"
-      // },
-      // {
-      //   icon: "delete",
-      //   name: "Trash"
-    }
-  ],
-  profile: [
-    {
-      icon: "person",
-      name: "Profile"
-    },
-    {
-      icon: "inbox",
-      name: "Inbox"
-    },
-    {
-      icon: "help",
-      name: "Help"
-    }
-  ]
-};
-
 const routes = [
   {
     path: "/",
@@ -66,9 +23,6 @@ const routes = [
   {
     path: "/dashboard",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.dashboard
-    },
     children: [
       {
         path: "/",
@@ -79,9 +33,7 @@ const routes = [
   {
     path: "/profile",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.profile
-    },
+
     children: [
       {
         path: "",
@@ -100,9 +52,7 @@ const routes = [
   {
     path: "/create",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.auctions
-    },
+
     children: [
       {
         path: "/",
@@ -113,9 +63,7 @@ const routes = [
   {
     path: "/auctions",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.auctions
-    },
+
     children: [
       {
         path: "/",
@@ -150,9 +98,7 @@ const routes = [
   {
     path: "/users",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.auctions
-    },
+
     children: [
       {
         path: "/users/:id",
@@ -164,9 +110,7 @@ const routes = [
   {
     path: "/search",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.search
-    },
+
     children: [
       {
         path: "/",
@@ -177,9 +121,7 @@ const routes = [
   {
     path: "/user",
     component: () => import("layouts/InnerLayout.vue"),
-    props: {
-      menu: menu_list.auctions
-    },
+
     children: [
       {
         path: "/user/myAuctions",
