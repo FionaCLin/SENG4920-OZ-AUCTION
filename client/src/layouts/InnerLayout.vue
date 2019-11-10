@@ -7,8 +7,8 @@
           push
           name="img:statics/logo.png"
           :ratio="16 / 9"
-          @click="$router.replace('/dashboard')"
           class="myLogo"
+          @click="$router.replace('/dashboard')"
         ></q-icon>
 
         <q-space />
@@ -47,23 +47,40 @@
       :width="200"
       :breakpoint="500"
       bordered
-      @mouseover="miniState = false"
       content-class="bg-grey-3"
+      @mouseover="miniState = false"
       @mouseout="miniState = true"
     >
       <q-list padding>
         <q-item
           v-ripple
           clickable
-          :active="selected === 'inbox'"
+          :active="selected === 'dashboard'"
           push
           @click="
-            selected = 'inbox';
+            selected = 'dashboard';
+            $router.replace('/dashboard');
+          "
+        >
+          <q-item-section avatar>
+            <q-icon name="show_chart" />
+          </q-item-section>
+
+          <q-item-section>Dashboard</q-item-section>
+        </q-item>
+
+        <q-item
+          v-ripple
+          clickable
+          :active="selected === 'gavel'"
+          push
+          @click="
+            selected = 'gavel';
             $router.replace('/user/myAuctions');
           "
         >
           <q-item-section avatar>
-            <q-icon name="inbox" />
+            <q-icon name="gavel" />
           </q-item-section>
 
           <q-item-section>My Auctions</q-item-section>
@@ -72,15 +89,15 @@
         <q-item
           v-ripple
           clickable
-          :active="selected === 'star'"
+          :active="selected === 'collections_bookmark'"
           push
           @click="
-            selected = 'star';
+            selected = 'collections_bookmark';
             $router.replace('/user/myBiddings');
           "
         >
           <q-item-section avatar>
-            <q-icon name="star" />
+            <q-icon name="collections_bookmark" />
           </q-item-section>
 
           <q-item-section>My Biddings</q-item-section>
@@ -89,15 +106,15 @@
         <q-item
           v-ripple
           clickable
-          :active="selected === 'send'"
+          :active="selected === 'favorite'"
           push
           @click="
-            selected = 'send';
+            selected = 'favorite';
             $router.replace('/user/myWishlist');
           "
         >
           <q-item-section avatar>
-            <q-icon name="send" />
+            <q-icon name="favorite" />
           </q-item-section>
 
           <q-item-section>My Wishlist</q-item-section>
@@ -106,15 +123,15 @@
         <q-item
           v-ripple
           clickable
-          :active="selected === 'drafts'"
+          :active="selected === 'search'"
           push
           @click="
-            selected = 'drafts';
+            selected = 'search';
             $router.replace('/search');
           "
         >
           <q-item-section avatar>
-            <q-icon name="drafts" />
+            <q-icon name="search" />
           </q-item-section>
 
           <q-item-section>Search</q-item-section>

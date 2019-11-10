@@ -1,8 +1,8 @@
 <template>
   <div>
     <div
-      v-for="i in biddings"
-      :key="i"
+      v-for="(i, k) in biddings"
+      :key="k"
       class="q-ma-auto q-pa-lg row justify-center item-center"
     >
       <!-- {{ i }} -->
