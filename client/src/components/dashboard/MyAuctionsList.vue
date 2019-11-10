@@ -13,9 +13,9 @@
       <!-- table tool bar -->
       <template v-slot:top="props">
         <div v-if="title" class="col-2 q-table__title">{{ title }}</div>
-        <!-- <q-btn v-if="tool" flat dense to="/create">
+        <q-btn v-if="tool" flat dense to="/create">
           <q-icon name="add" />Create Auction
-        </q-btn>-->
+        </q-btn>
         <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
 
         <q-space />
@@ -151,7 +151,7 @@ export default {
   props: ["items", "title", "alink", "tool"],
   data() {
     return {
-      grid: false,
+      grid: true,
       pagination: {},
       filter: "",
       fields: ["created", "price", "location"],

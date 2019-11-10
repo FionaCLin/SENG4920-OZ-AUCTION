@@ -1,5 +1,5 @@
 <template>
-  <q-list class="q-pa-md">
+  <q-list class="q-ma-lg">
     <q-item v-for="(f, k) in fields" :key="k">
       <q-item-section>
         <q-item-label>{{ k }}</q-item-label>

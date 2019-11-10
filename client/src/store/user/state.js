@@ -11,7 +11,7 @@ export default {
   paymentMethod: ["Visa", "Master", "Wechat"],
   userID: "11829",
   rating: 4,
-  favorites: [],
+  favorites: [15026671, 13131854, 14888863, 13857537],
   location: "United States",
   users: [
     {

@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <q-btn flat dense to="/create"> <q-icon name="add" />Create Auction </q-btn>
     <MyAuctionsList :tool="true" :items="myAuction_items" />
   </q-page>
 </template>

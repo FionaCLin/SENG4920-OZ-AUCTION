@@ -43,7 +43,7 @@ export default {
     },
     myBids: {
       get() {
-        console.log(this.$store.state.auction.myBids);
+        // console.log(this.$store.state.auction.myBids);
         let items = [...this.$store.state.auction.myBids.auction_items];
         items.map(
           x => (x.location = this.$store.state.auction.myBids.sellers.location)

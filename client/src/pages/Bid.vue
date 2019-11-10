@@ -1,22 +1,18 @@
 <template>
   <q-page>
     <div class="row">
-      <div class="my-card col-sm-12"></div>
-
-      <div class="col-sm-6 q-pa-md">
-        <q-list class="my-card col-sm-6 fit column justify-center item-center">
-          <q-img :src="auction.image" style="width: 60%;" />
-          <q-item>
-            <q-btn v-if="favorite" flat @click="removeFavorite">
-              <q-icon name="favorite_border" />
-            </q-btn>
-            <q-btn v-else flat @click="addFavorite">
-              <q-icon name="favorite" />
-            </q-btn>
-          </q-item>
-        </q-list>
+      <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-pa-sm q-ma-lg">
+        <div class="col-sm-6 fit column justify-center item-center">
+          <q-img :src="auction.image" style="width: 60%;" class="q-ma-lg" />
+          <q-btn v-if="favorite" flat @click="removeFavorite">
+            <q-icon name="favorite_border" />
+          </q-btn>
+          <q-btn v-else flat @click="addFavorite">
+            <q-icon name="favorite" />
+          </q-btn>
+        </div>
       </div>
-      <div class="my-card col-sm-6">
+      <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
         <ItemDetail :auction="auction" />
       </div>
       <div class="col-10 q-ma-md fit column justify-center item-center">
