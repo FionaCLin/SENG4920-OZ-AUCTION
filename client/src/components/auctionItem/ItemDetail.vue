@@ -3,16 +3,12 @@
     <q-item v-for="(f, k) in fields" :key="k">
       <q-item-section>
         <q-item-label>{{ k }}</q-item-label>
-        <q-item-label v-if="k === 'Start Price'" caption
-          >${{ auction[f] }}</q-item-label
-        >
-        <q-item-label v-else caption>{{ auction[f] }}</q-item-label>
       </q-item-section>
-    </q-item>
 
-    <q-item>
-      <q-item-section @click="userProfile(auction.seller_id)">
-        <q-item-label>Seller</q-item-label>
+      <q-item-section
+        v-if="k === 'Seller'"
+        @click="userProfile(auction.seller_id)"
+      >
         <q-item-section avatar>
           <q-avatar size="60px" font-size="52px">
             <img :src="user_avatar(auction.seller_id)" />
@@ -29,6 +25,16 @@
           </q-item-label>
         </q-item-section>
       </q-item-section>
+
+      <q-item-section v-else>
+        <q-item-label v-if="k === 'Start Price'" caption>{{
+          auction[f] | currency
+        }}</q-item-label>
+        <q-item-label v-else-if="k === 'Current Price'" caption>{{
+          auction[f] | current_price | currency
+        }}</q-item-label>
+        <q-item-label v-else caption>{{ auction[f] }}</q-item-label>
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
@@ -36,16 +42,32 @@
 <script>
 export default {
   name: "AuctionItem",
+  filters: {
+    currency: function(value) {
+      return "$" + Number.parseFloat(value).toFixed(2);
+    },
+    current_price: function(biddings) {
+      let max = Math.max.apply(
+        Math,
+        biddings.map(function(e) {
+          return e.price;
+        })
+      );
+      return max;
+    }
+  },
   props: ["auction"],
   data() {
     return {
       fields: {
         Title: "title",
         Description: "description",
-        "Start Price": "price",
+        Seller: "",
+        Location: "location",
         "Create Time": "created",
         "End Time": "end_time",
-        Location: "location"
+        "Start Price": "price",
+        "Current Price": "biddings"
       }
     };
   },
