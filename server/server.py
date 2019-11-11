@@ -1,5 +1,5 @@
 import json
-from datetime import datetime as dt
+from datetime import datetime,time
 import uuid
 from flask_cors import CORS
 import re
@@ -122,7 +122,12 @@ ns_bidding = api.namespace('bidding',description='Operations related to manageme
 # signin_parser.add_argument('username', type=str)
 # signin_parser.add_argument('password', type=str)
 
-user_tmp_database = []
+db = local_user_account_database()
+########################################
+#  Temporary DB                       #
+########################################
+client = pymongo.MongoClient("mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
+mydb = client["runoobdb"]
 
 
 ########################################
@@ -492,6 +497,17 @@ auction_info = api.model(
     }
 )
 
+#user_input_filter = api.model(
+#    'User input to search',
+#    {
+#        "location":fields.String,
+#        "start_price":fields.String,
+#        "end_price":fields.Integer,
+#        "start_date":fields.Integer,
+#        "end_date":fields.String,
+#        "category":fields.String,
+#    }
+#)
 
 @ns_auction.route('')
 class CreateSingleAuctionItem(Resource):
@@ -519,8 +535,8 @@ class CreateSingleAuctionItem(Resource):
             "category_id":category_id,
             "title":title,
             "description": description,
-            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "created":datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "updated":datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "end_date":end_date,
             "price":price,
             "image_url":image_url,
@@ -533,7 +549,7 @@ class CreateSingleAuctionItem(Resource):
             "message":message,
             "data":new_auction
         }
-
+        print(new_auction)
         dummy_database.append(new_auction)
         return response,200
 
@@ -597,6 +613,118 @@ class SingleAuctionItemOperations(Resource):
             }
         return response, status_code
 
+#search by key
+@ns_auction.route('/search-key/<string:search_key>')
+class Auction_search1(Resource):
+    @api.response(200, 'Data fetched successfully')
+    @api.response(400, 'Bad request')
+    @api.response(404, 'No data found')
+    @api.doc(description="Search by key-word")
+    def get(self,search_key):
+        collection = mydb['auctions']
+        result = []
+        easy_search = "\'" + search_key + "\'"
+        print(search_key)
+        cursor = collection.find(
+            {"$text": {"$search": easy_search}}, {"_id": 0})
+        result = []
+        for entry in cursor:
+            result.append(entry)
+
+        if not result:
+            return {
+                'message':
+                    'no auction find'
+            }, 404
+
+        return result, 200
+
+#search by filter
+@ns_auction.route('/search/filter')
+class Auction_search2(Resource):
+    @api.response(200, 'Data fetched successfully')
+    @api.response(400, 'Bad request')
+    @api.response(404, 'No data found')
+    #@api.expect(user_input_filter)
+    @api.param('location', '')
+    @api.param('category', '')
+    @api.param('endPrice', '')
+    @api.param('startPrice', '')
+    @api.param('endDate', 'YYYY/MM/DD')
+    @api.param('startDate', 'YYYY/MM/DD')
+    @api.doc(description="Search by filter")
+    def get(self):
+        collection = mydb['auctions']
+        result = []
+        mid = []
+        print(request.args)
+        print("123")
+        location = request.args.get('location')
+
+        endDate = request.args.get('endDate')
+        startDate = request.args.get('startDate')
+
+        category = request.args.get('category')
+
+        endPrice = request.args.get('endPrice')
+        startPrice  = request.args.get('startPrice')
+
+        if startPrice is None:
+            startPrice = 0
+        if endPrice is None:
+            endPrice = 10000 #change later
+        
+
+        #if start < 0 happen?
+
+        #change data format
+        if startDate is None:
+            startDate = '2000/01/10'
+        if endDate is None:
+            endDate = datetime.datetime.now().strftime("%Y/%m/%d")
+
+        endDateP = datetime.datetime.strptime(endDate,"%Y/%m/%d")
+        startDateP =  datetime.datetime.strptime(startDate,"%Y/%m/%d")
+
+        cursor = collection.find()
+
+        for entry in cursor:
+            entry['_id'] = str(entry['_id'])
+            result.append(entry)
+            mid.append(entry)
+
+        for entry in mid:
+            entryDateP = datetime.datetime.strptime(entry['end_time'],"%Y-%m-%d %H:%M:%S")
+            print(entryDateP)
+            print(startDateP)
+            print()
+            if entryDateP <= startDateP or entryDateP >= endDateP:
+                if entry in result:
+                    result.remove(entry)
+
+
+        for entry in mid:
+            if entry['price'] < int(startPrice) or  entry['price'] > int(endPrice):
+                if entry in result:
+                    result.remove(entry)
+
+
+        for entry in mid:
+            if category and entry['category_id'] != category:
+                if entry in result:
+                    result.remove(entry)
+
+
+        
+        #location is db
+
+
+
+
+        return result,200
+
+
+
 ###################################
 #  Routes for bidding management  #
 ###################################
@@ -647,7 +775,7 @@ class BiddingManagement(Resource):
             }
         return response, status_code
 
-
+#?
 @ns_auction.route('')
 class CreateSingleAuctionItem(Resource):
     @api.response(200, 'OK')
@@ -698,7 +826,7 @@ class CreateSingleAuctionItem(Resource):
 
 
 
-
+#?
 @ns_auction.route('/<item_id>')
 @api.param('item_id','Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
@@ -849,5 +977,4 @@ class AcceptOrDeclineBiddings(Resource):
 
 
 if __name__ == '__main__':
-
-    app.run(host='0.0.0.0', port=9999, debug=True)
+    app.run(host='127.0.0.1', port=9999, debug=True)
