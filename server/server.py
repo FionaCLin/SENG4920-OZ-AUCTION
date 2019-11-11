@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime as dt
 import uuid
 from flask_cors import CORS
 import re
@@ -38,6 +38,12 @@ class Token_authentication:
         return new_token
 
 
+    def get_token_info(self, token):
+        print(f'validating token {token}')
+        info = self.serializer.loads(token.encode())
+        return info['username']
+
+
     def validate_token(self, token):
         print(f'validating token {token}')
         info = self.serializer.loads(token.encode())
@@ -61,14 +67,6 @@ class Token_authentication:
 
 
 
-def upload_local_items(col):
-    with open('../data/data1.json', 'r') as f:
-        content = json.load(f)
-        col.insert_many_collections([content])
-
-
-
-
 def requires_authentication(authen):
     @wraps(authen)
     def decorated(*args, **kwargs):
@@ -88,7 +86,6 @@ def requires_authentication(authen):
 
 
 
-col = Collection()
 # upload_local_items(col)
 
 SECRET_KEY = "SENG4920"
@@ -115,15 +112,6 @@ ns_auction = api.namespace('auction',description='Operations related to auction 
 ns_account = api.namespace('account',description='Operations related to user accounts')
 ns_bidding = api.namespace('bidding',description='Operations related to management')
 
-indicator_model = api.model('credentials', {
-    'username': fields.String,
-    'password': fields.String
-})
-
-indicator_parser = reqparse.RequestParser()
-indicator_parser.add_argument('username', type=str)
-indicator_parser.add_argument('password', type=str)
-
 
 # signin_model = api.model('signin_info', {
 #     'username': fields.String,
@@ -134,13 +122,82 @@ indicator_parser.add_argument('password', type=str)
 # signin_parser.add_argument('username', type=str)
 # signin_parser.add_argument('password', type=str)
 
-db = local_user_account_database()
-
+user_tmp_database = []
 
 
 ########################################
 #  Routes for user account management  #
 ########################################
+
+
+indicator_model = api.model(
+    'credentials', {
+        'username': fields.String,
+        'password': fields.String
+    }
+)
+
+indicator_parser = reqparse.RequestParser()
+indicator_parser.add_argument('username', type=str)
+indicator_parser.add_argument('password', type=str)
+
+
+payment_method_visa = api.model(
+    'Payment method: visa',
+    {
+        "card_number":fields.String,
+        "name_on_card":fields.String,
+        "expiry_month":fields.String,
+        "expiry_year":fields.String,
+        "cvv":fields.String
+    }
+)
+
+
+payment_method_master = api.model(
+    'Payment method: master',
+    {
+        "card_number":fields.String,
+        "name_on_card":fields.String,
+        "expiry_month":fields.String,
+        "expiry_year":fields.String,
+        "cvv":fields.String
+    }
+)
+
+
+payment_method_wechat = api.model(
+    'Payment method: wechat',
+    {
+        "payment_number":fields.String
+    }
+)
+
+
+user_profile_invisiable = api.model(
+    "User profile invisiable",{
+        "password":fields.String,
+        "payment_method":fields.String,
+        "payment_method_visa":fields.List(fields.Nested(payment_method_visa)),
+        "payment_method_master":fields.List(fields.Nested(payment_method_master)),
+        "payment_method_wechat":fields.List(fields.Nested(payment_method_wechat))
+    }
+)
+
+
+
+user_profile = api.model(
+    'User profile',{
+        "username":fields.String,
+        "first_name":fields.String,
+        "last_name":fields.String,
+        "email":fields.String,
+        "age":fields.String,
+        "phone_number":fields.String,
+        "invisiable":fields.List(fields.Nested(user_profile_invisiable))
+    }
+)
+
 
 
 @ns_account.route('/register')
@@ -151,17 +208,38 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
-        print(f'register request is {request}')
-        print(f'before request, the urers in database are {db.get_all_users()}')
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+        print(f'before request, the users in database are {selected_data}')
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!'}, 400
         try:
-            if db.is_in_database(accountInfo['username']):
-                return {'message': 'Username Already Exists'}, 400
-            db.save_user(accountInfo['username'], accountInfo['password'])
+            for single_user in selected_data:
+                if single_user["username"] == accountInfo['username']:
+                    return {'message': 'Username Already Exists'}, 200
+
+            new_user = {
+                "user_id":len(selected_data),
+                "username":accountInfo['username'],
+                "password":accountInfo['password'],
+                "first_name":"",
+                "last_name":"",
+                "email":"",
+                "age":"",
+                "phone_number":"",
+                "payment_method":"",
+                "payment_method_visa":[],
+                "payment_method_master":[],
+                "payment_method_wechat":[]
+            }
+            col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":new_user}})
+
+            print(f'after request, the users in database are {selected_data}')
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
@@ -173,21 +251,28 @@ class Register(Resource):
 class Signin(Resource):
     @api.response(200, 'Successful')
     @api.response(401, 'Unauthorized')
+    @api.response(400, 'Bad Request Error')
     @api.doc(description="Generates a authentication token")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
-
         try:
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
+        
         try:
-            if db.varify_user(account_info['username'], account_info['password']):
-                return {"token": auth.generate_token(account_info['username'])}, 200
-        except KeyError:
-            return {"message": "authorization has been refused for those credentials."}, 401
+            alldata = col.select_all_collection()
+            selected_data = []
+            for item in alldata:
+                if "user_profile" in item:
+                    selected_data = item["user_profile"]
 
+            for single_user in selected_data:
+                if single_user["username"] == account_info['username'] and single_user["password"] == account_info['password']:            
+                    return {"token": auth.generate_token(account_info['username'])}, 200
+            return {"message": "authorization has been refused."}, 401
+        except:
+            return {"message": "authorization has been refused."}, 401
 
 
 
@@ -201,6 +286,108 @@ class Signout(Resource):
         auth.delete_token(token)
         return {'message': 'Deletion Successful'}, 200
 
+
+
+
+@ns_account.route('/manage_profile/<string:request_user_id>')
+class Manage_profile(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="get other user's profile")
+    def get(self,request_user_id):
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+
+        for single_user in selected_data:
+            if str(single_user["user_id"]) == str(request_user_id):
+                new_user_profile = dict()
+                new_user_profile["email"] = single_user["email"]
+                new_user_profile["age"] = single_user["age"]
+                new_user_profile["phone_number"] = single_user["phone_number"]
+                new_user_profile["username"] = single_user["username"]
+                new_user_profile["first_name"] = single_user["first_name"]
+                new_user_profile["last_name"] = single_user["last_name"]
+
+                response = {
+                    "message": "OK",
+                    "data":new_user_profile
+                }
+                return response,200
+
+        response = {
+            "message": "Profile does not exist",
+            "data":""
+        }
+        return response,404
+
+
+
+    @api.response(200, 'User Profile Updated Successfully')
+    @api.response(400, 'Bad Request Error')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="manage user's profile")
+    @api.expect(user_profile, validate=True)
+    def put(self, request_user_id):
+        try:
+            user_profile_json = request.json
+        except:
+            return {'message': 'Bad Request!',"data":""}, 400
+        
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+
+        found = False
+        col.delete_specific_collection({"col_id":"c1"},{"$unset":{"user_profile":1}})
+        for single_user in selected_data:
+            if str(single_user["user_id"]) != str(request_user_id):
+                col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":single_user}})
+            else:
+                found = True
+                if len(user_profile_json.keys()) != 0:
+                    new_user_profile = dict()
+                    update_single_user = single_user
+                    for key, value in user_profile_json.items():
+                        # print ('----'+key)
+                        # print (value)
+                        new_user_profile[key] = value
+                        
+                        if isinstance(value,list):
+                            update_single_user["password"] = value[0]["password"]
+                            update_single_user["payment_method"] = value[0]["payment_method"]
+                            update_single_user["payment_method_visa"] = value[0]["payment_method_visa"]
+                            update_single_user["payment_method_master"] = value[0]["payment_method_master"]
+                            update_single_user["payment_method_wechat"] = value[0]["payment_method_wechat"]
+                        else:
+                            update_single_user[key] = value
+
+                    # selected_data[index] = update_single_user
+                    col.add_one_dict_to_array({"col_id":"c1"},{"$push":{"user_profile":update_single_user}})
+                    response = {
+                        "message":"OK",
+                        "data":new_user_profile
+                    }
+                    # print(f'after update request, the users in database are {user_tmp_database}')
+                else:
+                    response = {
+                        "message":"User did not specify any field to update",
+                        "data":single_user
+                    }
+                    return response,200
+        
+        if found == True:
+            return response,200
+        
+        response = {
+            "message":"Specified user id does not exist",
+            "data":""
+        }
+        return response,404
 
 
 
@@ -249,6 +436,7 @@ user_input_bidding_info = api.model(
         "proposal_price": fields.Float,
     }
 )
+
 returned_bidding_info = api.model(
     "Bidding response returned",
     {
@@ -486,8 +674,8 @@ class CreateSingleAuctionItem(Resource):
             "category_id":category_id,
             "title":title,
             "description": description,
-            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "created":dt.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "updated":dt.now().strftime('%Y-%m-%d %H:%M:%S'),
             "end_date":end_date,
             "price":price,
             "image_url":image_url,
@@ -502,6 +690,8 @@ class CreateSingleAuctionItem(Resource):
         }
 
         dummy_database.append(new_auction)
+        print ('-------')
+        print (dummy_database)
         return response,200
 
 
@@ -555,7 +745,7 @@ class SingleAuctionItemOperations(Resource):
                 target_auction[k] = user_input_json[k]
 
             target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+            # hhhhhhhh
             dummy_database[item_id] = target_auction
             updated_auction = target_auction
         else:
@@ -659,4 +849,5 @@ class AcceptOrDeclineBiddings(Resource):
 
 
 if __name__ == '__main__':
+
     app.run(host='0.0.0.0', port=9999, debug=True)
