@@ -257,6 +257,7 @@ class Register(Resource):
         except KeyError:
             return {'message': 'Bad Request!'}, 400
 
+## TODO login works email instead of username
 
 @ns_account.route('/signin')
 class Signin(Resource):
