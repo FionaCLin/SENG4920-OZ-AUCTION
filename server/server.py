@@ -133,9 +133,9 @@ db = local_user_account_database()
 ########################################
 #  Temporary DB                       #
 ########################################
-client = pymongo.MongoClient(
-    "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-mydb = client["runoobdb"]
+# client = pymongo.MongoClient(
+    # "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
+# mydb = client["runoobdb"]
 
 
 ########################################
@@ -153,6 +153,35 @@ indicator_model = api.model(
 indicator_parser = reqparse.RequestParser()
 indicator_parser.add_argument('email', type=str)
 indicator_parser.add_argument('password', type=str)
+
+
+user_input_bidding_info = api.model(
+    "User input to propose a bid & bidding info stored in server",
+    {
+        "user_id": fields.Integer,
+        "proposal_price": fields.Float,
+    }
+)
+
+
+auction_info = api.model(
+    'Auction item information',
+    {
+        "item_id": fields.Integer,
+        "seller_name": fields.String,
+        "seller_id": fields.Integer,
+        "category_id": fields.Integer,
+        "title": fields.String,
+        "description": fields.String,
+        "updated": fields.String,
+        "created": fields.String,
+        "end_time": fields.String,
+        "price": fields.Float,  # start price
+        "image_url": fields.String,
+        "bidding_info": fields.List(fields.Nested(user_input_bidding_info)),
+        "status": fields.String
+    }
+)
 
 
 
@@ -323,13 +352,16 @@ class Manage_profile(Resource):
                     new_user_profile = dict()
                     update_single_user = single_user
                     for key, value in user_profile_json.items():
-                        # print ('----'+key)
-                        # print (value)
                         new_user_profile[key] = value
 
                         if isinstance(value, list):
-                            update_single_user["password"] = value[0]["password"]
-                            update_single_user["payment_method"] = value[0]["payment_method"]
+                            if key == 'invisiable':
+                                update_single_user["password"] = value[0]["password"]
+                                update_single_user["payment_method"] = value[0]["payment_method"]
+                            elif key == 'favorites':
+                                # print (update_single_user["favorites"])
+                                # print (value[0]["favorites"])
+                                update_single_user["favorites"] = value[0]
                         else:
                             update_single_user[key] = value
 
@@ -370,13 +402,6 @@ GET: Get auction information by item id
 dummy_database = []
 
 # this is also the data model stored in server
-user_input_bidding_info = api.model(
-    "User input to propose a bid & bidding info stored in server",
-    {
-        "user_id": fields.Integer,
-        "proposal_price": fields.Float,
-    }
-)
 
 returned_bidding_info = api.model(
     "Bidding response returned",
@@ -414,24 +439,6 @@ auction_info_update = api.model(
     }
 )
 
-auction_info = api.model(
-    'Auction item information',
-    {
-        "item_id": fields.Integer,
-        "seller_name": fields.String,
-        "seller_id": fields.Integer,
-        "category_id": fields.Integer,
-        "title": fields.String,
-        "description": fields.String,
-        "updated": fields.String,
-        "created": fields.String,
-        "end_time": fields.String,
-        "price": fields.Float,  # start price
-        "image_url": fields.String,
-        "bidding_info": fields.List(fields.Nested(user_input_bidding_info)),
-        "status": fields.String
-    }
-)
 
 # user_input_filter = api.model(
 #    'User input to search',
