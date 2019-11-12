@@ -34,7 +34,7 @@
               type="email"
               lazy-rules
               :rules="[
-                val => (val && val.length > 5 && value.includes('@')) || 'Please enter valid Email'
+                val => (val && val.length > 5 && val.includes('@')) || 'Please enter valid Email'
               ]"
             />
             <q-input
