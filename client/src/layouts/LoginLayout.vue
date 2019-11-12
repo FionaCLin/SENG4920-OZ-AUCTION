@@ -1,16 +1,21 @@
 <template>
-
   <q-layout view="hhh Lpr fff">
-
     <q-header elevated class="shadow-2 myColor" height-hint="98">
       <q-toolbar class="glossy myToolbar">
-        <q-icon name="img:statics/logo.png" :ratio="16/9" class="myLogo"></q-icon>
+        <q-icon
+          name="img:statics/logo.png"
+          :ratio="16 / 9"
+          class="myLogo"
+        ></q-icon>
       </q-toolbar>
     </q-header>
 
     <q-footer elevated class="myColor">
       <q-toolbar>
-        <q-toolbar-title class="myFooter">Copyright © 2019 Awesome Group Co. All Rights Reserved.</q-toolbar-title>
+        <q-toolbar-title class="myFooter"
+          >Copyright © 2019 Awesome Group Co. All Rights
+          Reserved.</q-toolbar-title
+        >
       </q-toolbar>
     </q-footer>
 
@@ -23,12 +28,11 @@
 <script>
 export default {
   name: "Index",
-  props: ["logged"],
-  data () {
+  data() {
     return {
       drawer: false,
       miniState: true
-    }
+    };
   }
 };
 </script>

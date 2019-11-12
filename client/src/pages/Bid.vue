@@ -1,83 +1,64 @@
 <template>
   <q-page>
     <div class="row">
-      <div class="my-card col-sm-12"></div>
-
-      <div class="col-sm-6 q-pa-md">
-        <q-list class="my-card col-sm-6 flex flex-center">
-          <q-img :src="auction.image" style="width: 60%;" />
-          <q-item>
-            <q-btn v-if="favorite" flat @click="removeFavorite">
-              <q-icon name="favorite_border" />
-            </q-btn>
-            <q-btn v-else flat @click="addFavorite">
-              <q-icon name="favorite" />
-            </q-btn>
-          </q-item>
-        </q-list>
+      <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
+        <div>
+          <q-img :src="auction.image" class="q-ma-lg" />
+        </div>
+        <div class="q-pa-sm">
+          <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
+            <q-icon name="favorite_border" />
+          </q-btn>
+          <q-btn v-else class="q-ml-lg" flat @click="addFavorite">
+            <q-icon name="favorite" />
+          </q-btn>
+        </div>
+        <div class="q-ma-lg row">
+          <q-input v-model="bidPrice" class="q-ml-lg" type="number" />
+          <q-btn class="q-ml-xs" @click="placeBid">
+            <q-icon name="gavel" />Place Bid
+          </q-btn>
+          <div class="q-ml-lg text-red">{{ error }}</div>
+        </div>
       </div>
-      <div class="my-card col-sm-6">
-        <q-list class="q-pa-md">
-          <q-item v-for="(f, k) in fields" :key="k">
-            <q-item-section>
-              <q-item-label>{{ k }}</q-item-label>
-              <q-item-label v-if="k === 'Price'" caption
-                >${{ auction[f] }}</q-item-label
-              >
-              <q-item-label v-else caption>{{ auction[f] }}</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section @click="userProfile(auction.seller_id)">
-              <q-item-label>Seller</q-item-label>
-              <q-item-section avatar>
-                <q-avatar>
-                  <img :src="user_avatar(auction.seller_id)" />
-                </q-avatar>
-              </q-item-section>
-              <q-item-section class="q-ma-xs">
-                <q-item-label>{{ auction.seller_name }}</q-item-label>
-                <q-item-label caption>
-                  <q-icon
-                    v-for="n in user_rating(auction.seller_id)"
-                    :key="n"
-                    name="star"
-                  ></q-icon>
-                </q-item-label>
-              </q-item-section>
-            </q-item-section>
-          </q-item>
-        </q-list>
+      <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
+        <ItemDetail :auction="auction" />
       </div>
-      <div class="col-sm-12">
+      <div class="col-10 q-ma-md fit column justify-center item-center">
         <!--  this part will contain the images -->
         <!-- Indicators -->
+        <BidDetail :biddings="auction.biddings" />
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
+import ItemDetail from "../components/auctionItem/ItemDetail";
+import BidDetail from "../components/auctionItem/BidDetail";
+import { mapGetters } from "vuex";
+
 export default {
   name: "AuctionPage",
-  props: ["pageTitle"],
+  components: {
+    ItemDetail,
+    BidDetail
+  },
   data() {
     return {
       auction: null,
-      fields: {
-        Title: "title",
-        Description: "description",
-        Price: "price",
-        "Create Time": "created",
-        "End Time": "end_time",
-        Location: "location"
-      },
-      favorite: this.$store.state.user.favorites.indexOf(this.id) !== -1
+      bidPrice: 0,
+      error: ""
     };
   },
-  mounted: function() {},
-  created() {
+  computed: {
+    favorite: {
+      get() {
+        return this.$store.state.user.favorites.indexOf(this.id) !== -1;
+      }
+    }
+  },
+  beforeMount() {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
@@ -92,41 +73,33 @@ export default {
     }
   },
   methods: {
-    getUser(id) {
-      let auctions = this.$store.state.auction.auctions.find(
-        x => x.sellers.seller_id === id
-      );
-      console.log(auctions);
-      let user = auctions.sellers;
-      user.name = auctions.auction_items[0].seller_name;
-      return user;
-    },
-    user_avatar(id) {
-      let user = this.getUser(id);
-      return user.avatar;
-    },
-    user_rating(id) {
-      let user = this.getUser(id);
-      return user.rating;
-    },
-    userProfile: function(id) {
-      console.log("from", id);
-      this.$router.push({
-        name: "userProfile",
-        params: {
-          id: id
-        }
-      });
-    },
     addFavorite: function() {
-      this.$store.state.user.favorites.push(this.id);
+      this.$store.commit("user/addFavorite", this.id);
     },
     removeFavorite: function() {
-      this.$store.state.user.favorites.slice(
-        this.$store.state.user.favorites.indexOf(this.id)
+      this.$store.commit("user/removeFavorite", this.id);
+    },
+    placeBid() {
+      let max = Math.max.apply(
+        Math,
+        this.$data.auction.biddings.map(function(e) {
+          return e.price;
+        })
       );
-    }
-    // ...mapActions(["addFavorite", "removeFavorite"])
+      if (this.$data.bidPrice > max) {
+        console.log(this.$data.auction.id);
+        console.log(this.$data.bidPrice);
+        console.log(this.$store.state.user.id);
+        this.$store.dispatch("auction/placeBidding", {
+          auction_id: this.$data.auction.id,
+          price: this.$data.bidPrice,
+          user_id: this.$store.state.user.id
+        });
+      } else {
+        this.$data.error = "* Bidding price must greater than current price.";
+      }
+    },
+    ...mapGetters("auction", ["getAuction"])
   }
 };
 </script>

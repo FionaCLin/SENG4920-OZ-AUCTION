@@ -1,21 +1,14 @@
 <template>
   <q-page padding class="myPage">
     <div class="row myFlex" style="justify-content:flex-start">
-      <q-card
-        class="col-4"
-        style="min-width: 200px;"
-      >
+      <q-card class="col-4" style="min-width: 200px;">
         <q-card-section>
           <div class="text-h6">Login</div>
         </q-card-section>
         <q-separator />
         <q-separator />
         <q-card-section>
-          <q-form
-            ref="LoginForm"
-            class="q-gutter-md"
-            @submit="onSubmit"
-          >
+          <q-form ref="LoginForm" class="q-gutter-md" @submit="onSubmit">
             <q-input
               v-model="email"
               filled
@@ -24,7 +17,9 @@
               hint="Email"
               lazy-rules
               :rules="[
-                val => (val && val.length > 5 && value.includes('@')) || 'Please enter valid Email'
+                val =>
+                  (val && val.length > 5 && value.includes('@')) ||
+                  'Please enter valid Email'
               ]"
             ></q-input>
             <q-input
@@ -49,17 +44,22 @@
             </q-input>
 
             <div style="overflow:hidden">
-               New user?
-              <q-btn flat text-color="primary" to="/register" push class="myRe">Register</q-btn> here.
-              <q-btn label="Login" type="submit" color="primary" style="float:right;" />
+              New user?
+              <q-btn flat text-color="primary" to="/register" push class="myRe"
+                >Register</q-btn
+              >here.
+              <q-btn
+                label="Login"
+                type="submit"
+                color="primary"
+                style="float:right;"
+              />
             </div>
           </q-form>
         </q-card-section>
       </q-card>
     </div>
   </q-page>
-
-
 </template>
 
 <script>
@@ -74,7 +74,7 @@ export default {
       seller: false,
       email: null,
       password: null,
-      tab: 'login'
+      tab: "login"
     };
   },
   methods: {
@@ -149,16 +149,15 @@ export default {
 </script>
 
 <style scoped>
-  .myRe {
-    padding: 0px 0px;
-  }
-  .myPage {
-    background-image: url("../statics/login_background.jpg");
-    background-repeat: no-repeat;
-    background-size: 100%;
-  }
-  .myFlex {
-    margin: 10% 5%;
-
-  }
+.myRe {
+  padding: 0px 0px;
+}
+.myPage {
+  background-image: url("../statics/login_background.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.myFlex {
+  margin: 10% 5%;
+}
 </style>

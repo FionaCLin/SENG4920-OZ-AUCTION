@@ -13,9 +13,9 @@
       <!-- table tool bar -->
       <template v-slot:top="props">
         <div v-if="title" class="col-2 q-table__title">{{ title }}</div>
-        <!-- <q-btn v-if="tool" flat dense to="/create">
+        <q-btn v-if="tool" flat dense to="/create">
           <q-icon name="add" />Create Auction
-        </q-btn> -->
+        </q-btn>
         <q-toggle v-model="grid" :icon="grid ? 'grid_on' : 'list'" />
 
         <q-space />
@@ -151,7 +151,7 @@ export default {
   props: ["items", "title", "alink", "tool"],
   data() {
     return {
-      grid: false,
+      grid: true,
       pagination: {},
       filter: "",
       fields: ["created", "price", "location"],
@@ -212,7 +212,6 @@ export default {
       let auctions = this.$store.state.auction.auctions.find(
         x => x.sellers.seller_id === id
       );
-      console.log(auctions);
       let user = auctions.sellers;
       user.name = auctions.auction_items[0].seller_name;
       return user;
@@ -227,18 +226,18 @@ export default {
     },
     auctionItem: function(id) {
       console.log("from", id);
-      console.log("to", this.$route.params.id);
+      console.log("to", this.$route.params.id, this.$route.name);
 
-      if (this.title === "" || this.title !== "My Auctions") {
+      if (this.title === "My Auctions" || this.$route.name === "myAuctions") {
         this.$router.push({
-          name: "biddingItem",
+          name: "auctiionItem",
           params: {
             id: id
           }
         });
       } else {
         this.$router.push({
-          name: "auctiionItem",
+          name: "biddingItem",
           params: {
             id: id
           }
@@ -246,7 +245,6 @@ export default {
       }
     },
     userProfile: function(id) {
-      console.log("from", id);
       this.$router.push({
         name: "userProfile",
         params: {

@@ -1,4 +1,4 @@
-/*
-export function someAction (context) {
+// async
+export function placeBidding({ commit }, bid) {
+  commit("placeBidding", bid);
 }
-*/

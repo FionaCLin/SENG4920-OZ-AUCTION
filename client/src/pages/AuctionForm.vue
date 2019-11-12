@@ -10,7 +10,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar class="self-center" size="100px" font-size="52px">
-                  <q-img v-if="images.length" src="" />
+                  <q-img v-if="images.length" src />
                   <q-icon v-else name="image" />
                 </q-avatar>
                 <q-card-actions>
@@ -32,35 +32,47 @@
                   <q-input filled v-model="date" label="Deadline" mask="date" :rules="['date']">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                        <q-popup-proxy
+                          ref="qDateProxy"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            v-model="date"
+                            @input="() => $refs.qDateProxy.hide()"
+                          />
                         </q-popup-proxy>
                       </q-icon>
                     </template>
                   </q-input>
                 </q-form>
-                <q-select filled label="Category" v-model="categoryId" :options="options" />
+                <q-select
+                  filled
+                  label="Category"
+                  v-model="categoryId"
+                  :options="options"
+                />
               </q-item-section>
             </q-item>
             <q-card-actions>
               <q-btn color="primary" label="Submit" type="Submit" />
               <q-btn color="amber" glossy label="Reset" type="reset" />
-              <q-btn color="deep-orange" glossy label="Cancel" type="cancel" @click="goBack"/>
+              <q-btn
+                color="deep-orange"
+                glossy
+                label="Cancel"
+                type="cancel"
+                @click="goBack"
+              />
             </q-card-actions>
           </q-card>
         </div>
       </div>
     </div>
-  </q-page> -->
-
+  </q-page>-->
 
   <div class="q-pa-md">
-    <q-stepper
-      v-model="step"
-      ref="stepper"
-      color="primary"
-      animated
-    >
+    <q-stepper ref="stepper" v-model="step" color="primary" animated>
       <q-step
         :name="1"
         title="Basic Information"
@@ -74,20 +86,49 @@
               class="q-gutter-md"
               @submit="onSubmit"
             >
-              <q-input v-model="title" label="Product title" filled type="text" />
-              <q-input v-model="price" label="Starting Price" filled type="number" />
+              <q-input
+                v-model="title"
+                label="Product title"
+                filled
+                type="text"
+              />
+              <q-input
+                v-model="price"
+                label="Starting Price"
+                filled
+                type="number"
+              />
               <q-input v-model="location" label="Location" filled type="text" />
 
-              <q-input filled v-model="date" label="Deadline" mask="date" :rules="['date']" style="padding-bottom:0px;">
+              <q-input
+                v-model="date"
+                filled
+                label="Deadline"
+                mask="date"
+                :rules="['date']"
+                style="padding-bottom:0px;"
+              >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="date"
+                        @input="() => $refs.qDateProxy.hide()"
+                      />
                     </q-popup-proxy>
                   </q-icon>
                 </template>
               </q-input>
-              <q-select filled label="Category" v-model="categoryId" :options="options" />
+              <q-select
+                filled
+                label="Category"
+                v-model="categoryId"
+                :options="options"
+              />
             </q-form>
           </q-item-section>
         </q-item>
@@ -111,26 +152,33 @@
               />
             </div>
             <div class="col-8" style="padding-left: 20px;">
-              <q-editor
-                v-model="editor"
-              />
+              <q-editor v-model="editor" />
             </div>
           </div>
         </div>
       </q-step>
 
-      <q-step
-        :name="3"
-        title="Auction Created"
-        icon="assignment"
+      <q-step :name="3" title="Auction Created" icon="assignment"
+        >Auction is created! Check your new Auctioon here!</q-step
       >
-        Auction is created! Check your new Auctioon here!
-      </q-step>
 
       <template v-slot:navigation>
-        <q-stepper-navigation  style="overflow: hidden;">
-          <q-btn style="float:right;" @click="$refs.stepper.next()" color="primary" :label="step === 3 ? 'Finish' : 'Continue'" />
-          <q-btn style="float:right;" v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Back" class="q-ml-sm" />
+        <q-stepper-navigation style="overflow: hidden;">
+          <q-btn
+            style="float:right;"
+            color="primary"
+            @click="$refs.stepper.next()"
+            :label="step === 3 ? 'Finish' : 'Continue'"
+          />
+          <q-btn
+            v-if="step > 1"
+            style="float:right;"
+            flat
+            color="primary"
+            label="Back"
+            @click="$refs.stepper.previous()"
+            class="q-ml-sm"
+          />
         </q-stepper-navigation>
       </template>
     </q-stepper>
@@ -154,7 +202,7 @@ export default {
       options: ["Handicraft", "Second hand"],
       date: "",
       step: 1,
-      location:""
+      location: ""
     };
   },
   created() {
@@ -225,8 +273,8 @@ export default {
 </script>
 
 <style scoped>
-  .myItem {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
+.myItem {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 </style>
