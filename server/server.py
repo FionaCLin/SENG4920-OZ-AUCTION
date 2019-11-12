@@ -129,7 +129,6 @@ ns_bidding = api.namespace(
 # signin_parser.add_argument('email', type=str)
 # signin_parser.add_argument('password', type=str)
 
-db = local_user_account_database()
 ########################################
 #  Temporary DB                       #
 ########################################
