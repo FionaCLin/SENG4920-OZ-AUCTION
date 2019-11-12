@@ -151,9 +151,14 @@
 
 <script>
 // import { required, minLength } from 'vuelidate/lib/validators'
+import { uploadImage } from "../helper";
 
-import aws from "aws-sdk";
-import secret from "../../src/awsconfig.json";
+let warning = {
+  color: "red-5",
+  textColor: "white",
+  icon: "warning",
+  message: ""
+};
 
 export default {
   name: "AuctionCreateForm",
@@ -165,7 +170,7 @@ export default {
       description: "",
       endTime: "",
       price: "",
-      image: "",
+      image: [],
       options: ["Handicraft", "Second hand"],
       date: "",
       step: 1,
@@ -195,15 +200,28 @@ export default {
       // sellerName: "",
       // sellerId: "",
       if (this.edit) {
-        this.$emit("editDetail", this.$data);
+        this.$refs.EditAuctionForm.validate().then(
+          success => {
+            if (success) {
+              // yay, models are correct
+              // auction call the store to update state
+            }
+          },
+          err => {
+            console.log(err);
+            // oh no, user has filled in
+            // at least an invalid value
+
+            warning.message = err.message;
+            this.$q.notify(warning);
+          }
+        );
         return;
       }
       this.$refs.CreateAuctionForm.validate().then(
         success => {
           if (success) {
-            // yay, models are correct
-            this.$emit("editDetail", this.$data);
-            this.$emit("updateEdit", false);
+            // auction call the store to update state
           }
         },
         err => {
@@ -211,40 +229,22 @@ export default {
 
           // oh no, user has filled in
           // at least an invalid value
-          // this.$q.notify({
-          //   color: 'red-5',
-          //   textColor: 'white',
-          //   icon: 'warning',
-          //   message: err.message
-          // })
+          warning.message = err.message;
+          this.$q.notify(warning);
         }
       );
     },
     upload(file) {
-      // this.$store.dispatch('auction/uploadS3', file, (err, res) => {
-      //   /*
-      //   response data
-      //   {Location: "https://seng4920album.s3.amazonaws.com/undefined-1…creen%20Shot%202019-11-09%20at%208.41.13%20pm.png", key: "undefined-1573537507281-Screen Shot 2019-11-09 at 8.41.13 pm.png", Key: "undefined-1573537507281-Screen Shot 2019-11-09 at 8.41.13 pm.png", Bucket: "seng4920album"}
-      //   */
-      //   console.log(err, res);
-      //   this.$data.image = res;
-      // });
-      console.log(file);
-      const s3 = new aws.S3(secret);
-
-      let data = file[0];
-      s3.upload(
-        {
-          Bucket: "seng4920album",
-          Key: `${this.title}-${Date.now()}-${data.name}`,
-          Body: data,
-          ACL: "public-read"
-        },
-        (err, res) => {
-          console.log(err, res);
-          this.$data.image = res.location;
-        }
-      );
+      for (let f of file) {
+        uploadImage(f, (err, res) => {
+          if (err) {
+            warning.message = err.message;
+            this.$q.notify(warning);
+          }
+          this.$data.image.push(res.Location);
+          console.log(this.$data.image);
+        });
+      }
     },
     goBack() {
       if (this.edit) {
