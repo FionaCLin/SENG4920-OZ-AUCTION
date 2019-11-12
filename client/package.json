@@ -20,6 +20,7 @@
   "devDependencies": {
     "@quasar/app": "^1.0.0",
     "@vue/eslint-config-prettier": "^4.0.0",
+    "aws-sdk": "^2.569.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.3.0",
