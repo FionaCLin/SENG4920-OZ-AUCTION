@@ -1,17 +1,25 @@
 import json
-from datetime import datetime
+from datetime import datetime, time
 import uuid
 from flask_cors import CORS
 import re
 import pandas as pd
-import os, csv, base64,requests
+import os
+import csv
+import base64
+import requests
 from flask import Flask, request, Response
 from flask_restplus import Resource, Api, fields, inputs, reqparse, abort
 from setup_database import *
 from functools import wraps
 from time import time
 from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
 
+
+UPLOAD_FOLDER = './image/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 class Token_authentication:
@@ -20,7 +28,6 @@ class Token_authentication:
         self.expire_time = expire_time
         self.active_token = set()
         self.serializer = JSONWebSignatureSerializer(secret_key)
-
 
     def generate_token(self, username):
         info = {
@@ -37,6 +44,10 @@ class Token_authentication:
         print(f'active tokens are {self.active_token}')
         return new_token
 
+    def get_token_info(self, token):
+        print(f'validating token {token}')
+        info = self.serializer.loads(token.encode())
+        return info['username']
 
     def validate_token(self, token):
         print(f'validating token {token}')
@@ -48,25 +59,16 @@ class Token_authentication:
             self.active_token.discard(token)
             print(f'now deleting token {token}')
             print(f'now active tokens are {self.active_token}')
-            raise SignatureExpired("The Token has been expired; get a new token!")
+            raise SignatureExpired(
+                "The Token has been expired; get a new token!")
         return info['username']
 
-
     def delete_token(self, token):
-        print ('--- now active tokens are '+str(self.active_token))
+        print('--- now active tokens are '+str(self.active_token))
         self.active_token.discard(token)
         print(f'now deleting token {token}')
         print(f'now active tokens are {self.active_token}')
         return True
-
-
-
-def upload_local_items(col):
-    with open('../data/data1.json', 'r') as f:
-        content = json.load(f)
-        col.insert_many_collections([content])
-
-
 
 
 def requires_authentication(authen):
@@ -86,43 +88,36 @@ def requires_authentication(authen):
     return decorated
 
 
-
-
-col = Collection()
 # upload_local_items(col)
-
 SECRET_KEY = "SENG4920"
 
 expire_time = 1000
 auth = Token_authentication(SECRET_KEY, expire_time)
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 api = Api(app, authorizations={
-                'API-KEY': {
-                    'type': 'apiKey',
-                    'in': 'header',
-                    'name': 'AUTH-TOKEN'
-                }
-            },
-          security='API-KEY',
-          title="Online Auction", 
-          description="Auction Website")
+    'API-KEY': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'AUTH-TOKEN'
+    }
+},
+    security='API-KEY',
+    title="Online Auction",
+    description="Auction Website")
 
 
 CORS(app)
+
 # define namespaces
-ns_auction = api.namespace('auction',description='Operations related to auction information management')
-ns_account = api.namespace('account',description='Operations related to user accounts')
-ns_bidding = api.namespace('bidding',description='Operations related to management')
-
-indicator_model = api.model('credentials', {
-    'username': fields.String,
-    'password': fields.String
-})
-
-indicator_parser = reqparse.RequestParser()
-indicator_parser.add_argument('username', type=str)
-indicator_parser.add_argument('password', type=str)
+ns_auction = api.namespace(
+    'auction', description='Operations related to auction information management')
+ns_account = api.namespace(
+    'account', description='Operations related to user accounts')
+ns_bidding = api.namespace(
+    'bidding', description='Operations related to management')
 
 
 # signin_model = api.model('signin_info', {
@@ -135,12 +130,85 @@ indicator_parser.add_argument('password', type=str)
 # signin_parser.add_argument('password', type=str)
 
 db = local_user_account_database()
-
+########################################
+#  Temporary DB                       #
+########################################
+client = pymongo.MongoClient(
+    "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
+mydb = client["runoobdb"]
 
 
 ########################################
 #  Routes for user account management  #
 ########################################
+
+
+indicator_model = api.model(
+    'credentials', {
+        'username': fields.String,
+        'password': fields.String
+    }
+)
+
+indicator_parser = reqparse.RequestParser()
+indicator_parser.add_argument('username', type=str)
+indicator_parser.add_argument('password', type=str)
+
+
+payment_method_visa = api.model(
+    'Payment method: visa',
+    {
+        "card_number": fields.String,
+        "name_on_card": fields.String,
+        "expiry_month": fields.String,
+        "expiry_year": fields.String,
+        "cvv": fields.String
+    }
+)
+
+
+payment_method_master = api.model(
+    'Payment method: master',
+    {
+        "card_number": fields.String,
+        "name_on_card": fields.String,
+        "expiry_month": fields.String,
+        "expiry_year": fields.String,
+        "cvv": fields.String
+    }
+)
+
+
+payment_method_wechat = api.model(
+    'Payment method: wechat',
+    {
+        "payment_number": fields.String
+    }
+)
+
+
+user_profile_invisiable = api.model(
+    "User profile invisiable", {
+        "password": fields.String,
+        "payment_method": fields.String,
+        "payment_method_visa": fields.List(fields.Nested(payment_method_visa)),
+        "payment_method_master": fields.List(fields.Nested(payment_method_master)),
+        "payment_method_wechat": fields.List(fields.Nested(payment_method_wechat))
+    }
+)
+
+
+user_profile = api.model(
+    'User profile', {
+        "username": fields.String,
+        "first_name": fields.String,
+        "last_name": fields.String,
+        "email": fields.String,
+        "age": fields.String,
+        "phone_number": fields.String,
+        "invisiable": fields.List(fields.Nested(user_profile_invisiable))
+    }
+)
 
 
 @ns_account.route('/register')
@@ -151,45 +219,71 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
-        print(f'register request is {request}')
-        print(f'before request, the urers in database are {db.get_all_users()}')
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
+        print(f'before request, the users in database are {selected_data}')
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!'}, 400
         try:
-            if db.is_in_database(accountInfo['username']):
-                return {'message': 'Username Already Exists'}, 400
-            db.save_user(accountInfo['username'], accountInfo['password'])
+            for single_user in selected_data:
+                if single_user["username"] == accountInfo['username']:
+                    return {'message': 'Username Already Exists'}, 200
+
+            new_user = {
+                "user_id": len(selected_data),
+                "username": accountInfo['username'],
+                "password": accountInfo['password'],
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "age": "",
+                "phone_number": "",
+                "payment_method": "",
+                "payment_method_visa": [],
+                "payment_method_master": [],
+                "payment_method_wechat": []
+            }
+            col.add_one_dict_to_array(
+                {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
+
+            print(f'after request, the users in database are {selected_data}')
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
             return {'message': 'Bad Request!'}, 400
 
 
-
 @ns_account.route('/signin')
 class Signin(Resource):
     @api.response(200, 'Successful')
     @api.response(401, 'Unauthorized')
+    @api.response(400, 'Bad Request Error')
     @api.doc(description="Generates a authentication token")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        global db
-
         try:
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
+
         try:
-            if db.varify_user(account_info['username'], account_info['password']):
-                return {"token": auth.generate_token(account_info['username'])}, 200
-        except KeyError:
-            return {"message": "authorization has been refused for those credentials."}, 401
+            alldata = col.select_all_collection()
+            selected_data = []
+            for item in alldata:
+                if "user_profile" in item:
+                    selected_data = item["user_profile"]
 
-
-
+            for single_user in selected_data:
+                if single_user["username"] == account_info['username'] and single_user["password"] == account_info['password']:
+                    return {"token": auth.generate_token(account_info['username'])}, 200
+            return {"message": "authorization has been refused."}, 401
+        except:
+            return {"message": "authorization has been refused."}, 401
 
 
 @ns_account.route('/signout/<string:token>')
@@ -202,37 +296,111 @@ class Signout(Resource):
         return {'message': 'Deletion Successful'}, 200
 
 
+@ns_account.route('/manage_profile/<string:request_user_id>')
+class Manage_profile(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="get other user's profile")
+    def get(self, request_user_id):
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
 
+        for single_user in selected_data:
+            if str(single_user["user_id"]) == str(request_user_id):
+                new_user_profile = dict()
+                new_user_profile["email"] = single_user["email"]
+                new_user_profile["age"] = single_user["age"]
+                new_user_profile["phone_number"] = single_user["phone_number"]
+                new_user_profile["username"] = single_user["username"]
+                new_user_profile["first_name"] = single_user["first_name"]
+                new_user_profile["last_name"] = single_user["last_name"]
 
+                response = {
+                    "message": "OK",
+                    "data": new_user_profile
+                }
+                return response, 200
 
-# TODO
-# @ns_dashboard.route('')
-# class Dashboard(Resource):
+        response = {
+            "message": "Profile does not exist",
+            "data": ""
+        }
+        return response, 404
 
-#     @api.response(200, 'OK')
-#     @api.doc(description='Retrieve auction items')
-#     def get(self):
+    @api.response(200, 'User Profile Updated Successfully')
+    @api.response(400, 'Bad Request Error')
+    @api.response(404, 'Profile Does Not Exist')
+    @api.doc(description="manage user's profile")
+    @api.expect(user_profile, validate=True)
+    def put(self, request_user_id):
+        try:
+            user_profile_json = request.json
+        except:
+            return {'message': 'Bad Request!', "data": ""}, 400
 
-#         result = {}
-#         return result,200
+        alldata = col.select_all_collection()
+        selected_data = []
+        for item in alldata:
+            if "user_profile" in item:
+                selected_data = item["user_profile"]
 
+        found = False
+        col.delete_specific_collection(
+            {"col_id": "c1"}, {"$unset": {"user_profile": 1}})
+        for single_user in selected_data:
+            if str(single_user["user_id"]) != str(request_user_id):
+                col.add_one_dict_to_array(
+                    {"col_id": "c1"}, {"$push": {"user_profile": single_user}})
+            else:
+                found = True
+                if len(user_profile_json.keys()) != 0:
+                    new_user_profile = dict()
+                    update_single_user = single_user
+                    for key, value in user_profile_json.items():
+                        # print ('----'+key)
+                        # print (value)
+                        new_user_profile[key] = value
 
+                        if isinstance(value, list):
+                            update_single_user["password"] = value[0]["password"]
+                            update_single_user["payment_method"] = value[0]["payment_method"]
+                            update_single_user["payment_method_visa"] = value[0]["payment_method_visa"]
+                            update_single_user["payment_method_master"] = value[0]["payment_method_master"]
+                            update_single_user["payment_method_wechat"] = value[0]["payment_method_wechat"]
+                        else:
+                            update_single_user[key] = value
 
-#     @api.response(200, 'OK')
-#     @api.response(201, 'Created')
-#     @api.response(404, 'Requested Resource Does Not Exist')
-#     @api.doc(description='Import auction items from local database')
-#     @api.expect(indicator_model)
-#     def post(self):
+                    # selected_data[index] = update_single_user
+                    col.add_one_dict_to_array(
+                        {"col_id": "c1"}, {"$push": {"user_profile": update_single_user}})
+                    response = {
+                        "message": "OK",
+                        "data": new_user_profile
+                    }
+                    # print(f'after update request, the users in database are {user_tmp_database}')
+                else:
+                    response = {
+                        "message": "User did not specify any field to update",
+                        "data": single_user
+                    }
+                    return response, 200
 
-#         response = {}
-#         return response, 200
+        if found == True:
+            return response, 200
+
+        response = {
+            "message": "Specified user id does not exist",
+            "data": ""
+        }
+        return response, 404
 
 
 #######################################
 #  Routes for a single auction item.  #
 #######################################
-
 """
 
 POST: Create a an auction item
@@ -249,6 +417,7 @@ user_input_bidding_info = api.model(
         "proposal_price": fields.Float,
     }
 )
+
 returned_bidding_info = api.model(
     "Bidding response returned",
     {
@@ -262,26 +431,26 @@ returned_bidding_info = api.model(
 user_input_single_auction_item = api.model(
     'User input to create auction',
     {
-        "seller_name":fields.String,
-        "seller_id":fields.Integer,
-        "category_id":fields.Integer,
-        "title":fields.String,
-        "description":fields.String,
-        "end_date":fields.String,
-        "price":fields.Float,
-        "image_url":fields.String,
+        "seller_name": fields.String,
+        "seller_id": fields.Integer,
+        "category_id": fields.Integer,
+        "title": fields.String,
+        "description": fields.String,
+        "end_time": fields.String,
+        "price": fields.Float,
+        "image": fields.String,
     }
 )
 
 auction_info_update = api.model(
     'Update auction details (user may specify only some of the fields)',
     {
-        "category_id":fields.Integer,
-        "title":fields.String,
-        "description":fields.String,
-        "end_date":fields.String,
-        "price":fields.Float,
-        "image_url":fields.String,
+        "category_id": fields.Integer,
+        "title": fields.String,
+        "description": fields.String,
+        "end_time": fields.String,
+        "price": fields.Float,
+        "image": fields.String,
     }
 )
 
@@ -296,168 +465,25 @@ auction_info = api.model(
         "description": fields.String,
         "updated": fields.String,
         "created": fields.String,
-        "end_date": fields.String,
-        "price": fields.Float, #start price
+        "end_time": fields.String,
+        "price": fields.Float,  # start price
         "image_url": fields.String,
         "bidding_info": fields.List(fields.Nested(user_input_bidding_info)),
         "status": fields.String
     }
 )
 
-
-@ns_auction.route('')
-class CreateSingleAuctionItem(Resource):
-    @api.response(200, 'OK')
-    @api.response(404, 'Failed to create a new auction')
-    @api.expect(user_input_single_auction_item)
-    @api.doc(description="create an auction item")
-    def post(self):
-
-        user_input_json = request.json
-        seller_name = user_input_json['seller_name']
-        seller_id = user_input_json['seller_id']
-        category_id = user_input_json['category_id']
-        title = user_input_json['title']
-        description = user_input_json["description"]
-        end_date = user_input_json["end_date"]
-        price = user_input_json["price"]
-        image_url = user_input_json["image_url"]
-
-        new_auction = \
-        {
-            "item_id": 0,
-            "seller_name": seller_name,
-            "seller_id":seller_id,
-            "category_id":category_id,
-            "title":title,
-            "description": description,
-            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "end_date":end_date,
-            "price":price,
-            "image_url":image_url,
-            "bidding_info":[],
-            "status":"bidding"
-        }
-        message = "Auction create successfully"
-        response = \
-        {
-            "message":message,
-            "data":new_auction
-        }
-
-        dummy_database.append(new_auction)
-        return response,200
-
-
-@ns_auction.route('/<item_id>')
-@api.param('item_id','Item ID given when the auction is created')
-class SingleAuctionItemOperations(Resource):
-    @api.response(200, 'OK')
-    @api.response(404, 'Specified item does not exist')
-    @api.doc(description="get information of an auction item")
-    def get(self,item_id):
-        item_id = int(item_id)
-        status_code = 200
-        try:
-            retrieved_item = dummy_database[item_id]
-            message = "OK"
-        except IndexError:
-            retrieved_item = ""
-            message = "Specified item does not exist"
-            status_code = 404
-        response = \
-            {
-                "message": message,
-                "data":retrieved_item
-            }
-
-        return response,status_code
-
-    @api.response(200, 'OK')
-    @api.response(404, 'Specified item does not exist')
-    @api.expect(auction_info_update)
-    @api.doc(description="Update auction item details")
-    def put(self,item_id):
-        item_id = int(item_id)
-        status_code = 200
-        user_input_json = request.json
-        message = "Auction details have been updated"
-        try:
-            target_auction = dummy_database[item_id]
-        except IndexError:
-            target_auction = ""
-            message = "Specified item does not exist"
-            status_code = 404
-
-        if len(user_input_json.keys()) != 0:
-            # update auction details
-            for k in user_input_json.keys():
-                target_auction[k] = user_input_json[k]
-
-            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-            dummy_database[item_id] = target_auction
-            updated_auction = target_auction
-        else:
-            message = "User did not specify any field to update"
-            updated_auction = ""
-        response = \
-            {
-                "message":message,
-                "data":updated_auction
-            }
-        return response, status_code
-
-###################################
-#  Routes for bidding management  #
-###################################
-
-# Propose a bidding
-@ns_bidding.route('/<item_id>')
-@api.param('item_id','Item ID given when the auction is created')
-class BiddingManagement(Resource):
-
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.expect(user_input_bidding_info)
-    @api.doc(description="Propose a bid on an item")
-    def post(self,item_id):
-        item_id = int(item_id)
-        user_input_json = request.json
-        new_bidding_info = user_input_json
-        if_overbid = False
-        message = "The bidding has been created successfully"
-        status_code = 200
-        # update database
-        try:
-            if_no_bidding = True if len(dummy_database[item_id]["bidding_info"]) == 0 else False
-            if if_no_bidding:
-                dummy_database[item_id]["bidding_info"].append(new_bidding_info)
-            else:
-                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"];
-                new_proposed_price = new_bidding_info["proposal_price"]
-                if_overbid = True if new_proposed_price > current_highest_price else False
-                if if_overbid:
-                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
-                else:
-                    message = "Bidding failed, the new price is not higher than the current price"
-
-        except IndexError:
-            message = "Specified item does not exist"
-            status_code = 404
-
-        data = {
-            "item_id":item_id,
-            "overbid":if_overbid,
-            "bidding_info":new_bidding_info
-        }
-        response = \
-            {
-                "message": message,
-                "data":data
-            }
-        return response, status_code
+# user_input_filter = api.model(
+#    'User input to search',
+#    {
+#        "location":fields.String,
+#        "start_price":fields.String,
+#        "end_price":fields.Integer,
+#        "start_date":fields.Integer,
+#        "end_time":fields.String,
+#        "category":fields.String,
+#    }
+# )
 
 
 @ns_auction.route('')
@@ -467,110 +493,200 @@ class CreateSingleAuctionItem(Resource):
     @api.expect(user_input_single_auction_item)
     @api.doc(description="create an auction item")
     def post(self):
-
-        user_input_json = request.json
-        seller_name = user_input_json['seller_name']
-        seller_id = user_input_json['seller_id']
-        category_id = user_input_json['category_id']
-        title = user_input_json['title']
-        description = user_input_json["description"]
-        end_date = user_input_json["end_date"]
-        price = user_input_json["price"]
-        image_url = user_input_json["image_url"]
+        au_col = mydb['auctions']
 
         new_auction = \
-        {
-            "item_id": 0,
-            "seller_name": seller_name,
-            "seller_id":seller_id,
-            "category_id":category_id,
-            "title":title,
-            "description": description,
-            "created":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "updated":datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "end_date":end_date,
-            "price":price,
-            "image_url":image_url,
-            "bidding_info":[],
-            "status":"bidding"
-        }
-        message = "Auction create successfully"
-        response = \
-        {
-            "message":message,
-            "data":new_auction
-        }
+            {
+                "id": au_col.count_documents({}),
+                "created": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                "updated": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                "bidding_info": [],
+                "status": "bidding"
+            }
 
-        dummy_database.append(new_auction)
-        return response,200
+        user_input = request.json
+        for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
+            new_auction[i] = user_input[i]
+        # TODO Add input data validation
+        try:
+            au_col.insert_one(new_auction)
+            del new_auction['_id']
 
-
-
-
+            message = "Auction create successfully"
+            response = \
+                {
+                    "message": message,
+                    "data": new_auction
+                }
+            return response, 200
+        except:
+            return {'message': 'Bad Request'}, 400
 
 
 @ns_auction.route('/<item_id>')
-@api.param('item_id','Item ID given when the auction is created')
+@api.param('item_id', 'Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="get information of an auction item")
-    def get(self,item_id):
-        item_id = int(item_id)
-        status_code = 200
+    def get(self, item_id):
         try:
-            retrieved_item = dummy_database[item_id]
-            message = "OK"
-        except IndexError:
-            retrieved_item = ""
-            message = "Specified item does not exist"
-            status_code = 404
-        response = \
-            {
-                "message": message,
-                "data":retrieved_item
-            }
+            au_col = mydb['auctions']
+            retrieved_item = au_col.find_one({'id': int(item_id)})
+            del retrieved_item['_id']
 
-        return response,status_code
+            return {"message": "OK", "data": retrieved_item}, 200
+        except:
+            return {"message":  "Specified item does not exist"}, 404
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
     @api.expect(auction_info_update)
     @api.doc(description="Update auction item details")
-    def put(self,item_id):
-        item_id = int(item_id)
-        status_code = 200
-        user_input_json = request.json
-        message = "Auction details have been updated"
+    def put(self, item_id):
+        user_input = request.json
         try:
-            target_auction = dummy_database[item_id]
-        except IndexError:
-            target_auction = ""
-            message = "Specified item does not exist"
-            status_code = 404
+            au_col = mydb['auctions']
+            retrieved_item = au_col.find_one({'id': int(item_id)})
 
-        if len(user_input_json.keys()) != 0:
-            # update auction details
-            for k in user_input_json.keys():
-                target_auction[k] = user_input_json[k]
+            if retrieved_item == None:
+                return {"message":  "Specified item does not exist"}, 404
 
-            target_auction["updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            del retrieved_item['_id']
 
-            dummy_database[item_id] = target_auction
-            updated_auction = target_auction
-        else:
-            message = "User did not specify any field to update"
-            updated_auction = ""
-        response = \
-            {
-                "message":message,
-                "data":updated_auction
-            }
-        return response, status_code
+            update_data = {}
+            for k in ['category_id', 'title', "description", "end_time", "price", "image"]:
+                if k in user_input.keys() and retrieved_item[k] != user_input[k]:
+                    update_data[k] = user_input[k]
+            # TODO more fields validation
 
+            res = au_col.update_one({"id": int(item_id)}, {
+                                    "$set": update_data})
+            return {"message": "Auction details have been updated"}, 200
+        except:
+            return {"message":  "Auction details have been updated"}, 404
+        # if len(user_input_json.keys()) != 0:
+        #     # update auction details
+        #     for k in user_input_json.keys():
+        #         target_auction[k] = user_input_json[k]
 
+        #     target_auction["updated"] = datetime.now().strftime(
+        #         '%Y-%m-%d %H:%M:%S')
 
+        #     dummy_database[item_id] = target_auction
+        #     updated_auction = target_auction
+        # else:
+        #     message = "User did not specify any field to update"
+        #     updated_auction = ""
+        # response = \
+        #     {
+        #         "message": message,
+        #         "data": updated_auction
+        #     }
+        return {"message": "OK", "data": retrieved_item}, 200
 
+# search by key
+@ns_auction.route('/search-key/<string:search_key>')
+class Auction_search1(Resource):
+    @api.response(200, 'Data fetched successfully')
+    @api.response(400, 'Bad request')
+    @api.response(404, 'No data found')
+    @api.doc(description="Search by key-word")
+    def get(self, search_key):
+        collection = mydb['auctions']
+        result = []
+        easy_search = "\'" + search_key + "\'"
+        print(search_key)
+        cursor = collection.find(
+            {"$text": {"$search": easy_search}}, {"_id": 0})
+        result = []
+        for entry in cursor:
+            result.append(entry)
+
+        if not result:
+            return {
+                'message':
+                    'no auction find'
+            }, 404
+
+        return result, 200
+
+# search by filter
+@ns_auction.route('/search/filter')
+class Auction_search2(Resource):
+    @api.response(200, 'Data fetched successfully')
+    @api.response(400, 'Bad request')
+    @api.response(404, 'No data found')
+    # @api.expect(user_input_filter)
+    @api.param('location', '')
+    @api.param('category', '')
+    @api.param('endPrice', '')
+    @api.param('startPrice', '')
+    @api.param('endDate', 'YYYY/MM/DD')
+    @api.param('startDate', 'YYYY/MM/DD')
+    @api.doc(description="Search by filter")
+    def get(self):
+        collection = mydb['auctions']
+        result = []
+        mid = []
+        print(request.args)
+        print("123")
+        location = request.args.get('location')
+
+        endDate = request.args.get('endDate')
+        startDate = request.args.get('startDate')
+
+        category = request.args.get('category')
+
+        endPrice = request.args.get('endPrice')
+        startPrice = request.args.get('startPrice')
+
+        if startPrice is None:
+            startPrice = 0
+        if endPrice is None:
+            endPrice = 10000  # change later
+
+        # if start < 0 happen?
+
+        # change data format
+        if startDate is None:
+            startDate = '2000/01/10'
+        if endDate is None:
+            endDate = datetime.datetime.now().strftime("%Y/%m/%d")
+
+        endDateP = datetime.datetime.strptime(endDate, "%Y/%m/%d")
+        startDateP = datetime.datetime.strptime(startDate, "%Y/%m/%d")
+
+        cursor = collection.find()
+
+        for entry in cursor:
+            entry['_id'] = str(entry['_id'])
+            result.append(entry)
+            mid.append(entry)
+
+        for entry in mid:
+            entryDateP = datetime.datetime.strptime(
+                entry['end_time'], "%Y-%m-%d %H:%M:%S")
+            print(entryDateP)
+            print(startDateP)
+            print()
+            if entryDateP <= startDateP or entryDateP >= endDateP:
+                if entry in result:
+                    result.remove(entry)
+
+        for entry in mid:
+            if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
+                if entry in result:
+                    result.remove(entry)
+
+        for entry in mid:
+            if category and entry['category_id'] != category:
+                if entry in result:
+                    result.remove(entry)
+
+        # location is db
+
+        return result, 200
 
 
 ###################################
@@ -579,14 +695,14 @@ class SingleAuctionItemOperations(Resource):
 
 # Propose a bidding
 @ns_bidding.route('/<item_id>')
-@api.param('item_id','Item ID given when the auction is created')
+@api.param('item_id', 'Item ID given when the auction is created')
 class BiddingManagement(Resource):
 
     @api.response(200, 'OK')
     @api.response(404, 'Requested Resource Does Not Exist')
     @api.expect(user_input_bidding_info)
     @api.doc(description="Propose a bid on an item")
-    def post(self,item_id):
+    def post(self, item_id):
         item_id = int(item_id)
         user_input_json = request.json
         new_bidding_info = user_input_json
@@ -595,9 +711,11 @@ class BiddingManagement(Resource):
         status_code = 200
         # update database
         try:
-            if_no_bidding = True if len(dummy_database[item_id]["bidding_info"]) == 0 else False
+            if_no_bidding = True if len(
+                dummy_database[item_id]["bidding_info"]) == 0 else False
             if if_no_bidding:
-                dummy_database[item_id]["bidding_info"].append(new_bidding_info)
+                dummy_database[item_id]["bidding_info"].append(
+                    new_bidding_info)
             else:
                 current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
                 new_proposed_price = new_bidding_info["proposal_price"]
@@ -612,30 +730,82 @@ class BiddingManagement(Resource):
             status_code = 404
 
         data = {
-            "item_id":item_id,
-            "overbid":if_overbid,
-            "bidding_info":new_bidding_info
+            "item_id": item_id,
+            "overbid": if_overbid,
+            "bidding_info": new_bidding_info
         }
         response = \
             {
                 "message": message,
-                "data":data
+                "data": data
+            }
+        return response, status_code
+
+###################################
+#  Routes for bidding management  #
+###################################
+
+# Propose a bidding
+@ns_bidding.route('/<item_id>')
+@api.param('item_id', 'Item ID given when the auction is created')
+class BiddingManagement(Resource):
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Requested Resource Does Not Exist')
+    @api.expect(user_input_bidding_info)
+    @api.doc(description="Propose a bid on an item")
+    def post(self, item_id):
+        item_id = int(item_id)
+        user_input_json = request.json
+        new_bidding_info = user_input_json
+        if_overbid = False
+        message = "The bidding has been created successfully"
+        status_code = 200
+        # update database
+        try:
+            if_no_bidding = True if len(
+                dummy_database[item_id]["bidding_info"]) == 0 else False
+            if if_no_bidding:
+                dummy_database[item_id]["bidding_info"].append(
+                    new_bidding_info)
+            else:
+                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
+                new_proposed_price = new_bidding_info["proposal_price"]
+                if_overbid = True if new_proposed_price > current_highest_price else False
+                if if_overbid:
+                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
+                else:
+                    message = "Bidding failed, the new price is not higher than the current price"
+
+        except IndexError:
+            message = "Specified item does not exist"
+            status_code = 404
+
+        data = {
+            "item_id": item_id,
+            "overbid": if_overbid,
+            "bidding_info": new_bidding_info
+        }
+        response = \
+            {
+                "message": message,
+                "data": data
             }
         return response, status_code
 
 
 # Accept or decline a bidding
 @ns_bidding.route('/operations/<item_id>/<operation>')
-@api.param('item_id','Item ID given when the auction is created')
+@api.param('item_id', 'Item ID given when the auction is created')
 @api.doc(params={
     'item_id': 'Item ID given when the auction is created',
     'operation': '\"accept\"\: accept a bid, \"decline\"\: decline a bid '
-     })
+})
 class AcceptOrDeclineBiddings(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Requested Resource Does Not Exist')
     @api.doc(description="Accept or decline a the highest bidding on an item")
-    def put(self,item_id,operation):
+    def put(self, item_id, operation):
         item_id = int(item_id)
         status_code = 200
         try:
@@ -646,7 +816,7 @@ class AcceptOrDeclineBiddings(Resource):
             elif operation == "decline":
                 dummy_database[item_id]["status"] = "Declined"
                 message = "The bid has been declined"
-            else :
+            else:
                 message = "Invalid operation"
         except IndexError:
             message = "Specified item does not exist"
@@ -659,4 +829,4 @@ class AcceptOrDeclineBiddings(Resource):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9999, debug=True)
+    app.run(host='127.0.0.1', port=9999, debug=True)

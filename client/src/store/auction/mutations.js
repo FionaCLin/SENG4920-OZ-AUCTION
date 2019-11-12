@@ -10,6 +10,9 @@
 // export function getMyWishList(state) {
 //   return state.myWishList;
 // }
+import aws from "aws-sdk";
+import secret from "../../../src/awsconfig.json";
+
 export function placeBidding(state, bid) {
   let auction = null;
   for (let i of state.auctions) {
@@ -29,4 +32,22 @@ export function placeBidding(state, bid) {
   console.log("mu", state, bid, auction);
 }
 
+export function uploadS3(file, done) {
+  console.log(file);
+  const s3 = new aws.S3(secret);
+
+  let data = file[0];
+  s3.upload(
+    {
+      Bucket: "seng4920album",
+      Key: `${this.title}-${Date.now()}-${data.name}`,
+      Body: data,
+      ACL: "public-read"
+    },
+    (err, res) => {
+      console.log(err, res);
+      done(err, res);
+    }
+  );
+}
 //Sync
