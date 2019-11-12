@@ -63,24 +63,24 @@ class local_user_account_database:
         if not os.path.isfile('user_accounts.csv'):
             with open('user_accounts.csv', 'w', newline='') as csvf:
                 accountWriter = csv.writer(csvf)
-                accountWriter.writerow(['username', 'password'])
+                accountWriter.writerow(['email', 'password'])
         else:
             acc = pd.read_csv('user_accounts.csv')
             for index, row in acc.iterrows():
-                username, password = row['username'], row['password']
-                if username not in self.users:
-                    self.users[username] = password
+                email, password = row['email'], row['password']
+                if email not in self.users:
+                    self.users[email] = password
                 self.num_users = index + 1
 
-    def save_user(self, username, password):
-        self.users.setdefault(username, password)
+    def save_user(self, email, password):
+        self.users.setdefault(email, password)
         with open('user_accounts.csv', 'a', newline='') as csvf:
             accountWriter = csv.writer(csvf)
-            accountWriter.writerow([username, password])
+            accountWriter.writerow([email, password])
             self.num_users += 1
     
-    def varify_user(self, username, password):
-        if username in self.users and self.users[username] == password:
+    def varify_user(self, email, password):
+        if email in self.users and self.users[email] == password:
             return True
         else:
             return False
@@ -92,8 +92,8 @@ class local_user_account_database:
         return self.num_users
 
 
-    def is_in_database(self, username):
-        return username in self.users
+    def is_in_database(self, email):
+        return email in self.users
 
 
 col = Collection()

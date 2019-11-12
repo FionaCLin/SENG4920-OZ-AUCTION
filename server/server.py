@@ -29,9 +29,9 @@ class Token_authentication:
         self.active_token = set()
         self.serializer = JSONWebSignatureSerializer(secret_key)
 
-    def generate_token(self, username):
+    def generate_token(self, email):
         info = {
-            'username': username,
+            'email': email,
             'creation_time': time()
         }
 
@@ -47,7 +47,7 @@ class Token_authentication:
     def get_token_info(self, token):
         print(f'validating token {token}')
         info = self.serializer.loads(token.encode())
-        return info['username']
+        return info['email']
 
     def validate_token(self, token):
         print(f'validating token {token}')
@@ -61,7 +61,7 @@ class Token_authentication:
             print(f'now active tokens are {self.active_token}')
             raise SignatureExpired(
                 "The Token has been expired; get a new token!")
-        return info['username']
+        return info['email']
 
     def delete_token(self, token):
         print('--- now active tokens are '+str(self.active_token))
@@ -121,12 +121,12 @@ ns_bidding = api.namespace(
 
 
 # signin_model = api.model('signin_info', {
-#     'username': fields.String,
+#     'email': fields.String,
 #     'password': fields.String
 # })
 
 # signin_parser = reqparse.RequestParser()
-# signin_parser.add_argument('username', type=str)
+# signin_parser.add_argument('email', type=str)
 # signin_parser.add_argument('password', type=str)
 
 db = local_user_account_database()
@@ -145,67 +145,33 @@ mydb = client["runoobdb"]
 
 indicator_model = api.model(
     'credentials', {
-        'username': fields.String,
+        'email': fields.String,
         'password': fields.String
     }
 )
 
 indicator_parser = reqparse.RequestParser()
-indicator_parser.add_argument('username', type=str)
+indicator_parser.add_argument('email', type=str)
 indicator_parser.add_argument('password', type=str)
 
-
-payment_method_visa = api.model(
-    'Payment method: visa',
-    {
-        "card_number": fields.String,
-        "name_on_card": fields.String,
-        "expiry_month": fields.String,
-        "expiry_year": fields.String,
-        "cvv": fields.String
-    }
-)
-
-
-payment_method_master = api.model(
-    'Payment method: master',
-    {
-        "card_number": fields.String,
-        "name_on_card": fields.String,
-        "expiry_month": fields.String,
-        "expiry_year": fields.String,
-        "cvv": fields.String
-    }
-)
-
-
-payment_method_wechat = api.model(
-    'Payment method: wechat',
-    {
-        "payment_number": fields.String
-    }
-)
 
 
 user_profile_invisiable = api.model(
     "User profile invisiable", {
         "password": fields.String,
-        "payment_method": fields.String,
-        "payment_method_visa": fields.List(fields.Nested(payment_method_visa)),
-        "payment_method_master": fields.List(fields.Nested(payment_method_master)),
-        "payment_method_wechat": fields.List(fields.Nested(payment_method_wechat))
+        "payment_method": fields.String
     }
 )
 
 
 user_profile = api.model(
     'User profile', {
-        "username": fields.String,
+        "email": fields.String,
         "first_name": fields.String,
         "last_name": fields.String,
-        "email": fields.String,
         "age": fields.String,
         "phone_number": fields.String,
+        "favorites": fields.List(fields.Nested(auction_info)),
         "invisiable": fields.List(fields.Nested(user_profile_invisiable))
     }
 )
@@ -213,7 +179,7 @@ user_profile = api.model(
 
 @ns_account.route('/register')
 class Register(Resource):
-    @api.response(200, 'Username Already Exists')
+    @api.response(200, 'Email Already Exists')
     @api.response(201, 'Account Created Successfully')
     @api.response(400, 'Bad Request Error')
     @api.doc(description="Register an account")
@@ -231,22 +197,19 @@ class Register(Resource):
             return {'message': 'Bad Request!'}, 400
         try:
             for single_user in selected_data:
-                if single_user["username"] == accountInfo['username']:
-                    return {'message': 'Username Already Exists'}, 200
+                if single_user["email"] == accountInfo['email']:
+                    return {'message': 'Email Already Exists'}, 200
 
             new_user = {
                 "user_id": len(selected_data),
-                "username": accountInfo['username'],
+                "email": accountInfo['email'],
                 "password": accountInfo['password'],
                 "first_name": "",
                 "last_name": "",
-                "email": "",
                 "age": "",
                 "phone_number": "",
                 "payment_method": "",
-                "payment_method_visa": [],
-                "payment_method_master": [],
-                "payment_method_wechat": []
+                "favorites": []
             }
             col.add_one_dict_to_array(
                 {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
@@ -257,7 +220,6 @@ class Register(Resource):
         except KeyError:
             return {'message': 'Bad Request!'}, 400
 
-## TODO login works email instead of username
 
 @ns_account.route('/signin')
 class Signin(Resource):
@@ -280,8 +242,8 @@ class Signin(Resource):
                     selected_data = item["user_profile"]
 
             for single_user in selected_data:
-                if single_user["username"] == account_info['username'] and single_user["password"] == account_info['password']:
-                    return {"token": auth.generate_token(account_info['username'])}, 200
+                if single_user["email"] == account_info['email'] and single_user["password"] == account_info['password']:
+                    return {"token": auth.generate_token(account_info['email'])}, 200
             return {"message": "authorization has been refused."}, 401
         except:
             return {"message": "authorization has been refused."}, 401
@@ -312,12 +274,12 @@ class Manage_profile(Resource):
         for single_user in selected_data:
             if str(single_user["user_id"]) == str(request_user_id):
                 new_user_profile = dict()
-                new_user_profile["email"] = single_user["email"]
                 new_user_profile["age"] = single_user["age"]
                 new_user_profile["phone_number"] = single_user["phone_number"]
-                new_user_profile["username"] = single_user["username"]
+                new_user_profile["email"] = single_user["email"]
                 new_user_profile["first_name"] = single_user["first_name"]
                 new_user_profile["last_name"] = single_user["last_name"]
+                new_user_profile["favorites"] = single_user["favorites"]
 
                 response = {
                     "message": "OK",
@@ -368,9 +330,6 @@ class Manage_profile(Resource):
                         if isinstance(value, list):
                             update_single_user["password"] = value[0]["password"]
                             update_single_user["payment_method"] = value[0]["payment_method"]
-                            update_single_user["payment_method_visa"] = value[0]["payment_method_visa"]
-                            update_single_user["payment_method_master"] = value[0]["payment_method_master"]
-                            update_single_user["payment_method_wechat"] = value[0]["payment_method_wechat"]
                         else:
                             update_single_user[key] = value
 
