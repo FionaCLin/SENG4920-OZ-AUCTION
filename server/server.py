@@ -517,6 +517,22 @@ class SingleAuctionItemOperations(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
     @api.expect(auction_info_update)
+    @api.doc(description="Delete an auction")
+    def delete(self, item_id):
+        au_col = mydb['auctions']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+        if retrieved_item is None:
+            return {"message": "Specified item does not exist"}, 404
+
+        try:
+            res = au_col.update_one({"id": int(item_id)})
+            return {"message": "Specified item is deleted successfully","data":retrieved_item}
+        except:
+            return {"message": "Failed to delete specified item"},200
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(auction_info_update)
     @api.doc(description="Update auction item details")
     def put(self, item_id):
         user_input = request.json
@@ -524,7 +540,7 @@ class SingleAuctionItemOperations(Resource):
             au_col = mydb['auctions']
             retrieved_item = au_col.find_one({'id': int(item_id)})
 
-            if retrieved_item == None:
+            if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
 
             del retrieved_item['_id']
@@ -715,15 +731,17 @@ class BiddingManagement(Resource):
         # except IndexError:
         #     message = "Specified item does not exist"
         #     status_code = 404
-        retrieved_item["bidding_info"].append(new_bidding_info)
-        # sort bidding info by proposal_price (descending)
-        sorted_bidding_info_list = sorted(retrieved_item["bidding_info"],
-                                          key=lambda i: i['proposal_price'], reverse=True)
-        current_highest_price = sorted_bidding_info_list[0]["proposal_price"]
         new_proposed_price = new_bidding_info["proposal_price"]
+        if len(retrieved_item["bidding_info"]) == 0:
+            current_highest_price = 0
+        else:
+            # sort bidding info by proposal_price (descending)
+            sorted_bidding_info_list = sorted(retrieved_item["bidding_info"],
+                                              key=lambda i: i['proposal_price'], reverse=True)
+            current_highest_price = sorted_bidding_info_list[0]["proposal_price"]
         if_overbid = True if new_proposed_price > current_highest_price else False
         if if_overbid:
-            retrieved_item["bidding_info"] = sorted_bidding_info_list
+            retrieved_item["bidding_info"].append(new_bidding_info)
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
         else:
             message = "Bidding failed, the new price is not higher than the current price"
