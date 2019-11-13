@@ -198,12 +198,12 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.data.tab == "one") {
+      if (this.$data.tab == "one") {
         this.$refs.normalForm.validate().then(
           success => {
             if (success) {
               // yay, models are correct
-              console.log(this.data.normal);
+              console.log(this.$data.normal);
             }
           },
           err => {
@@ -224,7 +224,7 @@ export default {
           success => {
             if (success) {
               // yay, models are correct
-              console.log(this.data.advanced);
+              console.log(this.$data.advanced);
             }
           },
           err => {
