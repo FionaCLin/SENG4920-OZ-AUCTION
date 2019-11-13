@@ -109,6 +109,7 @@
 <script>
 // import { required, minLength } from 'vuelidate/lib/validators'
 import { uploadImage } from "../helper";
+import { axiosInstance } from "boot/axios";
 
 let warning = {
   color: "red-5",
@@ -136,6 +137,8 @@ export default {
     };
   },
   created() {
+    console.log("here1");
+    console.log(this.data);
     if (this.edit) {
       console.log("edit", this.edit);
       this.id = Number(this.$route.params.id);
@@ -155,10 +158,32 @@ export default {
   },
   methods: {
     onSubmit() {
+      console.log(this.$data)
+      console.log("here2");
+      console.log(JSON.parse(localStorage.getItem('user')));
+      axiosInstance
+        .post("/auction", {
+          //seller_name: JSON.parse(localStorage.getItem('user')).first_name,
+          seller_name: "test",
+          seller_id: JSON.parse(localStorage.getItem('user')).user_id,
+          category_id: this.$data.categoryId,
+          title: this.$data.title,
+          description: this.$data.description,
+          end_time: this.$data.date.replace(/\//g,'-') + " 00:42:00",
+          price: new Number(this.$data.price),
+          image: this.$data.image
+        })
+        .then(response => {
+          console.log(response);
+        });
+      //connect to back-end
+
+
+      //
       // sellerName: "",
       // sellerId: "",
       if (this.edit) {
-        this.$refs.EditAuctionForm.validate().then(
+        this.$refs.EditAuctionForm.validate().then(//validate underfine
           success => {
             if (success) {
               // yay, models are correct
@@ -184,6 +209,8 @@ export default {
           }
         },
         err => {
+          console.log("build");
+          console.log(this.data);
           console.log(err);
 
           // oh no, user has filled in
