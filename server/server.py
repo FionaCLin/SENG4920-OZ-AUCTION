@@ -1,13 +1,12 @@
 import json
 from datetime import datetime, time
+import pymongo
 import uuid
 from flask_cors import CORS
 import re
-import pandas as pd
 import os
 import csv
 import base64
-import requests
 from flask import Flask, request, Response
 from flask_restplus import Resource, Api, fields, inputs, reqparse, abort
 from setup_database import *
@@ -17,9 +16,24 @@ from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignat
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
+# ===== database connection ===
+client = pymongo.MongoClient("mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
+mydb = client["runoobdb"]
+# =============================
+
 
 UPLOAD_FOLDER = './image/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+# datetime validation
+def validate_datetime_str(str):
+    try:
+        # check if the str match the format : YYYY-MM-DD HH:MM:SS e.g 2010-01-01 12:00:00
+        datetime.datetime.strptime(str,'%Y-%m-%d %H:%M:%S')
+        return True
+    except ValueError:
+        return False
+
 
 
 class Token_authentication:
@@ -40,25 +54,19 @@ class Token_authentication:
 
         new_token = token.decode()
         self.active_token.add(new_token)
-        print(f'adding a new token {new_token}')
-        print(f'active tokens are {self.active_token}')
         return new_token
 
     def get_token_info(self, token):
-        print(f'validating token {token}')
         info = self.serializer.loads(token.encode())
         return info['email']
 
     def validate_token(self, token):
-        print(f'validating token {token}')
         info = self.serializer.loads(token.encode())
 
         if token not in self.active_token:
             raise SignatureExpired("The Token is no longer active!")
         elif time() - info['creation_time'] > self.expire_time:
             self.active_token.discard(token)
-            print(f'now deleting token {token}')
-            print(f'now active tokens are {self.active_token}')
             raise SignatureExpired(
                 "The Token has been expired; get a new token!")
         return info['email']
@@ -66,8 +74,6 @@ class Token_authentication:
     def delete_token(self, token):
         print('--- now active tokens are '+str(self.active_token))
         self.active_token.discard(token)
-        print(f'now deleting token {token}')
-        print(f'now active tokens are {self.active_token}')
         return True
 
 
@@ -75,7 +81,6 @@ def requires_authentication(authen):
     @wraps(authen)
     def decorated(*args, **kwargs):
         token = request.headers.get('AUTH-TOKEN')
-        print(f'geting token {token}')
         if not token:
             abort(401, 'Authentication token is missing')
         try:
@@ -218,7 +223,6 @@ class Register(Resource):
         for item in alldata:
             if "user_profile" in item:
                 selected_data = item["user_profile"]
-        print(f'before request, the users in database are {selected_data}')
         try:
             accountInfo = request.json
         except:
@@ -242,7 +246,6 @@ class Register(Resource):
             col.add_one_dict_to_array(
                 {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
 
-            print(f'after request, the users in database are {selected_data}')
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
@@ -363,7 +366,6 @@ class Manage_profile(Resource):
                                 update_single_user["favorites"] = value[0]
                         else:
                             update_single_user[key] = value
-
                     # selected_data[index] = update_single_user
                     col.add_one_dict_to_array(
                         {"col_id": "c1"}, {"$push": {"user_profile": update_single_user}})
@@ -371,7 +373,6 @@ class Manage_profile(Resource):
                         "message": "OK",
                         "data": new_user_profile
                     }
-                    # print(f'after update request, the users in database are {user_tmp_database}')
                 else:
                     response = {
                         "message": "User did not specify any field to update",
@@ -473,7 +474,14 @@ class CreateSingleAuctionItem(Resource):
         user_input = request.json
         for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
             new_auction[i] = user_input[i]
-        # TODO Add input data validation
+            # Input validation: Detect missing fields
+            if user_input[i] == "" or user_input[i] is None:
+                return {'message': 'Bad Request: field ' + i + ' is missing'}, 400
+
+        # Input validation: End_time validation
+        if not validate_datetime_str(user_input['end_time']):
+            return {'message': 'Bad Request: invalid end_time format'}
+
         try:
             au_col.insert_one(new_auction)
             del new_auction['_id']
@@ -496,14 +504,30 @@ class SingleAuctionItemOperations(Resource):
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="get information of an auction item")
     def get(self, item_id):
+        au_col = mydb['auctions']
         try:
-            au_col = mydb['auctions']
             retrieved_item = au_col.find_one({'id': int(item_id)})
             del retrieved_item['_id']
 
             return {"message": "OK", "data": retrieved_item}, 200
         except:
             return {"message":  "Specified item does not exist"}, 404
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.doc(description="Delete an auction")
+    def delete(self, item_id):
+        au_col = mydb['auctions']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+        del retrieved_item['_id']
+        if retrieved_item is None:
+            return {"message": "Specified item does not exist"}, 404
+
+        try:
+            res = au_col.remove({"id": int(item_id)})
+            return {"message": "Specified item is deleted successfully","data":retrieved_item}
+        except:
+            return {"message": "Failed to delete specified item"},200
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
@@ -515,16 +539,19 @@ class SingleAuctionItemOperations(Resource):
             au_col = mydb['auctions']
             retrieved_item = au_col.find_one({'id': int(item_id)})
 
-            if retrieved_item == None:
+            if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
 
             del retrieved_item['_id']
+
+            # Input validation: End_time validation
+            if not validate_datetime_str(user_input['end_time']):
+                return {'message': 'Bad Request: invalid end_time format'}
 
             update_data = {}
             for k in ['category_id', 'title', "description", "end_time", "price", "image"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
-            # TODO more fields validation
 
             res = au_col.update_one({"id": int(item_id)}, {
                                     "$set": update_data})
@@ -549,7 +576,7 @@ class SingleAuctionItemOperations(Resource):
         #         "message": message,
         #         "data": updated_auction
         #     }
-        return {"message": "OK", "data": retrieved_item}, 200
+        # return {"message": "OK", "data": retrieved_item}, 200
 
 # search by key
 @ns_auction.route('/search-key/<string:search_key>')
@@ -669,87 +696,57 @@ class BiddingManagement(Resource):
     @api.expect(user_input_bidding_info)
     @api.doc(description="Propose a bid on an item")
     def post(self, item_id):
-        item_id = int(item_id)
-        user_input_json = request.json
-        new_bidding_info = user_input_json
-        if_overbid = False
+        au_col = mydb['auctions']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+
+        if retrieved_item is None:
+            return {"message": "Specified item does not exist"}, 404
+
+        del retrieved_item['_id']
+        new_bidding_info = request.json
+        # Input validation: Detect missing fields
+        for k in ['user_id','proposal_price']:
+            if new_bidding_info[k] == "" or new_bidding_info[k] is None:
+                return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
+
         message = "The bidding has been created successfully"
         status_code = 200
         # update database
-        try:
-            if_no_bidding = True if len(
-                dummy_database[item_id]["bidding_info"]) == 0 else False
-            if if_no_bidding:
-                dummy_database[item_id]["bidding_info"].append(
-                    new_bidding_info)
-            else:
-                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
-                new_proposed_price = new_bidding_info["proposal_price"]
-                if_overbid = True if new_proposed_price > current_highest_price else False
-                if if_overbid:
-                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
-                else:
-                    message = "Bidding failed, the new price is not higher than the current price"
-
-        except IndexError:
-            message = "Specified item does not exist"
-            status_code = 404
-
-        data = {
-            "item_id": item_id,
-            "overbid": if_overbid,
-            "bidding_info": new_bidding_info
-        }
-        response = \
-            {
-                "message": message,
-                "data": data
-            }
-        return response, status_code
-
-###################################
-#  Routes for bidding management  #
-###################################
-
-# Propose a bidding
-@ns_bidding.route('/<item_id>')
-@api.param('item_id', 'Item ID given when the auction is created')
-class BiddingManagement(Resource):
-
-    @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
-    @api.expect(user_input_bidding_info)
-    @api.doc(description="Propose a bid on an item")
-    def post(self, item_id):
-        item_id = int(item_id)
-        user_input_json = request.json
-        new_bidding_info = user_input_json
-        if_overbid = False
-        message = "The bidding has been created successfully"
-        status_code = 200
-        # update database
-        try:
-            if_no_bidding = True if len(
-                dummy_database[item_id]["bidding_info"]) == 0 else False
-            if if_no_bidding:
-                dummy_database[item_id]["bidding_info"].append(
-                    new_bidding_info)
-            else:
-                current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
-                new_proposed_price = new_bidding_info["proposal_price"]
-                if_overbid = True if new_proposed_price > current_highest_price else False
-                if if_overbid:
-                    dummy_database[item_id]["bidding_info"][0] = new_bidding_info
-                else:
-                    message = "Bidding failed, the new price is not higher than the current price"
-
-        except IndexError:
-            message = "Specified item does not exist"
-            status_code = 404
+        # try:
+        #     if_no_bidding = True if len(
+        #         retrieved_item["bidding_info"]) == 0 else False
+        #     if if_no_bidding:
+        #         retrieved_item["bidding_info"].append(
+        #             new_bidding_info)
+        #     else:
+        #         current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
+        #         new_proposed_price = new_bidding_info["proposal_price"]
+        #         if_overbid = True if new_proposed_price > current_highest_price else False
+        #         if if_overbid:
+        #             dummy_database[item_id]["bidding_info"][0] = new_bidding_info
+        #         else:
+        #             message = "Bidding failed, the new price is not higher than the current price"
+        #
+        # except IndexError:
+        #     message = "Specified item does not exist"
+        #     status_code = 404
+        new_proposed_price = new_bidding_info["proposal_price"]
+        if len(retrieved_item["bidding_info"]) == 0:
+            current_highest_price = 0
+        else:
+            # sort bidding info by proposal_price (descending)
+            sorted_bidding_info_list = sorted(retrieved_item["bidding_info"],
+                                              key=lambda i: i['proposal_price'], reverse=True)
+            current_highest_price = sorted_bidding_info_list[0]["proposal_price"]
+        if_overbid = True if new_proposed_price > current_highest_price else False
+        if if_overbid:
+            retrieved_item["bidding_info"].append(new_bidding_info)
+            au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
+        else:
+            message = "Bidding failed, the new price is not higher than the current price"
 
         data = {
             "item_id": item_id,
-            "overbid": if_overbid,
             "bidding_info": new_bidding_info
         }
         response = \
@@ -772,21 +769,22 @@ class AcceptOrDeclineBiddings(Resource):
     @api.response(404, 'Requested Resource Does Not Exist')
     @api.doc(description="Accept or decline a the highest bidding on an item")
     def put(self, item_id, operation):
-        item_id = int(item_id)
+        au_col = mydb['auctions']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+        if retrieved_item is None:
+            return {"message": "Specified item does not exist"}, 404
+
+        del retrieved_item['_id']
         status_code = 200
-        try:
-            print(operation)
-            if operation == "accept":
-                dummy_database[item_id]["status"] = "Accepted"
-                message = "The bid has been accepted"
-            elif operation == "decline":
-                dummy_database[item_id]["status"] = "Declined"
-                message = "The bid has been declined"
-            else:
-                message = "Invalid operation"
-        except IndexError:
-            message = "Specified item does not exist"
-            status_code = 404
+        if operation == "accept":
+            retrieved_item["status"] = "Accepted"
+            message = "The bid has been accepted"
+        elif operation == "decline":
+            retrieved_item["status"] = "Declined"
+            message = "The bid has been declined"
+        else:
+            message = "Invalid operation"
+        au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
         response = \
             {
                 "message": message
