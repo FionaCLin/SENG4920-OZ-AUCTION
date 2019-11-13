@@ -36,7 +36,7 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
-import { mapGetters } from "vuex";
+import { axiosInstance } from "boot/axios";
 
 export default {
   name: "AuctionPage",
@@ -59,20 +59,24 @@ export default {
     }
   },
   beforeMount() {
+    this.fetch();
+  },
+  created() {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-
-    for (let i of this.$store.state.auction.auctions) {
-      let auction = i.auction_items.find(x => x.id === this.id);
-      console.log(i, auction);
-      if (auction) {
-        this.$data.auction = auction;
-        break;
-      }
-    }
+    this.fetch();
   },
   methods: {
+    fetch() {
+      axiosInstance
+        .get(`http://localhost:9999/auction/${this.id}`)
+        .then(res => {
+          console.log(res.data.data);
+          this.$data.auction = res.data.data;
+        })
+        .catch(err => console.log(err));
+    },
     addFavorite: function() {
       this.$store.commit("user/addFavorite", this.id);
     },
@@ -98,8 +102,7 @@ export default {
       } else {
         this.$data.error = "* Bidding price must greater than current price.";
       }
-    },
-    ...mapGetters("auction", ["getAuction"])
+    }
   }
 };
 </script>

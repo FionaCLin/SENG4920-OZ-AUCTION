@@ -56,24 +56,21 @@
           </q-td>
           <q-td key="seller_name" auto-width :props="props">
             <div>
-              <q-item
-                v-ripple
-                clickable
-                @click="userProfile(props.row.seller_id)"
-              >
+              <q-item v-ripple clickable>
+                <!-- @click="userProfile(props.row.seller_id)" -->
                 <q-item-section avatar>
                   <q-avatar>
-                    <img :src="user_avatar(props.row.seller_id)" />
+                    <!-- <img :src="user_avatar(props.row.seller_id)" /> -->
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ props.row.seller_name }}</q-item-label>
                   <q-item-label caption>
-                    <q-icon
+                    <!-- <q-icon
                       v-for="n in user_rating(props.row.seller_id)"
                       :key="n"
                       name="star"
-                    ></q-icon>
+                    ></q-icon> -->
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -112,16 +109,12 @@
                   clickable
                   @click="auctionItem(props.row.id)"
                 >
-                  <q-item-label v-if="col.name !== 'seller_name'" caption>{{
-                    col.value
-                  }}</q-item-label>
-                  <q-item
-                    v-else
-                    v-ripple
-                    clickable
-                    @click="userProfile(props.row.seller_id)"
-                  >
-                    <q-item-section avatar>
+                  <q-item-label v-if="col.name !== 'seller_name'" caption
+                    >{{ col.value }}
+                  </q-item-label>
+                  <q-item v-else v-ripple clickable>
+                    <!-- @click="userProfile(props.row.seller_id)" -->
+                    <!-- <q-item-section avatar>
                       <q-avatar>
                         <img :src="user_avatar(props.row.seller_id)" />
                       </q-avatar>
@@ -135,7 +128,7 @@
                           name="star"
                         ></q-icon>
                       </q-item-label>
-                    </q-item-section>
+                    </q-item-section> -->
                   </q-item>
                 </q-item-section>
               </q-item>
@@ -146,13 +139,17 @@
     </q-table>
   </div>
 </template>
+
 <script>
+// import { axiosInstance } from "boot/axios";
+
 export default {
   props: ["items", "title", "alink", "tool"],
   data() {
     return {
-      grid: true,
+      grid: false,
       pagination: {},
+      user: null,
       filter: "",
       fields: ["created", "price", "location"],
       columns: [
@@ -187,14 +184,14 @@ export default {
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         },
-        {
-          name: "location",
-          required: true,
-          label: "Location",
-          align: "left",
-          field: "location",
-          sortable: true
-        },
+        // {
+        //   name: "location",
+        //   required: true,
+        //   label: "Location",
+        //   align: "left",
+        //   field: "location",
+        //   sortable: true
+        // },
         {
           name: "seller_name",
           label: "Seller",
@@ -208,22 +205,26 @@ export default {
     };
   },
   methods: {
-    getUser(id) {
-      let auctions = this.$store.state.auction.auctions.find(
-        x => x.sellers.seller_id === id
-      );
-      let user = auctions.sellers;
-      user.name = auctions.auction_items[0].seller_name;
-      return user;
-    },
-    user_avatar(id) {
-      let user = this.getUser(id);
-      return user.avatar;
-    },
-    user_rating(id) {
-      let user = this.getUser(id);
-      return user.rating;
-    },
+    // getUser(id) {
+    //   console.log(id, "xxxxx");
+    //   axiosInstance
+    //     .get(`account/manage_profile/${id}`)
+    //     .then(res => {
+    //       console.log(res, "ppppppppp");
+    //       return res;
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // },
+    // user_avatar(id) {
+    //   let user = this.getUser(id);
+    //   return user.avatar;
+    // },
+    // user_rating(id) {
+    //   let user = this.getUser(id);
+    //   return user.rating;
+    // },
     auctionItem: function(id) {
       console.log("from", id);
       console.log("to", this.$route.params.id, this.$route.name);

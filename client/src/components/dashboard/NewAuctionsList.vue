@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       slide: 1,
-      items: this.$store.state.auction.myAuctions.auction_items.map(x => {
+      items: this.$store.state.auction.auctions.map(x => {
         return {
           title: x.title,
           description: x.description,

@@ -7,7 +7,7 @@
     <MyAuctionsList
       :alink="`auctions`"
       :title="`My Auctions`"
-      :items="myAuction_items"
+      :items="myAuctions"
     />
 
     <MyAuctionsList :alink="`bids`" :title="`My Bids`" :items="myBids" />
@@ -30,38 +30,35 @@ export default {
     MyAuctionsList
   },
   computed: {
-    myAuction_items: {
+    myAuctions: {
       get() {
         console.log(this.$store.state.auction.myAuctions);
-        let items = [...this.$store.state.auction.myAuctions.auction_items];
-        items.map(
-          x =>
-            (x.location = this.$store.state.auction.myAuctions.sellers.location)
-        );
-        return items;
+        return this.$store.state.auction.myAuctions;
       }
     },
     myBids: {
       get() {
-        // console.log(this.$store.state.auction.myBids);
-        let items = [...this.$store.state.auction.myBids.auction_items];
-        items.map(
-          x => (x.location = this.$store.state.auction.myBids.sellers.location)
-        );
-        return items;
+        console.log(this.$store.state.auction.myBids);
+
+        return this.$store.state.auction.myBids;
       }
     },
     myWishs: {
       get() {
         console.log(this.$store.state.auction.myWishList);
-        let items = [...this.$store.state.auction.myWishList.auction_items];
-        items.map(
-          x =>
-            (x.location = this.$store.state.auction.myWishList.sellers.location)
-        );
-        return items;
+
+        return this.$store.state.auction.myWishList;
       }
     }
+  },
+  created() {
+    this.$store.dispatch("auction/getAllAuctions");
+    this.$store.dispatch(
+      "auction/getMyAuctions",
+      this.$store.state.user.user_id
+    );
+    this.$store.dispatch("auction/getMyBiddings", 2);
+    this.$store.dispatch("auction/getMyFavorite", 1);
   }
 };
 </script>
