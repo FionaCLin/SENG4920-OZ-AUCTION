@@ -25,6 +25,16 @@ mydb = client["runoobdb"]
 UPLOAD_FOLDER = './image/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
+# datetime validation
+def validate_datetime_str(str):
+    try:
+        # check if the str match the format : YYYY-MM-DD HH:MM:SS e.g 2010-01-01 12:00:00
+        datetime.datetime.strptime(str,'%Y-%m-%d %H:%M:%S')
+        return True
+    except ValueError:
+        return False
+
+
 
 class Token_authentication:
     def __init__(self, secret_key, expire_time):
@@ -465,7 +475,14 @@ class CreateSingleAuctionItem(Resource):
         user_input = request.json
         for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
             new_auction[i] = user_input[i]
-        # TODO Add input data validation
+            # Input validation: Detect missing fields
+            if user_input[i] == "" or user_input[i] is None:
+                return {'message': 'Bad Request: field ' + i + ' is missing'}, 400
+
+        # Input validation: End_time validation
+        if not validate_datetime_str(user_input['end_time']):
+            return {'message': 'Bad Request: invalid end_time format'}
+
         try:
             au_col.insert_one(new_auction)
             del new_auction['_id']
@@ -512,11 +529,14 @@ class SingleAuctionItemOperations(Resource):
 
             del retrieved_item['_id']
 
+            # Input validation: End_time validation
+            if not validate_datetime_str(user_input['end_time']):
+                return {'message': 'Bad Request: invalid end_time format'}
+
             update_data = {}
             for k in ['category_id', 'title', "description", "end_time", "price", "image"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
-            # TODO more fields validation
 
             res = au_col.update_one({"id": int(item_id)}, {
                                     "$set": update_data})
@@ -668,10 +688,12 @@ class BiddingManagement(Resource):
             return {"message": "Specified item does not exist"}, 404
 
         del retrieved_item['_id']
+        new_bidding_info = request.json
+        # Input validation: Detect missing fields
+        for k in ['user_id','proposal_price']:
+            if new_bidding_info[k] == "" or new_bidding_info[k] is None:
+                return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
-        user_input_json = request.json
-        new_bidding_info = user_input_json
-        if_overbid = False
         message = "The bidding has been created successfully"
         status_code = 200
         # update database
