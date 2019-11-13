@@ -10,12 +10,12 @@
       :items="myAuctions"
     />
 
-    <MyAuctionsList :alink="`bids`" :title="`My Bids`" :items="myBids" />
+    <!-- <MyAuctionsList :alink="`bids`" :title="`My Bids`" :items="myBids" />
     <MyAuctionsList
       :alink="`favorites`"
       :title="`My Favorites`"
       :items="myWishs"
-    />
+    /> -->
   </q-page>
 </template>
 
@@ -33,7 +33,7 @@ export default {
     myAuctions: {
       get() {
         console.log(this.$store.state.auction.myAuctions);
-        return this.$store.state.auction.myAuctions;
+        return this.$store.state.auction.auctions;
       }
     },
     myBids: {
