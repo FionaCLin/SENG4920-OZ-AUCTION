@@ -42,19 +42,14 @@
                 </div>
               </q-img>
 
-
-
               <q-list style="min-width: 200px; height: calc(100% - 150px); margin-top: 150px;">
-
                 <q-separator />
-
                     <q-btn-group spread>
                         <q-btn label="Profile"  to="/profile" />
                         <q-btn label="Signout" />
                       </q-btn-group>
               </q-list>
             </q-menu>
-
           </q-btn>
         </div>
       </q-toolbar>
