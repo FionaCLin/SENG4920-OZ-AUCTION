@@ -21,7 +21,7 @@
             <q-avatar size="26px">
               <img
                 v-if="avatarUrl"
-                src="https://cdn.quasar.dev/img/boy-avatar.png"
+                src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG"
               />
               <q-icon name="person" />
             </q-avatar>
