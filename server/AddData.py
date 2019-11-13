@@ -127,7 +127,7 @@ x = mycol.insert_many(mylist)
 #mydb.auctions.ensureIndex({seller_name:"text",description:"text",title:"text"}) 
 collection = mydb["auctions"]
 # 输出插入的所有文档对应的 _id 值
-#print(x.inserted_ids)
+print(x.inserted_ids)
 
 for test in collection.find():
     print("123")
