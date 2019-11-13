@@ -15,7 +15,9 @@
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-pa-sm q-ma-lg">
         <q-img :src="auction.image" class="q-ma-sm" />
         <div>
-          <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
+          <q-btn flat :to="`edit/${id}`">
+            <q-icon name="edit" />Update
+          </q-btn>
         </div>
       </div>
       <div class="col-sm-12">
@@ -30,6 +32,7 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
+import { axiosInstance } from "boot/axios";
 
 export default {
   name: "AuctionPage",
@@ -43,19 +46,33 @@ export default {
     };
   },
   beforeMount() {
+    this.fetch();
+  },
+  created() {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-
-    for (let i of this.$store.state.auction.auctions) {
-      let auction = i.auction_items.find(x => x.id === this.id);
-      console.log(i, auction);
-      if (auction) {
-        this.$data.auction = auction;
-        break;
-      }
-    }
+    this.fetch();
   },
-  methods: {}
+  methods: {
+    fetch() {
+       
+    // for (let i of this.$store.state.auction.auctions) {
+    //   let auction = i.auction_items.find(x => x.id === this.id);
+    //   console.log(i, auction);
+    //   if (auction) {
+    //     this.$data.auction = auction;
+    //     break;
+    //   }
+    // }
+    axiosInstance
+      .get(`http://localhost:9999/auction/${this.id}`)
+      .then(res => {
+        console.log(res.data.data);
+        this.$data.auction = res.data.data;
+      })
+      .catch(err => console.log(err));
+    }
+  }
 };
 </script>
