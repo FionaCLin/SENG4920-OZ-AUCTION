@@ -17,7 +17,9 @@
             <q-badge color="red" text-color="white" floating>2</q-badge>
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
-          <q-btn round flat to="/profile">
+
+
+          <q-btn round flat>
             <q-avatar size="26px">
               <img
                 v-if="avatarUrl"
@@ -26,6 +28,33 @@
               <q-icon name="person" />
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
+            <q-menu
+              transition-show="flip-right"
+              transition-hide="flip-left"
+            >
+              <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+                <div class="absolute-bottom bg-transparent">
+                  <q-avatar size="56px" class="q-mb-sm">
+                    <img src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG">
+                  </q-avatar>
+                  <div class="text-weight-bold">Razvan Stoenescu</div>
+                  <div>@rstoenescu</div>
+                </div>
+              </q-img>
+
+
+
+              <q-list style="min-width: 200px; height: calc(100% - 150px); margin-top: 150px;">
+
+                <q-separator />
+
+                    <q-btn-group spread>
+                        <q-btn label="Profile"  to="/profile" />
+                        <q-btn label="Signout" />
+                      </q-btn-group>
+              </q-list>
+            </q-menu>
+
           </q-btn>
         </div>
       </q-toolbar>
@@ -144,87 +173,7 @@
     </q-page-container>
   </q-layout>
 
-  <!-- <q-layout view="hHh Lpr lff">
-    <q-header elevated class="bg-light-green-8 text-white" height-hint="98">
-      <q-toolbar class="GPL__toolbar">
-        <q-btn
-          v-if="menu"
-          flat
-          round
-          dense
-          icon="menu"
-          @click="drawer = !drawer"
-        />
 
-        <q-btn flat to="/dashboard" push>
-          <q-icon name="img:statics/bid.gif" :ratio="1" size="40px"></q-icon>
-        </q-btn>
-        <q-toolbar-title>Pro Auction Bidder</q-toolbar-title>
-
-        <q-toolbar-title>
-        </q-toolbar-title>
-        <q-space />
-        <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat color="grey-8" icon="notifications">
-            <q-badge color="red" text-color="white" floating>2</q-badge>
-            <q-tooltip>Notifications</q-tooltip>
-          </q-btn>
-          <q-btn round flat to="/profile">
-            <q-avatar size="26px">
-              <img
-                v-if="avatarUrl"
-                src="https://cdn.quasar.dev/img/boy-avatar.png"
-              />
-              <q-icon name="person" />
-            </q-avatar>
-            <q-tooltip>Account</q-tooltip>
-          </q-btn>
-        </div>
-      </q-toolbar>
-      <q-tabs align="left">
-        <q-route-tab icon="home" to="/dashboard" replace label="Dashboard" />
-        <q-route-tab icon="gavel" to="/auctions" replace label="My Auction" />
-        <q-route-tab
-          icon="search"
-          to="/search"
-          replace
-          label="Search Auctions"
-        />
-      </q-tabs>
-    </q-header>
-
-    <q-drawer
-      v-if="menu"
-      v-model="drawer"
-      show-if-above
-      :mini="miniState"
-      mini-to-overlay
-      :width="200"
-      :breakpoint="500"
-      bordered
-      content-class="bg-grey-3"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
-    >
-      <q-scroll-area class="fit">
-        <q-list padding>
-          <q-item v-for="(item, index) in menu" :key="index" v-ripple clickable>
-            <q-item-section avatar>
-              <q-icon :name="item.icon" />
-            </q-item-section>
-            <a :href="`#${item.href}`">
-              <q-item-section>{{ item.name }}</q-item-section>
-            </a>
-          </q-item>
-        </q-list>
-      </q-scroll-area>
-  </q-drawer>-->
-
-  <!-- <q-page-container>
-      commoent This is where pages get injected
-      <router-view />
-  </!-->
-  <!-- </q-layout>  -->
 </template>
 
 <script>
@@ -275,4 +224,5 @@ export default {
   text-align: center;
   font-size: 0.9em;
 }
+
 </style>
