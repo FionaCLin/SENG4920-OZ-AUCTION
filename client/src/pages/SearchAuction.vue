@@ -151,17 +151,18 @@
 </template>
 
 <script>
+import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
       search: null,
       tab: "one",
-      startDate: "",
-      endDate: "",
-      startPric: "",
-      endPrice: "",
-      category: "",
-      location: "",
+      startDate: null,
+      endDate: null,
+      startPric: null,
+      endPrice: null,
+      category: null,
+      location: null,
       optionsCategory: [
         "Pet Supplies",
         "Movies",
@@ -191,7 +192,25 @@ export default {
     };
   },
   methods: {
-    onSubmit() {}
+    onSubmit() {
+      console.log(JSON.parse(localStorage.getItem('user')).user_id);
+      axiosInstance
+        .get(`/auction/search/filter`,{
+            params:{
+            startDate:this.$data.startDate,
+            endDate:this.$data.endDate,
+            startPrice:this.$data.startPrice,
+            endPrice:this.$data.endPrice,
+            category:this.$data.category,
+            }
+        })
+        .then(res => {
+          console.log(res.data);
+          console.log(this.$store.state.auction.myAuctions.auction_items);
+          this.$data.my_auctions = res.data.auctions;
+        });
+      console.log(this.$data);
+    }
   }
 };
 </script>

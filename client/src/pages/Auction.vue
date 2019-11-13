@@ -57,16 +57,8 @@ export default {
   methods: {
     fetch() {
        
-    // for (let i of this.$store.state.auction.auctions) {
-    //   let auction = i.auction_items.find(x => x.id === this.id);
-    //   console.log(i, auction);
-    //   if (auction) {
-    //     this.$data.auction = auction;
-    //     break;
-    //   }
-    // }
     axiosInstance
-      .get(`http://localhost:9999/auction/${this.id}`)
+      .get(`/auction/${this.id}`)
       .then(res => {
         console.log(res.data.data);
         this.$data.auction = res.data.data;

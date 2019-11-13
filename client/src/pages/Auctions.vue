@@ -6,7 +6,6 @@
 
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
-
 export default {
   name: "AuctionsPages",
   components: {
@@ -15,7 +14,7 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log(this.$store.state.auction.myAuctions);
+        //console.log(this.$store.state.auction.myAuctions.auction_items);
         return this.$store.state.auction.myAuctions.auction_items;
       }
     }

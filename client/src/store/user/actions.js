@@ -10,6 +10,8 @@ export const login = (commit, creds) => {
     console.log(res.data.accessToken);
     LocalStorage.set("token", res.data.accessToken);
   });
+
+
 };
 
 // export default {
