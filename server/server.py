@@ -516,16 +516,16 @@ class SingleAuctionItemOperations(Resource):
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
-    @api.expect(auction_info_update)
     @api.doc(description="Delete an auction")
     def delete(self, item_id):
         au_col = mydb['auctions']
         retrieved_item = au_col.find_one({'id': int(item_id)})
+        del retrieved_item['_id']
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
         try:
-            res = au_col.update_one({"id": int(item_id)})
+            res = au_col.remove({"id": int(item_id)})
             return {"message": "Specified item is deleted successfully","data":retrieved_item}
         except:
             return {"message": "Failed to delete specified item"},200
