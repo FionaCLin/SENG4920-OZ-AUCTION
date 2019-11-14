@@ -97,6 +97,7 @@
             color="primary"
             to="/user/myAuction"
             label='See my new Auction'
+            @click="viewCreatedAuction()"
           />
         </div>
 
@@ -133,7 +134,8 @@ export default {
       date: "",
       step: 1,
       location: "",
-      editor: ""
+      editor: "",
+      createdID: null
     };
   },
   created() {
@@ -175,6 +177,8 @@ export default {
         })
         .then(response => {
           console.log(response);
+          this.$data.categoryId = response.data.data.id;
+          this.$refs.stepper.next();
         });
       //connect to back-end
 
@@ -245,6 +249,19 @@ export default {
           path: "/auctions"
         });
       }
+    },
+    viewCreatedAuction() {
+       axiosInstance
+        .get("/auction/" + this.$data.categoryId)
+        .then(response => {
+          console.log(response);
+          this.$router.push({
+            name: "auctionItem",
+            params: {
+              id: this.$data.categoryId
+            }
+          })
+        });
     }
   }
 };
