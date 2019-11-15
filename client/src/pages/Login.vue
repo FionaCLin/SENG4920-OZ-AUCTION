@@ -91,11 +91,14 @@ export default {
                 password: this.$data.password
               })
               .then(response => {
-                console.log(response.data.token);
+
+                console.log(this.$store.state.user.user_id);
                 //how to used store state to store
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("user", JSON.stringify(response.data));
                 console.log(JSON.parse(localStorage.getItem('user')));
+                this.$store.state.user.user_id = response.data.user_id;
+                console.log(this.$store.state.user.user_id);
                 //
                   this.$q.notify({
                   color: "green-4",

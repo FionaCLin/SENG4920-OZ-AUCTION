@@ -1,9 +1,9 @@
 import aws from "aws-sdk";
-//import secret from "./awsconfig.json";
+import secret from "./awsconfig.json";
 
 export function uploadImage(file, done) {
-  //const s3 = new aws.S3(secret);
-  const s3 = new aws.S3();
+  const s3 = new aws.S3(secret);
+  //const s3 = new aws.S3();
 
   s3.upload(
     {

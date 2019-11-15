@@ -155,15 +155,14 @@ import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
-
       tab: 'one',
       advanced: {
-        startDate: "",
-        endDate: "",
-        startPric: "",
-        endPrice: "",
-        category: "",
-        location: "",
+        startDate: null,
+        endDate: null,
+        startPric: null,
+        endPrice: null,
+        category: null,
+        location: null,
         optionsCategory: [
           "Pet Supplies",
           "Movies",
@@ -203,11 +202,11 @@ export default {
       axiosInstance
         .get(`/auction/search/filter`,{
             params:{
-            startDate:this.$data.startDate,
-            endDate:this.$data.endDate,
-            startPrice:this.$data.startPrice,
-            endPrice:this.$data.endPrice,
-            category:this.$data.category,
+            startDate:this.$data.advanced.startDate,
+            endDate:this.$data.advanced.endDate,
+            startPrice:this.$data.advanced.startPrice,
+            endPrice:this.$data.advanced.endPrice,
+            category:this.$data.advanced.category,
             }
         })
         .then(res => {
