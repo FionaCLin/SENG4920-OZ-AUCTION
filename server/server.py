@@ -162,6 +162,7 @@ indicator_parser.add_argument('password', type=str)
 user_input_bidding_info = api.model(
     "User input to propose a bid & bidding info stored in server",
     {
+        "item_id": fields.Integer,
         "user_id": fields.Integer,
         "proposal_price": fields.Float,
     }
@@ -390,9 +391,9 @@ class Manage_profile(Resource):
         return response, 404
 
 
-#######################################
-#  Routes for a single auction item.  #
-#######################################
+#########################
+#  Routes for Auction.  #
+#########################
 """
 
 POST: Create a an auction item
@@ -454,7 +455,7 @@ auction_info_update = api.model(
 
 
 @ns_auction.route('')
-class CreateSingleAuctionItem(Resource):
+class AuctionsOperations(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Failed to create a new auction')
     @api.expect(user_input_single_auction_item)
@@ -496,9 +497,6 @@ class CreateSingleAuctionItem(Resource):
         except:
             return {'message': 'Bad Request'}, 400
 
-
-@ns_auction.route('')
-class MultipleAuctionsOperations(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'No auction data stored in database')
     @api.doc(description="get information of all auction data in the database")
@@ -577,30 +575,12 @@ class SingleAuctionItemOperations(Resource):
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
 
-            res = au_col.update_one({"id": int(item_id)}, {
+            au_col.update_one({"id": int(item_id)}, {
                                     "$set": update_data})
             return {"message": "Auction details have been updated"}, 200
         except:
             return {"message":  "Auction details have been updated"}, 404
-        # if len(user_input_json.keys()) != 0:
-        #     # update auction details
-        #     for k in user_input_json.keys():
-        #         target_auction[k] = user_input_json[k]
 
-        #     target_auction["updated"] = datetime.now().strftime(
-        #         '%Y-%m-%d %H:%M:%S')
-
-        #     dummy_database[item_id] = target_auction
-        #     updated_auction = target_auction
-        # else:
-        #     message = "User did not specify any field to update"
-        #     updated_auction = ""
-        # response = \
-        #     {
-        #         "message": message,
-        #         "data": updated_auction
-        #     }
-        # return {"message": "OK", "data": retrieved_item}, 200
 
 # search by key
 @ns_auction.route('/search-key/<string:search_key>')
@@ -711,50 +691,35 @@ class Auction_search2(Resource):
 ###################################
 
 # Propose a bidding
-@ns_bidding.route('/<item_id>')
-@api.param('item_id', 'Item ID given when the auction is created')
+@ns_bidding.route('')
 class BiddingManagement(Resource):
 
     @api.response(200, 'OK')
     @api.response(404, 'Requested Resource Does Not Exist')
     @api.expect(user_input_bidding_info)
     @api.doc(description="Propose a bid on an item")
-    def post(self, item_id):
+    def post(self):
+        result = "OK"
+        user_input = request.json
+        item_id = user_input["item_id"]
+
         au_col = mydb['auctions']
         retrieved_item = au_col.find_one({'id': int(item_id)})
+        item_min_price = retrieved_item["price"]
 
         if retrieved_item is None:
-            return {"message": "Specified item does not exist"}, 404
+            return {"result": "Fail","message": "Item not found"}, 404
 
         del retrieved_item['_id']
-        new_bidding_info = request.json
+
         # Input validation: Detect missing fields
         for k in ['user_id','proposal_price']:
-            if new_bidding_info[k] == "" or new_bidding_info[k] is None:
+            if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
-        message = "The bidding has been created successfully"
+        message = "The bid has been proposed successfully"
         status_code = 200
-        # update database
-        # try:
-        #     if_no_bidding = True if len(
-        #         retrieved_item["bidding_info"]) == 0 else False
-        #     if if_no_bidding:
-        #         retrieved_item["bidding_info"].append(
-        #             new_bidding_info)
-        #     else:
-        #         current_highest_price = dummy_database[item_id]["bidding_info"][0]["proposal_price"]
-        #         new_proposed_price = new_bidding_info["proposal_price"]
-        #         if_overbid = True if new_proposed_price > current_highest_price else False
-        #         if if_overbid:
-        #             dummy_database[item_id]["bidding_info"][0] = new_bidding_info
-        #         else:
-        #             message = "Bidding failed, the new price is not higher than the current price"
-        #
-        # except IndexError:
-        #     message = "Specified item does not exist"
-        #     status_code = 404
-        new_proposed_price = new_bidding_info["proposal_price"]
+        new_proposed_price = user_input["proposal_price"]
         if len(retrieved_item["bidding_info"]) == 0:
             current_highest_price = 0
         else:
@@ -763,20 +728,24 @@ class BiddingManagement(Resource):
                                               key=lambda i: i['proposal_price'], reverse=True)
             current_highest_price = sorted_bidding_info_list[0]["proposal_price"]
         if_overbid = True if new_proposed_price > current_highest_price else False
-        if if_overbid:
+        if if_overbid and new_proposed_price > item_min_price:
+            bid_id = au_col.count_documents({})
+            new_bidding_info = {"bid_id":bid_id}
+            for key in user_input.keys():
+                new_bidding_info[key] = user_input[key]
             retrieved_item["bidding_info"].append(new_bidding_info)
+            au_col.insert_one(new_bidding_info)
+            del new_bidding_info["_id"]
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
         else:
-            message = "Bidding failed, the new price is not higher than the current price"
+            message = "Proposal price can't be less than current bidding price"
+            return {"result":"Fail", "message":message},400
 
-        data = {
-            "item_id": item_id,
-            "bidding_info": new_bidding_info
-        }
         response = \
             {
+                "result": result,
                 "message": message,
-                "data": data
+                "data": new_bidding_info
             }
         return response, status_code
 
@@ -814,6 +783,61 @@ class AcceptOrDeclineBiddings(Resource):
                 "message": message
             }
         return response, status_code
+
+
+@ns_bidding.route('/<bid_id>')
+@api.param('bid_id', 'Bidding ID given when the bid was proposed')
+class SingleBiddingOperations(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Item not found')
+    @api.doc(description="Get bidding information by id")
+    def get(self, bid_id):
+        au_col = mydb["auctions"]
+        result = "OK"
+        retrieved_item = au_col.find_one({"bid_id":int(bid_id)})
+        if retrieved_item is None:
+            result = "Fail"
+            return {"result":result,"message":"Item not found"},404
+        del retrieved_item["_id"]
+        response = \
+            {
+                "result":result,
+                "data":retrieved_item
+            }
+
+        return response,200
+
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.doc(description="Delete a proposed bid")
+    def delete(self, bid_id):
+        au_col = mydb['auctions']
+        result = "Fail"
+        retrieved_bid = au_col.find_one({'bid_id': int(bid_id)})
+        if retrieved_bid is None:
+            return {"result":result,"message": "Specified bidding does not exist"}, 404
+        del retrieved_bid['_id']
+        item_id = retrieved_bid["item_id"]
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+
+        if retrieved_item is None:
+            return {"result":result,"message": "Specified auction item does not exist"}, 404
+        del retrieved_item['_id']
+
+        if retrieved_item["status"] == "Accepted":
+            return {"result":result,"message": "The bid is already accepted"}
+
+        try:
+            au_col.remove({"bid_id": int(bid_id)})
+
+            # remove the specified bidding from the bidding_info of the auction
+            retrieved_item['bidding_info'] = \
+                [x for x in retrieved_item['bidding_info'] if int(x["bid_id"]) != int(bid_id)]
+            au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
+
+            return {"message": "Specified bidding is deleted successfully"}
+        except:
+            return {"message": "Failed to delete "}, 400
 
 
 if __name__ == '__main__':
