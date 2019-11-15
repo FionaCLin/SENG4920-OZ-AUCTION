@@ -173,8 +173,10 @@ auction_info = api.model(
         "seller_name": fields.String,
         "seller_id": fields.Integer,
         "category_id": fields.Integer,
+        "category":fields.Integer,
         "title": fields.String,
         "description": fields.String,
+        "location":fields.String,
         "updated": fields.String,
         "created": fields.String,
         "end_time": fields.String,
@@ -422,6 +424,7 @@ user_input_single_auction_item = api.model(
         "seller_name": fields.String,
         "seller_id": fields.Integer,
         "category_id": fields.Integer,
+        "category":fields.Integer,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
@@ -435,6 +438,7 @@ auction_info_update = api.model(
     'Update auction details (user may specify only some of the fields)',
     {
         "category_id": fields.Integer,
+        "category":fields.Integer,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
@@ -477,7 +481,8 @@ class AuctionsOperations(Resource):
             }
 
         user_input = request.json
-        for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image","location"]:
+        for i in ['seller_name', 'seller_id', 'category_id', 'category','title', "description",
+                  "end_time", "price", "image","location"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
             if user_input[i] == "" or user_input[i] is None:
@@ -575,7 +580,7 @@ class SingleAuctionItemOperations(Resource):
                 return {'message': 'Bad Request: invalid end_time format'}
 
             update_data = {}
-            for k in ['category_id', 'title', "description", "end_time", "price", "image","location"]:
+            for k in ['category_id', 'category','title', "description", "end_time", "price", "image","location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
 
