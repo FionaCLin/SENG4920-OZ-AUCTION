@@ -690,6 +690,16 @@ class Auction_search2(Resource):
 #  Routes for bidding management  #
 ###################################
 
+user_input_bidding_operations = api.model(
+    'User input to accept or decline a bid',
+    {
+        "user_id": fields.Integer,
+        "item_id": fields.Integer,
+        "operation": fields.String
+    }
+)
+
+
 # Propose a bidding
 @ns_bidding.route('')
 class BiddingManagement(Resource):
@@ -751,36 +761,53 @@ class BiddingManagement(Resource):
 
 
 # Accept or decline a bidding
-@ns_bidding.route('/operations/<item_id>/<operation>')
-@api.param('item_id', 'Item ID given when the auction is created')
-@api.doc(params={
-    'item_id': 'Item ID given when the auction is created',
-    'operation': '\"accept\"\: accept a bid, \"decline\"\: decline a bid '
-})
+@ns_bidding.route('/operations')
 class AcceptOrDeclineBiddings(Resource):
     @api.response(200, 'OK')
-    @api.response(404, 'Requested Resource Does Not Exist')
+    @api.response(404, 'Specified auction does not exists')
+    @api.expect(user_input_bidding_operations)
     @api.doc(description="Accept or decline a the highest bidding on an item")
-    def put(self, item_id, operation):
+    def put(self):
+        user_input = request.json
         au_col = mydb['auctions']
+        item_id = user_input['item_id']
+        operation = user_input['operation']
         retrieved_item = au_col.find_one({'id': int(item_id)})
+        result = "Fail"
         if retrieved_item is None:
-            return {"message": "Specified item does not exist"}, 404
+            return {"result":result,"message": "Auction item not found"}, 404
 
         del retrieved_item['_id']
+
+        if len(retrieved_item['bidding_info']) == 0:
+            return {"result": result, "message": "No bid on this item"}, 400
+
+        if int(retrieved_item['seller_id']) != int(user_input['user_id']):
+            return {"result":result,"message": "The user is not the seller of this item"}, 400
+
         status_code = 200
         if operation == "accept":
             retrieved_item["status"] = "Accepted"
-            message = "The bid has been accepted"
+            result = "OK"
+            message = "The bid is accepted successfully"
         elif operation == "decline":
             retrieved_item["status"] = "Declined"
-            message = "The bid has been declined"
+            result = "OK"
+            message = "The bid is declined successfully"
         else:
-            message = "Invalid operation"
+            return {"result": result, "message": "Invalid operation"}, 400
+
+        # sort bidding info by proposal_price (descending)
+        sorted_bidding_info_list = sorted(retrieved_item["bidding_info"],
+                                          key=lambda i: i['proposal_price'], reverse=True)
+        highest_bidding_id = sorted_bidding_info_list[0]["bid_id"]
+
         au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
         response = \
             {
-                "message": message
+                "result": result,
+                "message": message,
+                "bid_id": highest_bidding_id
             }
         return response, status_code
 
