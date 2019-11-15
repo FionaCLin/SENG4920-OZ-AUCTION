@@ -159,18 +159,18 @@
 </template>
 
 <script>
-import { axiosInstance } from "boot/axios";
+//import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
       tab: "one",
       advanced: {
-        startDate: "",
-        endDate: "",
-        startPric: "",
-        endPrice: "",
-        category: "",
-        location: "",
+        startDate: null,
+        endDate: null,
+        startPric: null,
+        endPrice: null,
+        category: null,
+        location: null,
         optionsCategory: [
           "Pet Supplies",
           "Movies",
@@ -204,7 +204,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    onSubmit() { // ask filter api
       if (this.$data.tab == "one") {
         this.$refs.normalForm.validate().then(
           success => {
