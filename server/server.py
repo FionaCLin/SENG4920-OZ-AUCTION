@@ -427,6 +427,7 @@ user_input_single_auction_item = api.model(
         "end_time": fields.String,
         "price": fields.Float,
         "image": fields.String,
+        "location": fields.String
     }
 )
 
@@ -439,6 +440,7 @@ auction_info_update = api.model(
         "end_time": fields.String,
         "price": fields.Float,
         "image": fields.String,
+        "location": fields.String
     }
 )
 
@@ -475,7 +477,7 @@ class AuctionsOperations(Resource):
             }
 
         user_input = request.json
-        for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
+        for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image","location"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
             if user_input[i] == "" or user_input[i] is None:
@@ -573,7 +575,7 @@ class SingleAuctionItemOperations(Resource):
                 return {'message': 'Bad Request: invalid end_time format'}
 
             update_data = {}
-            for k in ['category_id', 'title', "description", "end_time", "price", "image"]:
+            for k in ['category_id', 'title', "description", "end_time", "price", "image","location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
 
