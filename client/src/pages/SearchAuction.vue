@@ -151,18 +151,18 @@
 </template>
 
 <script>
+import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
-
       tab: 'one',
       advanced: {
-        startDate: "",
-        endDate: "",
-        startPric: "",
-        endPrice: "",
-        category: "",
-        location: "",
+        startDate: null,
+        endDate: null,
+        startPric: null,
+        endPrice: null,
+        category: null,
+        location: null,
         optionsCategory: [
           "Pet Supplies",
           "Movies",
@@ -198,48 +198,23 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.$data.tab == "one") {
-        this.$refs.normalForm.validate().then(
-          success => {
-            if (success) {
-              // yay, models are correct
-              console.log(this.$data.normal);
+      console.log(JSON.parse(localStorage.getItem('user')).user_id);
+      axiosInstance
+        .get(`/auction/search/filter`,{
+            params:{
+            startDate:this.$data.advanced.startDate,
+            endDate:this.$data.advanced.endDate,
+            startPrice:this.$data.advanced.startPrice,
+            endPrice:this.$data.advanced.endPrice,
+            category:this.$data.advanced.category,
             }
-          },
-          err => {
-            console.log(err);
-            console.log("problems!");
-
-            this.$q.notify({
-              color: "red-5",
-              textColor: "white",
-              icon: "warning",
-              message: err.message
-            });
-          }
-        );
-
-      } else {
-        this.$refs.advancedForm.validate().then(
-          success => {
-            if (success) {
-              // yay, models are correct
-              console.log(this.$data.advanced);
-            }
-          },
-          err => {
-            console.log(err);
-            console.log("problems!");
-
-            this.$q.notify({
-              color: "red-5",
-              textColor: "white",
-              icon: "warning",
-              message: err.message
-            });
-          }
-        );
-      }
+        })
+        .then(res => {
+          console.log(res.data);
+          console.log(this.$store.state.auction.myAuctions.auction_items);
+          this.$data.my_auctions = res.data.auctions;
+        });
+      console.log(this.$data);
     }
   }
 };

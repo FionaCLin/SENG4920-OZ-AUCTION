@@ -22,10 +22,10 @@ export function getAllAuctions({ commit }) {
 export function getMyAuctions({ commit }, id) {
   console.log("mitty");
   axiosInstance
-    .get(`auction/search/filter?user_id=${id}`)
+    .get(`/account/${id}`)
     .then(res => {
-      console.log(res.data);
-      commit("updateMyAuctions", res.data);
+      console.log(res.data.auctions);
+      commit("updateMyAuctions", res.data.auctions);
     })
     .catch(err => console.log(err));
 }

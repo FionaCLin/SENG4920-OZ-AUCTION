@@ -54,13 +54,14 @@ export default {
   },
   methods: {
     fetch() {
-      axiosInstance
-        .get(`http://localhost:9999/auction/${this.id}`)
-        .then(res => {
-          console.log(res.data.data);
-          this.$data.auction = res.data.data;
-        })
-        .catch(err => console.log(err));
+       
+    axiosInstance
+      .get(`/auction/${this.id}`)
+      .then(res => {
+        console.log(res.data.data);
+        this.$data.auction = res.data.data;
+      })
+      .catch(err => console.log(err));
     }
   }
 };

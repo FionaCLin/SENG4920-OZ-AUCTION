@@ -217,39 +217,44 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        alldata = col.select_all_collection()
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
+        col = mydb['user']
+        cursor = col.find()
+        id_counter = 0
+        #alldata = col.select_all_collection()
+        #selected_data = []
+        #for item in alldata:
+        #    if "user_profile" in item:
+        #        selected_data = item["user_profile"]
         try:
             accountInfo = request.json
         except:
-            return {'message': 'Bad Request!'}, 400
-        try:
-            for single_user in selected_data:
-                if single_user["email"] == accountInfo['email']:
-                    return {'message': 'Email Already Exists'}, 200
+            return {'message': 'Bad Request!??'}, 400
 
-            new_user = {
-                "user_id": len(selected_data),
-                "email": accountInfo['email'],
-                "password": accountInfo['password'],
-                "first_name": "",
-                "last_name": "",
-                "age": "",
-                "phone_number": "",
-                "payment_method": "",
-                "avatar": "",
-                "favorites": []
-            }
-            res = col.add_one_dict_to_array(
-                {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
-            print(res)
-            return {'message': 'Account Created Successfully!'}, 201
+        print(request.json)
+        
+        for single_user in cursor:
+            if single_user["email"] == accountInfo["username"]:
+                return {'message': 'Email Already Exists'}, 200
+            id_counter  = id_counter + 1
 
-        except KeyError:
-            return {'message': 'Bad Request!'}, 400
+        new_user = {
+            "user_id": id_counter,
+            "email": accountInfo["username"],
+            "password": accountInfo["password"],
+            "first_name": "",
+            "last_name": "",
+            "age": "",
+            "phone_number": "",
+            "payment_method": "",
+            "favorites": [],
+            "auctions":[],
+            "bids":[]
+        }
+        col.insert_one(new_user)
+
+        return {'message': 'Account Created Successfully!'}, 201
+
+        
 
 
 @ns_account.route('/signin')
@@ -264,20 +269,39 @@ class Signin(Resource):
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
+        col = mydb['user']
+        cursor = col.find()
+        print(account_info)
+        #print(account_info)
+        #try:
+            #alldata = col.select_all_collection()
+            #selected_data = []
+            #for item in alldata:
+            #    if "user_profile" in item:
+            #        selected_data = item["user_profile"]
+        for single_user in cursor:
+            #print(single_user)
+            if single_user["email"] == account_info["username"] and account_info["password"] == account_info["password"]:
+                print('find')
+                return_m = { # Just response all user informatin change if some of that is not needed
+                    "user_id": single_user['user_id'],
+                    "email": single_user['email'],
+                    "password": single_user['password'], #no sure if needed
+                    "first_name": single_user['first_name'],
+                    "last_name": single_user['last_name'],
+                    "age": single_user['age'],
+                    "phone_number": single_user['phone_number'],
+                    "payment_method": single_user['payment_method'],
+                    "favorites": single_user['favorites'],
+                    "auctions":single_user['auctions'],
+                    "bids":single_user['bids'],
+                    "token":auth.generate_token(account_info['username'])
+                }
 
-        try:
-            alldata = col.select_all_collection()
-            selected_data = []
-            for item in alldata:
-                if "user_profile" in item:
-                    selected_data = item["user_profile"]
-
-            for single_user in selected_data:
-                if single_user["email"] == account_info['email'] and single_user["password"] == account_info['password']:
-                    return {"token": auth.generate_token(account_info['email'])}, 200
-            return {"message": "authorization has been refused."}, 401
-        except:
-            return {"message": "authorization has been refused."}, 401
+                return return_m, 200
+        return {"message": "authorization has been refused."}, 401
+        #except:
+        #    return {"message": "authorization has been refused."}, 401
 
 
 @ns_account.route('/signout/<string:token>')
@@ -288,6 +312,21 @@ class Signout(Resource):
     def delete(self, token):
         auth.delete_token(token)
         return {'message': 'Deletion Successful'}, 200
+
+@ns_account.route('/<user_id>')
+@api.param('user_id', 'request user id')
+class SingleAuctionItemOperations(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.doc(description="get information of a user")
+    def get(self, user_id):
+        col = mydb['user']
+        print(user_id)
+        user = col.find_one({ "user_id": int(user_id)})
+        del user['_id']
+        print(user)
+        return user,200
+
 
 
 @ns_account.route('/manage_profile/<string:request_user_id>')
@@ -421,12 +460,12 @@ user_input_single_auction_item = api.model(
     {
         "seller_name": fields.String,
         "seller_id": fields.Integer,
-        "category_id": fields.Integer,
+        "category_id": fields.String,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
         "price": fields.Float,
-        "image": fields.String,
+        "image": fields.List(fields.String),
     }
 )
 
@@ -465,6 +504,10 @@ class CreateSingleAuctionItem(Resource):
     def post(self):
         au_col = mydb['auctions']
 
+        user_col = mydb['user']
+
+        print(request.json)
+
         new_auction = \
             {
                 "id": au_col.count_documents({}),
@@ -478,7 +521,8 @@ class CreateSingleAuctionItem(Resource):
         for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
-            if user_input[i] == "" or user_input[i] is None:
+            #if user_input[i] == "" or user_input[i] is None:
+            if user_input[i] is None:
                 return {'message': 'Bad Request: field ' + i + ' is missing'}, 400
 
         # Input validation: End_time validation
@@ -495,6 +539,12 @@ class CreateSingleAuctionItem(Resource):
                     "message": message,
                     "data": new_auction
                 }
+
+            # Change user
+            seller = user_col.find_one({ "user_id":  user_input['seller_id']})
+            seller['auctions'].append(new_auction)
+            print(seller)
+            user_col.update_one({ "user_id":  user_input['seller_id']},{"$set":{"auctions":seller['auctions']}}) # :-()
             return response, 200
         except:
             return {'message': 'Bad Request'}, 400
@@ -659,25 +709,30 @@ class Auction_search2(Resource):
             mid.append(entry)
 
         for entry in mid:
-            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
-            if entryDateP <= startDateP or entryDateP >= endDateP:
-                if entry in result:
-                    result.remove(entry)
+            print(entry)
+            if entry['end_time'] is not None:
+                entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
+                if entryDateP <= startDateP or entryDateP >= endDateP:
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
-            if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
-                if entry in result:
-                    result.remove(entry)
+            if entry['price'] is not None:
+                if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
-            if category and entry['category_id'] != category:
-                if entry in result:
-                    result.remove(entry)
-       
+            if entry['category_id'] is not None:
+                if category and entry['category_id'] != category:
+                    if entry in result:
+                        result.remove(entry)
+            
         for entry in mid:
-            if user_id and entry['seller_id'] != int(user_id):
-                if entry in result:
-                    result.remove(entry)
+            if entry['seller_id'] is not None:
+                if user_id and entry['seller_id'] != int(user_id):
+                    if entry in result:
+                        result.remove(entry)
 
         # location is db
 

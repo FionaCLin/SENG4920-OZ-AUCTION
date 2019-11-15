@@ -3,6 +3,7 @@ import secret from "./awsconfig.json";
 
 export function uploadImage(file, done) {
   const s3 = new aws.S3(secret);
+  //const s3 = new aws.S3();
 
   s3.upload(
     {
