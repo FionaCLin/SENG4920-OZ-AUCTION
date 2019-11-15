@@ -255,6 +255,7 @@ export default {
         .get("/auction/" + this.$data.categoryId)
         .then(response => {
           console.log(response);
+          this.$store.dispatch("auction/getMyAuctions", this.$store.state.user.user_id);
           this.$router.push({
             name: "auctionItem",
             params: {

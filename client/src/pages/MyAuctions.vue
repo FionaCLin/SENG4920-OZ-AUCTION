@@ -24,7 +24,7 @@ export default {
       .get(`/account/${JSON.parse(localStorage.getItem('user')).user_id}`)
       .then(res => {
         console.log(res.data.auctions);
-        console.log(this.$store.state.auction.myAuctions.auction_items);
+        console.log(this.$store.state.auction.myAuctions.auction_items[0]);
         this.$data.my_auctions = res.data.auctions;
       });
       //.catch(err => console.log(err));
