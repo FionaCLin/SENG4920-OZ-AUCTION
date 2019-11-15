@@ -5,6 +5,7 @@ import uuid
 from flask_cors import CORS
 import re
 import os
+import config
 import csv
 import base64
 from flask import Flask, request, Response
@@ -591,7 +592,7 @@ class Auction_search1(Resource):
         collection = mydb['auctions']
         result = []
         easy_search = "\'" + search_key + "\'"
-        print(search_key)
+        
         cursor = collection.find(
             {"$text": {"$search": easy_search}}, {"_id": 0})
         result = []
@@ -625,8 +626,7 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
-        print(request.args)
-        print("123")
+
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
