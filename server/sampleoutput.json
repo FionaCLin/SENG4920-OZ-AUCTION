@@ -1,0 +1,80 @@
+[
+  {
+    "id": 0,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 2,
+    "category_id": 4,
+    "title": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+    "description": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+    "end_time": "2019-09-22 15:46:28",
+    "price": 25,
+    "image": "https://static.artfire.com/uploads/mfs/items/45/0c/default/450c43c3763c1bb9a40bf975fc3a5ead9bc2b468faa6766ff2e99e9ad7b370e8.jpg"
+  },
+  {
+    "id": 1,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 2,
+    "category_id": "Pet Supplies",
+    "title": "Gold Toned Wire Woven Cursive \"I\" Pendant Necklace",
+    "description": "Gold Toned Wire Woven Cursive &quot;I&quot; Pendant Necklace",
+    "end_time": "2018-07-07 18:41:54",
+    "price": 15,
+    "image": "https://static.artfire.com/uploads/mfs/items/e7/26/default/e726bf372fc6bc236f9c9f067f3024585bdee7a76a0e8e30807b3a457b752eca.jpg"
+  },
+  {
+    "id": 2,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 2,
+    "category_id": "Pottery, Glass",
+    "title": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
+    "description": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
+    "end_time": "2018-07-07 18:41:09",
+    "price": 15,
+    "image": "https://static.artfire.com/uploads/mfs/items/ad/95/default/ad9573b6bc14bccdbb901e7a744083a50379c8c3aced53cf15a15c17936051b4.jpg"
+  },
+  {
+    "id": 3,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 2,
+    "category_id": "Services",
+    "title": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+    "description": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+    "end_time": "2018-07-02 20:07:13",
+    "price": 10,
+    "image": "https://static.artfire.com/uploads/mfs/items/72/3e/default/723e3621097b174fdf44bb0de6f038d5580e60d077b0d7dbcf3a21becd081081.jpg"
+  },
+  {
+    "id": 4,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "Jaqui",
+    "seller_id": 3,
+    "category_id": "Services",
+    "title": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+    "description": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+    "end_time": "2019-08-21 23:33:28",
+    "price": 50,
+    "image": "https://static.artfire.com/uploads/mfs/items/03/81/default/03819102983b5f471b27fa9a1a9ef404354582a587806227b0f3dd3d24e3f9bb.jpg"
+  },
+  {
+    "id": 5,
+    "bidding_info": [],
+    "status": "bidding",
+    "seller_name": "Jaqui",
+    "seller_id": 3,
+    "category_id": "Services",
+    "title": "Peaker4Life Sterling Necklace 18\" chain INCLUDED",
+    "description": "Peaker4Life Sterling Necklace 18&quot; chain INCLUDED",
+    "end_time": "2019-03-27 17:15:41",
+    "price": 50,
+    "image": "https://static.artfire.com/uploads/mfs/items/5d/1e/default/5d1ec365331c67f826a0018b48d75d8d2e8dfd7ce8ab4fba870ce34d4dfcf284.jpg"
+  }
+]
