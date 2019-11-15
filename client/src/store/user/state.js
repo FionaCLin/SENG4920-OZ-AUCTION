@@ -1,5 +1,7 @@
 export default {
-  token: localStorage.getItem("token") || " ",
+
+  user_id:1
+  /*token: localStorage.getItem("token") || " ",
   logged: false,
   avatar:
     "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
@@ -80,5 +82,5 @@ export default {
         }
       ]
     }
-  ]
+  ]*/
 };

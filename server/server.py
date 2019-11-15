@@ -246,7 +246,7 @@ class Register(Resource):
             "payment_method": "",
             "favorites": [],
             "auctions":[],
-            "bid":[]
+            "bids":[]
         }
         col.insert_one(new_user)
 
@@ -278,7 +278,7 @@ class Signin(Resource):
             #    if "user_profile" in item:
             #        selected_data = item["user_profile"]
         for single_user in cursor:
-            print(single_user)
+            #print(single_user)
             if single_user["email"] == account_info["username"] and account_info["password"] == account_info["password"]:
                 print('find')
                 return_m = { # Just response all user informatin change if some of that is not needed
@@ -708,25 +708,30 @@ class Auction_search2(Resource):
             mid.append(entry)
 
         for entry in mid:
-            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
-            if entryDateP <= startDateP or entryDateP >= endDateP:
-                if entry in result:
-                    result.remove(entry)
+            print(entry)
+            if entry['end_time'] is not None:
+                entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
+                if entryDateP <= startDateP or entryDateP >= endDateP:
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
-            if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
-                if entry in result:
-                    result.remove(entry)
+            if entry['price'] is not None:
+                if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
-            if category and entry['category_id'] != category:
-                if entry in result:
-                    result.remove(entry)
-       
+            if entry['category_id'] is not None:
+                if category and entry['category_id'] != category:
+                    if entry in result:
+                        result.remove(entry)
+            
         for entry in mid:
-            if user_id and entry['seller_id'] != int(user_id):
-                if entry in result:
-                    result.remove(entry)
+            if entry['seller_id'] is not None:
+                if user_id and entry['seller_id'] != int(user_id):
+                    if entry in result:
+                        result.remove(entry)
 
         # location is db
 

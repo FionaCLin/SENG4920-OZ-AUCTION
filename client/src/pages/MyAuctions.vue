@@ -32,7 +32,7 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log("my auctions", this.$store.state.auction.myAuctions);
+        //console.log("my auctions", this.$store.state.auction.myAuctions);
         return this.$store.state.auction.myAuctions;
       }
     }
