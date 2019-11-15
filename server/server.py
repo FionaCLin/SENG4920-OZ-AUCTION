@@ -5,6 +5,7 @@ import uuid
 from flask_cors import CORS
 import re
 import os
+import config
 import csv
 import base64
 from flask import Flask, request, Response
@@ -17,8 +18,8 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 # ===== database connection ===
-client = pymongo.MongoClient("mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-mydb = client["runoobdb"]
+client = pymongo.MongoClient(config.MONGO_URI)
+mydb = client[config.MONGO_DB]
 # =============================
 
 
@@ -590,7 +591,7 @@ class Auction_search1(Resource):
         collection = mydb['auctions']
         result = []
         easy_search = "\'" + search_key + "\'"
-        print(search_key)
+        
         cursor = collection.find(
             {"$text": {"$search": easy_search}}, {"_id": 0})
         result = []
@@ -624,8 +625,7 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
-        print(request.args)
-        print("123")
+
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
