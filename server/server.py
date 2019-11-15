@@ -15,10 +15,11 @@ from time import time
 from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
+import config
 
 # ===== database connection ===
-client = pymongo.MongoClient("mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-mydb = client["runoobdb"]
+client = pymongo.MongoClient(config.MONGO_URI)
+mydb = client[config.MONGO_DB]
 # =============================
 
 
