@@ -246,7 +246,7 @@ class Register(Resource):
             "payment_method": "",
             "favorites": [],
             "auctions":[],
-            "bids":[]
+            "bid":[]
         }
         col.insert_one(new_user)
 
