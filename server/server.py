@@ -497,6 +497,30 @@ class CreateSingleAuctionItem(Resource):
             return {'message': 'Bad Request'}, 400
 
 
+@ns_auction.route('')
+class MultipleAuctionsOperations(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'No auction data stored in database')
+    @api.doc(description="get information of all auction data in the database")
+    def get(self):
+        au_col = mydb['auctions']
+        retrieved_items = []
+        max_result_size = 10
+        for item in au_col.find().limit(max_result_size):
+            del item['_id']
+            retrieved_items.append(item)
+
+        if len(retrieved_items) == 0:
+            return {"message": "No auctions stored in database"},404
+        response = \
+                {
+                    "message": "OK",
+                    "result_size": len(retrieved_items),
+                    "result":retrieved_items
+                }
+        return response,200
+
+
 @ns_auction.route('/<item_id>')
 @api.param('item_id', 'Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
