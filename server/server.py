@@ -23,9 +23,6 @@ mydb = client[config.MONGO_DB]
 # =============================
 
 
-UPLOAD_FOLDER = './image/'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
 # datetime validation
 def validate_datetime_str(str):
     try:
@@ -101,7 +98,6 @@ expire_time = 1000
 auth = Token_authentication(SECRET_KEY, expire_time)
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 api = Api(app, authorizations={
     'API-KEY': {
@@ -207,6 +203,7 @@ user_profile = api.model(
         "age": fields.String,
         "phone_number": fields.String,
         "favorites": fields.List(fields.Nested(auction_info)),
+        "avatar": fields.String,
         "invisiable": fields.List(fields.Nested(user_profile_invisiable))
     }
 )
@@ -243,11 +240,12 @@ class Register(Resource):
                 "age": "",
                 "phone_number": "",
                 "payment_method": "",
+                "avatar": "",
                 "favorites": []
             }
-            col.add_one_dict_to_array(
+            res = col.add_one_dict_to_array(
                 {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
-
+            print(res)
             return {'message': 'Account Created Successfully!'}, 201
 
         except KeyError:
@@ -299,12 +297,14 @@ class Manage_profile(Resource):
     @api.doc(description="get other user's profile")
     def get(self, request_user_id):
         alldata = col.select_all_collection()
+        print(alldata)
         selected_data = []
         for item in alldata:
             if "user_profile" in item:
                 selected_data = item["user_profile"]
 
         for single_user in selected_data:
+            print(single_user)
             if str(single_user["user_id"]) == str(request_user_id):
                 new_user_profile = dict()
                 new_user_profile["age"] = single_user["age"]
@@ -313,6 +313,7 @@ class Manage_profile(Resource):
                 new_user_profile["first_name"] = single_user["first_name"]
                 new_user_profile["last_name"] = single_user["last_name"]
                 new_user_profile["favorites"] = single_user["favorites"]
+                # new_user_profile["avatar"] = single_user["avatar"]
 
                 response = {
                     "message": "OK",
@@ -618,6 +619,7 @@ class Auction_search2(Resource):
     # @api.expect(user_input_filter)
     @api.param('location', '')
     @api.param('category', '')
+    @api.param('user_id', '')
     @api.param('endPrice', '')
     @api.param('startPrice', '')
     @api.param('endDate', 'YYYY/MM/DD')
@@ -629,14 +631,12 @@ class Auction_search2(Resource):
         mid = []
 
         location = request.args.get('location')
-
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
-
         category = request.args.get('category')
-
         endPrice = request.args.get('endPrice')
         startPrice = request.args.get('startPrice')
+        user_id = request.args.get('user_id')
 
         if startPrice is None:
             startPrice = 0
@@ -655,16 +655,14 @@ class Auction_search2(Resource):
         startDateP = datetime.datetime.strptime(startDate, "%Y/%m/%d")
 
         cursor = collection.find()
-
+        
         for entry in cursor:
             entry['_id'] = str(entry['_id'])
             result.append(entry)
             mid.append(entry)
 
         for entry in mid:
-            entryDateP = datetime.datetime.strptime(
-                entry['end_time'], "%Y-%m-%d %H:%M:%S")
-
+            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
             if entryDateP <= startDateP or entryDateP >= endDateP:
                 if entry in result:
                     result.remove(entry)
@@ -676,6 +674,11 @@ class Auction_search2(Resource):
 
         for entry in mid:
             if category and entry['category_id'] != category:
+                if entry in result:
+                    result.remove(entry)
+       
+        for entry in mid:
+            if user_id and entry['seller_id'] != int(user_id):
                 if entry in result:
                     result.remove(entry)
 

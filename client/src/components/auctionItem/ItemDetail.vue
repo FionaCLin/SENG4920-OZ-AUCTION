@@ -5,7 +5,7 @@
         <q-item-label>{{ k }}</q-item-label>
       </q-item-section>
 
-      <q-item-section
+      <!-- <q-item-section
         v-if="k === 'Seller'"
         @click="userProfile(auction.seller_id)"
       >
@@ -24,9 +24,10 @@
             ></q-icon>
           </q-item-label>
         </q-item-section>
-      </q-item-section>
+      </q-item-section> -->
 
-      <q-item-section v-else>
+      <q-item-section>
+        <!-- <q-item-section v-else> -->
         <q-item-label v-if="k === 'Start Price'" caption>{{
           auction[f] | currency
         }}</q-item-label>
@@ -47,6 +48,7 @@ export default {
       return "$" + Number.parseFloat(value).toFixed(2);
     },
     current_price: function(biddings) {
+      if (!biddings) return 0;
       let max = Math.max.apply(
         Math,
         biddings.map(function(e) {

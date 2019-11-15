@@ -15,8 +15,8 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log(this.$store.state.auction.myBids);
-        return this.$store.state.auction.myBids.auction_items;
+        console.log("my biddings", this.$store.state.auction.myBids);
+        return this.$store.state.auction.myBids;
       }
     }
   }

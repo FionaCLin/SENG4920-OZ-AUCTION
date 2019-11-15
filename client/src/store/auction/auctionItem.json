@@ -1,16 +1,16 @@
 [
   {
     "sellers": {
-      "seller_id": 11829,
+      "seller_id": 3,
       "location": "United States",
       "rating": 4,
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg"
     },
     "auction_items": [
       {
-        "id": 14138186,
+        "id": 1,
         "seller_name": "AmeliaOriginals",
-        "seller_id": 11829,
+        "seller_id": 3,
         "category_id": 4,
         "title": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
         "description": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
@@ -35,9 +35,9 @@
         ]
       },
       {
-        "id": 14138168,
+        "id": 2,
         "seller_name": "AmeliaOriginals",
-        "seller_id": 11829,
+        "seller_id": 3,
         "category_id": 4,
         "title": "Gold Toned Wire Woven Cursive \"I\" Pendant Necklace",
         "description": "Gold Toned Wire Woven Cursive &quot;I&quot; Pendant Necklace",
@@ -62,9 +62,9 @@
         ]
       },
       {
-        "id": 14138155,
+        "id": 3,
         "seller_name": "AmeliaOriginals",
-        "seller_id": 11829,
+        "seller_id": 3,
         "category_id": 4,
         "title": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
         "description": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
@@ -76,9 +76,9 @@
         "biddings": []
       },
       {
-        "id": 14084599,
+        "id": 4,
         "seller_name": "AmeliaOriginals",
-        "seller_id": 11829,
+        "seller_id": 3,
         "category_id": 57,
         "title": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
         "description": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
@@ -93,14 +93,14 @@
   },
   {
     "sellers": {
-      "seller_id": 27056,
+      "seller_id": 4,
       "location": "Canada",
       "rating": 3,
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg"
     },
     "auction_items": [
       {
-        "id": 13131854,
+        "id": 5,
         "seller_name": "Jaqui",
         "seller_id": 27056,
         "category_id": 4,
@@ -127,7 +127,7 @@
         ]
       },
       {
-        "id": 13857537,
+        "id": 6,
         "seller_name": "Jaqui",
         "seller_id": 27056,
         "category_id": 3,
@@ -140,7 +140,7 @@
         "status": 0,
         "biddings": [
           {
-            "user_id": 11829,
+            "user_id": 3,
             "price": 26,
             "item_id": 14138186,
             "created": "2019-09-22 15:50:28"
@@ -154,7 +154,7 @@
         ]
       },
       {
-        "id": 13364828,
+        "id": 7,
         "seller_name": "Jaqui",
         "seller_id": 27056,
         "category_id": 45,
@@ -168,7 +168,7 @@
         "biddings": []
       },
       {
-        "id": 13074092,
+        "id": 8,
         "seller_name": "Jaqui",
         "seller_id": 27056,
         "category_id": 31,

@@ -18,7 +18,6 @@
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
 
-
           <q-btn round flat>
             <q-avatar size="26px">
               <img
@@ -28,33 +27,33 @@
               <q-icon name="person" />
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
-            <q-menu
-              transition-show="flip-right"
-              transition-hide="flip-left"
-            >
-              <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+            <q-menu transition-show="flip-right" transition-hide="flip-left">
+              <q-img
+                class="absolute-top"
+                src="https://cdn.quasar.dev/img/material.png"
+                style="height: 150px"
+              >
                 <div class="absolute-bottom bg-transparent">
                   <q-avatar size="56px" class="q-mb-sm">
-                    <img src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG">
+                    <img
+                      src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG"
+                    />
                   </q-avatar>
                   <div class="text-weight-bold">Razvan Stoenescu</div>
                   <div>@rstoenescu</div>
                 </div>
               </q-img>
 
-
-
-              <q-list style="min-width: 200px; height: calc(100% - 150px); margin-top: 150px;">
-
+              <q-list
+                style="min-width: 200px; height: calc(100% - 150px); margin-top: 150px;"
+              >
                 <q-separator />
-
-                    <q-btn-group spread>
-                        <q-btn label="Profile"  to="/profile" />
-                        <q-btn label="Signout" />
-                      </q-btn-group>
+                <q-btn-group spread>
+                  <q-btn label="Profile" to="/profile" />
+                  <q-btn label="Signout" />
+                </q-btn-group>
               </q-list>
             </q-menu>
-
           </q-btn>
         </div>
       </q-toolbar>
@@ -62,10 +61,9 @@
 
     <q-footer elevated class="myColor">
       <q-toolbar>
-        <q-toolbar-title class="myFooter"
-          >Copyright © 2019 Awesome Group Co. All Rights
-          Reserved.</q-toolbar-title
-        >
+        <q-toolbar-title class="myFooter">
+          Copyright © 2019 Awesome Group Co. All Rights Reserved.
+        </q-toolbar-title>
       </q-toolbar>
     </q-footer>
 
@@ -172,8 +170,6 @@
       <router-view />
     </q-page-container>
   </q-layout>
-
-
 </template>
 
 <script>
@@ -193,13 +189,16 @@ export default {
       avatarUrl: this.$store.state.user.avatar,
       selected: ""
     };
-    // },
-    // components: {
-    //   Nav
+  },
+  created() {
+    this.$store.dispatch("auction/getAllAuctions");
+    this.$store.dispatch(
+      "auction/getMyAuctions",
+      this.$store.state.user.user_id
+    );
+    this.$store.dispatch("auction/getMyBiddings", 2);
+    this.$store.dispatch("auction/getMyFavorite", 1);
   }
-  // computed: {
-  //   ...mapState(["user"])
-  // }
 };
 </script>
 
@@ -224,5 +223,4 @@ export default {
   text-align: center;
   font-size: 0.9em;
 }
-
 </style>
