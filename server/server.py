@@ -519,12 +519,9 @@ user_input_single_auction_item = api.model(
         "description": fields.String,
         "end_time": fields.String,
         "price": fields.Float,
-#<<<<<<< HEAD
         "image": fields.List(fields.String),
-#=======
-#       "image": fields.String,
         "location": fields.String
-#>>>>>>> Yida
+
     }
 )
 
