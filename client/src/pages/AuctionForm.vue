@@ -1,8 +1,12 @@
 <template>
-
   <div class="q-pa-md">
     <q-stepper ref="stepper" v-model="step" color="primary" animated>
-      <q-step :name="1" title="Basic Information" icon="settings" :done="step > 1">
+      <q-step
+        :name="1"
+        title="Basic Information"
+        icon="settings"
+        :done="step > 1"
+      >
         <q-item class="myItem">
           <q-item-section>
             <q-form
@@ -10,8 +14,18 @@
               class="q-gutter-md"
               @submit="onSubmit"
             >
-              <q-input v-model="title" label="Product title" filled type="text" />
-              <q-input v-model="price" label="Starting Price" filled type="number" />
+              <q-input
+                v-model="title"
+                label="Product title"
+                filled
+                type="text"
+              />
+              <q-input
+                v-model="price"
+                label="Starting Price"
+                filled
+                type="number"
+              />
               <q-input v-model="location" label="Location" filled type="text" />
 
               <q-input
@@ -24,19 +38,31 @@
               >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date v-model="date" @input="() => $refs.qDateProxy.hide()" />
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="date"
+                        @input="() => $refs.qDateProxy.hide()"
+                      />
                     </q-popup-proxy>
                   </q-icon>
                 </template>
               </q-input>
-              <q-select filled label="Category" v-model="categoryId" :options="options" />
+              <q-select
+                v-model="categoryId"
+                filled
+                label="Category"
+                :options="options"
+              />
               <div style="overflow: hidden;">
                 <q-btn
                   style="float:right;"
                   color="primary"
+                  label="Continue"
                   @click="$refs.stepper.next()"
-                  label='Continue'
                 />
                 <q-btn
                   v-if="step > 1"
@@ -44,8 +70,8 @@
                   flat
                   color="primary"
                   label="Back"
-                  @click="$refs.stepper.previous()"
                   class="q-ml-sm"
+                  @click="$refs.stepper.previous()"
                 />
               </div>
             </q-form>
@@ -53,12 +79,23 @@
         </q-item>
       </q-step>
 
-      <q-step :name="2" title="Images and Description" icon="create_new_folder" :done="step > 2">
+      <q-step
+        :name="2"
+        title="Images and Description"
+        icon="create_new_folder"
+        :done="step > 2"
+      >
         <q-item class="myItem">
           <q-item-section>
             <div class="row">
               <div class="col-4">
-                <q-uploader label="Batch upload" multiple batch :factory="upload" style="width:100%" />
+                <q-uploader
+                  label="Batch upload"
+                  multiple
+                  batch
+                  :factory="upload"
+                  style="width:100%"
+                />
               </div>
               <div class="col-8" style="padding-left: 20px;">
                 <q-editor v-model="editor" />
@@ -68,8 +105,8 @@
               <q-btn
                 style="float:right;"
                 color="primary"
+                label="Submit"
                 @click="onSubmit()"
-                label='Submit'
               />
               <q-btn
                 v-if="step > 1"
@@ -77,19 +114,15 @@
                 flat
                 color="primary"
                 label="Back"
-                @click="$refs.stepper.previous()"
                 class="q-ml-sm"
+                @click="$refs.stepper.previous()"
               />
             </div>
           </q-item-section>
         </q-item>
       </q-step>
 
-      <q-step
-        :name="3"
-        title="Auction Created"
-        icon="assignment"
-      >
+      <q-step :name="3" title="Auction Created" icon="assignment">
         Auction is created! Check your new Auction here!
         <div style="overflow: hidden;">
           <q-btn
@@ -100,15 +133,13 @@
             @click="viewCreatedAuction()"
           />
         </div>
-
       </q-step>
-
     </q-stepper>
   </div>
 </template>
 
 <script>
-// import { required, minLength } from 'vuelidate/lib/validators'
+// import { required, minLs } from 'vuelidate/lib/validators'
 import { uploadImage } from "../helper";
 import { axiosInstance } from "boot/axios";
 
@@ -160,18 +191,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.$data)
+      console.log(this.$data);
       console.log("here2");
-      console.log(JSON.parse(localStorage.getItem('user')));
+      console.log(JSON.parse(localStorage.getItem("user")));
       axiosInstance
         .post("/auction", {
           //seller_name: JSON.parse(localStorage.getItem('user')).first_name,
           seller_name: "test",
-          seller_id: JSON.parse(localStorage.getItem('user')).user_id,
+          seller_id: JSON.parse(localStorage.getItem("user")).user_id,
           category_id: this.$data.categoryId,
           title: this.$data.title,
           description: this.$data.description,
-          end_time: this.$data.date.replace(/\//g,'-') + " 00:42:00",
+          end_time: this.$data.date.replace(/\//g, "-") + " 00:42:00",
           price: new Number(this.$data.price),
           image: this.$data.image
         })
@@ -182,12 +213,12 @@ export default {
         });
       //connect to back-end
 
-
       //
       // sellerName: "",
       // sellerId: "",
       if (this.edit) {
-        this.$refs.EditAuctionForm.validate().then(//validate underfine
+        this.$refs.EditAuctionForm.validate().then(
+          //validate underfine
           success => {
             if (success) {
               // yay, models are correct

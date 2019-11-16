@@ -141,7 +141,8 @@
 </template>
 
 <script>
-//import { axiosInstance } from "boot/axios";
+// import { axiosInstance } from "boot/axios";
+
 export default {
   props: ["items", "title", "alink", "tool"],
   data() {

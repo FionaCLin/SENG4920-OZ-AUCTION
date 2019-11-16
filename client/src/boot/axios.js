@@ -7,7 +7,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:9999/"
 });
-const myInterceptor = axios.interceptors.request.use(function() {
+const myInterceptor = axios.interceptors.request.use(function () {
   /*...*/
 });
 axiosInstance.interceptors.request.eject(myInterceptor);
