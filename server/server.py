@@ -199,13 +199,15 @@ user_profile = api.model(
         "email": fields.String,
         "first_name": fields.String,
         "last_name": fields.String,
-        "age": fields.String,
+        "dob": fields.String,
         "phone_number": fields.String,
         "favorites": fields.List(fields.Nested(auction_info)),
         "avatar": fields.String,
+        "location": fields.String,
         "invisiable": fields.List(fields.Nested(user_profile_invisiable))
     }
 )
+
 
 
 @ns_account.route('/register')
@@ -242,10 +244,13 @@ class Register(Resource):
             "password": accountInfo["password"],
             "first_name": "",
             "last_name": "",
-            "age": "",
+            "dob": "",
             "phone_number": "",
             "payment_method": "",
             "favorites": [],
+            "location": "",
+            "rating": 0,
+            "avatar": "",
             "auctions":[],
             "bids":[]
         }
@@ -279,8 +284,8 @@ class Signin(Resource):
             #    if "user_profile" in item:
             #        selected_data = item["user_profile"]
         for single_user in cursor:
+            print(single_user)
             if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
-                print(single_user)
                 print('find')
                 return_m = { # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
@@ -288,11 +293,14 @@ class Signin(Resource):
                     # "password": single_user['password'], #no sure if needed
                     "first_name": single_user['first_name'],
                     "last_name": single_user['last_name'],
-                    "age": single_user['age'],
+                    "dob": single_user['dob'],
                     "phone_number": single_user['phone_number'],
                     "payment_method": single_user['payment_method'],
                     "favorites": single_user['favorites'],
                     "auctions":single_user['auctions'],
+                    "location":single_user['location'],
+                    "rating":single_user['rating'],
+                    "avatar":single_user['avatar'],
                     "bids":single_user['bids'],
                     "token":auth.generate_token(account_info['email'])
                 }
@@ -315,19 +323,19 @@ class Signout(Resource):
 
 
 
-@ns_account.route('/<user_id>')
-@api.param('user_id', 'request user id')
-class SingleAuctionItemOperations(Resource):
-    @api.response(200, 'OK')
-    @api.response(404, 'Specified item does not exist')
-    @api.doc(description="get information of a user")
-    def get(self, user_id):
-        col = mydb['user']
-        print(user_id)
-        user = col.find_one({ "user_id": int(user_id)})
-        del user['_id']
-        print(user)
-        return user,200
+# @ns_account.route('/<user_id>')
+# @api.param('user_id', 'request user id')
+# class SingleAuctionItemOperations(Resource):
+#     @api.response(200, 'OK')
+#     @api.response(404, 'Specified item does not exist')
+#     @api.doc(description="get information of a user")
+#     def get(self, user_id):
+#         col = mydb['user']
+#         print(user_id)
+#         user = col.find_one({ "user_id": int(user_id)})
+#         del user['_id']
+#         print(user)
+#         return user,200
 
 
 
@@ -338,36 +346,41 @@ class Manage_profile(Resource):
     @api.doc(description="get other user's profile")
     def get(self, request_user_id):
         col = mydb['user']
-        cursor = col.find()
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
+
+        if single_user is None:
+            response = {
+                "message": "Profile does not exist",
+                "data": ""
+            }
+            return response, 404
         # alldata = col.select_all_collection()
         # print(alldata)
         # selected_data = []
         # for item in alldata:
         #     if "user_profile" in item:
         #         selected_data = item["user_profile"]
-        for single_user in cursor:
-            print(single_user)
-            if str(single_user["user_id"]) == str(request_user_id):
-                new_user_profile = dict()
-                new_user_profile["age"] = single_user["age"]
-                new_user_profile["phone_number"] = single_user["phone_number"]
-                new_user_profile["email"] = single_user["email"]
-                new_user_profile["first_name"] = single_user["first_name"]
-                new_user_profile["last_name"] = single_user["last_name"]
-                new_user_profile["favorites"] = single_user["favorites"]
-                # new_user_profile["avatar"] = single_user["avatar"]
 
-                response = {
-                    "message": "OK",
-                    "data": new_user_profile
-                }
-                return response, 200
+        new_user_profile = dict()
+        new_user_profile["user_id"] = single_user["user_id"]
+        new_user_profile["dob"] = single_user["dob"]
+        new_user_profile["phone_number"] = single_user["phone_number"]
+        new_user_profile["email"] = single_user["email"]
+        new_user_profile["first_name"] = single_user["first_name"]
+        new_user_profile["last_name"] = single_user["last_name"]
+        new_user_profile["favorites"] = single_user["favorites"]
+        new_user_profile["avatar"] = single_user["avatar"]
+        new_user_profile["rating"] = single_user["rating"]
+        new_user_profile["location"] = single_user["location"]
+        new_user_profile["payment_method"] = single_user["payment_method"]
 
         response = {
-            "message": "Profile does not exist",
-            "data": ""
+            "message": "OK",
+            "data": new_user_profile
         }
-        return response, 404
+        return response, 200
+
 
 
 
