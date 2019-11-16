@@ -279,13 +279,13 @@ class Signin(Resource):
             #    if "user_profile" in item:
             #        selected_data = item["user_profile"]
         for single_user in cursor:
-            print(single_user)
-            if single_user["email"] == account_info["email"] and account_info["password"] == account_info["password"]:
+            if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
+                print(single_user)
                 print('find')
                 return_m = { # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
                     "email": single_user['email'],
-                    "password": single_user['password'], #no sure if needed
+                    # "password": single_user['password'], #no sure if needed
                     "first_name": single_user['first_name'],
                     "last_name": single_user['last_name'],
                     "age": single_user['age'],
@@ -303,6 +303,7 @@ class Signin(Resource):
         #    return {"message": "authorization has been refused."}, 401
 
 
+
 @ns_account.route('/signout/<string:token>')
 class Signout(Resource):
     @api.response(200, 'Successful')
@@ -311,6 +312,8 @@ class Signout(Resource):
     def delete(self, token):
         auth.delete_token(token)
         return {'message': 'Deletion Successful'}, 200
+
+
 
 @ns_account.route('/<user_id>')
 @api.param('user_id', 'request user id')
@@ -334,14 +337,15 @@ class Manage_profile(Resource):
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get other user's profile")
     def get(self, request_user_id):
-        alldata = col.select_all_collection()
-        print(alldata)
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
-
-        for single_user in selected_data:
+        col = mydb['user']
+        cursor = col.find()
+        # alldata = col.select_all_collection()
+        # print(alldata)
+        # selected_data = []
+        # for item in alldata:
+        #     if "user_profile" in item:
+        #         selected_data = item["user_profile"]
+        for single_user in cursor:
             print(single_user)
             if str(single_user["user_id"]) == str(request_user_id):
                 new_user_profile = dict()
@@ -365,6 +369,8 @@ class Manage_profile(Resource):
         }
         return response, 404
 
+
+
     @api.response(200, 'User Profile Updated Successfully')
     @api.response(400, 'Bad Request Error')
     @api.response(404, 'Profile Does Not Exist')
@@ -376,59 +382,45 @@ class Manage_profile(Resource):
         except:
             return {'message': 'Bad Request!', "data": ""}, 400
 
-        alldata = col.select_all_collection()
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
+        col = mydb['user']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
+        print(single_user)
 
-        found = False
-        col.delete_specific_collection(
-            {"col_id": "c1"}, {"$unset": {"user_profile": 1}})
-        for single_user in selected_data:
-            if str(single_user["user_id"]) != str(request_user_id):
-                col.add_one_dict_to_array(
-                    {"col_id": "c1"}, {"$push": {"user_profile": single_user}})
-            else:
-                found = True
-                if len(user_profile_json.keys()) != 0:
-                    new_user_profile = dict()
-                    update_single_user = single_user
-                    for key, value in user_profile_json.items():
-                        new_user_profile[key] = value
+        if single_user is None:
+            response = {
+                "message": "Specified user id does not exist",
+                "data": ""
+            }
+            return response, 404
 
-                        if isinstance(value, list):
-                            if key == 'invisiable':
-                                update_single_user["password"] = value[0]["password"]
-                                update_single_user["payment_method"] = value[0]["payment_method"]
-                            elif key == 'favorites':
-                                # print (update_single_user["favorites"])
-                                # print (value[0]["favorites"])
-                                update_single_user["favorites"] = value[0]
-                        else:
-                            update_single_user[key] = value
-                    # selected_data[index] = update_single_user
-                    col.add_one_dict_to_array(
-                        {"col_id": "c1"}, {"$push": {"user_profile": update_single_user}})
-                    response = {
-                        "message": "OK",
-                        "data": new_user_profile
-                    }
-                else:
-                    response = {
-                        "message": "User did not specify any field to update",
-                        "data": single_user
-                    }
-                    return response, 200
-
-        if found == True:
+        if len(user_profile_json.keys()) == 0:
+            response = {
+                "message": "User did not specify any field to update",
+                "data": single_user
+            }
             return response, 200
 
+
+        update_single_user = single_user
+        for key, value in user_profile_json.items():
+
+            if key == 'invisiable':
+                update_single_user["password"] = value[0]["password"]
+                update_single_user["payment_method"] = value[0]["payment_method"]
+            # elif key == 'favorites':
+            #     update_single_user["favorites"] = value[0]
+            else:
+                update_single_user[key] = value
+        col.update_one({"user_id": int(request_user_id)}, {"$set": update_single_user})
+        
         response = {
-            "message": "Specified user id does not exist",
-            "data": ""
+            "message": "OK",
+            "data": update_single_user
         }
-        return response, 404
+        return response, 200
+
+
 
 
 #######################################
