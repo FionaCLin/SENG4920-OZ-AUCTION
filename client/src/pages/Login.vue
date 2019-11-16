@@ -87,7 +87,7 @@ export default {
             console.log(success);
             axiosInstance
               .post("/account/signin", {
-                username: this.$data.email,
+                email: this.$data.email,
                 password: this.$data.password
               })
               .then(response => {
