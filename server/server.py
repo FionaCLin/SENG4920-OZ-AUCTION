@@ -282,10 +282,6 @@ class Signin(Resource):
         col = mydb['user']
         cursor = col.find()
         print ('--------------------')
-        for single_user in cursor:
-            print ('========')
-            print(single_user)
-        print ('--------------------')
 
         print(account_info)
         #print(account_info)
