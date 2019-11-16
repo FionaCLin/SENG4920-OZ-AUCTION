@@ -159,7 +159,8 @@
 </template>
 
 <script>
-//import { axiosInstance } from "boot/axios";
+import { axiosInstance } from "boot/axios";
+
 export default {
   data() {
     return {
@@ -211,6 +212,15 @@ export default {
             if (success) {
               // yay, models are correct
               console.log(this.$data.normal);
+              axiosInstance
+                .get("/auction/search-key/" + this.$data.normal.search)
+                .then(response => {
+                  console.log(response);
+
+                },
+                err => {
+                  console.log(err);
+                });
             }
           },
           err => {
