@@ -232,13 +232,13 @@ class Register(Resource):
         print(request.json)
         
         for single_user in cursor:
-            if single_user["email"] == accountInfo["username"]:
+            if single_user["email"] == accountInfo["email"]:
                 return {'message': 'Email Already Exists'}, 200
             id_counter  = id_counter + 1
 
         new_user = {
             "user_id": id_counter,
-            "email": accountInfo["username"],
+            "email": accountInfo["email"],
             "password": accountInfo["password"],
             "first_name": "",
             "last_name": "",
@@ -280,7 +280,7 @@ class Signin(Resource):
             #        selected_data = item["user_profile"]
         for single_user in cursor:
             print(single_user)
-            if single_user["email"] == account_info["username"] and account_info["password"] == account_info["password"]:
+            if single_user["email"] == account_info["email"] and account_info["password"] == account_info["password"]:
                 print('find')
                 return_m = { # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
@@ -294,7 +294,7 @@ class Signin(Resource):
                     "favorites": single_user['favorites'],
                     "auctions":single_user['auctions'],
                     "bids":single_user['bids'],
-                    "token":auth.generate_token(account_info['username'])
+                    "token":auth.generate_token(account_info['email'])
                 }
 
                 return return_m, 200
