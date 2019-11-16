@@ -16,7 +16,6 @@ from time import time
 from itsdangerous import SignatureExpired, JSONWebSignatureSerializer, BadSignature
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
-import config
 
 # ===== database connection ===
 client = pymongo.MongoClient(config.MONGO_URI)
@@ -234,10 +233,14 @@ class Register(Resource):
 
         print(request.json)
         
+        found = False
         for single_user in cursor:
-            if single_user["email"] == accountInfo["email"]:
-                return {'message': 'Email Already Exists'}, 200
             id_counter  = id_counter + 1
+            if single_user["email"] == accountInfo["email"]:
+                found = True
+
+        if found == True:
+            return {'message': 'Email Already Exists'}, 200
 
         new_user = {
             "user_id": id_counter,
@@ -257,6 +260,8 @@ class Register(Resource):
         }
         col.insert_one(new_user)
 
+        print ("new user is")
+        print (new_user)
         return {'message': 'Account Created Successfully!'}, 201
 
         
@@ -276,6 +281,12 @@ class Signin(Resource):
             return {'message': 'Bad Request!'}, 400
         col = mydb['user']
         cursor = col.find()
+        print ('--------------------')
+        for single_user in cursor:
+            print ('========')
+            print(single_user)
+        print ('--------------------')
+
         print(account_info)
         #print(account_info)
         #try:
@@ -714,30 +725,25 @@ class Auction_search2(Resource):
             mid.append(entry)
 
         for entry in mid:
-            print(entry)
-            if entry['end_time'] is not None:
-                entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
-                if entryDateP <= startDateP or entryDateP >= endDateP:
-                    if entry in result:
-                        result.remove(entry)
+            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
+            if entryDateP <= startDateP or entryDateP >= endDateP:
+                if entry in result:
+                    result.remove(entry)
 
         for entry in mid:
-            if entry['price'] is not None:
-                if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
-                    if entry in result:
-                        result.remove(entry)
+            if entry['price'] < int(startPrice) or entry['price'] > int(endPrice):
+                if entry in result:
+                    result.remove(entry)
 
         for entry in mid:
-            if entry['category_id'] is not None:
-                if category and entry['category_id'] != category:
-                    if entry in result:
-                        result.remove(entry)
-            
+            if category and entry['category_id'] != category:
+                if entry in result:
+                    result.remove(entry)
+       
         for entry in mid:
-            if entry['seller_id'] is not None:
-                if user_id and entry['seller_id'] != int(user_id):
-                    if entry in result:
-                        result.remove(entry)
+            if user_id and entry['seller_id'] != int(user_id):
+                if entry in result:
+                    result.remove(entry)
 
         # location is db
 
