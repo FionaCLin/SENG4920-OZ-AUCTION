@@ -31,9 +31,9 @@ export default {
     axiosInstance
       .get(`/account/get_user_auctions/${JSON.parse(localStorage.getItem("user")).user_id}`)
       .then(res => {
-        console.log(JSON.parse(localStorage.getItem("user")).user_id);
+        console.log("Now restart the myauction page");
+        console.log("current user is ", this.$store.state.user.user_id);
         console.log(res.data.data.auctions);
-        console.log(this.$store.state.auction.myAuctions.auction_items);
         this.$store.commit("auction/updateMyAuctions", res.data.data.auctions);
         this.$data.my_auctions = res.data.data.auctions;
       });
