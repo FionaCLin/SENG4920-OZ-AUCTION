@@ -224,6 +224,7 @@ export default {
                 .get("/auction/search-key/" + this.$data.normal.search)
                 .then(response => {
                   console.log(response);
+                  console.log(this.$store.state.auction.myAuctions);
                   this.$data.searchResult = response.data
                 },
                 err => {
