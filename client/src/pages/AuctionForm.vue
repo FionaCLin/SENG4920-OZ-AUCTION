@@ -26,7 +26,12 @@
                 filled
                 type="number"
               />
-              <q-input v-model="location" label="Location" filled type="text" />
+              <q-select
+                v-model="location"
+                filled
+                label="Location"
+                :options="optionsLocation"
+              />
 
               <q-input
                 v-model="date"
@@ -55,7 +60,7 @@
                 v-model="categoryId"
                 filled
                 label="Category"
-                :options="options"
+                :options="optionsCategory"
               />
               <div style="overflow: hidden;">
                 <q-btn
@@ -129,7 +134,7 @@
             style="float:right;"
             color="primary"
             to="/user/myAuction"
-            label='See my new Auction'
+            label="See my new Auction"
             @click="viewCreatedAuction()"
           />
         </div>
@@ -139,9 +144,9 @@
 </template>
 
 <script>
-// import { required, minLs } from 'vuelidate/lib/validators'
 import { uploadImage } from "../helper";
 import { axiosInstance } from "boot/axios";
+import { dropdownOpts, countries } from "../helper";
 
 let warning = {
   color: "red-5",
@@ -161,7 +166,8 @@ export default {
       endTime: "",
       price: "",
       image: [],
-      options: ["Handicraft", "Second hand"],
+      optionsCategory: dropdownOpts,
+      optionsLocation: countries.map(x => x.name),
       date: "",
       step: 1,
       location: "",
@@ -271,18 +277,19 @@ export default {
       }
     },
     viewCreatedAuction() {
-       axiosInstance
-        .get("/auction/" + this.$data.categoryId)
-        .then(response => {
-          console.log(response);
-          this.$store.dispatch("auction/getMyAuctions", this.$store.state.user.user_id);
-          this.$router.push({
-            name: "auctionItem",
-            params: {
-              id: this.$data.categoryId
-            }
-          })
+      axiosInstance.get("/auction/" + this.$data.categoryId).then(response => {
+        console.log(response);
+        this.$store.dispatch(
+          "auction/getMyAuctions",
+          this.$store.state.user.user_id
+        );
+        this.$router.push({
+          name: "auctionItem",
+          params: {
+            id: this.$data.categoryId
+          }
         });
+      });
     }
   }
 };

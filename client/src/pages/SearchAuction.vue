@@ -164,6 +164,7 @@
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
 import { axiosInstance } from "boot/axios";
+import { dropdownOpts, countries } from "../helper";
 
 export default {
   components: {
@@ -180,32 +181,8 @@ export default {
         endPrice: null,
         category: null,
         location: null,
-        optionsCategory: [
-          "Pet Supplies",
-          "Movies",
-          "Jewellery & Watches",
-          "Industrial",
-          "Home Entertainment",
-          "Home & Garden",
-          "Health & Beauty",
-          "Sporting Goods",
-          "Musical Instruments",
-          "Music",
-          "Phones & Accessories",
-          "Pottery, Glass",
-          "Services",
-          "Tickets, Travel",
-          "Stamps",
-          "Gift Cards & Vouchers",
-          "Home Appliances",
-          "Food & Drinks",
-          "Crafts",
-          "Dolls, Bears",
-          "Electronics",
-          "Computers/Tablets & Networking",
-          "Coins"
-        ],
-        optionsLocation: ["Australia", "USA", "UK"]
+        optionsCategory: dropdownOpts,
+        optionsLocation: countries.map(x => x.name)
       },
       normal: {
         search: ""
@@ -213,7 +190,8 @@ export default {
     };
   },
   methods: {
-    onSubmit() { // ask filter api
+    onSubmit() {
+      // ask filter api
       if (this.$data.tab == "one") {
         this.$refs.normalForm.validate().then(
           success => {
@@ -222,14 +200,16 @@ export default {
               console.log(this.$data.normal);
               axiosInstance
                 .get("/auction/search-key/" + this.$data.normal.search)
-                .then(response => {
-                  console.log(response);
-                  console.log(this.$store.state.auction.myAuctions);
-                  this.$data.searchResult = response.data
-                },
-                err => {
-                  console.log(err);
-                });
+                .then(
+                  response => {
+                    console.log(response);
+                    console.log(this.$store.state.auction.myAuctions);
+                    this.$data.searchResult = response.data;
+                  },
+                  err => {
+                    console.log(err);
+                  }
+                );
             }
           },
           err => {
