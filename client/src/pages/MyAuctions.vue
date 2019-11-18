@@ -21,25 +21,19 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log("my auctions", this.$store.state.auction.myAuctions);
-        return this.$store.state.auction.myAuctions;
+        console.log(
+          "my auctions!!!!!!!!",
+          this.$store.state.auction.myAuctions
+        );
+        return this.$store.state.auction.myAuctions.auction_items;
       }
     }
   },
   created() {
-    // console.log(JSON.parse(localStorage.getItem("user")).user_id);
-    // axiosInstance
-    //   .get(`/account/get_user_auctions/${JSON.parse(localStorage.getItem("user")).user_id}`)
-    //   .then(res => {
-    //     console.log("Now restart the myauction page");
-    //     console.log("current user is ", this.$store.state.user.user_id);
-    //     console.log(res.data.data.auctions);
-    //     this.$store.commit("auction/updateMyAuctions", res.data.data.auctions);
-    //     this.$data.my_auctions = res.data.data.auctions;
-    //   });
-    // //.catch(err => console.log(err));
-    this.$store.state.dispatch("auction/getMyAuctions", `${JSON.parse(localStorage.getItem("user")).user_id}`);
-
+    this.$store.state.dispatch(
+      "auction/getMyAuctions",
+      `${JSON.parse(localStorage.getItem("user")).user_id}`
+    );
   }
 };
 </script>
