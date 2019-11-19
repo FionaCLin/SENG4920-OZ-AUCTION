@@ -62,6 +62,28 @@ export async function getAuctionByUserId({ commit, state }, user_id) {
     .catch(err => console.log(err));
 }
 
+export function getMyAutions({ commit, state }, id) {
+  let sellers = [...state.sellers];
+  return axiosInstance
+    .get(`auctions/user/${id}/auctions`)
+    .then(async res => {
+      console.log(res, id);
+      let auctions = res.data.data.auctions;
+      for (let auction of auctions) {
+        let user = sellers.find(x => x.user_id == auction.seller_id);
+        if (!user) {
+          user = await axiosInstance
+            .get(`/account/manage_profile/${auction.seller_id}`)
+            .then(res => res.data.data);
+          sellers.push(user);
+        }
+        auction["user"] = user;
+      }
+      commit("updateMyAuctions", { auctions, sellers });
+    })
+    .catch(err => console.log(err));
+}
+
 export function getMyBiddings({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance

@@ -22,7 +22,7 @@ export default {
     let promises = [
       this.$store.dispatch("auction/getAllAuctions"),
       this.$store.dispatch(
-        "auction/getAuctionByUserId",
+        "auction/getMyAutions",
         this.$store.state.user.user_id
       ),
       this.$store.dispatch(

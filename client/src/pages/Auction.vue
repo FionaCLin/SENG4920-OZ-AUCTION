@@ -16,6 +16,9 @@
         <q-img :src="auction.image[0]" class="q-ma-sm" />
         <div>
           <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
+          <q-btn v-if="isDelable()" flat @click="delItem">
+            <q-icon name="cross" />Delete
+          </q-btn>
         </div>
       </div>
       <div class="col-sm-12">
@@ -52,6 +55,16 @@ export default {
     this.$data.auction = this.$route.params.item;
   },
   methods: {
+    isDelable() {
+      if (
+        this.$data.auction.bidding_info &&
+        this.$data.auction.bidding_info.length
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     fetch() {
       let item;
       this.$axios
@@ -66,6 +79,18 @@ export default {
             });
         })
         .catch(err => console.log(err));
+    },
+    delItem() {
+      //todo move to actiuon and mutation my auctions to remove tghe item
+      this.$axios
+        .delete(`/auctions/${this.id}`)
+        .then(res => {
+          console.log(res);
+          this.$router.push("/myauctions").catch(err => console.log(err));
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     }
   }
 };
