@@ -600,7 +600,7 @@ class AuctionsOperations(Resource):
                     "data": new_auction
                 }
 
-            # Change user
+            # add auction to user's 'auction' field
             seller = user_col.find_one({ "user_id":  user_input['seller_id']})
             seller['auctions'].append(new_auction)
             print(seller)
@@ -870,13 +870,21 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="Delete an auction")
     def delete(self, item_id):
         au_col = mydb['auctions']
+        user_col = mydb['user']
         retrieved_item = au_col.find_one({'id': int(item_id)})
         del retrieved_item['_id']
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
+        seller_id = int(retrieved_item['seller_id'])
+        seller = user_col.find_one({"user_id": seller_id})
+
         try:
             res = au_col.remove({"id": int(item_id)})
+            # remove the specified bidding from the bidding_info of the auction
+            seller['auctions'] = \
+                [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+            user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully","data":retrieved_item}
         except:
             return {"message": "Failed to delete specified item"},200
