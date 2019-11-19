@@ -155,15 +155,24 @@
         </div>
       </div>
     </div>
+    <q-page>
+      <MyAuctionsList :items="searchResult" />
+    </q-page>
   </q-page>
 </template>
 
 <script>
-//import { axiosInstance } from "boot/axios";
+import MyAuctionsList from "../components/dashboard/MyAuctionsList";
+import { axiosInstance } from "boot/axios";
+
 export default {
+  components: {
+    MyAuctionsList
+  },
   data() {
     return {
       tab: "one",
+      searchResult: [],
       advanced: {
         startDate: null,
         endDate: null,
@@ -211,6 +220,16 @@ export default {
             if (success) {
               // yay, models are correct
               console.log(this.$data.normal);
+              axiosInstance
+                .get("/auction/search-key/" + this.$data.normal.search)
+                .then(response => {
+                  console.log(response);
+                  console.log(this.$store.state.auction.myAuctions);
+                  this.$data.searchResult = response.data
+                },
+                err => {
+                  console.log(err);
+                });
             }
           },
           err => {
@@ -266,6 +285,7 @@ export default {
 }
 .myPage {
   background-image: url("../statics/search.jpg");
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100%;
 }

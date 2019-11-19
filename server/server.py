@@ -159,7 +159,6 @@ indicator_parser.add_argument('password', type=str)
 user_input_bidding_info = api.model(
     "User input to propose a bid & bidding info stored in server",
     {
-        "item_id": fields.Integer,
         "user_id": fields.Integer,
         "proposal_price": fields.Float,
     }
@@ -172,11 +171,9 @@ auction_info = api.model(
         "item_id": fields.Integer,
         "seller_name": fields.String,
         "seller_id": fields.Integer,
-        "category_id": fields.Integer,
-        "category":fields.Integer,
+        "category": fields.Integer,
         "title": fields.String,
         "description": fields.String,
-        "location":fields.String,
         "updated": fields.String,
         "created": fields.String,
         "end_time": fields.String,
@@ -244,28 +241,29 @@ class Register(Resource):
 
         if found == True:
             return {'message': 'Email Already Exists'}, 200
+        else:
+            print ('+++++++ '+str(id_counter)+' +++++++++')
+            new_user = {
+                "user_id": id_counter,
+                "email": accountInfo["email"],
+                "password": accountInfo["password"],
+                "first_name": "",
+                "last_name": "",
+                "dob": "",
+                "phone_number": "",
+                "payment_method": "",
+                "favorites": [],
+                "location": "",
+                "rating": 0,
+                "avatar": "",
+                "auctions":[],
+                "bids":[]
+            }
+            col.insert_one(new_user)
 
-        new_user = {
-            "user_id": id_counter,
-            "email": accountInfo["email"],
-            "password": accountInfo["password"],
-            "first_name": "",
-            "last_name": "",
-            "dob": "",
-            "phone_number": "",
-            "payment_method": "",
-            "favorites": [],
-            "location": "",
-            "rating": 0,
-            "avatar": "",
-            "auctions":[],
-            "bids":[]
-        }
-        col.insert_one(new_user)
-
-        print ("new user is")
-        print (new_user)
-        return {'message': 'Account Created Successfully!'}, 201
+            print ("new user is")
+            print (new_user)
+            return {'message': 'Account Created Successfully!'}, 201
 
         
 
@@ -284,11 +282,6 @@ class Signin(Resource):
             return {'message': 'Bad Request!'}, 400
         col = mydb['user']
         cursor = col.find()
-        print ('--------------------')
-        for single_user in cursor:
-            print ('========')
-            print(single_user)
-        print ('--------------------')
 
         print(account_info)
         #print(account_info)
@@ -338,19 +331,61 @@ class Signout(Resource):
 
 
 
-# @ns_account.route('/<user_id>')
-# @api.param('user_id', 'request user id')
-# class SingleAuctionItemOperations(Resource):
-#     @api.response(200, 'OK')
-#     @api.response(404, 'Specified item does not exist')
-#     @api.doc(description="get information of a user")
-#     def get(self, user_id):
-#         col = mydb['user']
-#         print(user_id)
-#         user = col.find_one({ "user_id": int(user_id)})
-#         del user['_id']
-#         print(user)
-#         return user,200
+@ns_account.route('/get_user_auctions/<string:request_user_id>')
+class User_auctions(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'User Does Not Exist')
+    @api.doc(description="get user's auctions")
+    def get(self, request_user_id):
+        col = mydb['user']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
+
+        if single_user is None:
+            response = {
+                "message": "User does not exist",
+                "data": ""
+            }
+            return response, 404
+
+        new_user_auctions = dict()
+        new_user_auctions["auctions"] = single_user["auctions"]
+
+        response = {
+            "message": "OK",
+            "data": new_user_auctions
+        }
+        return response, 200
+
+
+
+@ns_account.route('/get_user_biddings/<string:request_user_id>')
+class User_biddings(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'User Does Not Exist')
+    @api.doc(description="get user's biddings")
+    def get(self, request_user_id):
+        col = mydb['user']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
+
+        if single_user is None:
+            response = {
+                "message": "User does not exist",
+                "data": ""
+            }
+            return response, 404
+
+        new_user_biddings = dict()
+        new_user_biddings["bids"] = single_user["bids"]
+
+        response = {
+            "message": "OK",
+            "data": new_user_biddings
+        }
+        return response, 200
+
+
 
 
 
@@ -451,14 +486,13 @@ class Manage_profile(Resource):
 
 
 
+
 #########################
 #  Routes for Auction.  #
 #########################
 """
-
 POST: Create a an auction item
 GET: Get auction information by item id
-
 """
 dummy_database = []
 
@@ -479,8 +513,7 @@ user_input_single_auction_item = api.model(
     {
         "seller_name": fields.String,
         "seller_id": fields.Integer,
-        "category_id": fields.Integer,
-        "category":fields.Integer,
+        "category": fields.Integer,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
@@ -494,8 +527,7 @@ user_input_single_auction_item = api.model(
 auction_info_update = api.model(
     'Update auction details (user may specify only some of the fields)',
     {
-        "category_id": fields.Integer,
-        "category":fields.Integer,
+        "category": fields.Integer,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
@@ -542,7 +574,7 @@ class AuctionsOperations(Resource):
             }
 
         user_input = request.json
-        for i in ['seller_name', 'seller_id', 'category_id', 'category','title', "description",
+        for i in ['seller_name', 'seller_id', 'category','title', "description",
                   "end_time", "price", "image","location"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
@@ -648,7 +680,7 @@ class SingleAuctionItemOperations(Resource):
                 return {'message': 'Bad Request: invalid end_time format'}
 
             update_data = {}
-            for k in ['category_id', 'category','title', "description", "end_time", "price", "image","location"]:
+            for k in ['category','title', "description", "end_time", "price", "image","location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
 
@@ -747,8 +779,9 @@ class Auction_search2(Resource):
                 if entry in result:
                     result.remove(entry)
 
+        
         for entry in mid:
-            if category and entry['category_id'] != category:
+            if category and entry['category'] is not None:
                 if entry in result:
                     result.remove(entry)
        

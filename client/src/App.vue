@@ -8,8 +8,7 @@
 export default {
   name: "App",
   created() {
-    //console.log(JSON.parse(localStorage.getItem('user')));
-    this.$store.state.user.user_id = JSON.parse(localStorage.getItem('user')).user_id;
+    this.$store.dispatch("user/identifyCurrentID");
     this.$store.dispatch("auction/getAllAuctions");
     this.$store.dispatch(
       "auction/getMyAuctions",

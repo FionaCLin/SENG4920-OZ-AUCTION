@@ -98,7 +98,7 @@
                 />
               </div>
               <div class="col-8" style="padding-left: 20px;">
-                <q-editor v-model="editor" />
+                <q-editor v-model="description" />
               </div>
             </div>
             <div style="overflow: hidden;">
@@ -165,7 +165,6 @@ export default {
       date: "",
       step: 1,
       location: "",
-      editor: "",
       createdID: null
     };
   },
@@ -191,44 +190,35 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.$data);
-      console.log("here2");
       console.log(JSON.parse(localStorage.getItem("user")));
       axiosInstance
         .post("/auction", {
           //seller_name: JSON.parse(localStorage.getItem('user')).first_name,
           seller_name: "test",
           seller_id: JSON.parse(localStorage.getItem("user")).user_id,
-          category_id: this.$data.categoryId,
+          category: this.$data.categoryId,
           title: this.$data.title,
           description: this.$data.description,
           end_time: this.$data.date.replace(/\//g, "-") + " 00:42:00",
           price: new Number(this.$data.price),
-          image: this.$data.image
+          image: this.$data.image,
+          location: this.$data.location
         })
         .then(response => {
           console.log(response);
           this.$data.categoryId = response.data.data.id;
           this.$refs.stepper.next();
         });
-      //connect to back-end
-
-      //
-      // sellerName: "",
-      // sellerId: "",
       if (this.edit) {
         this.$refs.EditAuctionForm.validate().then(
           //validate underfine
           success => {
             if (success) {
-              // yay, models are correct
-              // auction call the store to update state
+              console.log("validated");
             }
           },
           err => {
             console.log(err);
-            // oh no, user has filled in
-            // at least an invalid value
 
             warning.message = err.message;
             this.$q.notify(warning);
@@ -248,8 +238,6 @@ export default {
           console.log(this.data);
           console.log(err);
 
-          // oh no, user has filled in
-          // at least an invalid value
           warning.message = err.message;
           this.$q.notify(warning);
         }
@@ -262,6 +250,7 @@ export default {
             warning.message = err.message;
             this.$q.notify(warning);
           }
+          console.log("uploading the image");
           this.$data.image.push(res.Location);
           console.log(this.$data.image);
         });
