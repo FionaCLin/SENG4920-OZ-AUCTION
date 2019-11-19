@@ -628,6 +628,224 @@ class AuctionsOperations(Resource):
         return response,200
 
 
+user_input_add_or_remove_fav_auction = api.model(
+    'User input to add an auction to the favourite list',
+    {
+        "user_id":fields.Integer,
+        "auction_id":fields.Integer
+
+    }
+)
+@ns_auction.route('/favorite/set')
+class AddFavAuction(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(user_input_add_fav_auction)
+    @api.doc(description="add an auction item to the favourite list of a user")
+    def put(self):
+        user_input = request.json
+        user_id = int(user_input["user_id"])
+        auction_id = int(user_input["auction_id"])
+
+        user_col = mydb['user']
+        user = user_col.find_one({"user_id": user_id})
+        
+
+        if user is None:
+            response = {
+                "message": "User does not exist",
+                "result": "Fail"
+            }
+            status_code = 404
+            return response,status_code
+        del user['_id']
+        auc_col = mydb['auctions']
+        auction = auc_col.find_one({"id": auction_id})
+
+        if auction is None:
+            response = {
+                "message": "Auction item does not exist",
+                "result": "Fail"
+            }
+            status_code = 404  
+            return response,status_code
+        
+        user["favorites"].append(auction_id)
+
+        user_col.update_one({"user_id": user_id}, {"$set": user})
+
+        response = {
+            "message":"favourite auction is added",
+            "result":"OK"
+        }
+        status_code = 200
+        return response, status_code
+
+@ns_auction.route('/favorite/unset')
+class RemoveFavAuction(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(user_input_add_or_remove_fav_auction)
+    @api.doc(description="remove an auction item from the favourite list of a user")
+    def put(self):
+        user_input = request.json
+        user_id = int(user_input["user_id"])
+        auction_id = int(user_input["auction_id"])
+
+        user_col = mydb['user']
+        user = user_col.find_one({"user_id": user_id})
+        
+
+        if user is None:
+            response = {
+                "message": "User does not exist",
+                "result": "Fail"
+            }
+            status_code = 404
+            return response,status_code
+        del user['_id']
+        auc_col = mydb['auctions']
+        auction = auc_col.find_one({"id": auction_id})
+
+
+        if auction is None:
+            response = {
+                "message": "Auction item does not exist",
+                "result": "Fail"
+            }
+            status_code = 404  
+            return response,status_code
+        
+        try:
+            user["favorites"].remove(auction_id)
+        except ValueError:
+            response = {
+                "message":"Auction is not in the favourite list of the user",
+                "result":"Fail"
+            }
+            return response,404
+
+
+        user_col.update_one({"user_id": user_id}, {"$set": user})
+
+        response = {
+            "message":"favourite auction is removed",
+            "result":"OK"
+        }
+        status_code = 200
+        return response, status_code
+
+
+user_input_rating = api.model(
+    'User input to rate an auction',
+    {
+        "buyer_id":fields.Integer,
+        "item_id":fields.Integer,
+        "rating":fields.Integer
+
+    }
+)
+@ns_auction.route('/rating')
+class Rating(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.expect(user_input_rating)
+    @api.doc(description="rate an auction item after winning a bidding")
+    def put(self):
+        user_input = request.json
+        user_id = int(user_input["user_id"])
+        auction_id = int(user_input["item_id"])
+
+        user_col = mydb['user']
+        user = user_col.find_one({"user_id": user_id})
+        
+        # Validations
+        if user is None:
+            response = {
+                "message": "User does not exist",
+                "result": "Fail"
+            }
+            status_code = 404
+            return response,status_code
+
+        del user['_id']
+        auc_col = mydb['auctions']
+        auction = auc_col.find_one({"id": auction_id})
+
+        if auction is None:
+            response = {
+                "message": "Auction item does not exist",
+                "result": "Fail"
+            }
+            status_code = 404  
+            return response,status_code
+        del auction['_id']
+
+        auction_status = auction['status']
+        if auction_status != "Accepted":
+            response = {
+            "message":"The auction is currently in bidding or already declined",
+            "result":"Fail"
+            }
+            status_code = 400
+            return response,status_code
+
+        biddings = auction['bidding_info']
+        sorted_bidding_info_list = sorted(biddings,key=lambda i: i['proposal_price'], reverse=True)
+        
+        bidding_winner = sorted_bidding_info_list[0]["user_id"]
+        if bidding_winner != user_id:
+            response = {
+                "message":"Only buyer who won the bidding can rate the auction item and seller",
+                "result":"Fail"
+            }
+            status_code = 400
+            return response,status_code
+
+
+        # end of validations
+        rating_info = user_input
+        rating_info["rating_id"] = user_col.count_documents({})
+        user_col.insert_one(rating_info)
+        
+
+        response = {
+            "message":"The auction has been rated",
+            "result":"OK"
+        }
+        status_code = 200
+        return response, status_code
+
+@ns_auction.route('/rating/<item_id>')
+@api.param('item_id', 'Item ID given when the auction is created')
+class GetRating(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Specified item does not exist')
+    @api.doc(description="get all ratings on an auction item specified by")
+    def get(self, item_id):
+        user_col = mydb['user']
+        ratings = user_col.find({"item_id":item_id})
+        data = []
+        for rating in ratings:
+            data.append(rating)
+
+        if len(data) == 0:
+            response = \
+                {
+                    "message":"No ratings on the auction so far",
+                    "result":"Fail"
+                }
+            return response,400
+
+        response = \
+            {
+                "result":"OK",
+                "item_id":item_id,
+                "ratings":data
+            }
+        return response,200
+
+
 @ns_auction.route('/<item_id>')
 @api.param('item_id', 'Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
