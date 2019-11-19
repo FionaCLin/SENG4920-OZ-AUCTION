@@ -561,13 +561,12 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
 
         user_col = mydb['user']
-
-        print(request.json)
-
+        created_time = datetime.datetime.now()
+        #created_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         new_auction = \
             {
                 "id": au_col.count_documents({}),
-                "created": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                "created": created_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "updated": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "bidding_info": [],
                 "status": "bidding"
@@ -578,14 +577,18 @@ class AuctionsOperations(Resource):
                   "end_time", "price", "image","location"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
-            #if user_input[i] == "" or user_input[i] is None:
             if user_input[i] is None:
                 return {'message': 'Bad Request: field ' + i + ' is missing'}, 400
 
         # Input validation: End_time validation
-        if not validate_datetime_str(user_input['end_time']):
+        end_time = user_input['end_time']
+        if not validate_datetime_str(end_time):
             return {'message': 'Bad Request: invalid end_time format'}
 
+        # Input validation: End_time should be later than create time
+        end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+        if end_time <= created_time:
+            return {'message': "Bad Request: end time must be later than the created time "},400
         try:
             au_col.insert_one(new_auction)
             del new_auction['_id']
@@ -640,7 +643,7 @@ user_input_add_or_remove_fav_auction = api.model(
 class AddFavAuction(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
-    @api.expect(user_input_add_fav_auction)
+    @api.expect(user_input_add_or_remove_fav_auction)
     @api.doc(description="add an auction item to the favourite list of a user")
     def put(self):
         user_input = request.json
