@@ -103,7 +103,7 @@
           push
           @click="
             selected = 'gavel';
-            $router.replace('/user/myAuctions');
+            $router.replace('/myauctions');
           "
         >
           <q-item-section avatar>
@@ -120,7 +120,7 @@
           push
           @click="
             selected = 'collections_bookmark';
-            $router.replace('/user/myBiddings');
+            $router.replace('/mybiddings');
           "
         >
           <q-item-section avatar>
@@ -137,7 +137,7 @@
           push
           @click="
             selected = 'favorite';
-            $router.replace('/user/myWishlist');
+            $router.replace('/mywishlist');
           "
         >
           <q-item-section avatar>
@@ -180,8 +180,6 @@ export default {
   name: "HomeLayout",
   props: ["menu"],
   data() {
-    console.log(this.$route.path);
-    console.log(this.$store.state.user.avatar);
     return {
       drawer: false,
       miniState: true,
@@ -189,16 +187,7 @@ export default {
       avatarUrl: this.$store.state.user.avatar,
       selected: ""
     };
-  },
-  // created() {
-  //   this.$store.dispatch("auction/getAllAuctions");
-  //   this.$store.dispatch(
-  //     "auction/getMyAuctions",
-  //     this.$store.state.user.user_id
-  //   );
-  //   this.$store.dispatch("auction/getMyBiddings", 2);
-  //   this.$store.dispatch("auction/getMyFavorite", 1);
-  // }
+  }
 };
 </script>
 

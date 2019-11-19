@@ -257,23 +257,27 @@ export default {
             this.$q.notify(warning);
           }
           console.log("uploading the image");
-          this.$data.image.push(res.Location);
+          this.$data.image.push(res.Location).catch(err => console.log(err));
           console.log(this.$data.image);
         });
       }
     },
     goBack() {
       if (this.edit) {
-        this.$router.push({
-          name: "auctiionItem",
-          params: {
-            id: this.id
-          }
-        });
+        this.$router
+          .push({
+            name: "auctiionItem",
+            params: {
+              id: this.id
+            }
+          })
+          .catch(err => console.log(err));
       } else {
-        this.$router.push({
-          path: "/auctions"
-        });
+        this.$router
+          .push({
+            path: "/auctions"
+          })
+          .catch(err => console.log(err));
       }
     },
     viewCreatedAuction() {
@@ -283,12 +287,14 @@ export default {
           "auction/getMyAuctions",
           this.$store.state.user.user_id
         );
-        this.$router.push({
-          name: "auctionItem",
-          params: {
-            id: this.$data.categoryId
-          }
-        });
+        this.$router
+          .push({
+            name: "auctionItem",
+            params: {
+              id: this.$data.categoryId
+            }
+          })
+          .catch(err => console.log(err));
       });
     }
   }

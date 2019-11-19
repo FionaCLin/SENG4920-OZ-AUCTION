@@ -127,7 +127,7 @@ export default {
                   icon: "cloud_done",
                   message: response.data.message
                 });
-                this.$router.push("/login");
+                this.$router.push("/login").catch(err => console.log(err));
               })
               .catch(error => {
                 console.log(error.response);

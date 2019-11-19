@@ -93,12 +93,14 @@ export default {
     },
     userProfile: function(id) {
       console.log("from", id);
-      this.$router.push({
-        name: "userProfile",
-        params: {
-          id: id
-        }
-      });
+      this.$router
+        .push({
+          name: "userProfile",
+          params: {
+            id: id
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };
