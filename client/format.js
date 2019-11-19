@@ -32,7 +32,33 @@ function randomDate(start, end) {
   );
 }
 
+var biddings = [
+  new Set([]),
+  new Set([]),
+  new Set([]),
+  new Set([]),
+  new Set([]),
+  new Set([])
+];
+
 let users_detail = [];
+let mkup_biddings = (seller_id, auction, i) => {
+  // pick a user
+  let user_id = Math.floor(Math.random() * 5);
+  if (user_id === seller_id) {
+    user_id++;
+  }
+
+  auction.bidding_info.push({
+    user_id: user_id,
+    item_id: auction.id,
+    proposal_price: auction.price + i * Math.random(),
+    created: moment(auction["created"], "YYYY-MM-DD h:mm:ss")
+      .add(auction.bidding_info.length, "hour")
+      .format("YYYY-MM-DD h:mm:ss")
+  });
+  biddings[user_id].add(auction.id);
+};
 
 let auction_items = [];
 let index = 0;
@@ -41,17 +67,17 @@ auctions.forEach(element => {
   let seller = {
     user_id: uIndex,
     email: mk_email(element.seller.shop_name),
-    paymentMethod: generatePaymentMethod(),
+    payment_method: generatePaymentMethod(),
     password: mk_string(10),
     first_name: "",
     last_name: "",
     phone_number: generatePhone(),
-    DOB: randomDate(
+    dob: randomDate(
       new Date(2012, 0, 1),
       new Date(
         moment()
           .subtract(18, "year")
-          .format()
+          .format("YYYY-MM-DD h:mm:ss")
       )
     ),
     avatar: element.seller.avatar,
@@ -76,19 +102,31 @@ auctions.forEach(element => {
       category: "Crafts",
       title: e["title"],
       description: e["alt_title"],
-      created: a.format(),
-      updated: a.add(1, "day").format(),
-      end_time: a.add(1, "week").format(),
+      created: a.format("YYYY-MM-DD h:mm:ss"),
+      updated: a.add(1, "day").format("YYYY-MM-DD h:mm:ss"),
+      end_time: a.add(1, "week").format("YYYY-MM-DD h:mm:ss"),
       location: seller.location,
       price: e["price"],
       image: [e["image"]],
       status: "bidding",
       bidding_info: []
     };
+    for (let i = 1, ii = Math.random() * 50 + 1; i < ii; i++) {
+      mkup_biddings(seller.user_id, item, i);
+    }
     index++;
+    seller.auctions.push(item);
     auction_items.push(item);
   });
 });
+
+for (let i in biddings) {
+  for (const v of biddings[i]) {
+    users_detail[i].bids.push(auction_items[v]);
+  }
+  let len = biddings[i].size;
+  users_detail[i].favorites = users_detail[i].bids.splice(Math.floor(len / 2));
+}
 
 console.log(
   JSON.stringify(

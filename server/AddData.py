@@ -23,7 +23,7 @@ for col in collist:
     mydb[col].drop()
 
 
-mycol = mydb["users"]
+mycol = mydb["user"]
 mycol.create_index([('$**', 'text')])
 users = seedData['users']
 

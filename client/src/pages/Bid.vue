@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
-          <q-img :src="auction.image" class="q-ma-lg" />
+          <q-img :src="auction.image[0]" class="q-ma-lg" />
         </div>
         <div class="q-pa-sm">
           <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
@@ -27,7 +27,7 @@
       <div class="col-10 q-ma-md fit column justify-center item-center">
         <!--  this part will contain the images -->
         <!-- Indicators -->
-        <BidDetail :biddings="auction.biddings" />
+        <BidDetail :biddings="auction.bidding_info" />
       </div>
     </div>
   </q-page>
@@ -36,8 +36,6 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
-import { axiosInstance } from "boot/axios";
-
 export default {
   name: "AuctionPage",
   components: {
@@ -65,23 +63,23 @@ export default {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-    this.fetch();
+    this.$data.auction = this.$route.params.item;
   },
   methods: {
     fetch() {
-      axiosInstance
-        .get(`http://localhost:9999/auction/${this.id}`)
+      let item;
+      this.$axios
+        .get(`/auctions/${this.id}`)
         .then(res => {
-          console.log(res.data.data);
-          this.$data.auction = res.data.data;
+          item = res.data.data;
+          this.$axios
+            .get(`/account/manage_profile/${res.data.data.seller_id}`)
+            .then(res => {
+              item["user"] = res.data.data;
+              this.$data.auction = item;
+            });
         })
         .catch(err => console.log(err));
-    },
-    addFavorite: function() {
-      this.$store.commit("user/addFavorite", this.id);
-    },
-    removeFavorite: function() {
-      this.$store.commit("user/removeFavorite", this.id);
     },
     placeBid() {
       let max = Math.max.apply(

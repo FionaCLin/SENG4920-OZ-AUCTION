@@ -19,6 +19,10 @@
                 label="Product title"
                 filled
                 type="text"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 5) || 'Please enter valid title'
+                ]"
               />
               <q-input
                 v-model="price"
@@ -30,38 +34,48 @@
                 v-model="location"
                 filled
                 label="Location"
+                use-input
                 :options="optionsLocation"
+                @filter="filterLocFn"
               />
 
-              <q-input
-                v-model="date"
+              <q-select
+                v-model="category"
                 filled
-                label="Deadline"
-                mask="date"
-                :rules="['date']"
-                style="padding-bottom:0px;"
-              >
-                <template v-slot:append>
+                label="Category"
+                :options="optionsCategory"
+                use-input
+                @filter="filterCatFn"
+              />
+
+              <q-input v-model="endTime" filled label="Deadline">
+                <template v-slot:prepend>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy
-                      ref="qDateProxy"
                       transition-show="scale"
                       transition-hide="scale"
                     >
-                      <q-date
-                        v-model="date"
-                        @input="() => $refs.qDateProxy.hide()"
+                      <q-date v-model="endTime" mask="YYYY-MM-DD h:mm:ss" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="endTime"
+                        mask="YYYY-MM-DD h:mm:ss"
+                        format24h
                       />
                     </q-popup-proxy>
                   </q-icon>
                 </template>
               </q-input>
-              <q-select
-                v-model="categoryId"
-                filled
-                label="Category"
-                :options="optionsCategory"
-              />
+
               <div style="overflow: hidden;">
                 <q-btn
                   style="float:right;"
@@ -145,8 +159,9 @@
 
 <script>
 import { uploadImage } from "../helper";
-import { axiosInstance } from "boot/axios";
 import { dropdownOpts, countries } from "../helper";
+
+import moment from "moment";
 
 let warning = {
   color: "red-5",
@@ -160,11 +175,11 @@ export default {
   props: ["edit"],
   data() {
     return {
-      categoryId: "",
+      category: "",
       title: "",
       description: "",
-      endTime: "",
-      price: "",
+      endTime: moment().format("YYYY-MM-DD h:mm:ss"),
+      price: 0,
       image: [],
       optionsCategory: dropdownOpts,
       optionsLocation: countries.map(x => x.name),
@@ -176,17 +191,16 @@ export default {
   },
   created() {
     console.log("here1");
-    console.log(this.data);
     if (this.edit) {
       console.log("edit", this.edit);
       this.id = Number(this.$route.params.id);
 
-      let auction = this.$store.state.auction.myAuctions.auction_items.find(
+      let auction = this.$store.state.auction.myAuctions.find(
         x => x.id === this.id
       );
       console.log(auction);
 
-      this.$data.categoryId = auction.category_id;
+      this.$data.category = auction.category;
       this.$data.title = auction.title;
       this.$data.description = auction.description;
       this.$data.endTime = auction.end_time;
@@ -196,58 +210,62 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(JSON.parse(localStorage.getItem("user")));
-      axiosInstance
-        .post("/auction", {
-          //seller_name: JSON.parse(localStorage.getItem('user')).first_name,
-          seller_name: "test",
-          seller_id: JSON.parse(localStorage.getItem("user")).user_id,
-          category: this.$data.categoryId,
-          title: this.$data.title,
-          description: this.$data.description,
-          end_time: this.$data.date.replace(/\//g, "-") + " 00:42:00",
-          price: new Number(this.$data.price),
-          image: this.$data.image,
-          location: this.$data.location
-        })
-        .then(response => {
-          console.log(response);
-          this.$data.categoryId = response.data.data.id;
-          this.$refs.stepper.next();
-        });
-      if (this.edit) {
-        this.$refs.EditAuctionForm.validate().then(
-          //validate underfine
-          success => {
-            if (success) {
-              console.log("validated");
-            }
-          },
-          err => {
-            console.log(err);
-
-            warning.message = err.message;
-            this.$q.notify(warning);
-          }
-        );
-        return;
-      }
-      this.$refs.CreateAuctionForm.validate().then(
-        success => {
-          if (success) {
-            // auction call the store to update state
-            console.log(this.$data);
-          }
-        },
-        err => {
-          console.log("build");
-          console.log(this.data);
-          console.log(err);
-
-          warning.message = err.message;
-          this.$q.notify(warning);
-        }
-      );
+      let payload = {
+        seller_id: this.$store.state.user.user_id,
+        seller_name: this.$store.state.user.first_name,
+        title: this.$data["title"],
+        description: this.$data["description"],
+        price: Number(this.$data["price"]),
+        end_time: this.$data["endTime"],
+        location: this.$data["location"],
+        category: this.$data["category"],
+        image: this.$data["image"]
+      };
+      this.$store.dispatch("auction/create", payload);
+      // if (this.edit) {
+      //   this.$refs.EditAuctionForm.validate().then(
+      //     //validate underfine
+      //     success => {
+      //       if (success) {
+      //         console.log("validated");
+      //       }
+      //     },
+      //     err => {
+      //       console.log(err);
+      //       warning.message = err.message;
+      //       this.$q.notify(warning);
+      //     }
+      //   );
+      //   return;
+      // }
+      // this.$refs.CreateAuctionForm.validate().then(
+      //   success => {
+      //     if (success) {
+      //       // auction call the store to update state
+      //       console.log(success);
+      //       console.log(this.$data);
+      //       let auction = {
+      //         seller_name: `${this.$store.state.user.first_name}-${this.$store.state.user.last_name}`,
+      //         seller_id: this.$store.state.user.user_id,
+      //         category: this.$data.categoryId,
+      //         title: this.$data.title,
+      //         description: this.$data.description,
+      //         end_time: this.$data.date.replace(/\//g, "-") + " 00:42:00",
+      //         price: new Number(this.$data.price),
+      //         image: this.$data.image,
+      //         location: this.$data.location
+      //       };
+      //       console.log(auction);
+      //     }
+      //   },
+      //   err => {
+      //     console.log("build");
+      //     console.log(this.data);
+      //     console.log(err);
+      //     warning.message = err.message;
+      //     this.$q.notify(warning);
+      //   }
+      // );
     },
     upload(file) {
       for (let f of file) {
@@ -257,7 +275,7 @@ export default {
             this.$q.notify(warning);
           }
           console.log("uploading the image");
-          this.$data.image.push(res.Location).catch(err => console.log(err));
+          this.$data.image.push(res.Location);
           console.log(this.$data.image);
         });
       }
@@ -281,7 +299,7 @@ export default {
       }
     },
     viewCreatedAuction() {
-      axiosInstance.get("/auction/" + this.$data.categoryId).then(response => {
+      this.$axios.get("/auction/" + this.$data.categoryId).then(response => {
         console.log(response);
         this.$store.dispatch(
           "auction/getMyAuctions",
@@ -295,6 +313,36 @@ export default {
             }
           })
           .catch(err => console.log(err));
+      });
+    },
+    filterLocFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsLocation = countries.map(x => x.name);
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsLocation = countries
+          .map(x => x.name)
+          .filter(v => v.toLowerCase().indexOf(needle) > -1);
+      });
+    },
+    filterCatFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsCategory = dropdownOpts;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsCategory = dropdownOpts.filter(
+          v => v.toLowerCase().indexOf(needle) > -1
+        );
       });
     }
   }

@@ -28,15 +28,12 @@ export default {
     return {
       edit: false,
       user: {
-        // "First Name": this.detail.firstName,
-        // "Last Name": this.detail.lastName,
-        // Email: this.detail.email,
-        // Age: this.detail.age,
-        // Password: this.detail.password,
-        Name: this.detail.name,
-        Location: this.detail.location,
-        "Payment Method": this.detail.paymentMethod.join(", ")
-        // Seller: this.detail.seller
+        "First Name": this.detail.first_name,
+        "Last Name": this.detail.last_name,
+        Email: this.detail.email,
+        Phone: this.detail.phone_number,
+        "Payment Method": this.detail.payment_method.join(", "),
+        Location: this.detail.location
       }
     };
   }

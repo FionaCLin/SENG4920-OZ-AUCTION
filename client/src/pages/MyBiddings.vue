@@ -12,13 +12,10 @@ export default {
   components: {
     MyAuctionsList
   },
-  computed: {
-    myAuction_items: {
-      get() {
-        console.log("my biddings", this.$store.state.auction.myBids);
-        return this.$store.state.auction.myBids;
-      }
-    }
+  data() {
+    return {
+      myAuction_items: this.$store.state.auction.myBids
+    };
   }
 };
 </script>

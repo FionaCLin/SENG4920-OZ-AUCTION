@@ -6,7 +6,6 @@
 
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
-// import { axiosInstance } from "boot/axios";
 
 export default {
   name: "AuctionsPages",
@@ -15,25 +14,8 @@ export default {
   },
   data() {
     return {
-      my_auctions: null
+      myAuction_items: this.$store.state.auction.myAuctions
     };
-  },
-  computed: {
-    myAuction_items: {
-      get() {
-        console.log(
-          "my auctions!!!!!!!!",
-          this.$store.state.auction.myAuctions
-        );
-        return this.$store.state.auction.myAuctions.auction_items;
-      }
-    }
-  },
-  created() {
-    this.$store.state.dispatch(
-      "auction/getMyAuctions",
-      `${JSON.parse(localStorage.getItem("user")).user_id}`
-    );
   }
 };
 </script>

@@ -1,10 +1,13 @@
 <template>
   <q-page class="bg-grey-1">
-    <a name="newAuctions">
-      <NewAuction />
-    </a>
+    <div v-if="ready">
+      <NewAuction :new-auctions="newAuctions" />
 
-    <MyAuctionsList :alink="`auctions`" :items="auctions" />
+      <MyAuctionsList :alink="`auctions`" :items="auctions" />
+    </div>
+    <q-page-container v-else class="flex flex-center">
+      <q-circular-progress indeterminate size="150px" class="q-ma-md" />
+    </q-page-container>
   </q-page>
 </template>
 
@@ -18,19 +21,30 @@ export default {
     NewAuction,
     MyAuctionsList
   },
+  data() {
+    return {
+      ready: this.$store.state.auction.auctions.length
+    };
+  },
   computed: {
     auctions: {
       get() {
         return this.$store.state.auction.auctions;
       }
+    },
+    newAuctions: {
+      get() {
+        return this.$store.state.auction.auctions.map(x => {
+          return {
+            title: x.title,
+            description: x.description,
+            url: x.image[0],
+            id: x.id
+          };
+        });
+      }
     }
   },
-  created() {
-    this.$store.dispatch("auction/getAllAuctions");
-    this.$store.dispatch(
-      "auction/getMyAuctions",
-      this.$store.state.user.user_id
-    );
-  }
+  created() {}
 };
 </script>

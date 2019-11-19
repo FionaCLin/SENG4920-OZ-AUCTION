@@ -394,24 +394,13 @@ class Manage_profile(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get other user's profile")
+    # @api.param('request_user_id',  'Request User Id',type=int,required=True)
     def get(self, request_user_id):
         col = mydb['user']
         single_user = col.find_one({"user_id": int(request_user_id)})
         del single_user['_id']
 
-        if single_user is None:
-            response = {
-                "message": "Profile does not exist",
-                "data": ""
-            }
-            return response, 404
-        # alldata = col.select_all_collection()
-        # print(alldata)
-        # selected_data = []
-        # for item in alldata:
-        #     if "user_profile" in item:
-        #         selected_data = item["user_profile"]
-
+        
         new_user_profile = dict()
         new_user_profile["user_id"] = single_user["user_id"]
         new_user_profile["dob"] = single_user["dob"]

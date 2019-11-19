@@ -64,7 +64,6 @@
 
 <script>
 import { axiosInstance } from "boot/axios";
-//import { LocalStorage } from "quasar";
 
 export default {
   data() {
@@ -91,16 +90,18 @@ export default {
                 password: this.$data.password
               })
               .then(response => {
-
                 console.log(this.$store.state.user.user_id);
                 //how to used store state to store
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("user", JSON.stringify(response.data));
-                console.log(JSON.parse(localStorage.getItem('user')));
-                this.$store.commit("user/updateCurrentID",response.data.user_id);
+                console.log(JSON.parse(localStorage.getItem("user")));
+                this.$store.commit(
+                  "user/updateCurrentID",
+                  response.data.user_id
+                );
                 console.log(this.$store.state.user.user_id);
                 //
-                  this.$q.notify({
+                this.$q.notify({
                   color: "green-4",
                   textColor: "white",
                   position: "top",
@@ -108,7 +109,9 @@ export default {
                   message: response.data.message
                 });
                 setTimeout(() => {
-                  this.$router.push("/dashboard");
+                  this.$router
+                    .push("/dashboard")
+                    .catch(err => console.log(err));
                 }, 1000);
               })
               .catch(error => {

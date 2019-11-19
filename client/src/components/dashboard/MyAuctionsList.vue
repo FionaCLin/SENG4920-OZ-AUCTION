@@ -1,6 +1,5 @@
 <template>
   <div>
-    <a :name="alink"></a>
     <q-table
       :title="title"
       :data="data"
@@ -31,63 +30,17 @@
           </template>
         </q-input>
       </template>
-      <!-- table list view -->
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="image" auto-width :props="props">
-            <q-img :src="props.row.image" @click="auctionItem(props.row.id)" />
-          </q-td>
-          <q-td key="title" auto-width :props="props">
-            <div>
-              <q-badge
-                color="green-4"
-                class="text-bold text-white"
-                :label="props.row.title"
-                @click="auctionItem(props.row.id)"
-              />
-            </div>
-            <div class="my-table-details" @click="auctionItem(props.row.id)">
-              {{ props.row.description }}
-            </div>
-          </q-td>
 
-          <q-td v-for="f in fields" :key="f" auto-width :props="props">
-            <p @click="auctionItem(props.row.id)">{{ props.row[f] }}</p>
-          </q-td>
-          <q-td key="seller_name" auto-width :props="props">
-            <div>
-              <q-item v-ripple clickable>
-                <!-- @click="userProfile(props.row.seller_id)" -->
-                <q-item-section avatar>
-                  <q-avatar>
-                    <!-- <img :src="user_avatar(props.row.seller_id)" /> -->
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ props.row.seller_name }}</q-item-label>
-                  <q-item-label caption>
-                    <!-- <q-icon
-                      v-for="n in user_rating(props.row.seller_id)"
-                      :key="n"
-                      name="star"
-                    ></q-icon> -->
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-          </q-td>
-        </q-tr>
-      </template>
       <!-- table grid view -->
-      <template v-slot:item="props">
+      <template v-if="grid" v-slot:item="props">
         <div
           class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
         >
           <q-card>
             <q-img
               class="auction-item"
-              :src="props.cols.find(col => col.name === 'image').value"
-              @click="auctionItem(props.row.id)"
+              :src="props.cols.find(col => col.name === 'image')[0].value"
+              @click="auctionItem(props.row)"
             >
               <div class="text-subtitle2 absolute-bottom text-center">
                 {{ props.row.title }}
@@ -107,34 +60,85 @@
                   v-ripple
                   side
                   clickable
-                  @click="auctionItem(props.row.id)"
+                  @click="auctionItem(props.row)"
                 >
                   <q-item-label v-if="col.name !== 'seller_name'" caption
                     >{{ col.value }}
                   </q-item-label>
-                  <q-item v-else v-ripple clickable>
-                    <!-- @click="userProfile(props.row.seller_id)" -->
-                    <!-- <q-item-section avatar>
+                  <q-item
+                    v-else
+                    v-ripple
+                    clickable
+                    @click="userProfile(props.row.user)"
+                  >
+                    <q-item-section avatar>
                       <q-avatar>
-                        <img :src="user_avatar(props.row.seller_id)" />
+                        <img :src="props.row.user.avatar" />
                       </q-avatar>
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>{{ props.row.seller_name }}</q-item-label>
                       <q-item-label caption>
                         <q-icon
-                          v-for="n in user_rating(props.row.seller_id)"
+                          v-for="n in props.row.user.rating"
                           :key="n"
                           name="star"
                         ></q-icon>
                       </q-item-label>
-                    </q-item-section> -->
+                    </q-item-section>
                   </q-item>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-card>
         </div>
+      </template>
+
+      <!-- table list view -->
+      <template v-else v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="image" auto-width :props="props">
+            <q-img :src="props.row.image[0]" @click="auctionItem(props.row)" />
+          </q-td>
+          <q-td key="title" auto-width :props="props">
+            <div>
+              <q-badge
+                color="green-4"
+                class="text-bold text-white"
+                :label="props.row.title"
+                @click="auctionItem(props.row)"
+              />
+            </div>
+            <div class="my-table-details" @click="auctionItem(props.row)">
+              {{ props.row.description }}
+            </div>
+          </q-td>
+
+          <q-td v-for="f in fields" :key="f" auto-width :props="props">
+            <p @click="auctionItem(props.row)">{{ props.row[f] }}</p>
+          </q-td>
+          <q-td key="seller_name" auto-width :props="props">
+            <div>
+              <q-item v-ripple clickable @click="userProfile(props.row.user)">
+                <q-item-section avatar>
+                  <q-avatar>
+                    <img :src="props.row.user.avatar" />
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ props.row.seller_name }}</q-item-label>
+                  <q-item-label caption>
+                    <q-icon
+                      v-for="n in props.row.user.rating"
+                      :key="n"
+                      name="star"
+                    ></q-icon>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </div>
+          </q-td>
+        </q-tr>
       </template>
     </q-table>
   </div>
@@ -151,7 +155,7 @@ export default {
       pagination: {},
       user: null,
       filter: "",
-      fields: ["created", "price", "location"],
+      fields: ["created", "end_time", "price", "location", "category"],
       columns: [
         {
           name: "image",
@@ -173,7 +177,13 @@ export default {
           align: "center",
           label: "Created at",
           field: "created",
-          // format: v => date(v, ""),
+          sortable: true
+        },
+        {
+          name: "end_time",
+          align: "center",
+          label: "End at",
+          field: "end_time",
           sortable: true
         },
         {
@@ -184,14 +194,22 @@ export default {
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         },
-        // {
-        //   name: "location",
-        //   required: true,
-        //   label: "Location",
-        //   align: "left",
-        //   field: "location",
-        //   sortable: true
-        // },
+        {
+          name: "location",
+          required: true,
+          label: "Location",
+          align: "left",
+          field: "location",
+          sortable: true
+        },
+        {
+          name: "category",
+          required: true,
+          label: "Category",
+          align: "left",
+          field: "category",
+          sortable: true
+        },
         {
           name: "seller_name",
           label: "Seller",
@@ -205,53 +223,39 @@ export default {
     };
   },
   methods: {
-    // getUser(id) {
-    //   console.log(id, "xxxxx");
-    //   axiosInstance
-    //     .get(`account/manage_profile/${id}`)
-    //     .then(res => {
-    //       console.log(res, "ppppppppp");
-    //       return res;
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    // },
-    // user_avatar(id) {
-    //   let user = this.getUser(id);
-    //   return user.avatar;
-    // },
-    // user_rating(id) {
-    //   let user = this.getUser(id);
-    //   return user.rating;
-    // },
-    auctionItem: function(id) {
-      console.log("from", id);
-      console.log("to", this.$route.params.id, this.$route.name);
-
-      if (this.title === "My Auctions" || this.$route.name === "myAuctions") {
-        this.$router.push({
-          name: "auctionItem",
-          params: {
-            id: id
-          }
-        });
+    auctionItem: function(auction) {
+      if (this.alink === "auctions" || this.$route.name === "myauctions") {
+        this.$router
+          .push({
+            name: "auctionItem",
+            params: {
+              id: auction.id,
+              item: auction
+            }
+          })
+          .catch(err => console.log(err));
       } else {
-        this.$router.push({
-          name: "biddingItem",
-          params: {
-            id: id
-          }
-        });
+        this.$router
+          .push({
+            name: "biddingItem",
+            params: {
+              id: auction.id,
+              item: auction
+            }
+          })
+          .catch(err => console.log(err));
       }
     },
-    userProfile: function(id) {
-      this.$router.push({
-        name: "userProfile",
-        params: {
-          id: id
-        }
-      });
+    userProfile: function(user) {
+      this.$router
+        .push({
+          name: "userProfile",
+          params: {
+            id: user.user_id,
+            user: user
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };

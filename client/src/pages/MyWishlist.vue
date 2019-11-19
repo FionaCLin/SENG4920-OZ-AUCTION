@@ -15,8 +15,7 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log("my wishlist", this.$store.state.auction.myWishList);
-        return this.$store.state.auction.myWishList;
+        return this.$store.state.auction.myAuctions;
       }
     }
   }

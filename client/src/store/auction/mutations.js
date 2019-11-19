@@ -1,3 +1,5 @@
+// import { stat } from "fs";
+
 // import { axiosInstance } from "boot/axios";
 
 // export function getMyAuction(state) {
@@ -29,22 +31,31 @@ export function placeBidding(state, bid) {
   console.log("mu", state, bid, auction);
 }
 //Sync
-export function updateAuctions(state, auctions) {
-  console.log(state, auctions, "problem");
+export function updateAuctions(state, { auctions, sellers }) {
+  console.log(state, auctions, sellers, "updateAuctions");
+  state.sellers = sellers;
   state.auctions = auctions;
 }
 
-export function updateMyAuctions(state, auctions) {
-  console.log(state, auctions, "problem");
+export function updateMyAuctions(state, { auctions, sellers }) {
+  console.log(state, auctions, "updateMyAuctions");
+  state.sellers = sellers;
+
   state.myAuctions = auctions;
 }
 
-export function updateMyBiddings(state, auctions) {
-  console.log(state, auctions, "problem");
-  state.myBids = auctions;
+export function updateMyBiddings(state, { bids, sellers }) {
+  console.log(state, bids, "updateMyBiddings");
+  state.sellers = sellers;
+  state.myBids = bids;
 }
 
-export function updateMyWishList(state, auctions) {
-  console.log(state, auctions, "problem");
-  state.myWishList = auctions;
+export function updateMyWishList(state, { favorites, sellers }) {
+  console.log(state, favorites, "updateMyWishList");
+  state.sellers = sellers;
+  state.myWishList = favorites;
+}
+
+export function addItem(state, newAucton) {
+  state.myAuctions.push(newAucton);
 }
