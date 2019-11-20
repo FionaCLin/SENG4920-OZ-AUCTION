@@ -160,6 +160,7 @@ user_input_bidding_info = api.model(
     "User input to propose a bid & bidding info stored in server",
     {
         "user_id": fields.Integer,
+        "item_id": fields.Integer,
         "proposal_price": fields.Float,
     }
 )
@@ -521,7 +522,6 @@ returned_bidding_info = api.model(
         "item_id": fields.Integer,
         "user_id": fields.Integer,
         "proposal_price": fields.Float,
-        "overbid": fields.Boolean,
     }
 )
 
@@ -973,7 +973,7 @@ class SingleAuctionItemOperations(Resource):
             for k in ['category','title', "description", "end_time", "price", "image","location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
-
+            update_data['updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # update auction in user's auctions list
             # for auction in seller['auctions']:
             #     if auction['id'] == int(item_id):
@@ -1158,11 +1158,15 @@ class BiddingManagement(Resource):
         if_overbid = True if new_proposed_price > current_highest_price else False
         if if_overbid and new_proposed_price > item_min_price:
             bid_id = au_col.count_documents({})
-            new_bidding_info = {"bid_id":bid_id}
+            new_bidding_info = {
+                # "bid_id":bid_id,
+                "created":datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            }
             for key in user_input.keys():
                 new_bidding_info[key] = user_input[key]
             retrieved_item["bidding_info"].append(new_bidding_info)
-            au_col.insert_one(new_bidding_info)
+            # insert into database
+            # au_col.insert_one(new_bidding_info)
             del new_bidding_info["_id"]
             buyer['bids'].append(item_id)
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
