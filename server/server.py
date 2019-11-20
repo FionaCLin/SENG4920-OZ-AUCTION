@@ -320,6 +320,7 @@ class Signin(Resource):
 
 
 
+
 @ns_account.route('/signout/<string:token>')
 class Signout(Resource):
     @api.response(200, 'Successful')
@@ -331,6 +332,7 @@ class Signout(Resource):
 
 
 
+
 @ns_account.route('/get_user_auctions/<string:request_user_id>')
 class User_auctions(Resource):
     @api.response(200, 'OK')
@@ -338,8 +340,9 @@ class User_auctions(Resource):
     @api.doc(description="get user's auctions")
     def get(self, request_user_id):
         col = mydb['user']
+        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
-        del single_user['_id']
+        # del single_user['_id']
 
         if single_user is None:
             response = {
@@ -348,14 +351,23 @@ class User_auctions(Resource):
             }
             return response, 404
 
-        new_user_auctions = dict()
-        new_user_auctions["auctions"] = single_user["auctions"]
+        retrieved_auctions = []
+        auction_id_list = single_user["auctions"]
+        for single_auction in auction_id_list:
+            try:
+                retrieved_item = au_col.find_one({'id': int(single_auction)})
+                del retrieved_item['_id']
+                retrieved_auctions.append(retrieved_item)
+            except:
+                return {"message":  "Specified item does not exist"}, 404
+        
 
         response = {
             "message": "OK",
-            "data": new_user_auctions
+            "data": retrieved_auctions
         }
         return response, 200
+
 
 
 
@@ -367,7 +379,7 @@ class User_biddings(Resource):
     def get(self, request_user_id):
         col = mydb['user']
         single_user = col.find_one({"user_id": int(request_user_id)})
-        del single_user['_id']
+        # del single_user['_id']
 
         if single_user is None:
             response = {
@@ -639,6 +651,9 @@ user_input_add_or_remove_fav_auction = api.model(
 
     }
 )
+
+
+
 @ns_auction.route('/favorite/set')
 class AddFavAuction(Resource):
     @api.response(200, 'OK')
@@ -683,6 +698,8 @@ class AddFavAuction(Resource):
         }
         status_code = 200
         return response, status_code
+
+
 
 @ns_auction.route('/favorite/unset')
 class RemoveFavAuction(Resource):
@@ -748,6 +765,9 @@ user_input_rating = api.model(
 
     }
 )
+
+
+
 @ns_auction.route('/rating')
 class Rating(Resource):
     @api.response(200, 'OK')
@@ -818,6 +838,10 @@ class Rating(Resource):
         }
         status_code = 200
         return response, status_code
+
+
+
+
 
 @ns_auction.route('/rating/<item_id>')
 @api.param('item_id', 'Item ID given when the auction is created')
