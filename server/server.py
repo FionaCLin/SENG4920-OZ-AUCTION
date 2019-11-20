@@ -320,6 +320,7 @@ class Signin(Resource):
 
 
 
+
 @ns_account.route('/signout/<string:token>')
 class Signout(Resource):
     @api.response(200, 'Successful')
@@ -331,6 +332,7 @@ class Signout(Resource):
 
 
 
+
 @ns_account.route('/get_user_auctions/<string:request_user_id>')
 class User_auctions(Resource):
     @api.response(200, 'OK')
@@ -338,8 +340,9 @@ class User_auctions(Resource):
     @api.doc(description="get user's auctions")
     def get(self, request_user_id):
         col = mydb['user']
+        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
-        del single_user['_id']
+        # del single_user['_id']
 
         if single_user is None:
             response = {
@@ -348,14 +351,23 @@ class User_auctions(Resource):
             }
             return response, 404
 
-        new_user_auctions = dict()
-        new_user_auctions["auctions"] = single_user["auctions"]
+        retrieved_auctions = []
+        auction_id_list = single_user["auctions"]
+        for single_auction in auction_id_list:
+            try:
+                retrieved_item = au_col.find_one({'id': int(single_auction)})
+                del retrieved_item['_id']
+                retrieved_auctions.append(retrieved_item)
+            except:
+                return {"message":  "Specified item does not exist"}, 404
+        
 
         response = {
             "message": "OK",
-            "data": new_user_auctions
+            "data": retrieved_auctions
         }
         return response, 200
+
 
 
 
@@ -366,9 +378,9 @@ class User_biddings(Resource):
     @api.doc(description="get user's biddings")
     def get(self, request_user_id):
         col = mydb['user']
+        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
-        del single_user['_id']
-
+        # del single_user['_id']
         if single_user is None:
             response = {
                 "message": "User does not exist",
@@ -376,12 +388,28 @@ class User_biddings(Resource):
             }
             return response, 404
 
-        new_user_biddings = dict()
-        new_user_biddings["bids"] = single_user["bids"]
+        retrieved_items = []
+        for item in au_col.find():
+            # del item['_id']
+            for bid_item in item['bidding_info']:
+                if bid_item['user_id'] == int(request_user_id):
+                    retrieved_items.append(bid_item)
+
+
+        if len(retrieved_items) == 0:
+            return {"message": "No auctions stored in database"},404
+        
+        response = {
+            "message": "OK",
+            "result":retrieved_items
+        }
+        return response,200
+
+
 
         response = {
             "message": "OK",
-            "data": new_user_biddings
+            "data": retrieved_items
         }
         return response, 200
 
@@ -628,6 +656,9 @@ user_input_add_or_remove_fav_auction = api.model(
 
     }
 )
+
+
+
 @ns_auction.route('/favorite/set')
 class AddFavAuction(Resource):
     @api.response(200, 'OK')
@@ -672,6 +703,8 @@ class AddFavAuction(Resource):
         }
         status_code = 200
         return response, status_code
+
+
 
 @ns_auction.route('/favorite/unset')
 class RemoveFavAuction(Resource):
@@ -737,6 +770,9 @@ user_input_rating = api.model(
 
     }
 )
+
+
+
 @ns_auction.route('/rating')
 class Rating(Resource):
     @api.response(200, 'OK')
@@ -808,6 +844,10 @@ class Rating(Resource):
         status_code = 200
         return response, status_code
 
+
+
+
+
 @ns_auction.route('/rating/<item_id>')
 @api.param('item_id', 'Item ID given when the auction is created')
 class GetRating(Resource):
@@ -836,6 +876,27 @@ class GetRating(Resource):
                 "ratings":data
             }
         return response,200
+
+
+
+
+@ns_auction.route('/get_category/<auction_id>')
+class SingleAuctionCategory(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Auction item does not exist')
+    @api.doc(description="get category of an auction item")
+    def get(self, auction_id):
+        au_col = mydb['auctions']
+        try:
+            retrieved_item = au_col.find_one({'id': int(auction_id)})
+            category = retrieved_item['category']
+            del retrieved_item['_id']
+
+            return {"message": "OK", "data": category}, 200
+        except:
+            return {"message":  "Auction item does not exist"}, 404
+
+
 
 
 @ns_auction.route('/<item_id>')
@@ -874,6 +935,9 @@ class SingleAuctionItemOperations(Resource):
             # remove the specified bidding from the bidding_info of the auction
             seller['auctions'] = \
                 [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+
+            seller['favorites'].remove(item_id)
+
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully","data":retrieved_item}
         except:
