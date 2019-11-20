@@ -13,8 +13,13 @@
             <q-icon name="favorite" />
           </q-btn>
         </div>
-        <div class="q-ma-lg row">
-          <q-input v-model="bidPrice" class="q-ml-lg" type="number" />
+        <div class="q-ma-xs row">
+          <q-input
+            v-model="bidPrice"
+            prefix="AUD$"
+            class="q-ml-lg"
+            type="number"
+          />
           <q-btn class="q-ml-xs" @click="placeBid">
             <q-icon name="gavel" />Place Bid
           </q-btn>
@@ -47,12 +52,18 @@ export default {
   },
   data() {
     return {
-      auction: null,
       bidPrice: 0,
       error: ""
     };
   },
   computed: {
+    auction: {
+      get() {
+        return this.$store.state.auction.myBids.find(
+          x => x.id == this.$route.params.id
+        );
+      }
+    },
     favorite: {
       get() {
         return this.$store.state.user.favorites.indexOf(this.id) !== -1;
@@ -69,6 +80,9 @@ export default {
     this.$data.auction = this.$route.params.item;
   },
   methods: {
+    addFavorite() {
+      console.log("Add");
+    },
     fetch() {
       let item;
       this.$axios
@@ -85,23 +99,24 @@ export default {
         .catch(err => console.log(err));
     },
     placeBid() {
+      console.log(this.auction);
       let max = Math.max.apply(
         Math,
-        this.$data.auction.biddings.map(function(e) {
-          return e.price;
+        this.auction.bidding_info.map(function(e) {
+          return e.proposal_price;
         })
       );
       if (this.$data.bidPrice > max) {
-        console.log(this.$data.auction.id);
+        console.log(this.auction.id);
         console.log(this.$data.bidPrice);
-        console.log(this.$store.state.user.id);
+        console.log(this.$store.state.user.user_id, "==========");
         this.$store.dispatch("auction/placeBidding", {
-          auction_id: this.$data.auction.id,
-          price: this.$data.bidPrice,
-          user_id: this.$store.state.user.id
+          item_id: this.auction.id,
+          proposal_price: Number(this.$data.bidPrice),
+          user_id: this.$store.state.user.user_id
         });
       } else {
-        this.$data.error = "* Bidding price must greater than current price.";
+        this.$data.error = `* Bidding price $ ${this.$data.bidPrice} must greater than current price $ ${max}.`;
       }
     }
   }

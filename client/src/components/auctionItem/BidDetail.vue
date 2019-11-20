@@ -100,12 +100,13 @@ export default {
       Promise.allSettled(promises).then(results => {
         let users = results.map(x => x.value);
 
-        for (let b of this.biddings) {
-          b.user = users.find(x => x.user_id == b.user_id);
-        }
-        this.$data.biddings_info = biddings
+        this.$data.biddings_info = [...biddings];
+        this.$data.biddings_info = this.$data.biddings_info
           .sort((a, b) => a.proposal_price - b.proposal_price)
           .reverse();
+        for (let b of this.$data.biddings_info) {
+          b.user = users.find(x => x.user_id == b.user_id);
+        }
         this.$data.loading = false;
       });
     }
