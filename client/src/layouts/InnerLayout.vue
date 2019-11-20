@@ -167,7 +167,13 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <div v-if="ready">
+        <router-view />
+      </div>
+
+      <div v-else class="flex flex-center">
+        <q-circular-progress indeterminate size="150px" class="q-ma-md" />
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -185,8 +191,30 @@ export default {
       miniState: true,
       search: null,
       avatarUrl: this.$store.state.user.avatar,
-      selected: ""
+      selected: "",
+      ready: false
     };
+  },
+  created() {
+    let promises = [
+      this.$store.dispatch("auction/getAllAuctions"),
+      this.$store.dispatch(
+        "auction/getMyAutions",
+        this.$store.state.user.user_id
+      ),
+      this.$store.dispatch(
+        "auction/getMyBiddings",
+        this.$store.state.user.user_id
+      ),
+      this.$store.dispatch(
+        "auction/getMyFavorite",
+        this.$store.state.user.user_id
+      )
+    ];
+    Promise.allSettled(promises).then(res => {
+      this.$data.ready = true;
+      console.log(res, "ready");
+    });
   }
 };
 </script>
