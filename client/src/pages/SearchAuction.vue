@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="myPage">
-    <div class="q-pa-md mybox">
+    <div class="q-mb-md">
       <div class="row" style="justify-content: center;">
         <div class="col-8">
           <q-card class="col-xs-12 col-sm-11 col-md-10 col-lg-9">
@@ -155,15 +155,24 @@
         </div>
       </div>
     </div>
-    <q-page>
+    <div v-if="searchResult.length">
       <MyAuctionsList :items="searchResult" />
-    </q-page>
+    </div>
+    <div v-else-if="loading" class="flex flex-center">
+      <q-linear-progress
+        dark
+        rounded
+        style="height: 20px"
+        query
+        color="cyan"
+        class="q-mt-sm"
+      />
+    </div>
   </q-page>
 </template>
 
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
-import { axiosInstance } from "boot/axios";
 import { dropdownOpts, countries } from "../helper";
 
 export default {
@@ -174,6 +183,7 @@ export default {
     return {
       tab: "one",
       searchResult: [],
+      loading: false,
       advanced: {
         startDate: null,
         endDate: null,
@@ -191,25 +201,40 @@ export default {
   },
   methods: {
     onSubmit() {
-      // ask filter api
       if (this.$data.tab == "one") {
         this.$refs.normalForm.validate().then(
-          success => {
+          async success => {
             if (success) {
               // yay, models are correct
-              console.log(this.$data.normal);
-              axiosInstance
-                .get("/auction/search-key/" + this.$data.normal.search)
-                .then(
-                  response => {
-                    console.log(response);
-                    console.log(this.$store.state.auction.myAuctions);
-                    this.$data.searchResult = response.data;
-                  },
-                  err => {
-                    console.log(err);
-                  }
-                );
+              this.$data.searchResult = [];
+              let res = await this.$axios
+                .get("/auctions/search-key/" + this.$data.normal.search)
+                .then(async res => {
+                  this.$data.loading = true;
+                  await res.data.map(async e => {
+                    let user = this.$store.getters["auction/getSeller"](
+                      e.seller_id
+                    );
+                    if (user) {
+                      e.user = user;
+                    } else {
+                      let { data } = await this.$axios.get(
+                        `/account/manage_profile/${e.seller_id}`
+                      );
+                      e.user = data.data;
+                    }
+                  });
+
+                  return res.data;
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+              console.log(res, "$$$$$$");
+              setTimeout(() => {
+                this.$data.searchResult = res;
+                this.$data.loading = false;
+              }, 2000);
             }
           },
           err => {
