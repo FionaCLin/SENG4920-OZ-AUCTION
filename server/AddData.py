@@ -14,10 +14,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 seedData = json.load(
     open(os.path.join(dir_path, 'seedData.json'), 'r'))
 
+client = pymongo.MongoClient(config.MONGO_URI)
+mydb = client[config.MONGO_DB]
 
-client = pymongo.MongoClient(
-    "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-mydb = client["runoobdb"]
 collist = mydb.list_collection_names()
 for col in collist:
     mydb[col].drop()
