@@ -898,12 +898,17 @@ class SingleAuctionItemOperations(Resource):
         user_input = request.json
         try:
             au_col = mydb['auctions']
+            user_col = mydb['user']
             retrieved_item = au_col.find_one({'id': int(item_id)})
 
             if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
 
             del retrieved_item['_id']
+
+            seller_id = int(retrieved_item['seller_id'])
+            seller = user_col.find_one({"user_id":seller_id})
+
 
             # Input validation: End_time validation
             if not validate_datetime_str(user_input['end_time']):
@@ -914,8 +919,21 @@ class SingleAuctionItemOperations(Resource):
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
 
+            # update auction in user's auctions list
+            for auction in seller['auctions']:
+                if auction['id'] == int(item_id):
+                    auction_to_be_updated_index = seller['auctions'].index(auction)
+
+            updated_auction = seller['auctions'][auction_to_be_updated_index]
+            for k in update_data.keys():
+                updated_auction[k] = update_data[k]
+
+            seller['auctions'][auction_to_be_updated_index] = updated_auction
+
             au_col.update_one({"id": int(item_id)}, {
                                     "$set": update_data})
+            user_col.update_one({"user_id": int(seller_id)}, {
+                "$set": seller})
             return {"message": "Auction details have been updated"}, 200
         except:
             return {"message":  "Auction details have been updated"}, 404
