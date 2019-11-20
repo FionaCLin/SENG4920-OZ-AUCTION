@@ -378,9 +378,9 @@ class User_biddings(Resource):
     @api.doc(description="get user's biddings")
     def get(self, request_user_id):
         col = mydb['user']
+        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
         # del single_user['_id']
-
         if single_user is None:
             response = {
                 "message": "User does not exist",
@@ -388,12 +388,28 @@ class User_biddings(Resource):
             }
             return response, 404
 
-        new_user_biddings = dict()
-        new_user_biddings["bids"] = single_user["bids"]
+        retrieved_items = []
+        for item in au_col.find():
+            # del item['_id']
+            for bid_item in item['bidding_info']:
+                if bid_item['user_id'] == int(request_user_id):
+                    retrieved_items.append(bid_item)
+
+
+        if len(retrieved_items) == 0:
+            return {"message": "No auctions stored in database"},404
+        
+        response = {
+            "message": "OK",
+            "result":retrieved_items
+        }
+        return response,200
+
+
 
         response = {
             "message": "OK",
-            "data": new_user_biddings
+            "data": retrieved_items
         }
         return response, 200
 
