@@ -1,20 +1,7 @@
 export function placeBidding(state, bid) {
-  let auction = null;
-  for (let i of state.auctions) {
-    let item = i.auction_items.find(x => x.id === bid.auction_id);
-    console.log(i, item);
-    if (item) {
-      auction = item;
-      break;
-    }
-  }
-  auction.biddings.push({
-    user_id: bid.user_id,
-    price: bid.price,
-    item_id: bid.auction_id,
-    created: new Date()
-  });
-  console.log("mu", state, bid, auction);
+  let auction = state.myBids.find(x => x.id === bid.item_id);
+  auction.bidding_info.slice(0, bid);
+  console.log("mu", state, bid, auction.bidding_info.length);
 }
 //Sync
 export function updateAuctions(state, { auctions, sellers }) {

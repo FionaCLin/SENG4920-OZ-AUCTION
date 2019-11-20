@@ -2,10 +2,19 @@ import { axiosInstance } from "../../boot/axios";
 
 // async
 export function placeBidding({ commit }, bid) {
-  commit("placeBidding", bid);
+  //TODO
+  return axiosInstance
+    .post("bidding", bid)
+    .then(res => {
+      bid.bid_id = res.data.data.bid_id;
+      bid.created = res.data.data.created;
+      commit("placeBidding", bid);
+    })
+    .catch(err => console.log(err.response));
 }
 
 export function getAllAuctions({ commit }) {
+  //DONE
   console.log("fire getAllAuctions");
   return axiosInstance
     .get(`auctions`)
@@ -31,14 +40,15 @@ export function getAllAuctions({ commit }) {
         commit("updateAuctions", { auctions, sellers });
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
 
 export async function getAuctionByUserId({ commit, state }, user_id) {
+  // NOT SURE IF WE NEED IT
   console.log("getAuctionByUserId", user_id);
   let sellers = [...state.sellers];
   let user = sellers.find(x => x.user_id == user_id);
-  if (!user) {
+  if (!user && user_id) {
     user = await axiosInstance
       .get(`/account/manage_profile/${user_id}`)
       .then(res => res.data.data);
@@ -55,7 +65,7 @@ export async function getAuctionByUserId({ commit, state }, user_id) {
       });
       commit("updateMyAuctions", { auctions, sellers });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
 
 export function getMyAutions({ commit, state }, id) {
@@ -77,7 +87,7 @@ export function getMyAutions({ commit, state }, id) {
       }
       commit("updateMyAuctions", { auctions, sellers });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
 
 export function getMyBiddings({ commit, state }, id) {
@@ -88,6 +98,7 @@ export function getMyBiddings({ commit, state }, id) {
       console.log(res, id);
       let bids = res.data.data.bids;
       for (let bid of bids) {
+        console.log(bid);
         let user = sellers.find(x => x.user_id == bid.seller_id);
         if (!user) {
           user = await axiosInstance
@@ -99,7 +110,7 @@ export function getMyBiddings({ commit, state }, id) {
       }
       commit("updateMyBiddings", { bids, sellers });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
 
 export function getMyFavorite({ commit, state }, id) {
@@ -121,7 +132,7 @@ export function getMyFavorite({ commit, state }, id) {
       }
       commit("updateMyWishList", { favorites, sellers });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
 
 export function create({ commit, state }, payload) {
@@ -163,5 +174,5 @@ export function deleteAuction({ commit, state }, auction_id) {
 
       commit("updateMyAuctions", { auctions, sellers });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
 }
