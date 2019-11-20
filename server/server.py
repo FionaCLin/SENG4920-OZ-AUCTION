@@ -417,6 +417,44 @@ class User_biddings(Resource):
 
 
 
+@ns_account.route('/get_user_favorites/<string:request_user_id>')
+class User_favorites(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'User Does Not Exist')
+    @api.doc(description="get user's favorites")
+    def get(self, request_user_id):
+        col = mydb['user']
+        au_col = mydb['auctions']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        # del single_user['_id']
+
+        if single_user is None:
+            response = {
+                "message": "User does not exist",
+                "data": ""
+            }
+            return response, 404
+
+        retrieved_favorites = []
+        auction_id_list = single_user["favorites"]
+        for single_auction in auction_id_list:
+            try:
+                retrieved_item = au_col.find_one({'id': int(single_auction)})
+                del retrieved_item['_id']
+                retrieved_favorites.append(retrieved_item)
+            except:
+                return {"message":  "Specified item does not exist"}, 404
+        
+
+        response = {
+            "message": "OK",
+            "data": retrieved_favorites
+        }
+        return response, 200
+
+
+
+
 
 @ns_account.route('/manage_profile/<string:request_user_id>')
 class Manage_profile(Resource):
