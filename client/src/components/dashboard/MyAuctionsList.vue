@@ -33,121 +33,35 @@
 
       <!-- table grid view -->
       <template v-if="grid" v-slot:item="props">
-        <div
-          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-        >
-          <q-card>
-            <q-img
-              class="auction-item"
-              :src="props.cols.find(col => col.name === 'image')[0].value"
-              @click="auctionItem(props.row)"
-            >
-              <div class="text-subtitle2 absolute-bottom text-center">
-                {{ props.row.title }}
-              </div>
-            </q-img>
-            <q-list dense>
-              <q-item
-                v-for="col in props.cols.filter(
-                  col => col.name !== 'image' && col.name !== 'title'
-                )"
-                :key="col.name"
-              >
-                <q-item-section>
-                  <q-item-label>{{ col.label }}</q-item-label>
-                </q-item-section>
-                <q-item-section
-                  v-ripple
-                  side
-                  clickable
-                  @click="auctionItem(props.row)"
-                >
-                  <q-item-label v-if="col.name !== 'seller_name'" caption
-                    >{{ col.value }}
-                  </q-item-label>
-                  <q-item
-                    v-else
-                    v-ripple
-                    clickable
-                    @click="userProfile(props.row.user)"
-                  >
-                    <q-item-section avatar>
-                      <q-avatar>
-                        <img :src="props.row.user.avatar" />
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label>{{ props.row.seller_name }}</q-item-label>
-                      <q-item-label caption>
-                        <q-icon
-                          v-for="n in props.row.user.rating"
-                          :key="n"
-                          name="star"
-                        ></q-icon>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </div>
+        <cardView
+          :props="props"
+          @check-item="auctionItem"
+          @check-profile="userProfile"
+        />
       </template>
 
       <!-- table list view -->
       <template v-else v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="image" auto-width :props="props">
-            <q-img :src="props.row.image[0]" @click="auctionItem(props.row)" />
-          </q-td>
-          <q-td key="title" auto-width :props="props">
-            <div>
-              <q-badge
-                color="green-4"
-                class="text-bold text-white"
-                :label="props.row.title"
-                @click="auctionItem(props.row)"
-              />
-            </div>
-            <div class="my-table-details" @click="auctionItem(props.row)">
-              {{ props.row.description }}
-            </div>
-          </q-td>
-
-          <q-td v-for="f in fields" :key="f" auto-width :props="props">
-            <p @click="auctionItem(props.row)">{{ props.row[f] }}</p>
-          </q-td>
-          <q-td key="seller_name" auto-width :props="props">
-            <div>
-              <q-item v-ripple clickable @click="userProfile(props.row.user)">
-                <q-item-section avatar>
-                  <q-avatar>
-                    <img :src="props.row.user.avatar" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ props.row.seller_name }}</q-item-label>
-                  <q-item-label caption>
-                    <q-icon
-                      v-for="n in props.row.user.rating"
-                      :key="n"
-                      name="star"
-                    ></q-icon>
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-          </q-td>
-        </q-tr>
+        <listView
+          :props="props"
+          :fields="fields"
+          @check-item="auctionItem"
+          @check-profile="userProfile"
+        />
       </template>
     </q-table>
   </div>
 </template>
 
 <script>
-// import { axiosInstance } from "boot/axios";
+import cardView from "./CardView.vue";
+import listView from "./ListView.vue";
 
 export default {
+  components: {
+    cardView,
+    listView
+  },
   props: ["items", "title", "alink", "tool"],
   data() {
     return {
