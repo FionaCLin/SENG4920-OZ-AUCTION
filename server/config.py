@@ -23,7 +23,6 @@ if re.match(r'.*test.*', sys.argv[0]):
     MONGO_PORT = 27017
 
     MONGO_DB = 'runoobdb_test'
-    MONGO_DB = 'runoobdb'
 else:
     MONGO_URI = \
         "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority"

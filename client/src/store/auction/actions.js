@@ -71,10 +71,10 @@ export async function getAuctionByUserId({ commit, state }, user_id) {
 export function getMyAutions({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`auctions/user/${id}/auction`)
+    .get(`account/get_user_auctions/${id}`)
     .then(async res => {
       console.log(res, id);
-      let auctions = res.data.data.auctions;
+      let auctions = res.data.data;
       for (let auction of auctions) {
         let user = sellers.find(x => x.user_id == auction.seller_id);
         if (!user) {
@@ -93,10 +93,10 @@ export function getMyAutions({ commit, state }, id) {
 export function getMyBiddings({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`account/get_user_biddings/${id}`)
+    .get(`account/get_user_auctions/${id}`)
     .then(async res => {
       console.log(res, id);
-      let bids = res.data.data.bids;
+      let bids = res.data.data;
       for (let bid of bids) {
         console.log(bid);
         let user = sellers.find(x => x.user_id == bid.seller_id);
@@ -116,10 +116,10 @@ export function getMyBiddings({ commit, state }, id) {
 export function getMyFavorite({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`account/get_user_biddings/${id}`)
+    .get(`account/get_user_auctions/${id}`)
     .then(async res => {
       console.log(res, id);
-      let favorites = res.data.data.favorites;
+      let favorites = res.data.data;
       for (let fav of favorites) {
         let user = sellers.find(x => x.user_id == fav.seller_id);
         if (!user) {
