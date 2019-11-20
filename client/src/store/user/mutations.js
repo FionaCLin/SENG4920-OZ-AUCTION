@@ -16,8 +16,8 @@ export function removeFavorite(state, id) {
   console.log("index af", index, state.favorites);
 }
 
-export function updateCurrentID(state, id) {
-  console.log("here is mutation_user " + id);
-
-  state.user_id = id;
+export function updateCurrentID(state, user) {
+  for (let k of Object.keys(user)) {
+    state[k] = user[k];
+  }
 }
