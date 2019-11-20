@@ -48,34 +48,12 @@
                 use-input
                 @filter="filterCatFn"
               />
-
-              <q-input v-model="endTime" filled label="Deadline">
-                <template v-slot:prepend>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date v-model="endTime" mask="YYYY-MM-DD h:mm:ss" />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-
-                <template v-slot:append>
-                  <q-icon name="access_time" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time
-                        v-model="endTime"
-                        mask="YYYY-MM-DD h:mm:ss"
-                        format24h
-                      />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
+              <TimeInputVue
+                v-model="endTime"
+                :date="endTime"
+                :label="`Deadline`"
+                @update-time="endTime = $event"
+              />
 
               <div style="overflow: hidden;">
                 <q-btn
@@ -162,8 +140,8 @@
 <script>
 import { uploadImage } from "../helper";
 import { dropdownOpts, countries } from "../helper";
-
 import moment from "moment";
+import TimeInputVue from "../components/auctionItem/TimeInput.vue";
 
 let warning = {
   color: "red-5",
@@ -174,6 +152,9 @@ let warning = {
 
 export default {
   name: "AuctionCreateForm",
+  components: {
+    TimeInputVue
+  },
   props: ["edit"],
   data() {
     return {

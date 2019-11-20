@@ -51,52 +51,20 @@
                     <p class="titles">Time Range</p>
                     <div class="row">
                       <div class="col-6 myItem">
-                        <q-input
+                        <TimeInputVue
                           v-model="advanced.startDate"
-                          filled
-                          label="Start Date"
-                          mask="date"
-                          :rules="['date']"
-                        >
-                          <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy
-                                ref="qDateProxy"
-                                transition-show="scale"
-                                transition-hide="scale"
-                              >
-                                <q-date
-                                  v-model="advanced.startDate"
-                                  @input="() => $refs.qDateProxy.hide()"
-                                />
-                              </q-popup-proxy>
-                            </q-icon>
-                          </template>
-                        </q-input>
+                          :date="advanced.startDate"
+                          :label="`Start Date`"
+                          @update-time="advanced.startDate = $event"
+                        />
                       </div>
                       <div class="col-6">
-                        <q-input
+                        <TimeInputVue
                           v-model="advanced.endDate"
-                          filled
-                          label="End Date"
-                          mask="date"
-                          :rules="['date']"
-                        >
-                          <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy
-                                ref="qDateProxy"
-                                transition-show="scale"
-                                transition-hide="scale"
-                              >
-                                <q-date
-                                  v-model="advanced.endDate"
-                                  @input="() => $refs.qDateProxy.hide()"
-                                />
-                              </q-popup-proxy>
-                            </q-icon>
-                          </template>
-                        </q-input>
+                          :date="advanced.endDate"
+                          :label="`End Date`"
+                          @update-time="advanced.endDate = $event"
+                        />
                       </div>
                     </div>
                   </div>
@@ -127,7 +95,9 @@
                       v-model="advanced.category"
                       filled
                       label="Category"
-                      :options="advanced.optionsCategory"
+                      :options="optionsCategory"
+                      use-input
+                      @filter="filterCatFn"
                     />
                   </div>
                   <div>
@@ -136,7 +106,9 @@
                       v-model="advanced.location"
                       filled
                       label="Location"
-                      :options="advanced.optionsLocation"
+                      use-input
+                      :options="optionsLocation"
+                      @filter="filterLocFn"
                     />
                   </div>
                   <div style="overflow:hidden">
@@ -174,10 +146,12 @@
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
 import { dropdownOpts, countries } from "../helper";
+import TimeInputVue from "../components/auctionItem/TimeInput.vue";
 
 export default {
   components: {
-    MyAuctionsList
+    MyAuctionsList,
+    TimeInputVue
   },
   data() {
     return {
@@ -187,19 +161,95 @@ export default {
       advanced: {
         startDate: null,
         endDate: null,
-        startPric: null,
+        startPrice: null,
         endPrice: null,
         category: null,
-        location: null,
-        optionsCategory: dropdownOpts,
-        optionsLocation: countries.map(x => x.name)
+        location: null
       },
+      optionsCategory: dropdownOpts,
+      optionsLocation: countries.map(x => x.name),
       normal: {
         search: ""
       }
     };
   },
   methods: {
+    filterLocFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsLocation = countries.map(x => x.name);
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsLocation = countries
+          .map(x => x.name)
+          .filter(v => v.toLowerCase().indexOf(needle) > -1);
+      });
+    },
+    filterCatFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsCategory = dropdownOpts;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsCategory = dropdownOpts.filter(
+          v => v.toLowerCase().indexOf(needle) > -1
+        );
+      });
+    },
+    normalSearch() {
+      return this.$axios
+        .get("/auctions/search-key/" + this.$data.normal.search)
+        .then(async res => {
+          this.$data.loading = true;
+          await res.data.map(async e => {
+            let user = this.$store.getters["auction/getSeller"](e.seller_id);
+            if (user) {
+              e.user = user;
+            } else {
+              let { data } = await this.$axios.get(
+                `/account/manage_profile/${e.seller_id}`
+              );
+              e.user = data.data;
+            }
+          });
+
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    advancedSearch(query) {
+      return this.$axios
+        .get(`/auctions/search/filter${query}`)
+        .then(async res => {
+          this.$data.loading = true;
+          await res.data.map(async e => {
+            let user = this.$store.getters["auction/getSeller"](e.seller_id);
+            if (user) {
+              e.user = user;
+            } else {
+              let { data } = await this.$axios.get(
+                `/account/manage_profile/${e.seller_id}`
+              );
+              e.user = data.data;
+            }
+          });
+
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     onSubmit() {
       if (this.$data.tab == "one") {
         this.$refs.normalForm.validate().then(
@@ -207,29 +257,7 @@ export default {
             if (success) {
               // yay, models are correct
               this.$data.searchResult = [];
-              let res = await this.$axios
-                .get("/auctions/search-key/" + this.$data.normal.search)
-                .then(async res => {
-                  this.$data.loading = true;
-                  await res.data.map(async e => {
-                    let user = this.$store.getters["auction/getSeller"](
-                      e.seller_id
-                    );
-                    if (user) {
-                      e.user = user;
-                    } else {
-                      let { data } = await this.$axios.get(
-                        `/account/manage_profile/${e.seller_id}`
-                      );
-                      e.user = data.data;
-                    }
-                  });
-
-                  return res.data;
-                })
-                .catch(err => {
-                  console.log(err);
-                });
+              let res = await this.normalSearch();
               console.log(res, "$$$$$$");
               setTimeout(() => {
                 this.$data.searchResult = res;
@@ -238,9 +266,6 @@ export default {
             }
           },
           err => {
-            console.log(err);
-            console.log("problems!");
-
             this.$q.notify({
               color: "red-5",
               textColor: "white",
@@ -251,10 +276,36 @@ export default {
         );
       } else {
         this.$refs.advancedForm.validate().then(
-          success => {
+          async success => {
             if (success) {
-              // yay, models are correct
-              console.log(this.$data.advanced);
+              let query = [];
+
+              for (let k of [
+                "startDate",
+                "endDate",
+                "startPrice",
+                "endPrice",
+                "category",
+                "location"
+              ]) {
+                if (this.advanced[k] !== null && this.advanced[k] !== "") {
+                  query.push(`${k}=${this.advanced[k]}`);
+                }
+              }
+              console.log(this.$data.advanced, "Target~~~~~~!");
+              if (query.length) {
+                query = query.join("&");
+                query = `?${query}`;
+              }
+
+              this.$data.searchResult = [];
+              console.log(query);
+              let res = await this.advancedSearch(query);
+              console.log(res, "$$$$$$", query);
+              setTimeout(() => {
+                this.$data.searchResult = res;
+                this.$data.loading = false;
+              }, 2000);
             }
           },
           err => {
