@@ -8,7 +8,7 @@
           name="img:statics/logo.png"
           :ratio="16 / 9"
           class="myLogo"
-          @click="$router.replace('/dashboard')"
+          @click="$router.replace('/dashboard').catch(() => {})"
         ></q-icon>
 
         <q-space />
@@ -86,7 +86,7 @@
           push
           @click="
             selected = 'dashboard';
-            $router.replace('/dashboard');
+            $router.replace('/dashboard').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -103,7 +103,7 @@
           push
           @click="
             selected = 'gavel';
-            $router.replace('/myauctions');
+            $router.replace('/myauctions').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -120,7 +120,7 @@
           push
           @click="
             selected = 'collections_bookmark';
-            $router.replace('/mybiddings');
+            $router.replace('/mybiddings').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -137,7 +137,7 @@
           push
           @click="
             selected = 'favorite';
-            $router.replace('/mywishlist');
+            $router.replace('/mywishlist').catch(() => {});
           "
         >
           <q-item-section avatar>
