@@ -27,6 +27,7 @@
               <q-input
                 v-model="price"
                 label="Starting Price"
+                prefix="$AD"
                 filled
                 type="number"
               />
@@ -125,6 +126,7 @@
                 style="float:right;"
                 color="primary"
                 label="Submit"
+                :disabled="!image.length"
                 @click="onSubmit()"
               />
               <q-btn
@@ -221,7 +223,10 @@ export default {
         category: this.$data["category"],
         image: this.$data["image"]
       };
-      this.$store.dispatch("auction/create", payload);
+      this.$store.dispatch("auction/create", payload).then(res => {
+        console.log(res);
+        this.$router.push("/myauctions").catch(() => {});
+      });
       // if (this.edit) {
       //   this.$refs.EditAuctionForm.validate().then(
       //     //validate underfine
