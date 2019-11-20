@@ -885,6 +885,9 @@ class SingleAuctionItemOperations(Resource):
             # remove the specified bidding from the bidding_info of the auction
             seller['auctions'] = \
                 [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+
+            seller['favorites'].remove(item_id)
+
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully","data":retrieved_item}
         except:
