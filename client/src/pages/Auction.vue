@@ -68,11 +68,11 @@ export default {
     fetch() {
       let item;
       this.$axios
-        .get(`/auctions/${this.id}`)
+        .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
           this.$axios
-            .get(`/account/manage_profile/${res.data.data.seller_id}`)
+            .get(`/account/manage_profile/${item.seller_id}`)
             .then(res => {
               item["user"] = res.data.data;
               this.$data.auction = item;

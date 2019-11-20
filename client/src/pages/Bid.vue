@@ -86,7 +86,7 @@ export default {
     fetch() {
       let item;
       this.$axios
-        .get(`/auctions/${this.id}`)
+        .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
           this.$axios

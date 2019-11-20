@@ -285,6 +285,7 @@ export default {
       }
     },
     viewCreatedAuction() {
+      //???
       this.$axios.get("/auction/" + this.$data.categoryId).then(response => {
         console.log(response);
         this.$store.dispatch(

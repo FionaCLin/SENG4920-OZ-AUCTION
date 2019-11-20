@@ -17,7 +17,7 @@ export function getAllAuctions({ commit }) {
   //DONE
   console.log("fire getAllAuctions");
   return axiosInstance
-    .get(`auctions`)
+    .get(`auction`)
     .then(res => {
       let auctions = res.data.result;
       let seller_ids = new Set(res.data.result.map(item => item.seller_id));
@@ -56,7 +56,7 @@ export async function getAuctionByUserId({ commit, state }, user_id) {
   }
 
   return axiosInstance
-    .get(`/auctions/search/filter?user_id=${user_id}`)
+    .get(`/auction/search/filter?user_id=${user_id}`)
     .then(res => {
       let auctions = res.data;
       auctions.map(element => {
@@ -71,7 +71,7 @@ export async function getAuctionByUserId({ commit, state }, user_id) {
 export function getMyAutions({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`auctions/user/${id}/auctions`)
+    .get(`auctions/user/${id}/auction`)
     .then(async res => {
       console.log(res, id);
       let auctions = res.data.data.auctions;
@@ -93,7 +93,7 @@ export function getMyAutions({ commit, state }, id) {
 export function getMyBiddings({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`auctions/user/${id}/biddings`)
+    .get(`account/get_user_biddings/${id}`)
     .then(async res => {
       console.log(res, id);
       let bids = res.data.data.bids;
@@ -116,7 +116,7 @@ export function getMyBiddings({ commit, state }, id) {
 export function getMyFavorite({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`auctions/user/${id}/favorites`)
+    .get(`account/get_user_biddings/${id}`)
     .then(async res => {
       console.log(res, id);
       let favorites = res.data.data.favorites;
@@ -139,7 +139,7 @@ export function create({ commit, state }, payload) {
   let sellers = [...state.sellers];
 
   return axiosInstance
-    .post("/auctions", payload)
+    .post("/auction", payload)
     .then(async res => {
       let newAuction = res.data.data;
       let user = sellers.find(x => x.user_id == payload.seller_id);
@@ -164,7 +164,7 @@ export function deleteAuction({ commit, state }, auction_id) {
 
   let sellers = null;
   return axiosInstance
-    .delete(`/auctions/${auction_id}`)
+    .delete(`/auction/${auction_id}`)
     .then(res => {
       console.log(auctions, auction_id);
       let index = auctions.findIndex(i => i.id === auction_id);

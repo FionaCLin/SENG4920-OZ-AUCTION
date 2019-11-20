@@ -80,7 +80,7 @@ export default {
       let user = this.$store.getters["auction/getSeller"](user_id);
       if (user) {
         return user;
-      } else {
+      } else if (user_id) {
         return this.$axios
           .get(`/account/manage_profile/${user_id}`)
           .then(res => {

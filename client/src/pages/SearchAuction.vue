@@ -206,7 +206,7 @@ export default {
     },
     normalSearch() {
       return this.$axios
-        .get("/auctions/search-key/" + this.$data.normal.search)
+        .get("/auction/search-key/" + this.$data.normal.search)
         .then(async res => {
           this.$data.loading = true;
           await res.data.map(async e => {
@@ -229,7 +229,7 @@ export default {
     },
     advancedSearch(query) {
       return this.$axios
-        .get(`/auctions/search/filter${query}`)
+        .get(`/auction/search/filter${query}`)
         .then(async res => {
           this.$data.loading = true;
           await res.data.map(async e => {
