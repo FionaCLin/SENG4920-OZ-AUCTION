@@ -1,17 +1,3 @@
-// import { stat } from "fs";
-
-// import { axiosInstance } from "boot/axios";
-
-// export function getMyAuction(state) {
-//   axiosInstance.get()
-//   return state.myAuctions;
-// }
-// export function getMyBids(state) {
-//   return state.myBids;
-// }
-// export function getMyWishList(state) {
-//   return state.myWishList;
-// }
 export function placeBidding(state, bid) {
   let auction = null;
   for (let i of state.auctions) {
@@ -39,7 +25,9 @@ export function updateAuctions(state, { auctions, sellers }) {
 
 export function updateMyAuctions(state, { auctions, sellers }) {
   console.log(state, auctions, "updateMyAuctions");
-  state.sellers = sellers;
+  if (sellers) {
+    state.sellers = sellers;
+  }
 
   state.myAuctions = auctions;
 }

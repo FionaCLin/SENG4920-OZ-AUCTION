@@ -5,10 +5,6 @@ export function placeBidding({ commit }, bid) {
   commit("placeBidding", bid);
 }
 
-export function createAuction({ commit }, auction, done) {
-  commit("createAuction", auction, done);
-}
-
 export function getAllAuctions({ commit }) {
   console.log("fire getAllAuctions");
   return axiosInstance
@@ -133,9 +129,16 @@ export function create({ commit, state }, payload) {
 
   return axiosInstance
     .post("/auctions", payload)
-    .then(res => {
+    .then(async res => {
       let newAuction = res.data.data;
       let user = sellers.find(x => x.user_id == payload.seller_id);
+      if (!user) {
+        user = await axiosInstance
+          .get(`/account/manage_profile/${payload.seller_id}`)
+          .then(res => res.data.data);
+        console.log(user, "#####@@#$@!#RFEWRGVEDSFVSDFVSDF");
+        sellers.push(user);
+      }
       newAuction["user"] = user;
       console.log(newAuction);
       commit("addItem", newAuction);
@@ -143,4 +146,22 @@ export function create({ commit, state }, payload) {
     .catch(err => {
       console.log(err);
     });
+}
+
+export function deleteAuction({ commit, state }, auction_id) {
+  let auctions = [...state.myAuctions];
+
+  let sellers = null;
+  return axiosInstance
+    .delete(`/auctions/${auction_id}`)
+    .then(res => {
+      console.log(auctions, auction_id);
+      let index = auctions.findIndex(i => i.id === auction_id);
+      auctions.splice(index, 1);
+      console.log(auctions, index);
+      console.log(res);
+
+      commit("updateMyAuctions", { auctions, sellers });
+    })
+    .catch(err => console.log(err));
 }

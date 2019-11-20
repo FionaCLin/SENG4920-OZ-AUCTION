@@ -323,19 +323,26 @@ class SingleAuctionItemOperations(Resource):
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="Delete an auction")
     def delete(self, item_id):
+        au_col = mydb['auctions']
+        user_col = mydb['user']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+        del retrieved_item['_id']
+        if retrieved_item is None:
+            return {"message": "Specified item does not exist"}, 404
+
+        seller_id = int(retrieved_item['seller_id'])
+        seller = user_col.find_one({"user_id": seller_id})
+        del seller['_id']
+
         try:
-            retrieved_item = getAuctionById(item_id)
-            del retrieved_item['_id']
-            au_col = mydb['auctions']
-            if retrieved_item is None:
-                return {"message": "Specified item does not exist"}, 404
             res = au_col.remove({"id": int(item_id)})
-            if res['n'] == 1:
-                return {"message": "Specified item is deleted successfully", "data": retrieved_item}, 200
-            else:
-                return {"message": "Failed to delete specified item"}, 400
+            # remove the specified bidding from the bidding_info of the auction
+            seller['auctions'] = \
+                [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+            user_col.update_one({"user_id": seller_id}, {"$set": seller})
+            return {"message": "Specified item is deleted successfully","data":retrieved_item}
         except:
-            return {"message":  "Specified item does not exist"}, 404
+            return {"message": "Failed to delete specified item"},200
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
@@ -643,30 +650,37 @@ class SingleBiddingOperations(Resource):
     @api.doc(description="Delete a proposed bid")
     def delete(self, bid_id):
         au_col = mydb['auctions']
+        user_col = mydb['user']
         result = "Fail"
         retrieved_bid = au_col.find_one({'bid_id': int(bid_id)})
         if retrieved_bid is None:
-            return {"result": result, "message": "Specified bidding does not exist"}, 404
+            return {"result":result,"message": "Specified bidding does not exist"}, 404
         del retrieved_bid['_id']
         item_id = retrieved_bid["item_id"]
         retrieved_item = au_col.find_one({'id': int(item_id)})
 
         if retrieved_item is None:
-            return {"result": result, "message": "Specified auction item does not exist"}, 404
+            return {"result":result,"message": "Specified auction item does not exist"}, 404
         del retrieved_item['_id']
 
         if retrieved_item["status"] == "Accepted":
-            return {"result": result, "message": "The bid is already accepted"}
+            return {"result":result,"message": "The bid is already accepted"}
+
+        buyer_id = retrieved_bid["user_id"]
+        buyer = user_col.find_one({'user_id':int(buyer_id)})
+        del buyer['_id']
 
         try:
             au_col.remove({"bid_id": int(bid_id)})
 
             # remove the specified bidding from the bidding_info of the auction
             retrieved_item['bidding_info'] = \
-                [x for x in retrieved_item['bidding_info']
-                    if int(x["bid_id"]) != int(bid_id)]
+                [x for x in retrieved_item['bidding_info'] if int(x["bid_id"]) != int(bid_id)]
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
-
+            # remove the specified bidding from the bids of the user
+            buyer['bids'] = \
+                [x for x in buyer['bids'] if int(x["bid_id"]) != int(bid_id)]
+            user_col.update_one({"user_id": int(buyer_id)}, {"$set": buyer})
             return {"message": "Specified bidding is deleted successfully"}
         except:
             return {"message": "Failed to delete "}, 400
