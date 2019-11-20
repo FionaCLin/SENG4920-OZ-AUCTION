@@ -849,6 +849,27 @@ class GetRating(Resource):
         return response,200
 
 
+
+
+@ns_auction.route('/get_category/<auction_id>')
+class SingleAuctionCategory(Resource):
+    @api.response(200, 'OK')
+    @api.response(404, 'Auction item does not exist')
+    @api.doc(description="get category of an auction item")
+    def get(self, auction_id):
+        au_col = mydb['auctions']
+        try:
+            retrieved_item = au_col.find_one({'id': int(auction_id)})
+            category = retrieved_item['category']
+            del retrieved_item['_id']
+
+            return {"message": "OK", "data": category}, 200
+        except:
+            return {"message":  "Auction item does not exist"}, 404
+
+
+
+
 @ns_auction.route('/<item_id>')
 @api.param('item_id', 'Item ID given when the auction is created')
 class SingleAuctionItemOperations(Resource):
