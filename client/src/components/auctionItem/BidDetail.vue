@@ -41,7 +41,6 @@
   </div>
 </template>
 <script>
-// import { mapGetters } from "vuex";
 export default {
   name: "BidItem",
   filters: {
@@ -77,18 +76,34 @@ export default {
     this.getUsers(this.biddings);
   },
   methods: {
-    getUser(bid) {
-      return this.$axios
-        .get(`/account/manage_profile/${bid.user_id}`)
-        .then(res => {
-          bid.user = res.data.data;
-          return bid;
-        });
+    getUser(user_id) {
+      let user = this.$store.getters["auction/getSeller"](user_id);
+      if (user) {
+        return user;
+      } else {
+        return this.$axios
+          .get(`/account/manage_profile/${user_id}`)
+          .then(res => {
+            console.log(user_id, "fetched user", user);
+
+            user = res.data.data;
+            return user;
+          });
+      }
     },
     getUsers(biddings) {
-      let promises = biddings.map(x => this.getUser(x));
-      Promise.all(promises).then(results => {
-        this.$data.biddings_info = results
+      let user_ids = new Set(biddings.map(x => x.user_id));
+      let promises = [];
+      for (let uid of user_ids) {
+        promises.push(this.getUser(uid));
+      }
+      Promise.allSettled(promises).then(results => {
+        let users = results.map(x => x.value);
+
+        for (let b of this.biddings) {
+          b.user = users.find(x => x.user_id == b.user_id);
+        }
+        this.$data.biddings_info = biddings
           .sort((a, b) => a.proposal_price - b.proposal_price)
           .reverse();
         this.$data.loading = false;

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
-          <q-img :src="auction.image[0]" class="q-ma-lg" />
+          <ImagesDisplay :image="auction.image" />
         </div>
         <div class="q-pa-sm">
           <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
@@ -36,11 +36,14 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
+import ImagesDisplay from "../components/auctionItem/ImagesDisplay";
+
 export default {
   name: "AuctionPage",
   components: {
     ItemDetail,
-    BidDetail
+    BidDetail,
+    ImagesDisplay
   },
   data() {
     return {
