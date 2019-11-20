@@ -977,8 +977,8 @@ class Auction_search2(Resource):
     @api.param('user_id', '')
     @api.param('endPrice', '')
     @api.param('startPrice', '')
-    @api.param('endDate', 'YYYY/MM/DD')
-    @api.param('startDate', 'YYYY/MM/DD')
+    @api.param('endDate', 'YYYY-MM-DD')
+    @api.param('startDate', 'YYYY-MM-DD')
     @api.doc(description="Search by filter")
     def get(self):
         collection = mydb['auctions']
@@ -1002,12 +1002,12 @@ class Auction_search2(Resource):
 
         # change data format
         if startDate is None:
-            startDate = '2000/01/10'
+            startDate = '2000-01-10 00:00:00'
         if endDate is None:
-            endDate = datetime.datetime.now().strftime("%Y/%m/%d")
+            endDate = datetime.datetime.now().strftime("'%Y-%m-%d %H:%M:%S'")
 
-        endDateP = datetime.datetime.strptime(endDate, "%Y/%m/%d")
-        startDateP = datetime.datetime.strptime(startDate, "%Y/%m/%d")
+        endDateP = datetime.datetime.strptime(endDate, "'%Y-%m-%d %H:%M:%S'")
+        startDateP = datetime.datetime.strptime(startDate, "'%Y-%m-%d %H:%M:%S'")
 
         cursor = collection.find()
         
