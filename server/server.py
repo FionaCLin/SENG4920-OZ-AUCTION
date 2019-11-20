@@ -878,6 +878,7 @@ class SingleAuctionItemOperations(Resource):
 
         seller_id = int(retrieved_item['seller_id'])
         seller = user_col.find_one({"user_id": seller_id})
+        del seller['_id']
 
         try:
             res = au_col.remove({"id": int(item_id)})
@@ -1050,8 +1051,9 @@ class BiddingManagement(Resource):
         result = "OK"
         user_input = request.json
         item_id = user_input["item_id"]
-
+        user_id = user_input['user_id']
         au_col = mydb['auctions']
+        user_col = mydb['user']
         retrieved_item = au_col.find_one({'id': int(item_id)})
         item_min_price = retrieved_item["price"]
 
@@ -1059,6 +1061,11 @@ class BiddingManagement(Resource):
             return {"result": "Fail","message": "Item not found"}, 404
 
         del retrieved_item['_id']
+        buyer = user_col.find_one({'user_id': int(user_id)})
+        if buyer is None:
+            return {"result": "Fail","message": "User does not exist"}, 404
+
+        del buyer['_id']
 
         # Input validation: Detect missing fields
         for k in ['user_id','proposal_price']:
@@ -1084,7 +1091,9 @@ class BiddingManagement(Resource):
             retrieved_item["bidding_info"].append(new_bidding_info)
             au_col.insert_one(new_bidding_info)
             del new_bidding_info["_id"]
+            buyer['bids'].append(new_bidding_info)
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
+            user_col.update_one({"user_id": int(user_id)}, {"$set": buyer})
         else:
             message = "Proposal price can't be less than current bidding price"
             return {"result":"Fail", "message":message},400
@@ -1177,6 +1186,7 @@ class SingleBiddingOperations(Resource):
     @api.doc(description="Delete a proposed bid")
     def delete(self, bid_id):
         au_col = mydb['auctions']
+        user_col = mydb['user']
         result = "Fail"
         retrieved_bid = au_col.find_one({'bid_id': int(bid_id)})
         if retrieved_bid is None:
@@ -1192,6 +1202,10 @@ class SingleBiddingOperations(Resource):
         if retrieved_item["status"] == "Accepted":
             return {"result":result,"message": "The bid is already accepted"}
 
+        buyer_id = retrieved_bid["user_id"]
+        buyer = user_col.find_one({'user_id':int(buyer_id)})
+        del buyer['_id']
+
         try:
             au_col.remove({"bid_id": int(bid_id)})
 
@@ -1199,7 +1213,10 @@ class SingleBiddingOperations(Resource):
             retrieved_item['bidding_info'] = \
                 [x for x in retrieved_item['bidding_info'] if int(x["bid_id"]) != int(bid_id)]
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
-
+            # remove the specified bidding from the bids of the user
+            buyer['bids'] = \
+                [x for x in buyer['bids'] if int(x["bid_id"]) != int(bid_id)]
+            user_col.update_one({"user_id": int(buyer_id)}, {"$set": buyer})
             return {"message": "Specified bidding is deleted successfully"}
         except:
             return {"message": "Failed to delete "}, 400
