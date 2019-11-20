@@ -103,7 +103,7 @@ auctions.forEach(element => {
       title: e["title"],
       description: e["alt_title"],
       created: a.format("YYYY-MM-DD h:mm:ss"),
-      updated: a.add(1, "day").format("YYYY-MM-DD h:mm:ss"),
+      updated: a.add(1, "day").format("YYYY-MM-DD h:mm:ss"),z
       end_time: a.add(1, "week").format("YYYY-MM-DD h:mm:ss"),
       location: seller.location,
       price: e["price"],
@@ -115,14 +115,14 @@ auctions.forEach(element => {
       mkup_biddings(seller.user_id, item, i);
     }
     index++;
-    seller.auctions.push(item);
+    seller.auctions.push(item.id);
     auction_items.push(item);
   });
 });
 
 for (let i in biddings) {
   for (const v of biddings[i]) {
-    users_detail[i].bids.push(auction_items[v]);
+    users_detail[i].bids.push(v);
   }
   let len = biddings[i].size;
   users_detail[i].favorites = users_detail[i].bids.splice(Math.floor(len / 2));
