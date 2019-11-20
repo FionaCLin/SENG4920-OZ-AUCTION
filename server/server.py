@@ -563,9 +563,10 @@ class AuctionsOperations(Resource):
         user_col = mydb['user']
         created_time = datetime.datetime.now()
         #created_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        auction_id = au_col.count_documents({})
         new_auction = \
             {
-                "id": au_col.count_documents({}),
+                "id": auction_id,
                 "created": created_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "updated": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "bidding_info": [],
@@ -602,8 +603,7 @@ class AuctionsOperations(Resource):
 
             # add auction to user's 'auction' field
             seller = user_col.find_one({ "user_id":  user_input['seller_id']})
-            seller['auctions'].append(new_auction)
-            print(seller)
+            seller['auctions'].append(auction_id)
             user_col.update_one({ "user_id":  user_input['seller_id']},{"$set":{"auctions":seller['auctions']}}) # :-()
             return response, 200
         except:
@@ -882,10 +882,12 @@ class SingleAuctionItemOperations(Resource):
 
         try:
             res = au_col.remove({"id": int(item_id)})
-            # remove the specified bidding from the bidding_info of the auction
-            seller['auctions'] = \
-                [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+            # remove the specified auction from the auction list of the user
+            # seller['auctions'] = \
+            #     [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
 
+            seller['auctions'].remove(item_id)
+            seller['bids'].remove(item_id)
             seller['favorites'].remove(item_id)
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
@@ -923,20 +925,20 @@ class SingleAuctionItemOperations(Resource):
                     update_data[k] = user_input[k]
 
             # update auction in user's auctions list
-            for auction in seller['auctions']:
-                if auction['id'] == int(item_id):
-                    auction_to_be_updated_index = seller['auctions'].index(auction)
-
-            updated_auction = seller['auctions'][auction_to_be_updated_index]
-            for k in update_data.keys():
-                updated_auction[k] = update_data[k]
-
-            seller['auctions'][auction_to_be_updated_index] = updated_auction
+            # for auction in seller['auctions']:
+            #     if auction['id'] == int(item_id):
+            #         auction_to_be_updated_index = seller['auctions'].index(auction)
+            #
+            # updated_auction = seller['auctions'][auction_to_be_updated_index]
+            # for k in update_data.keys():
+            #     updated_auction[k] = update_data[k]
+            #
+            # seller['auctions'][auction_to_be_updated_index] = updated_auction
 
             au_col.update_one({"id": int(item_id)}, {
                                     "$set": update_data})
-            user_col.update_one({"user_id": int(seller_id)}, {
-                "$set": seller})
+            # user_col.update_one({"user_id": int(seller_id)}, {
+            #     "$set": seller})
             return {"message": "Auction details have been updated"}, 200
         except:
             return {"message":  "Auction details have been updated"}, 404
@@ -1112,7 +1114,7 @@ class BiddingManagement(Resource):
             retrieved_item["bidding_info"].append(new_bidding_info)
             au_col.insert_one(new_bidding_info)
             del new_bidding_info["_id"]
-            buyer['bids'].append(new_bidding_info)
+            buyer['bids'].append(item_id)
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
             user_col.update_one({"user_id": int(user_id)}, {"$set": buyer})
         else:
@@ -1235,8 +1237,10 @@ class SingleBiddingOperations(Resource):
                 [x for x in retrieved_item['bidding_info'] if int(x["bid_id"]) != int(bid_id)]
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
             # remove the specified bidding from the bids of the user
-            buyer['bids'] = \
-                [x for x in buyer['bids'] if int(x["bid_id"]) != int(bid_id)]
+            # buyer['bids'] = \
+            #     [x for x in buyer['bids'] if int(x["bid_id"]) != int(bid_id)]
+            buyer['bids'].remove(item_id)
+
             user_col.update_one({"user_id": int(buyer_id)}, {"$set": buyer})
             return {"message": "Specified bidding is deleted successfully"}
         except:
