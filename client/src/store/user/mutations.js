@@ -20,4 +20,6 @@ export function updateCurrentID(state, user) {
   for (let k of Object.keys(user)) {
     state[k] = user[k];
   }
+  console.log(state);
+  return state;
 }

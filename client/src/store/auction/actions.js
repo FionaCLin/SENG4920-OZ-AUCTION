@@ -93,7 +93,7 @@ export function getMyAutions({ commit, state }, id) {
 export function getMyBiddings({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`account/get_user_auctions/${id}`)
+    .get(`account/get_user_biddings/${id}`)
     .then(async res => {
       console.log(res, id);
       let bids = res.data.data;
@@ -116,7 +116,7 @@ export function getMyBiddings({ commit, state }, id) {
 export function getMyFavorite({ commit, state }, id) {
   let sellers = [...state.sellers];
   return axiosInstance
-    .get(`account/get_user_auctions/${id}`)
+    .get(`account/get_user_favorites/${id}`)
     .then(async res => {
       console.log(res, id);
       let favorites = res.data.data;

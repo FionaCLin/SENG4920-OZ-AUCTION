@@ -196,6 +196,10 @@ export default {
     };
   },
   created() {
+    // if (!localStorage.getItem("token") || !this.$store.state.user.token) {
+    //   this.$router.push("/login").catch(() => {});
+    // }
+
     let promises = [
       this.$store.dispatch("auction/getAllAuctions"),
       this.$store.dispatch(

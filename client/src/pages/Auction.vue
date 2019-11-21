@@ -21,9 +21,9 @@
           </q-btn>
         </div>
       </div>
-      <div v-if="auction.bidding_info.length" class="col-sm-12">
-        <BidDetail :biddings="auction.bidding_info" />
-      </div>
+    </div>
+    <div v-if="auction.bidding_info.length" class="col-12">
+      <BidDetail :biddings="auction.bidding_info" />
     </div>
   </q-page>
 </template>

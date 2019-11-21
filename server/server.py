@@ -22,16 +22,94 @@ client = pymongo.MongoClient(config.MONGO_URI)
 mydb = client[config.MONGO_DB]
 # =============================
 
+# ==============================   Helper functions   ==========================
+# validate_datetime_str -- datetime validation
+# getUserById
+# getAuctionById
+# getBuyerInfoByIds
+# =============================================================================
 
-# datetime validation
+
 def validate_datetime_str(str):
     try:
         # check if the str match the format : YYYY-MM-DD HH:MM:SS e.g 2010-01-01 12:00:00
-        datetime.datetime.strptime(str,'%Y-%m-%d %H:%M:%S')
+        datetime.datetime.strptime(str, '%Y-%m-%d %H:%M:%S')
         return True
     except ValueError:
         return False
 
+
+def getUserByIds(ids):
+    col = mydb['user']
+    res = list([col.find_one({"user_id": int(id)}, {'_id': 0}) for id in ids])
+    if len(ids) == 1:
+        return res[0]
+    else:
+        return res
+
+
+def getBuyerInfoByIds(ids):
+    col = mydb['user']
+    res = list([col.find_one({"user_id": int(id)}, {'_id': 0, "user_id": 1, "avatar": 1,
+                                                    "rating": 1, "location": 1, "firstname": 1, "lastname": 1}) for id in ids])
+    if len(ids) == 1:
+        return res[0]
+    else:
+        return res
+
+
+def getAuctionWithSellerByAuctionId(id=None):
+    pineline = []
+    if isinstance(id, int):
+        pineline.append({"$match": {"id": id}})
+    # without id, it will return all auctions
+    pineline += \
+        [{"$lookup":
+          {
+              "from": "user",
+              "localField": "seller_id",
+              "foreignField": "user_id",
+              "as": "seller"
+          }
+          }, {
+            "$unwind": "$seller"
+        }, {
+            "$project":
+            {
+                "_id": 0,
+                "id": 1,
+                "seller_name": 1,
+                "seller_id": 1,
+                "category": 1,
+                "title": 1,
+                "description": 1,
+                "created": 1,
+                "updated": 1,
+                "end_time": 1,
+                "location": 1,
+                "price": 1,
+                "image": 1,
+                "bidding_info": 1,
+                "seller.user_id": 1,
+                "seller.avatar": 1,
+                "seller.phone_number": 1,
+                "seller.email": 1,
+                "seller.first_name": 1,
+                "seller.last_name": 1,
+                "seller.favorites": 1,
+                "seller.rating": 1,
+                "seller.location": 1,
+                "seller.payment_method": 1,
+                "users_bidding": 1
+            }
+        }]
+
+    au_col = mydb['auctions']
+    res = au_col.aggregate(pineline)
+
+    if isinstance(id, int):
+        return list(res)[0]
+    return list(res)
 
 
 class Token_authentication:
@@ -122,23 +200,6 @@ ns_bidding = api.namespace(
     'bidding', description='Operations related to management')
 
 
-# signin_model = api.model('signin_info', {
-#     'email': fields.String,
-#     'password': fields.String
-# })
-
-# signin_parser = reqparse.RequestParser()
-# signin_parser.add_argument('email', type=str)
-# signin_parser.add_argument('password', type=str)
-
-########################################
-#  Temporary DB                       #
-########################################
-# client = pymongo.MongoClient(
-    # "mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-# mydb = client["runoobdb"]
-
-
 ########################################
 #  Routes for user account management  #
 ########################################
@@ -169,7 +230,7 @@ user_input_bidding_info = api.model(
 auction_info = api.model(
     'Auction item information',
     {
-        "item_id": fields.Integer,
+        "id": fields.Integer,
         "seller_name": fields.String,
         "seller_id": fields.Integer,
         "category": fields.Integer,
@@ -184,7 +245,6 @@ auction_info = api.model(
         "status": fields.String
     }
 )
-
 
 
 user_profile_invisiable = api.model(
@@ -210,7 +270,6 @@ user_profile = api.model(
 )
 
 
-
 @ns_account.route('/register')
 class Register(Resource):
     @api.response(200, 'Email Already Exists')
@@ -222,28 +281,24 @@ class Register(Resource):
         col = mydb['user']
         cursor = col.find()
         id_counter = 0
-        #alldata = col.select_all_collection()
-        #selected_data = []
-        #for item in alldata:
-        #    if "user_profile" in item:
-        #        selected_data = item["user_profile"]
+
         try:
             accountInfo = request.json
         except:
             return {'message': 'Bad Request!??'}, 400
 
         print(request.json)
-        
+
         found = False
         for single_user in cursor:
-            id_counter  = id_counter + 1
+            id_counter = id_counter + 1
             if single_user["email"] == accountInfo["email"]:
                 found = True
 
         if found == True:
             return {'message': 'Email Already Exists'}, 200
         else:
-            print ('+++++++ '+str(id_counter)+' +++++++++')
+            print('+++++++ '+str(id_counter)+' +++++++++')
             new_user = {
                 "user_id": id_counter,
                 "email": accountInfo["email"],
@@ -257,16 +312,14 @@ class Register(Resource):
                 "location": "",
                 "rating": 0,
                 "avatar": "",
-                "auctions":[],
-                "bids":[]
+                "auctions": [],
+                "bids": []
             }
             col.insert_one(new_user)
 
-            print ("new user is")
-            print (new_user)
+            print("new user is")
+            print(new_user)
             return {'message': 'Account Created Successfully!'}, 201
-
-        
 
 
 @ns_account.route('/signin')
@@ -285,41 +338,30 @@ class Signin(Resource):
         cursor = col.find()
 
         print(account_info)
-        #print(account_info)
-        #try:
-            #alldata = col.select_all_collection()
-            #selected_data = []
-            #for item in alldata:
-            #    if "user_profile" in item:
-            #        selected_data = item["user_profile"]
+
         for single_user in cursor:
             print(single_user)
             if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
                 print('find')
-                return_m = { # Just response all user informatin change if some of that is not needed
+                return_m = {  # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
                     "email": single_user['email'],
-                    # "password": single_user['password'], #no sure if needed
                     "first_name": single_user['first_name'],
                     "last_name": single_user['last_name'],
                     "dob": single_user['dob'],
                     "phone_number": single_user['phone_number'],
                     "payment_method": single_user['payment_method'],
                     "favorites": single_user['favorites'],
-                    "auctions":single_user['auctions'],
-                    "location":single_user['location'],
-                    "rating":single_user['rating'],
-                    "avatar":single_user['avatar'],
-                    "bids":single_user['bids'],
-                    "token":auth.generate_token(account_info['email'])
+                    "auctions": single_user['auctions'],
+                    "location": single_user['location'],
+                    "rating": single_user['rating'],
+                    "avatar": single_user['avatar'],
+                    "bids": single_user['bids'],
+                    "token": auth.generate_token(account_info['email'])
                 }
 
                 return return_m, 200
         return {"message": "authorization has been refused."}, 401
-        #except:
-        #    return {"message": "authorization has been refused."}, 401
-
-
 
 
 @ns_account.route('/signout/<string:token>')
@@ -330,8 +372,6 @@ class Signout(Resource):
     def delete(self, token):
         auth.delete_token(token)
         return {'message': 'Deletion Successful'}, 200
-
-
 
 
 @ns_account.route('/get_user_auctions/<string:request_user_id>')
@@ -356,20 +396,23 @@ class User_auctions(Resource):
         auction_id_list = single_user["auctions"]
         for single_auction in auction_id_list:
             try:
-                retrieved_item = au_col.find_one({'id': int(single_auction)})
-                del retrieved_item['_id']
+                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
+                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                for bid in retrieved_item['bidding_info']:
+                  buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
+                  bid['buyer'] = buyer_info
+                  del bid['user_id']
+                
+                del retrieved_item['users_bidding']
                 retrieved_auctions.append(retrieved_item)
             except:
                 return {"message":  "Specified item does not exist"}, 404
-        
 
         response = {
             "message": "OK",
             "data": retrieved_auctions
         }
         return response, 200
-
-
 
 
 @ns_account.route('/get_user_biddings/<string:request_user_id>')
@@ -381,7 +424,6 @@ class User_biddings(Resource):
         col = mydb['user']
         au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
-        # del single_user['_id']
         if single_user is None:
             response = {
                 "message": "User does not exist",
@@ -389,32 +431,24 @@ class User_biddings(Resource):
             }
             return response, 404
 
-        retrieved_items = []
-        for item in au_col.find():
-            # del item['_id']
-            for bid_item in item['bidding_info']:
-                if bid_item['user_id'] == int(request_user_id):
-                    retrieved_items.append(bid_item)
+        retrieved_favorites = []
+        auction_id_list = single_user["bids"]
+        auction_id_list = single_user["bids"]
+        for single_auction in auction_id_list:
+            try:
+                retrieved_item = getAuctionWithSellerByAuctionId(
+                    int(single_auction))
+                
 
-
-        if len(retrieved_items) == 0:
-            return {"message": "No auctions stored in database"},404
-        
-        response = {
-            "message": "OK",
-            "result":retrieved_items
-        }
-        return response,200
-
-
+                retrieved_favorites.append(retrieved_item)
+            except:
+                return {"message":  "Specified item does not exist"}, 404
 
         response = {
             "message": "OK",
-            "data": retrieved_items
+            "data": retrieved_favorites
         }
         return response, 200
-
-
 
 
 @ns_account.route('/get_user_favorites/<string:request_user_id>')
@@ -435,24 +469,36 @@ class User_favorites(Resource):
             }
             return response, 404
 
-        retrieved_favorites = []
-        auction_id_list = single_user["favorites"]
-        for single_auction in auction_id_list:
-            try:
-                retrieved_item = au_col.find_one({'id': int(single_auction)})
-                del retrieved_item['_id']
-                retrieved_favorites.append(retrieved_item)
-            except:
-                return {"message":  "Specified item does not exist"}, 404
+        try:
+          retrieved_favorites = []
+          auction_id_list = single_user["favorites"]
+          for single_auction in auction_id_list:
+            # retrieved_item = au_col.find_one({'id': int(single_auction)})
+            # del retrieved_item['_id']
+            retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
+
+            # TODO
+            # buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+            # for bid in retrieved_item['bidding_info']:
+            #   buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
+            #   bid['buyer'] = buyer_info
+            retrieved_favorites.append(retrieved_item)
+                  
         
+           
+              
+            print(single_user["favorites"],single_auction['id'])
 
-        response = {
-            "message": "OK",
-            "data": retrieved_favorites
-        }
-        return response, 200
+          response = {
+              "message": "OK",
+              "data": retrieved_favorites
+          }
+          return response, 200
 
+        except:
+            print(single_user["favorites"], '@@@')
 
+            return {"message":  "Specified item does not exist"}, 404
 
 
 
@@ -467,7 +513,6 @@ class Manage_profile(Resource):
         single_user = col.find_one({"user_id": int(request_user_id)})
         del single_user['_id']
 
-        
         new_user_profile = dict()
         new_user_profile["user_id"] = single_user["user_id"]
         new_user_profile["dob"] = single_user["dob"]
@@ -486,9 +531,6 @@ class Manage_profile(Resource):
             "data": new_user_profile
         }
         return response, 200
-
-
-
 
     @api.response(200, 'User Profile Updated Successfully')
     @api.response(400, 'Bad Request Error')
@@ -520,7 +562,6 @@ class Manage_profile(Resource):
             }
             return response, 200
 
-
         update_single_user = single_user
         for key, value in user_profile_json.items():
 
@@ -531,16 +572,14 @@ class Manage_profile(Resource):
             #     update_single_user["favorites"] = value[0]
             else:
                 update_single_user[key] = value
-        col.update_one({"user_id": int(request_user_id)}, {"$set": update_single_user})
-        
+        col.update_one({"user_id": int(request_user_id)},
+                       {"$set": update_single_user})
+
         response = {
             "message": "OK",
             "data": update_single_user
         }
         return response, 200
-
-
-
 
 
 #########################
@@ -593,19 +632,6 @@ auction_info_update = api.model(
 )
 
 
-# user_input_filter = api.model(
-#    'User input to search',
-#    {
-#        "location":fields.String,
-#        "start_price":fields.String,
-#        "end_price":fields.Integer,
-#        "start_date":fields.Integer,
-#        "end_time":fields.String,
-#        "category":fields.String,
-#    }
-# )
-
-
 @ns_auction.route('')
 class AuctionsOperations(Resource):
     @api.response(200, 'OK')
@@ -617,7 +643,7 @@ class AuctionsOperations(Resource):
 
         user_col = mydb['user']
         created_time = datetime.datetime.now()
-        #created_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        # created_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         auction_id = au_col.count_documents({})
         new_auction = \
             {
@@ -629,8 +655,8 @@ class AuctionsOperations(Resource):
             }
 
         user_input = request.json
-        for i in ['seller_name', 'seller_id', 'category','title', "description",
-                  "end_time", "price", "image","location"]:
+        for i in ['seller_name', 'seller_id', 'category', 'title', "description",
+                  "end_time", "price", "image", "location"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
             if user_input[i] is None:
@@ -644,7 +670,7 @@ class AuctionsOperations(Resource):
         # Input validation: End_time should be later than create time
         end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
         if end_time <= created_time:
-            return {'message': "Bad Request: end time must be later than the created time "},400
+            return {'message': "Bad Request: end time must be later than the created time "}, 400
         try:
             au_col.insert_one(new_auction)
             del new_auction['_id']
@@ -657,9 +683,10 @@ class AuctionsOperations(Resource):
                 }
 
             # add auction to user's 'auction' field
-            seller = user_col.find_one({ "user_id":  user_input['seller_id']})
+            seller = user_col.find_one({"user_id":  user_input['seller_id']})
             seller['auctions'].append(auction_id)
-            user_col.update_one({ "user_id":  user_input['seller_id']},{"$set":{"auctions":seller['auctions']}}) # :-()
+            user_col.update_one({"user_id":  user_input['seller_id']}, {
+                                "$set": {"auctions": seller['auctions']}})  # :-()
             return response, 200
         except:
             return {'message': 'Bad Request'}, 400
@@ -671,30 +698,29 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
         retrieved_items = []
         max_result_size = 10
-        for item in au_col.find().limit(max_result_size):
+        for item in au_col.find({}, {"users_bidding": 0, "users_favorite": 0}).limit(max_result_size):
             del item['_id']
             retrieved_items.append(item)
 
         if len(retrieved_items) == 0:
-            return {"message": "No auctions stored in database"},404
+            return {"message": "No auctions stored in database"}, 404
         response = \
-                {
-                    "message": "OK",
-                    "result_size": len(retrieved_items),
-                    "result":retrieved_items
-                }
-        return response,200
+            {
+                "message": "OK",
+                "result_size": len(retrieved_items),
+                "result": retrieved_items
+            }
+        return response, 200
 
 
 user_input_add_or_remove_fav_auction = api.model(
     'User input to add an auction to the favourite list',
     {
-        "user_id":fields.Integer,
-        "auction_id":fields.Integer
+        "user_id": fields.Integer,
+        "auction_id": fields.Integer
 
     }
 )
-
 
 
 @ns_auction.route('/favorite/set')
@@ -710,7 +736,6 @@ class AddFavAuction(Resource):
 
         user_col = mydb['user']
         user = user_col.find_one({"user_id": user_id})
-        
 
         if user is None:
             response = {
@@ -718,7 +743,7 @@ class AddFavAuction(Resource):
                 "result": "Fail"
             }
             status_code = 404
-            return response,status_code
+            return response, status_code
         del user['_id']
         auc_col = mydb['auctions']
         auction = auc_col.find_one({"id": auction_id})
@@ -728,20 +753,22 @@ class AddFavAuction(Resource):
                 "message": "Auction item does not exist",
                 "result": "Fail"
             }
-            status_code = 404  
-            return response,status_code
-        
-        user["favorites"].append(auction_id)
+            status_code = 404
+            return response, status_code
+
+        fav = set(user["favorites"])
+        fav.add(auction_id)
+        if len(fav) != len(user['favorites']):
+            user["favorites"].append(auction_id)
 
         user_col.update_one({"user_id": user_id}, {"$set": user})
 
         response = {
-            "message":"favourite auction is added",
-            "result":"OK"
+            "message": "favourite auction is added",
+            "result": "OK"
         }
         status_code = 200
         return response, status_code
-
 
 
 @ns_auction.route('/favorite/unset')
@@ -757,7 +784,6 @@ class RemoveFavAuction(Resource):
 
         user_col = mydb['user']
         user = user_col.find_one({"user_id": user_id})
-        
 
         if user is None:
             response = {
@@ -765,35 +791,33 @@ class RemoveFavAuction(Resource):
                 "result": "Fail"
             }
             status_code = 404
-            return response,status_code
+            return response, status_code
         del user['_id']
         auc_col = mydb['auctions']
         auction = auc_col.find_one({"id": auction_id})
-
 
         if auction is None:
             response = {
                 "message": "Auction item does not exist",
                 "result": "Fail"
             }
-            status_code = 404  
-            return response,status_code
-        
+            status_code = 404
+            return response, status_code
+
         try:
             user["favorites"].remove(auction_id)
         except ValueError:
             response = {
-                "message":"Auction is not in the favourite list of the user",
-                "result":"Fail"
+                "message": "Auction is not in the favourite list of the user",
+                "result": "Fail"
             }
-            return response,404
-
+            return response, 404
 
         user_col.update_one({"user_id": user_id}, {"$set": user})
 
         response = {
-            "message":"favourite auction is removed",
-            "result":"OK"
+            "message": "favourite auction is removed",
+            "result": "OK"
         }
         status_code = 200
         return response, status_code
@@ -802,13 +826,12 @@ class RemoveFavAuction(Resource):
 user_input_rating = api.model(
     'User input to rate an auction',
     {
-        "buyer_id":fields.Integer,
-        "item_id":fields.Integer,
-        "rating":fields.Integer
+        "buyer_id": fields.Integer,
+        "item_id": fields.Integer,
+        "rating": fields.Integer
 
     }
 )
-
 
 
 @ns_auction.route('/rating')
@@ -824,7 +847,7 @@ class Rating(Resource):
 
         user_col = mydb['user']
         user = user_col.find_one({"user_id": user_id})
-        
+
         # Validations
         if user is None:
             response = {
@@ -832,7 +855,7 @@ class Rating(Resource):
                 "result": "Fail"
             }
             status_code = 404
-            return response,status_code
+            return response, status_code
 
         del user['_id']
         auc_col = mydb['auctions']
@@ -843,47 +866,43 @@ class Rating(Resource):
                 "message": "Auction item does not exist",
                 "result": "Fail"
             }
-            status_code = 404  
-            return response,status_code
+            status_code = 404
+            return response, status_code
         del auction['_id']
 
         auction_status = auction['status']
         if auction_status != "Accepted":
             response = {
-            "message":"The auction is currently in bidding or already declined",
-            "result":"Fail"
+                "message": "The auction is currently in bidding or already declined",
+                "result": "Fail"
             }
             status_code = 400
-            return response,status_code
+            return response, status_code
 
         biddings = auction['bidding_info']
-        sorted_bidding_info_list = sorted(biddings,key=lambda i: i['proposal_price'], reverse=True)
-        
+        sorted_bidding_info_list = sorted(
+            biddings, key=lambda i: i['proposal_price'], reverse=True)
+
         bidding_winner = sorted_bidding_info_list[0]["user_id"]
         if bidding_winner != user_id:
             response = {
-                "message":"Only buyer who won the bidding can rate the auction item and seller",
-                "result":"Fail"
+                "message": "Only buyer who won the bidding can rate the auction item and seller",
+                "result": "Fail"
             }
             status_code = 400
-            return response,status_code
-
+            return response, status_code
 
         # end of validations
         rating_info = user_input
         rating_info["rating_id"] = user_col.count_documents({})
         user_col.insert_one(rating_info)
-        
 
         response = {
-            "message":"The auction has been rated",
-            "result":"OK"
+            "message": "The auction has been rated",
+            "result": "OK"
         }
         status_code = 200
         return response, status_code
-
-
-
 
 
 @ns_auction.route('/rating/<item_id>')
@@ -894,7 +913,7 @@ class GetRating(Resource):
     @api.doc(description="get all ratings on an auction item specified by")
     def get(self, item_id):
         user_col = mydb['user']
-        ratings = user_col.find({"item_id":item_id})
+        ratings = user_col.find({"item_id": item_id})
         data = []
         for rating in ratings:
             data.append(rating)
@@ -902,22 +921,21 @@ class GetRating(Resource):
         if len(data) == 0:
             response = \
                 {
-                    "message":"No ratings on the auction so far",
-                    "result":"Fail"
+                    "message": "No ratings on the auction so far",
+                    "result": "Fail"
                 }
-            return response,400
+            return response, 400
 
         response = \
             {
-                "result":"OK",
-                "item_id":item_id,
-                "ratings":data
+                "result": "OK",
+                "item_id": item_id,
+                "ratings": data
             }
-        return response,200
+        return response, 200
 
 
-
-
+# what use case this for??
 @ns_auction.route('/get_category/<auction_id>')
 class SingleAuctionCategory(Resource):
     @api.response(200, 'OK')
@@ -926,15 +944,15 @@ class SingleAuctionCategory(Resource):
     def get(self, auction_id):
         au_col = mydb['auctions']
         try:
-            retrieved_item = au_col.find_one({'id': int(auction_id)})
+            # retrieved_item = au_col.find_one({'id': int(auction_id)})
+            # del retrieved_item['_id']
+            retrieved_item = getAuctionWithSellerByAuctionId(int(auction_id))
+
             category = retrieved_item['category']
-            del retrieved_item['_id']
 
             return {"message": "OK", "data": category}, 200
         except:
             return {"message":  "Auction item does not exist"}, 404
-
-
 
 
 @ns_auction.route('/<item_id>')
@@ -944,11 +962,17 @@ class SingleAuctionItemOperations(Resource):
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="get information of an auction item")
     def get(self, item_id):
-        au_col = mydb['auctions']
         try:
-            retrieved_item = au_col.find_one({'id': int(item_id)})
-            del retrieved_item['_id']
-
+            retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+            buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+            for bid in retrieved_item['bidding_info']:
+              buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
+              bid['buyer'] = buyer_info
+              del bid['user_id']
+            
+            del retrieved_item['users_bidding']
+            if retrieved_item is None:
+                return {"message":  "Specified item does not exist"}, 404
             return {"message": "OK", "data": retrieved_item}, 200
         except:
             return {"message":  "Specified item does not exist"}, 404
@@ -959,8 +983,10 @@ class SingleAuctionItemOperations(Resource):
     def delete(self, item_id):
         au_col = mydb['auctions']
         user_col = mydb['user']
-        retrieved_item = au_col.find_one({'id': int(item_id)})
-        del retrieved_item['_id']
+        # retrieved_item = au_col.find_one({'id': int(item_id)})
+        # del retrieved_item['_id']
+        retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+        
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
@@ -979,9 +1005,9 @@ class SingleAuctionItemOperations(Resource):
             seller['favorites'].remove(item_id)
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
-            return {"message": "Specified item is deleted successfully","data":retrieved_item}
+            return {"message": "Specified item is deleted successfully", "data": retrieved_item}
         except:
-            return {"message": "Failed to delete specified item"},200
+            return {"message": "Failed to delete specified item"}, 200
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
@@ -992,26 +1018,26 @@ class SingleAuctionItemOperations(Resource):
         try:
             au_col = mydb['auctions']
             user_col = mydb['user']
-            retrieved_item = au_col.find_one({'id': int(item_id)})
+            # retrieved_item = au_col.find_one({'id': int(item_id)})
+            # del retrieved_item['_id']
+            retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
 
             if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
 
-            del retrieved_item['_id']
-
             seller_id = int(retrieved_item['seller_id'])
-            seller = user_col.find_one({"user_id":seller_id})
-
+            seller = user_col.find_one({"user_id": seller_id})
 
             # Input validation: End_time validation
             if not validate_datetime_str(user_input['end_time']):
                 return {'message': 'Bad Request: invalid end_time format'}
 
             update_data = {}
-            for k in ['category','title', "description", "end_time", "price", "image","location"]:
+            for k in ['category', 'title', "description", "end_time", "price", "image", "location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
                     update_data[k] = user_input[k]
-            update_data['updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            update_data['updated'] = datetime.datetime.now().strftime(
+                '%Y-%m-%d %H:%M:%S')
             # update auction in user's auctions list
             # for auction in seller['auctions']:
             #     if auction['id'] == int(item_id):
@@ -1024,9 +1050,7 @@ class SingleAuctionItemOperations(Resource):
             # seller['auctions'][auction_to_be_updated_index] = updated_auction
 
             au_col.update_one({"id": int(item_id)}, {
-                                    "$set": update_data})
-            # user_col.update_one({"user_id": int(seller_id)}, {
-            #     "$set": seller})
+                "$set": update_data})
             return {"message": "Auction details have been updated"}, 200
         except:
             return {"message":  "Auction details have been updated"}, 404
@@ -1043,7 +1067,7 @@ class Auction_search1(Resource):
         collection = mydb['auctions']
         result = []
         easy_search = "\'" + search_key + "\'"
-        
+
         cursor = collection.find(
             {"$text": {"$search": easy_search}}, {"_id": 0})
         result = []
@@ -1100,17 +1124,19 @@ class Auction_search2(Resource):
             endDate = datetime.datetime.now().strftime("'%Y-%m-%d %H:%M:%S'")
 
         endDateP = datetime.datetime.strptime(endDate, "'%Y-%m-%d %H:%M:%S'")
-        startDateP = datetime.datetime.strptime(startDate, "'%Y-%m-%d %H:%M:%S'")
+        startDateP = datetime.datetime.strptime(
+            startDate, "'%Y-%m-%d %H:%M:%S'")
 
         cursor = collection.find()
-        
+
         for entry in cursor:
             entry['_id'] = str(entry['_id'])
             result.append(entry)
             mid.append(entry)
 
         for entry in mid:
-            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
+            entryDateP = datetime.datetime.strptime(
+                entry['end_time'], "%Y-%m-%d %H:%M:%S")
             if entryDateP <= startDateP or entryDateP >= endDateP:
                 if entry in result:
                     result.remove(entry)
@@ -1120,12 +1146,11 @@ class Auction_search2(Resource):
                 if entry in result:
                     result.remove(entry)
 
-        
         for entry in mid:
             if category and entry['category'] is not None:
                 if entry in result:
                     result.remove(entry)
-       
+
         for entry in mid:
             if user_id and entry['seller_id'] != int(user_id):
                 if entry in result:
@@ -1165,21 +1190,23 @@ class BiddingManagement(Resource):
         user_id = user_input['user_id']
         au_col = mydb['auctions']
         user_col = mydb['user']
-        retrieved_item = au_col.find_one({'id': int(item_id)})
+        # retrieved_item = au_col.find_one({'id': int(item_id)})
+        # del retrieved_item['_id']
+        retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+
         item_min_price = retrieved_item["price"]
 
         if retrieved_item is None:
-            return {"result": "Fail","message": "Item not found"}, 404
+            return {"result": "Fail", "message": "Item not found"}, 404
 
-        del retrieved_item['_id']
         buyer = user_col.find_one({'user_id': int(user_id)})
         if buyer is None:
-            return {"result": "Fail","message": "User does not exist"}, 404
+            return {"result": "Fail", "message": "User does not exist"}, 404
 
         del buyer['_id']
 
         # Input validation: Detect missing fields
-        for k in ['user_id','proposal_price']:
+        for k in ['user_id', 'proposal_price']:
             if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
@@ -1198,7 +1225,7 @@ class BiddingManagement(Resource):
             bid_id = au_col.count_documents({})
             new_bidding_info = {
                 # "bid_id":bid_id,
-                "created":datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                "created": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             }
             for key in user_input.keys():
                 new_bidding_info[key] = user_input[key]
@@ -1211,7 +1238,7 @@ class BiddingManagement(Resource):
             user_col.update_one({"user_id": int(user_id)}, {"$set": buyer})
         else:
             message = "Proposal price can't be less than current bidding price"
-            return {"result":"Fail", "message":message},400
+            return {"result": "Fail", "message": message}, 400
 
         response = \
             {
@@ -1234,18 +1261,19 @@ class AcceptOrDeclineBiddings(Resource):
         au_col = mydb['auctions']
         item_id = user_input['item_id']
         operation = user_input['operation']
-        retrieved_item = au_col.find_one({'id': int(item_id)})
+        # retrieved_item = au_col.find_one({'id': int(item_id)})
+        # del retrieved_item['_id']
+        retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+
         result = "Fail"
         if retrieved_item is None:
-            return {"result":result,"message": "Auction item not found"}, 404
-
-        del retrieved_item['_id']
+            return {"result": result, "message": "Auction item not found"}, 404
 
         if len(retrieved_item['bidding_info']) == 0:
             return {"result": result, "message": "No bid on this item"}, 400
 
         if int(retrieved_item['seller_id']) != int(user_input['user_id']):
-            return {"result":result,"message": "The user is not the seller of this item"}, 400
+            return {"result": result, "message": "The user is not the seller of this item"}, 400
 
         status_code = 200
         if operation == "accept":
@@ -1283,18 +1311,18 @@ class SingleBiddingOperations(Resource):
     def get(self, bid_id):
         au_col = mydb["auctions"]
         result = "OK"
-        retrieved_item = au_col.find_one({"bid_id":int(bid_id)})
+        retrieved_item = au_col.find_one({"bid_id": int(bid_id)})
         if retrieved_item is None:
             result = "Fail"
-            return {"result":result,"message":"Item not found"},404
+            return {"result": result, "message": "Item not found"}, 404
         del retrieved_item["_id"]
         response = \
             {
-                "result":result,
-                "data":retrieved_item
+                "result": result,
+                "data": retrieved_item
             }
 
-        return response,200
+        return response, 200
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
@@ -1305,20 +1333,21 @@ class SingleBiddingOperations(Resource):
         result = "Fail"
         retrieved_bid = au_col.find_one({'bid_id': int(bid_id)})
         if retrieved_bid is None:
-            return {"result":result,"message": "Specified bidding does not exist"}, 404
+            return {"result": result, "message": "Specified bidding does not exist"}, 404
         del retrieved_bid['_id']
         item_id = retrieved_bid["item_id"]
-        retrieved_item = au_col.find_one({'id': int(item_id)})
+        # retrieved_item = au_col.find_one({'id': int(item_id)})
+        # del retrieved_item['_id']
+        retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
 
         if retrieved_item is None:
-            return {"result":result,"message": "Specified auction item does not exist"}, 404
-        del retrieved_item['_id']
+            return {"result": result, "message": "Specified auction item does not exist"}, 404
 
         if retrieved_item["status"] == "Accepted":
-            return {"result":result,"message": "The bid is already accepted"}
+            return {"result": result, "message": "The bid is already accepted"}
 
         buyer_id = retrieved_bid["user_id"]
-        buyer = user_col.find_one({'user_id':int(buyer_id)})
+        buyer = user_col.find_one({'user_id': int(buyer_id)})
         del buyer['_id']
 
         try:
@@ -1326,7 +1355,8 @@ class SingleBiddingOperations(Resource):
 
             # remove the specified bidding from the bidding_info of the auction
             retrieved_item['bidding_info'] = \
-                [x for x in retrieved_item['bidding_info'] if int(x["bid_id"]) != int(bid_id)]
+                [x for x in retrieved_item['bidding_info']
+                    if int(x["bid_id"]) != int(bid_id)]
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
             # remove the specified bidding from the bids of the user
             # buyer['bids'] = \

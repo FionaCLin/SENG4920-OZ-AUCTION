@@ -84,8 +84,6 @@ export default {
         return this.$axios
           .get(`/account/manage_profile/${user_id}`)
           .then(res => {
-            console.log(user_id, "fetched user", user);
-
             user = res.data.data;
             return user;
           });
@@ -95,7 +93,10 @@ export default {
       let user_ids = new Set(biddings.map(x => x.user_id));
       let promises = [];
       for (let uid of user_ids) {
-        promises.push(this.getUser(uid));
+        let user = this.getUser(uid);
+        if (user) {
+          promises.push(user);
+        }
       }
       Promise.allSettled(promises).then(results => {
         let users = results.map(x => x.value);
