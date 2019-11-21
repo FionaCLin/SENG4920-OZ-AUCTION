@@ -35,20 +35,35 @@
 import ProfileDisplay from "../components/Profile/UserDisplay";
 
 export default {
-  name: "Profile",
+  name: "UserProfile",
   components: {
     ProfileDisplay
   },
   data() {
     return {
-      userProfile: {}
+      userProfile: null
     };
   },
+  beforeMount() {
+    this.fetch();
+  },
   created() {
-    console.log("to", this.$route.params.id);
-    console.log("to");
     this.id = this.$route.params.id;
-    this.$data.userProfile = this.$route.params.user;
+    this.fetch();
+  },
+  methods: {
+    fetch() {
+      if (this.$data.userProfile) {
+        return;
+      }
+      this.$axios
+        .get(`/account/manage_profile/${this.id}`)
+        .then(res => {
+          console.log(res.data);
+          this.$data.userProfile = res.data.data;
+        })
+        .catch(err => console.log(err));
+    }
   }
 };
 </script>

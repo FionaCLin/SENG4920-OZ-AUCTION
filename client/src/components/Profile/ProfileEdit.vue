@@ -35,30 +35,6 @@
         :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
       />
 
-      <!-- <q-input
-        v-model="password"
-        filled
-        :type="isPwd ? 'password' : 'text'"
-        label="Login password"
-        hint="Password with toggle"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-        </template>
-      </q-input>
-      <q-input
-        v-model="passwordConfirm"
-        filled
-        type="password"
-        label="Confirm password"
-        hint="Enter Login Password"
-        :rules="[val => (val && val != password) || 'Password does not match']"
-      ></q-input> -->
-
       <q-input
         v-model="age"
         filled
@@ -72,7 +48,7 @@
       />
 
       <q-field filled label="Payment Method" stack-label>
-        <strong>{{ paymentMethod.join(", ") }}</strong>
+        <strong>{{ paymentMethod | formatPaymentMethod }}</strong>
       </q-field>
       <div class="q-pa-md">
         <div class="q-px-sm"></div>
@@ -113,8 +89,9 @@
 export default {
   name: "ProfileEdit",
   filters: {
-    formatPwd(val) {
-      return val.replace(/./g, "*");
+    formatPaymentMethod(val) {
+      if (val && Array.isArray(val)) return val.join(", ");
+      else return "";
     }
   },
   props: ["detail"],
@@ -125,9 +102,7 @@ export default {
       lastName: this.detail.lastName,
       email: this.detail.email,
       age: this.detail.age,
-      password: this.detail.password,
-      paymentMethod: this.detail.paymentMethod,
-      // seller: this.detail.seller
+      paymentMethod: this.detail.payment_method,
       methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
     };
   },

@@ -53,11 +53,12 @@ export default {
   data() {
     return {
       bidPrice: 0,
-      error: ""
+      error: "",
+      auction: this.auction_item
     };
   },
   computed: {
-    auction: {
+    auction_item: {
       get() {
         return this.$store.state.auction.myBids.find(
           x => x.id == this.$route.params.id
@@ -89,12 +90,7 @@ export default {
         .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
-          this.$axios
-            .get(`/account/manage_profile/${res.data.data.seller_id}`)
-            .then(res => {
-              item["user"] = res.data.data;
-              this.$data.auction = item;
-            });
+          this.$data.auction = item;
         })
         .catch(err => console.log(err));
     },

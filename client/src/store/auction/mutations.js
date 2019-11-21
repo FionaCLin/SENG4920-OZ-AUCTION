@@ -1,36 +1,31 @@
 export function placeBidding(state, bid) {
   let auction = state.myBids.find(x => x.id === bid.item_id);
   auction.bidding_info.slice(0, bid);
-  console.log("mu", state, bid, auction.bidding_info.length);
 }
 //Sync
-export function updateAuctions(state, { auctions, sellers }) {
-  console.log(state, auctions, sellers, "updateAuctions");
-  state.sellers = sellers;
+export function updateAuctions(state, auctions) {
   state.auctions = auctions;
 }
 
-export function updateMyAuctions(state, { auctions, sellers }) {
-  console.log(state, auctions, "updateMyAuctions");
-  if (sellers) {
-    state.sellers = sellers;
-  }
-
+export function updateMyAuctions(state, auctions) {
   state.myAuctions = auctions;
 }
 
-export function updateMyBiddings(state, { bids, sellers }) {
-  console.log(state, bids, "updateMyBiddings");
-  state.sellers = sellers;
+export function updateMyBiddings(state, bids) {
   state.myBids = bids;
 }
 
-export function updateMyWishList(state, { favorites, sellers }) {
-  console.log(state, favorites, "updateMyWishList");
-  state.sellers = sellers;
+export function updateMyWishList(state, favorites) {
   state.myWishList = favorites;
 }
 
 export function addItem(state, newAucton) {
   state.myAuctions.push(newAucton);
+}
+
+export function updateItem(state, id, data) {
+  let auction = state.myAuctions.find(x => x.id == id);
+  for (let k of Object.keys(data)) {
+    auction[k] = data[k];
+  }
 }
