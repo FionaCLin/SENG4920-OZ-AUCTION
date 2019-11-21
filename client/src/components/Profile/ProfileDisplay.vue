@@ -8,25 +8,7 @@
       stack-label
     >
       <template>
-        <!-- <div
-          v-if="index == 'Seller'"
-          class="self-center full-width no-outline text-left"
-          tabindex="0"
-        >
-          <q-toggle v-model="user.Seller" />
-        </div> -->
-        <div
-          v-if="index === 'Password'"
-          class="self-center full-width no-outline text-left"
-          tabindex="0"
-        >
-          {{ val | formatPwd }}
-        </div>
-        <div
-          v-else
-          class="self-center full-width no-outline text-left"
-          tabindex="0"
-        >
+        <div class="self-center full-width no-outline text-left" tabindex="0">
           {{ val }}
         </div>
       </template>
@@ -41,7 +23,7 @@
       />
       <q-space />
 
-      <q-btn label="Cancel" type="cancel" color="red" flat />
+      <q-btn label="Cancel" type="cancel" color="red" flat to="/dashboard" />
     </q-card-actions>
   </div>
 </template>
@@ -49,11 +31,6 @@
 <script>
 export default {
   name: "ProfileDisplay",
-  filters: {
-    formatPwd(val) {
-      return val.replace(/./g, "*");
-    }
-  },
   props: ["detail"],
   data() {
     return {
@@ -63,7 +40,6 @@ export default {
         "Last Name": this.detail.last_name,
         Email: this.detail.email,
         Phone: this.detail.phone_number,
-        Password: this.detail.password,
         "Payment Method": this.detail.payment_method.join(", ")
       }
     };

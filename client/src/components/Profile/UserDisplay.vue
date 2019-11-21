@@ -22,20 +22,31 @@
 
 <script>
 export default {
-  name: "ProfileDisplay",
+  name: "UserDisplay",
   props: ["detail", "rating"],
   data() {
     return {
-      edit: false,
-      user: {
-        "First Name": this.detail.first_name,
-        "Last Name": this.detail.last_name,
-        Email: this.detail.email,
-        Phone: this.detail.phone_number,
-        "Payment Method": this.detail.payment_method.join(", "),
-        Location: this.detail.location
-      }
+      edit: false
     };
+  },
+  computed: {
+    user: {
+      get() {
+        if (this.detail) {
+          let info = {
+            "First Name": this.detail.first_name,
+            "Last Name": this.detail.last_name,
+            Email: this.detail.email,
+            Phone: this.detail.phone_number,
+            "Payment Method": this.detail.payment_method.join(", "),
+            Location: this.detail.location
+          };
+          return info;
+        } else {
+          return this.$store.state.user;
+        }
+      }
+    }
   }
 };
 </script>
