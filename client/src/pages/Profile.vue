@@ -24,7 +24,10 @@
             v-else
             :detail="userProfile"
             @updateEdit="edit = $event"
-            @editDetail="updateDetail"
+            @editDetail="
+              updateD;
+              etail;
+            "
           />
         </q-item-section>
       </q-item>

@@ -49,10 +49,10 @@
                 @filter="filterCatFn"
               />
               <TimeInputVue
-                v-model="endTime"
-                :date="endTime"
+                v-model="end_time"
+                :date="end_time"
                 :label="`Deadline`"
-                @update-time="endTime = $event"
+                @update-time="end_time = $event"
               />
 
               <div style="overflow: hidden;">
@@ -87,25 +87,28 @@
           <q-item-section>
             <div class="row">
               <div class="col-5 text-center">
-                Update to replace current display auction images.
-                <q-card-actions>
-                  <q-btn
-                    label="Update"
-                    type="Update"
-                    color="green"
-                    flat
-                    @click="imgedit = true"
-                  />
-                  <q-space />
+                <div v-if="edit">
+                  Update to replace current display auction images.
+                  <q-card-actions>
+                    <q-btn
+                      v-if="!imgedit"
+                      label="Update"
+                      type="Update"
+                      color="green"
+                      flat
+                      @click="imgedit = true"
+                    />
 
-                  <q-btn
-                    label="Cancel"
-                    type="cancel"
-                    color="red"
-                    flat
-                    @click="imgedit = false"
-                  />
-                </q-card-actions>
+                    <q-btn
+                      v-else
+                      label="Cancel"
+                      type="cancel"
+                      color="red"
+                      flat
+                      @click="imgedit = false"
+                    />
+                  </q-card-actions>
+                </div>
                 <div
                   v-if="edit && !imgedit"
                   class="text-center"
@@ -197,7 +200,7 @@ export default {
       imgsupload: false,
       title: "",
       description: "",
-      endTime: moment().format("YYYY-MM-DD h:mm:ss"),
+      end_time: moment().format("YYYY-MM-DD h:mm:ss"),
       price: 0,
       image: [],
       optionsCategory: dropdownOpts,
@@ -224,7 +227,7 @@ export default {
       this.$data.category = auction.category;
       this.$data.title = auction.title;
       this.$data.description = auction.description;
-      this.$data.endTime = auction.end_time;
+      this.$data.end_time = auction.end_time;
       this.$data.price = auction.price;
       this.$data.location = auction.location;
       this.auction = auction;
@@ -238,7 +241,7 @@ export default {
         title: this.$data["title"],
         description: this.$data["description"],
         price: Number(this.$data["price"]),
-        end_time: this.$data["endTime"],
+        end_time: this.$data["end_time"],
         location: this.$data["location"],
         category: this.$data["category"],
         image: this.$data["image"]
@@ -261,7 +264,7 @@ export default {
         //   title: this.$data["title"],
         //   description: this.$data["description"],
         //   price: Number(this.$data["price"]),
-        //   end_time: this.$data["endTime"],
+        //   end_time: this.$data["end_time"],
         //   location: this.$data["location"],
         //   category: this.$data["category"],
         //   image: this.$data["image"]
@@ -281,8 +284,9 @@ export default {
             payload[k] = this.$data[k];
           }
         }
+        console.log(payload, this.id);
 
-        this.$store.dispatch("auction/update", this.id, payload).then(res => {
+        this.$store.dispatch("auction/update", payload).then(res => {
           console.log(res, "!!!");
           if (res.status != 200) {
             warning.message = res.data.message;

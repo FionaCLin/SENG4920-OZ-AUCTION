@@ -3,7 +3,7 @@
     <!-- <div v-if="ready"> -->
     <NewAuction :new-auctions="newAuctions" />
 
-    <MyAuctionsList :alink="`auctions`" :items="auctions" />
+    <MyAuctionsList :items="auctions" />
     <!-- </div> -->
     <!-- <q-page-container v-else class="flex flex-center">
       <q-circular-progress indeterminate size="150px" class="q-ma-md" />
@@ -29,7 +29,7 @@ export default {
   computed: {
     auctions: {
       get() {
-        return this.$store.state.auction.auctions;
+        return this.$store.state.auction.myBids;
       }
     },
     newAuctions: {

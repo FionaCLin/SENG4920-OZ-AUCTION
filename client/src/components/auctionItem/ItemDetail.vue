@@ -64,6 +64,7 @@ export default {
         Description: "description",
         Seller: "seller_name",
         Location: "location",
+        Category: "category",
         "Create Time": "created",
         "End Time": "end_time",
         "Start Price": "price",

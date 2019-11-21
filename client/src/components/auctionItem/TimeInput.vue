@@ -3,7 +3,7 @@
     <template v-slot:append>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
-          <q-date v-model="time" mask="YYYY-MM-DD h:mm:ss" @click="hello" />
+          <q-date v-model="time" mask="YYYY-MM-DD" @click="hello" />
         </q-popup-proxy>
       </q-icon>
     </template>
@@ -16,7 +16,7 @@ export default {
   props: ["date", "label"],
   data() {
     return {
-      time: this.date ? moment(this.date).format("YYYY-MM-DD h:mm:ss") : null
+      time: this.date ? moment(this.date).format("YYYY-MM-DD") : null
     };
   },
   methods: {
