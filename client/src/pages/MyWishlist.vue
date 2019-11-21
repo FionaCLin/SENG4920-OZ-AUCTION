@@ -12,13 +12,10 @@ export default {
   components: {
     MyAuctionsList
   },
-  computed: {
-    myAuction_items: {
-      get() {
-        console.log("my wishlist", this.$store.state.auction.myWishList);
-        return this.$store.state.auction.myWishList;
-      }
-    }
+  data() {
+    return {
+      myAuction_items: this.$store.state.auction.myWishList
+    };
   }
 };
 </script>

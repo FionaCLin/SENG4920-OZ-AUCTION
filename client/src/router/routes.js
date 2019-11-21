@@ -31,6 +31,39 @@ const routes = [
     ]
   },
   {
+    path: "/myauctions",
+    component: () => import("layouts/InnerLayout.vue"),
+    children: [
+      {
+        path: "/",
+        name: "myauctions",
+        component: () => import("pages/MyAuctions")
+      }
+    ]
+  },
+  {
+    path: "/mybiddings",
+    component: () => import("layouts/InnerLayout.vue"),
+    children: [
+      {
+        path: "/",
+        name: "mybiddings",
+        component: () => import("pages/MyBiddings")
+      }
+    ]
+  },
+  {
+    path: "/mywishlist",
+    component: () => import("layouts/InnerLayout.vue"),
+    children: [
+      {
+        path: "/",
+        name: "mywishlist",
+        component: () => import("pages/MyWishlist")
+      }
+    ]
+  },
+  {
     path: "/profile",
     component: () => import("layouts/InnerLayout.vue"),
 
@@ -71,11 +104,9 @@ const routes = [
       },
       {
         path: "/auctions/:id",
-        name: "auctiionItem",
+        name: "auctionItem",
         component: () => import("pages/Auction"),
-        props: {
-          pageTitle: "My Auctions"
-        }
+        props: true
       },
       {
         path: "/bids/:id",
@@ -103,6 +134,7 @@ const routes = [
       {
         path: "/users/:id",
         name: "userProfile",
+        props: true,
         component: () => import("pages/UserProfile")
       }
     ]
@@ -115,28 +147,6 @@ const routes = [
       {
         path: "/",
         component: () => import("pages/SearchAuction")
-      }
-    ]
-  },
-  {
-    path: "/user",
-    component: () => import("layouts/InnerLayout.vue"),
-
-    children: [
-      {
-        path: "/user/myAuctions",
-        name: "myAuctions",
-        component: () => import("pages/MyAuctions")
-      },
-      {
-        path: "/user/myBiddings",
-        name: "myBiddings",
-        component: () => import("pages/MyBiddings")
-      },
-      {
-        path: "/user/myWishlist",
-        name: "myWishlist",
-        component: () => import("pages/MyWishlist")
       }
     ]
   }

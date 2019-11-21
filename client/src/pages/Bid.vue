@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
-          <q-img :src="auction.image" class="q-ma-lg" />
+          <ImagesDisplay :image="auction.image" />
         </div>
         <div class="q-pa-sm">
           <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
@@ -13,8 +13,13 @@
             <q-icon name="favorite" />
           </q-btn>
         </div>
-        <div class="q-ma-lg row">
-          <q-input v-model="bidPrice" class="q-ml-lg" type="number" />
+        <div class="q-ma-xs row">
+          <q-input
+            v-model="bidPrice"
+            prefix="AUD$"
+            class="q-ml-lg"
+            type="number"
+          />
           <q-btn class="q-ml-xs" @click="placeBid">
             <q-icon name="gavel" />Place Bid
           </q-btn>
@@ -27,7 +32,7 @@
       <div class="col-10 q-ma-md fit column justify-center item-center">
         <!--  this part will contain the images -->
         <!-- Indicators -->
-        <BidDetail :biddings="auction.biddings" />
+        <BidDetail :biddings="auction.bidding_info" />
       </div>
     </div>
   </q-page>
@@ -36,22 +41,29 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
-import { axiosInstance } from "boot/axios";
+import ImagesDisplay from "../components/auctionItem/ImagesDisplay";
 
 export default {
   name: "AuctionPage",
   components: {
     ItemDetail,
-    BidDetail
+    BidDetail,
+    ImagesDisplay
   },
   data() {
     return {
-      auction: null,
       bidPrice: 0,
       error: ""
     };
   },
   computed: {
+    auction: {
+      get() {
+        return this.$store.state.auction.myBids.find(
+          x => x.id == this.$route.params.id
+        );
+      }
+    },
     favorite: {
       get() {
         return this.$store.state.user.favorites.indexOf(this.id) !== -1;
@@ -65,42 +77,46 @@ export default {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-    this.fetch();
+    this.$data.auction = this.$route.params.item;
   },
   methods: {
+    addFavorite() {
+      console.log("Add");
+    },
     fetch() {
-      axiosInstance
-        .get(`http://localhost:9999/auction/${this.id}`)
+      let item;
+      this.$axios
+        .get(`/auction/${this.id}`)
         .then(res => {
-          console.log(res.data.data);
-          this.$data.auction = res.data.data;
+          item = res.data.data;
+          this.$axios
+            .get(`/account/manage_profile/${res.data.data.seller_id}`)
+            .then(res => {
+              item["user"] = res.data.data;
+              this.$data.auction = item;
+            });
         })
         .catch(err => console.log(err));
     },
-    addFavorite: function() {
-      this.$store.commit("user/addFavorite", this.id);
-    },
-    removeFavorite: function() {
-      this.$store.commit("user/removeFavorite", this.id);
-    },
     placeBid() {
+      console.log(this.auction);
       let max = Math.max.apply(
         Math,
-        this.$data.auction.biddings.map(function(e) {
-          return e.price;
+        this.auction.bidding_info.map(function(e) {
+          return e.proposal_price;
         })
       );
       if (this.$data.bidPrice > max) {
-        console.log(this.$data.auction.id);
+        console.log(this.auction.id);
         console.log(this.$data.bidPrice);
-        console.log(this.$store.state.user.id);
+        console.log(this.$store.state.user.user_id, "==========");
         this.$store.dispatch("auction/placeBidding", {
-          auction_id: this.$data.auction.id,
-          price: this.$data.bidPrice,
-          user_id: this.$store.state.user.id
+          item_id: this.auction.id,
+          proposal_price: Number(this.$data.bidPrice),
+          user_id: this.$store.state.user.user_id
         });
       } else {
-        this.$data.error = "* Bidding price must greater than current price.";
+        this.$data.error = `* Bidding price $ ${this.$data.bidPrice} must greater than current price $ ${max}.`;
       }
     }
   }

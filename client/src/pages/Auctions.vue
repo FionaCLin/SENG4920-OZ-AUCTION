@@ -1,12 +1,11 @@
 <template>
   <q-page>
-    <MyAuctionsList :tool="true" :items="myAuction_items" />
+    <MyAuctionsList :items="myAuction_items" />
   </q-page>
 </template>
 
 <script>
 import MyAuctionsList from "../components/dashboard/MyAuctionsList";
-
 export default {
   name: "AuctionsPages",
   components: {
@@ -15,7 +14,7 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        console.log(this.$store.state.auction.myAuctions);
+        //console.log(this.$store.state.auction.myAuctions.auction_items);
         return this.$store.state.auction.myAuctions.auction_items;
       }
     }

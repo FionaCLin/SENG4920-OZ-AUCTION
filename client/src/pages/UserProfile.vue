@@ -39,24 +39,16 @@ export default {
   components: {
     ProfileDisplay
   },
-  computed: {
-    userProfile: {
-      get() {
-        let auctions = this.$store.state.auction.auctions.find(
-          x => x.sellers.seller_id === this.id
-        );
-        // this.$store.state.user.foreach(element => console.log(element));
-        console.log(auctions);
-        let user = auctions.sellers;
-        user.paymentMethod = ["Visa", "Master", "Wechat"];
-        user.name = auctions.auction_items[0].seller_name;
-        return user;
-      }
-    }
+  data() {
+    return {
+      userProfile: {}
+    };
   },
   created() {
     console.log("to", this.$route.params.id);
+    console.log("to");
     this.id = this.$route.params.id;
+    this.$data.userProfile = this.$route.params.user;
   }
 };
 </script>

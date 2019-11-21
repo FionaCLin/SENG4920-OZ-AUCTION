@@ -14,13 +14,14 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
+    "moment": "^2.24.0",
     "pug-beautify": "^0.1.1",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
     "@vue/eslint-config-prettier": "^4.0.0",
-    "aws-sdk": "^2.569.0",
+    "aws-sdk": "^2.570.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.3.0",

@@ -8,7 +8,7 @@
           name="img:statics/logo.png"
           :ratio="16 / 9"
           class="myLogo"
-          @click="$router.replace('/dashboard')"
+          @click="$router.replace('/dashboard').catch(() => {})"
         ></q-icon>
 
         <q-space />
@@ -86,7 +86,7 @@
           push
           @click="
             selected = 'dashboard';
-            $router.replace('/dashboard');
+            $router.replace('/dashboard').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -103,7 +103,7 @@
           push
           @click="
             selected = 'gavel';
-            $router.replace('/user/myAuctions');
+            $router.replace('/myauctions').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -120,7 +120,7 @@
           push
           @click="
             selected = 'collections_bookmark';
-            $router.replace('/user/myBiddings');
+            $router.replace('/mybiddings').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -137,7 +137,7 @@
           push
           @click="
             selected = 'favorite';
-            $router.replace('/user/myWishlist');
+            $router.replace('/mywishlist').catch(() => {});
           "
         >
           <q-item-section avatar>
@@ -167,7 +167,13 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <div v-if="ready">
+        <router-view />
+      </div>
+
+      <div v-else class="flex flex-center">
+        <q-circular-progress indeterminate size="150px" class="q-ma-md" />
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -180,24 +186,39 @@ export default {
   name: "HomeLayout",
   props: ["menu"],
   data() {
-    console.log(this.$route.path);
-    console.log(this.$store.state.user.avatar);
     return {
       drawer: false,
       miniState: true,
       search: null,
       avatarUrl: this.$store.state.user.avatar,
-      selected: ""
+      selected: "",
+      ready: false
     };
   },
   created() {
-    this.$store.dispatch("auction/getAllAuctions");
-    this.$store.dispatch(
-      "auction/getMyAuctions",
-      this.$store.state.user.user_id
-    );
-    this.$store.dispatch("auction/getMyBiddings", 2);
-    this.$store.dispatch("auction/getMyFavorite", 1);
+    // if (!localStorage.getItem("token") || !this.$store.state.user.token) {
+    //   this.$router.push("/login").catch(() => {});
+    // }
+
+    let promises = [
+      this.$store.dispatch("auction/getAllAuctions"),
+      this.$store.dispatch(
+        "auction/getMyAutions",
+        this.$store.state.user.user_id
+      ),
+      this.$store.dispatch(
+        "auction/getMyBiddings",
+        this.$store.state.user.user_id
+      ),
+      this.$store.dispatch(
+        "auction/getMyFavorite",
+        this.$store.state.user.user_id
+      )
+    ];
+    Promise.allSettled(promises).then(res => {
+      this.$data.ready = true;
+      console.log(res, "ready");
+    });
   }
 };
 </script>
