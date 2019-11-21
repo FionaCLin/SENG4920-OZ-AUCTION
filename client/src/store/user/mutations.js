@@ -1,5 +1,6 @@
 export function addFavorite(state, id) {
   console.log(id);
+  id = Number(id);
   state.favorites.push(id);
 }
 export function removeFavorite(state, id) {
@@ -23,3 +24,4 @@ export function updateCurrentID(state, user) {
   console.log(state);
   return state;
 }
+
