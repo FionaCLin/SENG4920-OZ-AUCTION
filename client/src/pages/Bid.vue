@@ -7,10 +7,10 @@
         </div>
         <div class="q-pa-sm">
           <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
-            <q-icon name="favorite_border" />
+            <q-icon name="favorite" />
           </q-btn>
           <q-btn v-else class="q-ml-lg" flat @click="addFavorite">
-            <q-icon name="favorite" />
+            <q-icon name="favorite_border" />
           </q-btn>
         </div>
         <div class="q-ma-xs row">
@@ -54,7 +54,8 @@ export default {
     return {
       bidPrice: 0,
       error: "",
-      auction: this.auction_item
+      auction: this.auction_item,
+      id: ""
     };
   },
   computed: {
@@ -67,7 +68,10 @@ export default {
     },
     favorite: {
       get() {
-        return this.$store.state.user.favorites.indexOf(this.id) !== -1;
+        return this.$store.state.user.favorites.indexOf(Number(this.id)) !== -1;
+      },
+      set() {
+        this.favorite = !this.favorite;
       }
     }
   },
@@ -83,6 +87,47 @@ export default {
   methods: {
     addFavorite() {
       console.log("Add");
+      this.$axios
+        .put('/auction/favorite/set', {
+           "user_id": this.$store.state.user.user_id,
+           "auction_id": this.id
+        })
+        .then(res => {
+          this.$store.commit('user/addFavorite', this.id);
+          this.favorite.set;
+          console.log(this.$store.state.user.favorites);
+          this.$q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  position: "top",
+                  icon: "cloud_done",
+                  message: res.data.message
+                })
+        })
+        .catch(err => console.log(err));
+    },
+    removeFavorite() {
+
+      console.log("remove");
+      console.log(this.$store.state.user.user_id);
+      this.$axios
+        .put('/auction/favorite/unset', {
+           "user_id": this.$store.state.user.user_id,
+           "auction_id": this.id
+        })
+        .then(res => {
+          this.$store.commit('user/removeFavorite', this.id);
+          this.favorite.set;
+          console.log(this.$store.state.user.favorites);
+          this.$q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  position: "top",
+                  icon: "cloud_done",
+                  message: res.data.message
+                })
+        })
+        .catch(err => console.log(err));
     },
     fetch() {
       let item;
