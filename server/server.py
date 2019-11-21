@@ -51,7 +51,7 @@ def getUserByIds(ids):
 def getBuyerInfoByIds(ids):
     col = mydb['user']
     res = list([col.find_one({"user_id": int(id)}, {'_id': 0, "user_id": 1, "avatar": 1,
-                                                    "rating": 1, "location": 1, "firstname": 1, "lastname": 1}) for id in ids])
+                                                    "rating": 1, "location": 1, "first_name": 1, "last_name": 1}) for id in ids])
     if len(ids) == 1:
         return res[0]
     else:
@@ -398,11 +398,15 @@ class User_auctions(Resource):
             try:
                 retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
                 buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                if len(retrieved_item['users_bidding']) == 1:
+                    buyers = [buyers]
                 for bid in retrieved_item['bidding_info']:
-                  buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
-                  bid['buyer'] = buyer_info
-                  del bid['user_id']
-                
+                    for u in buyers:
+                        if u['user_id'] == bid['user_id']:
+                            bid['buyer'] = u
+                            del bid['user_id']
+                            break
+            
                 del retrieved_item['users_bidding']
                 retrieved_auctions.append(retrieved_item)
             except:
@@ -431,24 +435,31 @@ class User_biddings(Resource):
             }
             return response, 404
 
-        retrieved_favorites = []
-        auction_id_list = single_user["bids"]
-        auction_id_list = single_user["bids"]
-        for single_auction in auction_id_list:
-            try:
-                retrieved_item = getAuctionWithSellerByAuctionId(
-                    int(single_auction))
-                
-
+        try:
+            retrieved_favorites = []
+            auction_id_list = single_user["bids"]
+            for single_auction in auction_id_list:
+                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
+                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                if len(retrieved_item['users_bidding']) == 1:
+                    buyers = [buyers]
+                for bid in retrieved_item['bidding_info']:
+                    for u in buyers:
+                        if u['user_id'] == bid['user_id']:
+                            bid['buyer'] = u
+                            del bid['user_id']
+                            break
+            
+                del retrieved_item['users_bidding']
                 retrieved_favorites.append(retrieved_item)
-            except:
-                return {"message":  "Specified item does not exist"}, 404
-
-        response = {
-            "message": "OK",
-            "data": retrieved_favorites
-        }
-        return response, 200
+            
+            response = {
+                "message": "OK",
+                "data": retrieved_favorites
+            }
+            return response, 200
+        except:
+            return {"message":  "Specified item does not exist"}, 404
 
 
 @ns_account.route('/get_user_favorites/<string:request_user_id>')
@@ -470,30 +481,31 @@ class User_favorites(Resource):
             return response, 404
 
         try:
-          retrieved_favorites = []
-          auction_id_list = single_user["favorites"]
-          for single_auction in auction_id_list:
+            retrieved_favorites = []
+            auction_id_list = single_user["favorites"]
+            for single_auction in auction_id_list:
             # retrieved_item = au_col.find_one({'id': int(single_auction)})
             # del retrieved_item['_id']
-            retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
-
-            # TODO
-            # buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
-            # for bid in retrieved_item['bidding_info']:
-            #   buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
-            #   bid['buyer'] = buyer_info
+                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
+                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                if len(retrieved_item['users_bidding']) == 1:
+                    buyers = [buyers]
+                for bid in retrieved_item['bidding_info']:
+                    for u in buyers:
+                        if u['user_id'] == bid['user_id']:
+                            bid['buyer'] = u
+                            del bid['user_id']
+                            break
+            
+            del retrieved_item['users_bidding']
+            
             retrieved_favorites.append(retrieved_item)
-                  
-        
-           
-              
-            print(single_user["favorites"],single_auction['id'])
-
-          response = {
-              "message": "OK",
-              "data": retrieved_favorites
-          }
-          return response, 200
+                    
+            response = {
+                "message": "OK",
+                "data": retrieved_favorites
+            }
+            return response, 200
 
         except:
             print(single_user["favorites"], '@@@')
@@ -698,8 +710,20 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
         retrieved_items = []
         max_result_size = 10
-        for item in au_col.find({}, {"users_bidding": 0, "users_favorite": 0}).limit(max_result_size):
-            del item['_id']
+        res = getAuctionWithSellerByAuctionId()
+        for item in res[:max_result_size]:
+            
+            buyers = getBuyerInfoByIds([str(id) for id in item['users_bidding']])
+            if len(item['users_bidding']) == 1:
+                buyers = [buyers]
+            for bid in item['bidding_info']:
+                for u in buyers:
+                    if u['user_id'] == bid['user_id']:
+                        bid['buyer'] = u
+                        del bid['user_id']
+                        break
+        
+            del item['users_bidding']
             retrieved_items.append(item)
 
         if len(retrieved_items) == 0:
