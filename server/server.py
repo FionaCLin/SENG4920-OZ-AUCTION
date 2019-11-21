@@ -396,8 +396,10 @@ class User_auctions(Resource):
         auction_id_list = single_user["auctions"]
         for single_auction in auction_id_list:
             try:
-                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
-                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                retrieved_item = getAuctionWithSellerByAuctionId(
+                    int(single_auction))
+                buyers = getBuyerInfoByIds(
+                    [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
                     buyers = [buyers]
                 for bid in retrieved_item['bidding_info']:
@@ -406,7 +408,7 @@ class User_auctions(Resource):
                             bid['buyer'] = u
                             del bid['user_id']
                             break
-            
+
                 del retrieved_item['users_bidding']
                 retrieved_auctions.append(retrieved_item)
             except:
@@ -439,8 +441,10 @@ class User_biddings(Resource):
             retrieved_favorites = []
             auction_id_list = single_user["bids"]
             for single_auction in auction_id_list:
-                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
-                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                retrieved_item = getAuctionWithSellerByAuctionId(
+                    int(single_auction))
+                buyers = getBuyerInfoByIds(
+                    [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
                     buyers = [buyers]
                 for bid in retrieved_item['bidding_info']:
@@ -449,10 +453,10 @@ class User_biddings(Resource):
                             bid['buyer'] = u
                             del bid['user_id']
                             break
-            
+
                 del retrieved_item['users_bidding']
                 retrieved_favorites.append(retrieved_item)
-            
+
             response = {
                 "message": "OK",
                 "data": retrieved_favorites
@@ -484,10 +488,12 @@ class User_favorites(Resource):
             retrieved_favorites = []
             auction_id_list = single_user["favorites"]
             for single_auction in auction_id_list:
-            # retrieved_item = au_col.find_one({'id': int(single_auction)})
-            # del retrieved_item['_id']
-                retrieved_item = getAuctionWithSellerByAuctionId(int(single_auction))
-                buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+                # retrieved_item = au_col.find_one({'id': int(single_auction)})
+                # del retrieved_item['_id']
+                retrieved_item = getAuctionWithSellerByAuctionId(
+                    int(single_auction))
+                buyers = getBuyerInfoByIds(
+                    [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
                     buyers = [buyers]
                 for bid in retrieved_item['bidding_info']:
@@ -496,11 +502,11 @@ class User_favorites(Resource):
                             bid['buyer'] = u
                             del bid['user_id']
                             break
-            
+
             del retrieved_item['users_bidding']
-            
+
             retrieved_favorites.append(retrieved_item)
-                    
+
             response = {
                 "message": "OK",
                 "data": retrieved_favorites
@@ -511,7 +517,6 @@ class User_favorites(Resource):
             print(single_user["favorites"], '@@@')
 
             return {"message":  "Specified item does not exist"}, 404
-
 
 
 @ns_account.route('/manage_profile/<string:request_user_id>')
@@ -712,8 +717,9 @@ class AuctionsOperations(Resource):
         max_result_size = 10
         res = getAuctionWithSellerByAuctionId()
         for item in res[:max_result_size]:
-            
-            buyers = getBuyerInfoByIds([str(id) for id in item['users_bidding']])
+
+            buyers = getBuyerInfoByIds([str(id)
+                                        for id in item['users_bidding']])
             if len(item['users_bidding']) == 1:
                 buyers = [buyers]
             for bid in item['bidding_info']:
@@ -722,7 +728,7 @@ class AuctionsOperations(Resource):
                         bid['buyer'] = u
                         del bid['user_id']
                         break
-        
+
             del item['users_bidding']
             retrieved_items.append(item)
 
@@ -988,12 +994,14 @@ class SingleAuctionItemOperations(Resource):
     def get(self, item_id):
         try:
             retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
-            buyers = getBuyerInfoByIds([str(id) for id in retrieved_item['users_bidding']])
+            buyers = getBuyerInfoByIds(
+                [str(id) for id in retrieved_item['users_bidding']])
             for bid in retrieved_item['bidding_info']:
-              buyer_info=next(filter(lambda x: x['user_id'] == bid['user_id'], buyers)) 
-              bid['buyer'] = buyer_info
-              del bid['user_id']
-            
+                buyer_info = next(
+                    filter(lambda x: x['user_id'] == bid['user_id'], buyers))
+                bid['buyer'] = buyer_info
+                del bid['user_id']
+
             del retrieved_item['users_bidding']
             if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
@@ -1010,7 +1018,7 @@ class SingleAuctionItemOperations(Resource):
         # retrieved_item = au_col.find_one({'id': int(item_id)})
         # del retrieved_item['_id']
         retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
-        
+
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
@@ -1039,45 +1047,45 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="Update auction item details")
     def put(self, item_id):
         user_input = request.json
-        try:
-            au_col = mydb['auctions']
-            user_col = mydb['user']
-            # retrieved_item = au_col.find_one({'id': int(item_id)})
-            # del retrieved_item['_id']
-            retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+        # try:
+        au_col = mydb['auctions']
+        user_col = mydb['user']
+        retrieved_item = au_col.find_one({'id': int(item_id)})
+        del retrieved_item['_id']
 
-            if retrieved_item is None:
-                return {"message":  "Specified item does not exist"}, 404
+        if retrieved_item is None:
+            return {"message":  "Specified item does not exist"}, 404
 
-            seller_id = int(retrieved_item['seller_id'])
-            seller = user_col.find_one({"user_id": seller_id})
+        seller_id = int(retrieved_item['seller_id'])
+        seller = user_col.find_one({"user_id": seller_id})
 
-            # Input validation: End_time validation
-            if not validate_datetime_str(user_input['end_time']):
-                return {'message': 'Bad Request: invalid end_time format'}
+        update_data = {}
+        for k in ['category', 'title', "description", "end_time", "price", "image", "location"]:
+            if k in user_input.keys() and retrieved_item[k] != user_input[k]:
+                if k == 'end_time' and not validate_datetime_str(user_input['end_time']):
+                    return {'message': 'Bad Request: invalid end_time format'}
+                update_data[k] = user_input[k]
 
-            update_data = {}
-            for k in ['category', 'title', "description", "end_time", "price", "image", "location"]:
-                if k in user_input.keys() and retrieved_item[k] != user_input[k]:
-                    update_data[k] = user_input[k]
-            update_data['updated'] = datetime.datetime.now().strftime(
-                '%Y-%m-%d %H:%M:%S')
-            # update auction in user's auctions list
-            # for auction in seller['auctions']:
-            #     if auction['id'] == int(item_id):
-            #         auction_to_be_updated_index = seller['auctions'].index(auction)
-            #
-            # updated_auction = seller['auctions'][auction_to_be_updated_index]
-            # for k in update_data.keys():
-            #     updated_auction[k] = update_data[k]
-            #
-            # seller['auctions'][auction_to_be_updated_index] = updated_auction
+        # Input validation: End_time validation
 
-            au_col.update_one({"id": int(item_id)}, {
-                "$set": update_data})
-            return {"message": "Auction details have been updated"}, 200
-        except:
-            return {"message":  "Auction details have been updated"}, 404
+        update_data['updated'] = datetime.datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S')
+        # update auction in user's auctions list
+        # for auction in seller['auctions']:
+        #     if auction['id'] == int(item_id):
+        #         auction_to_be_updated_index = seller['auctions'].index(auction)
+        #
+        # updated_auction = seller['auctions'][auction_to_be_updated_index]
+        # for k in update_data.keys():
+        #     updated_auction[k] = update_data[k]
+        #
+        # seller['auctions'][auction_to_be_updated_index] = updated_auction
+
+        au_col.update_one({"id": int(item_id)}, {
+            "$set": update_data})
+        return {"message": "Auction details have been updated"}, 200
+        # except:
+        #     return {"message":  "Auction details fail to updated"}, 404
 
 
 # search by key
@@ -1095,7 +1103,8 @@ class Auction_search1(Resource):
         cursor = collection.find(
             {"$text": {"$search": easy_search}}, {"_id": 0})
         result = []
-        for entry in cursor:
+        for e in cursor:
+            entry = getAuctionWithSellerByAuctionId(e['id'])
             result.append(entry)
 
         if not result:
