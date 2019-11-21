@@ -42,8 +42,17 @@ export default {
   },
   data() {
     return {
-      auction: null
+      auction: this.auction_item
     };
+  },
+  computed: {
+    auction_item: {
+      get() {
+        return this.$store.state.auction.myAuctions.find(
+          x => x.id == this.$route.params.id
+        );
+      }
+    }
   },
   beforeMount() {
     this.fetch();
@@ -53,6 +62,7 @@ export default {
     console.log("to", this.$route.params.item);
     this.id = this.$route.params.id;
     this.$data.auction = this.$route.params.item;
+    this.fetch();
   },
   methods: {
     isDelable() {
@@ -67,16 +77,14 @@ export default {
     },
     fetch() {
       let item;
+      if (this.$data.auction) {
+        return;
+      }
       this.$axios
         .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
-          this.$axios
-            .get(`/account/manage_profile/${item.seller_id}`)
-            .then(res => {
-              item["user"] = res.data.data;
-              this.$data.auction = item;
-            });
+          this.$data.auction = item;
         })
         .catch(err => console.log(err));
     },

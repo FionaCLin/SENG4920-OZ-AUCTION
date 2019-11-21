@@ -161,6 +161,7 @@ export default {
       }
     },
     userProfile: function(user) {
+      console.log(user);
       this.$router
         .push({
           name: "userProfile",

@@ -44,24 +44,30 @@ export default {
   },
   data() {
     return {
-      edit: false
+      edit: false,
+      userProfile: this.$store.state.user
     };
   },
-  computed: {
-    userProfile: {
-      get() {
-        // this.$store.state.user.foreach(element => console.log(element));
-        console.log(typeof this.$store.state.user);
-        return Object.keys(this.$store.state.user)
-          .filter(k => !["logged", "token", "userId"].includes(k))
-          .reduce((obj, key) => {
-            obj[key] = this.$store.state.user[key];
-            return obj;
-          }, {});
-      }
-    }
+  beforeMount() {
+    this.fetch();
+  },
+  created() {
+    this.id = this.$store.state.user.user_id;
+    this.fetch();
   },
   methods: {
+    fetch() {
+      if (this.$data.userProfile) {
+        return;
+      }
+      this.$axios
+        .get(`/account/manage_profile/${this.id}`)
+        .then(res => {
+          console.log(res.data);
+          this.$data.userProfile = res.data.data;
+        })
+        .catch(err => console.log(err));
+    },
     onUpdate(val) {
       console.log(val, "Profile");
     },

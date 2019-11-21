@@ -5,17 +5,20 @@
         <q-item-label>{{ k }}</q-item-label>
       </q-item-section>
 
-      <q-item-section v-if="k === 'Seller'" @click="userProfile(auction.user)">
+      <q-item-section
+        v-if="k === 'Seller'"
+        @click="userProfile(auction.seller)"
+      >
         <q-item-section avatar>
           <q-avatar size="60px" font-size="52px">
-            <img :src="auction.user.avatar" />
+            <img :src="auction.seller.avatar" />
           </q-avatar>
         </q-item-section>
         <q-item-section class="q-ma-xs">
           <q-item-label>{{ auction.seller_name }}</q-item-label>
           <q-item-label caption>
             <q-icon
-              v-for="n in auction.user.rating"
+              v-for="n in auction.seller.rating"
               :key="n"
               name="star"
             ></q-icon>

@@ -20,10 +20,7 @@
 
           <q-btn round flat>
             <q-avatar size="26px">
-              <img
-                v-if="avatarUrl"
-                src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG"
-              />
+              <img v-if="user.avatar" :src="user.avatar" />
               <q-icon name="person" />
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
@@ -35,12 +32,12 @@
               >
                 <div class="absolute-bottom bg-transparent">
                   <q-avatar size="56px" class="q-mb-sm">
-                    <img
-                      src="https://seng4920album.s3.amazonaws.com/-1573553221037-Capture1.PNG"
-                    />
+                    <img :src="user.avatar" />
                   </q-avatar>
-                  <div class="text-weight-bold">Razvan Stoenescu</div>
-                  <div>@rstoenescu</div>
+                  <div class="text-weight-bold">
+                    {{ user.first_name }} {{ user.last_name }}
+                  </div>
+                  <div>@{{ user.location }}</div>
                 </div>
               </q-img>
 
@@ -190,7 +187,7 @@ export default {
       drawer: false,
       miniState: true,
       search: null,
-      avatarUrl: this.$store.state.user.avatar,
+      user: this.$store.state.user,
       selected: "",
       ready: false
     };
@@ -215,9 +212,9 @@ export default {
         this.$store.state.user.user_id
       )
     ];
-    Promise.allSettled(promises).then(res => {
+    Promise.all(promises).then(res => {
       this.$data.ready = true;
-      console.log(res, "ready");
+      console.log(res, this.$data.ready, "ready");
     });
   }
 };

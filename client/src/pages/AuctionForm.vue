@@ -86,16 +86,47 @@
         <q-item class="myItem">
           <q-item-section>
             <div class="row">
-              <div class="col-4">
-                <q-uploader
-                  label="Batch upload"
-                  multiple
-                  batch
-                  :factory="upload"
-                  style="width:100%"
-                />
+              <div class="col-5 text-center">
+                Update to replace current display auction images.
+                <q-card-actions>
+                  <q-btn
+                    label="Update"
+                    type="Update"
+                    color="green"
+                    flat
+                    @click="imgedit = true"
+                  />
+                  <q-space />
+
+                  <q-btn
+                    label="Cancel"
+                    type="cancel"
+                    color="red"
+                    flat
+                    @click="imgedit = false"
+                  />
+                </q-card-actions>
+                <div
+                  v-if="edit && !imgedit"
+                  class="text-center"
+                  @click="imgedit = !imgedit"
+                >
+                  <ImagesDisplay :image="image" />
+                </div>
+                <div v-else>
+                  <q-uploader
+                    label="Auction Images Upload"
+                    multiple
+                    batch
+                    :factory="upload"
+                    style="width:100%"
+                  />
+                </div>
+                <div v-if="imgsupload">
+                  <q-linear-progress dark query size="15px" />
+                </div>
               </div>
-              <div class="col-8" style="padding-left: 20px;">
+              <div class="col-7" style="padding-left: 20px;">
                 <q-editor v-model="description" />
               </div>
             </div>
@@ -104,7 +135,7 @@
                 style="float:right;"
                 color="primary"
                 label="Submit"
-                :disabled="!image.length"
+                :disabled="!edit && !image.length"
                 @click="onSubmit()"
               />
               <q-btn
@@ -142,23 +173,28 @@ import { uploadImage } from "../helper";
 import { dropdownOpts, countries } from "../helper";
 import moment from "moment";
 import TimeInputVue from "../components/auctionItem/TimeInput.vue";
+import ImagesDisplay from "../components/auctionItem/ImagesDisplay";
 
 let warning = {
   color: "red-5",
   textColor: "white",
   icon: "warning",
-  message: ""
+  message: "",
+  position: "top"
 };
 
 export default {
   name: "AuctionCreateForm",
   components: {
-    TimeInputVue
+    TimeInputVue,
+    ImagesDisplay
   },
   props: ["edit"],
   data() {
     return {
       category: "",
+      imgedit: false,
+      imgsupload: false,
       title: "",
       description: "",
       endTime: moment().format("YYYY-MM-DD h:mm:ss"),
@@ -182,17 +218,20 @@ export default {
         x => x.id === this.id
       );
       console.log(auction);
-
+      for (let k of Object.keys(auction)) {
+        this.$data[k] = auction[k];
+      }
       this.$data.category = auction.category;
       this.$data.title = auction.title;
       this.$data.description = auction.description;
       this.$data.endTime = auction.end_time;
       this.$data.price = auction.price;
       this.$data.location = auction.location;
+      this.auction = auction;
     }
   },
   methods: {
-    onSubmit() {
+    createAuction() {
       let payload = {
         seller_id: this.$store.state.user.user_id,
         seller_name: this.$store.state.user.first_name,
@@ -205,66 +244,88 @@ export default {
         image: this.$data["image"]
       };
       this.$store.dispatch("auction/create", payload).then(res => {
-        console.log(res);
+        console.log(res, "!!!");
+        if (res.status != 200) {
+          warning.message = res.data.message;
+          this.$q.notify(warning);
+          return;
+        }
         this.$router.push("/myauctions").catch(() => {});
       });
-      // if (this.edit) {
-      //   this.$refs.EditAuctionForm.validate().then(
-      //     //validate underfine
-      //     success => {
-      //       if (success) {
-      //         console.log("validated");
-      //       }
-      //     },
-      //     err => {
-      //       console.log(err);
-      //       warning.message = err.message;
-      //       this.$q.notify(warning);
-      //     }
-      //   );
-      //   return;
-      // }
-      // this.$refs.CreateAuctionForm.validate().then(
-      //   success => {
-      //     if (success) {
-      //       // auction call the store to update state
-      //       console.log(success);
-      //       console.log(this.$data);
-      //       let auction = {
-      //         seller_name: `${this.$store.state.user.first_name}-${this.$store.state.user.last_name}`,
-      //         seller_id: this.$store.state.user.user_id,
-      //         category: this.$data.categoryId,
-      //         title: this.$data.title,
-      //         description: this.$data.description,
-      //         end_time: this.$data.date.replace(/\//g, "-") + " 00:42:00",
-      //         price: new Number(this.$data.price),
-      //         image: this.$data.image,
-      //         location: this.$data.location
-      //       };
-      //       console.log(auction);
-      //     }
-      //   },
-      //   err => {
-      //     console.log("build");
-      //     console.log(this.data);
-      //     console.log(err);
-      //     warning.message = err.message;
-      //     this.$q.notify(warning);
-      //   }
-      // );
     },
-    upload(file) {
-      for (let f of file) {
-        uploadImage(f, (err, res) => {
-          if (err) {
-            warning.message = err.message;
-            this.$q.notify(warning);
+    onSubmit() {
+      if (this.edit) {
+        // console.log({
+        //   seller_id: this.$store.state.user.user_id,
+        //   seller_name: this.$store.state.user.first_name,
+        //   title: this.$data["title"],
+        //   description: this.$data["description"],
+        //   price: Number(this.$data["price"]),
+        //   end_time: this.$data["endTime"],
+        //   location: this.$data["location"],
+        //   category: this.$data["category"],
+        //   image: this.$data["image"]
+        // });
+        let payload = {};
+        for (let k of [
+          "title",
+          "description",
+          "price",
+          "end_time",
+          "location",
+          "category",
+          "image"
+        ]) {
+          if (this.$data[k] != this.auction[k]) {
+            console.log(this.$data[k], this.auction[k]);
+            payload[k] = this.$data[k];
           }
-          console.log("uploading the image");
-          this.$data.image.push(res.Location);
-          console.log(this.$data.image);
+        }
+
+        this.$store.dispatch("auction/update", this.id, payload).then(res => {
+          console.log(res, "!!!");
+          if (res.status != 200) {
+            warning.message = res.data.message;
+            this.$q.notify(warning);
+            return;
+          }
+          this.$router.push("/myauctions").catch(() => {});
         });
+      } else {
+        this.createAuction();
       }
+    },
+    async upload(file) {
+      console.log(this.$data.imgsupload, 1);
+      this.$data.imgsupload = true;
+      console.log(this.$data.imgsupload, 2);
+      let ps = [];
+      file.forEach(f => {
+        let p = new Promise(function(resolve, reject) {
+          uploadImage(f, (err, res) => {
+            if (err) {
+              reject(err.message);
+            } else {
+              resolve(res.Location);
+            }
+          });
+        });
+        ps.push(p);
+      });
+      Promise.allSettled(ps)
+        .then(res => {
+          console.log("uploading the image");
+          this.$data.image = res;
+          console.log(this.$data.image);
+        })
+        .catch(err => {
+          warning.message = err.message;
+          this.$q.notify(warning);
+        })
+        .finally(() => {
+          this.$data.imgsupload = false;
+          console.log(this.$data.imgsupload);
+        });
     },
     goBack() {
       if (this.edit) {
@@ -279,28 +340,10 @@ export default {
       } else {
         this.$router
           .push({
-            path: "/auctions"
+            path: "/myauctions"
           })
           .catch(err => console.log(err));
       }
-    },
-    viewCreatedAuction() {
-      //???
-      this.$axios.get("/auction/" + this.$data.categoryId).then(response => {
-        console.log(response);
-        this.$store.dispatch(
-          "auction/getMyAuctions",
-          this.$store.state.user.user_id
-        );
-        this.$router
-          .push({
-            name: "auctionItem",
-            params: {
-              id: this.$data.categoryId
-            }
-          })
-          .catch(err => console.log(err));
-      });
     },
     filterLocFn(val, update) {
       if (val === "") {

@@ -37,14 +37,14 @@
             >
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="props.row.user.avatar" />
+                  <img :src="props.row.seller.avatar" />
                 </q-avatar>
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ props.row.seller_name }}</q-item-label>
                 <q-item-label caption>
                   <q-icon
-                    v-for="n in props.row.user.rating"
+                    v-for="n in props.row.seller.rating"
                     :key="n"
                     name="star"
                   ></q-icon>
