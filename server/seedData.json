@@ -8,7 +8,7 @@
       "title": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
       "description": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
       "created": "2018-05-28 8:58:45",
-      "updated": "2018-05-29 8:58:45",
+      "updated": "2018-05-29 11:58:45",
       "end_time": "2018-06-05 8:58:45",
       "location": "United States",
       "price": 25,
@@ -18,101 +18,34 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "0-0",
+          "user_id": 2,
+          "item_id": 0,
+          "proposal_price": 25.167634388366217,
+          "created": "2018-05-29 8:58:45"
+        },
+        {
+          "bid_id": "0-1",
           "user_id": 1,
           "item_id": 0,
-          "proposal_price": 25.98309947621119,
-          "created": "2018-05-28 8:58:45"
+          "proposal_price": 26.568849772138893,
+          "created": "2018-05-29 9:58:45"
         },
         {
+          "bid_id": "0-2",
           "user_id": 1,
           "item_id": 0,
-          "proposal_price": 26.85298291758076,
-          "created": "2018-05-28 9:58:45"
-        },
-        {
-          "user_id": 1,
-          "item_id": 0,
-          "proposal_price": 25.776370121914695,
-          "created": "2018-05-28 10:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 28.293986921577275,
-          "created": "2018-05-28 11:58:45"
-        },
-        {
-          "user_id": 1,
-          "item_id": 0,
-          "proposal_price": 26.28728152822091,
-          "created": "2018-05-28 12:58:45"
-        },
-        {
-          "user_id": 1,
-          "item_id": 0,
-          "proposal_price": 26.488575506331536,
-          "created": "2018-05-28 1:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 26.94250652782032,
-          "created": "2018-05-28 2:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 25.271616637643167,
-          "created": "2018-05-28 3:58:45"
-        },
-        {
-          "user_id": 1,
-          "item_id": 0,
-          "proposal_price": 26.127386048407846,
-          "created": "2018-05-28 4:58:45"
-        },
-        {
-          "user_id": 1,
-          "item_id": 0,
-          "proposal_price": 33.60703369500725,
-          "created": "2018-05-28 5:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 34.6620764914251,
-          "created": "2018-05-28 6:58:45"
-        },
-        {
-          "user_id": 3,
-          "item_id": 0,
-          "proposal_price": 29.6770781671661,
-          "created": "2018-05-28 7:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 36.14504992780012,
-          "created": "2018-05-28 8:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 29.51989171467338,
-          "created": "2018-05-28 9:58:45"
-        },
-        {
-          "user_id": 3,
-          "item_id": 0,
-          "proposal_price": 30.526724014110364,
-          "created": "2018-05-28 10:58:45"
-        },
-        {
-          "user_id": 4,
-          "item_id": 0,
-          "proposal_price": 28.994930625928465,
-          "created": "2018-05-28 11:58:45"
+          "proposal_price": 27.418207188725383,
+          "created": "2018-05-29 11:58:45"
         }
+      ],
+      "users_bidding": [
+        1,
+        2
+      ],
+      "users_favorite": [
+        1,
+        2
       ]
     },
     {
@@ -123,7 +56,7 @@
       "title": "Gold Toned Wire Woven Cursive \"I\" Pendant Necklace",
       "description": "Gold Toned Wire Woven Cursive &quot;I&quot; Pendant Necklace",
       "created": "2018-05-29 8:45:50",
-      "updated": "2018-05-30 8:45:50",
+      "updated": "2018-06-02 6:45:50",
       "end_time": "2018-06-06 8:45:50",
       "location": "United States",
       "price": 15,
@@ -133,53 +66,157 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 1,
-          "item_id": 1,
-          "proposal_price": 15.290088805428468,
-          "created": "2018-05-29 8:45:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 1,
-          "proposal_price": 16.24829673327104,
-          "created": "2018-05-29 9:45:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 1,
-          "proposal_price": 16.756574607900568,
-          "created": "2018-05-29 10:45:50"
-        },
-        {
-          "user_id": 2,
-          "item_id": 1,
-          "proposal_price": 18.673237802050846,
-          "created": "2018-05-29 11:45:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 1,
-          "proposal_price": 15.462330551656404,
-          "created": "2018-05-29 12:45:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 1,
-          "proposal_price": 19.82274530059842,
-          "created": "2018-05-29 1:45:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 1,
-          "proposal_price": 21.110009522375655,
-          "created": "2018-05-29 2:45:50"
-        },
-        {
+          "bid_id": "1-0",
           "user_id": 3,
           "item_id": 1,
-          "proposal_price": 16.390515110899656,
-          "created": "2018-05-29 3:45:50"
+          "proposal_price": 15.70305148523479,
+          "created": "2018-05-30 8:45:50"
+        },
+        {
+          "bid_id": "1-1",
+          "user_id": 4,
+          "item_id": 1,
+          "proposal_price": 16.793866248334975,
+          "created": "2018-05-30 9:45:50"
+        },
+        {
+          "bid_id": "1-2",
+          "user_id": 3,
+          "item_id": 1,
+          "proposal_price": 17.899564789370416,
+          "created": "2018-05-30 11:45:50"
+        },
+        {
+          "bid_id": "1-3",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 17.931946586730238,
+          "created": "2018-05-30 2:45:50"
+        },
+        {
+          "bid_id": "1-4",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 15.458672361360218,
+          "created": "2018-05-30 6:45:50"
+        },
+        {
+          "bid_id": "1-5",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 17.793997892397787,
+          "created": "2018-05-30 11:45:50"
+        },
+        {
+          "bid_id": "1-6",
+          "user_id": 4,
+          "item_id": 1,
+          "proposal_price": 15.59485459931943,
+          "created": "2018-05-30 5:45:50"
+        },
+        {
+          "bid_id": "1-7",
+          "user_id": 2,
+          "item_id": 1,
+          "proposal_price": 20.53291106438273,
+          "created": "2018-05-30 12:45:50"
+        },
+        {
+          "bid_id": "1-8",
+          "user_id": 2,
+          "item_id": 1,
+          "proposal_price": 21.304600991844566,
+          "created": "2018-05-30 8:45:50"
+        },
+        {
+          "bid_id": "1-9",
+          "user_id": 4,
+          "item_id": 1,
+          "proposal_price": 20.06708833348096,
+          "created": "2018-05-30 5:45:50"
+        },
+        {
+          "bid_id": "1-10",
+          "user_id": 3,
+          "item_id": 1,
+          "proposal_price": 19.12274899227387,
+          "created": "2018-05-30 3:45:50"
+        },
+        {
+          "bid_id": "1-11",
+          "user_id": 4,
+          "item_id": 1,
+          "proposal_price": 24.582840112660655,
+          "created": "2018-05-30 2:45:50"
+        },
+        {
+          "bid_id": "1-12",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 23.14047972571742,
+          "created": "2018-05-30 2:45:50"
+        },
+        {
+          "bid_id": "1-13",
+          "user_id": 2,
+          "item_id": 1,
+          "proposal_price": 28.472624651521688,
+          "created": "2018-05-30 3:45:50"
+        },
+        {
+          "bid_id": "1-14",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 24.2196383212667,
+          "created": "2018-05-30 5:45:50"
+        },
+        {
+          "bid_id": "1-15",
+          "user_id": 2,
+          "item_id": 1,
+          "proposal_price": 30.12897652275881,
+          "created": "2018-05-30 8:45:50"
+        },
+        {
+          "bid_id": "1-16",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 29.559928197117955,
+          "created": "2018-05-31 12:45:50"
+        },
+        {
+          "bid_id": "1-17",
+          "user_id": 3,
+          "item_id": 1,
+          "proposal_price": 20.48409286075013,
+          "created": "2018-06-01 5:45:50"
+        },
+        {
+          "bid_id": "1-18",
+          "user_id": 4,
+          "item_id": 1,
+          "proposal_price": 25.783575738441648,
+          "created": "2018-06-01 11:45:50"
+        },
+        {
+          "bid_id": "1-19",
+          "user_id": 1,
+          "item_id": 1,
+          "proposal_price": 23.54194591844458,
+          "created": "2018-06-02 6:45:50"
         }
+      ],
+      "users_bidding": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": [
+        1,
+        2,
+        3,
+        4
       ]
     },
     {
@@ -200,203 +237,78 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "2-0",
           "user_id": 2,
           "item_id": 2,
-          "proposal_price": 15.172784615526869,
-          "created": "2018-05-29 8:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 16.90262484109803,
-          "created": "2018-05-29 9:03:25"
-        },
-        {
-          "user_id": 3,
-          "item_id": 2,
-          "proposal_price": 17.21104000927774,
-          "created": "2018-05-29 10:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 15.389191622747287,
-          "created": "2018-05-29 11:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 18.23266937795324,
-          "created": "2018-05-29 12:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 18.567596857148256,
-          "created": "2018-05-29 1:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 19.19424218018658,
-          "created": "2018-05-29 2:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 20.619501574274857,
-          "created": "2018-05-29 3:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 23.893016816645098,
-          "created": "2018-05-29 4:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 16.084298914101772,
-          "created": "2018-05-29 5:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 22.687295559682983,
-          "created": "2018-05-29 6:03:25"
-        },
-        {
-          "user_id": 4,
-          "item_id": 2,
-          "proposal_price": 21.28184187118103,
-          "created": "2018-05-29 7:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 16.645457102735552,
-          "created": "2018-05-29 8:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 27.055477352754654,
-          "created": "2018-05-29 9:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 23.518166268086304,
-          "created": "2018-05-29 10:03:25"
-        },
-        {
-          "user_id": 3,
-          "item_id": 2,
-          "proposal_price": 29.83579120133499,
-          "created": "2018-05-29 11:03:25"
-        },
-        {
-          "user_id": 2,
-          "item_id": 2,
-          "proposal_price": 25.421814249455814,
-          "created": "2018-05-30 12:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 25.008971688568575,
-          "created": "2018-05-30 1:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 31.874344265517,
-          "created": "2018-05-30 2:03:25"
-        },
-        {
-          "user_id": 2,
-          "item_id": 2,
-          "proposal_price": 15.810720702000074,
-          "created": "2018-05-30 3:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 35.01955472750065,
-          "created": "2018-05-30 4:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 24.969413451290436,
-          "created": "2018-05-30 5:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 26.31613634125833,
-          "created": "2018-05-30 6:03:25"
-        },
-        {
-          "user_id": 1,
-          "item_id": 2,
-          "proposal_price": 25.467336000580637,
-          "created": "2018-05-30 7:03:25"
-        },
-        {
-          "user_id": 3,
-          "item_id": 2,
-          "proposal_price": 30.607522676668633,
+          "proposal_price": 15.676225851813683,
           "created": "2018-05-30 8:03:25"
         },
         {
-          "user_id": 4,
+          "bid_id": "2-1",
+          "user_id": 1,
           "item_id": 2,
-          "proposal_price": 24.66361258270921,
+          "proposal_price": 15.428732259451971,
           "created": "2018-05-30 9:03:25"
         },
         {
-          "user_id": 1,
+          "bid_id": "2-2",
+          "user_id": 4,
           "item_id": 2,
-          "proposal_price": 35.70684166468347,
-          "created": "2018-05-30 10:03:25"
-        },
-        {
-          "user_id": 3,
-          "item_id": 2,
-          "proposal_price": 19.25841329986462,
+          "proposal_price": 17.0431541947524,
           "created": "2018-05-30 11:03:25"
         },
         {
-          "user_id": 2,
+          "bid_id": "2-3",
+          "user_id": 4,
           "item_id": 2,
-          "proposal_price": 25.698935158884815,
-          "created": "2018-05-30 12:03:25"
-        },
-        {
-          "user_id": 2,
-          "item_id": 2,
-          "proposal_price": 28.425907043392584,
-          "created": "2018-05-30 1:03:25"
-        },
-        {
-          "user_id": 2,
-          "item_id": 2,
-          "proposal_price": 45.414024965605144,
+          "proposal_price": 17.24205751699204,
           "created": "2018-05-30 2:03:25"
         },
         {
-          "user_id": 3,
-          "item_id": 2,
-          "proposal_price": 27.109344001514422,
-          "created": "2018-05-30 3:03:25"
-        },
-        {
+          "bid_id": "2-4",
           "user_id": 1,
           "item_id": 2,
-          "proposal_price": 37.09075086384413,
-          "created": "2018-05-30 4:03:25"
+          "proposal_price": 17.532810980520733,
+          "created": "2018-05-30 6:03:25"
+        },
+        {
+          "bid_id": "2-5",
+          "user_id": 1,
+          "item_id": 2,
+          "proposal_price": 15.40586362627171,
+          "created": "2018-05-30 11:03:25"
+        },
+        {
+          "bid_id": "2-6",
+          "user_id": 1,
+          "item_id": 2,
+          "proposal_price": 18.156628807333636,
+          "created": "2018-05-30 5:03:25"
+        },
+        {
+          "bid_id": "2-7",
+          "user_id": 1,
+          "item_id": 2,
+          "proposal_price": 19.433809042352788,
+          "created": "2018-05-30 12:03:25"
+        },
+        {
+          "bid_id": "2-8",
+          "user_id": 4,
+          "item_id": 2,
+          "proposal_price": 18.210318789969207,
+          "created": "2018-05-30 8:03:25"
         }
+      ],
+      "users_bidding": [
+        1,
+        2,
+        4
+      ],
+      "users_favorite": [
+        1,
+        2,
+        4
       ]
     },
     {
@@ -417,251 +329,18 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 10.534772822186305,
-          "created": "2018-06-30 8:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 11.110460776236232,
-          "created": "2018-06-30 9:38:35"
-        },
-        {
+          "bid_id": "3-0",
           "user_id": 1,
           "item_id": 3,
-          "proposal_price": 12.357468154171942,
-          "created": "2018-06-30 10:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 13.085956231277228,
-          "created": "2018-06-30 11:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 13.917940291746145,
-          "created": "2018-06-30 12:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 11.920181512735276,
-          "created": "2018-06-30 1:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 11.286726599335852,
-          "created": "2018-06-30 2:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 11.038670559322329,
-          "created": "2018-06-30 3:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 18.8979375772909,
-          "created": "2018-06-30 4:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 10.362091455030901,
-          "created": "2018-06-30 5:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 19.98750487188327,
-          "created": "2018-06-30 6:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 12.629530066094151,
-          "created": "2018-06-30 7:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 11.3922107804447,
-          "created": "2018-06-30 8:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 18.290316641647856,
-          "created": "2018-06-30 9:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 19.945594986136683,
-          "created": "2018-06-30 10:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 25.867327138800704,
-          "created": "2018-06-30 11:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 12.28513304666873,
-          "created": "2018-07-01 12:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 21.485307408709797,
-          "created": "2018-07-01 1:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 22.415357235007445,
-          "created": "2018-07-01 2:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 11.152362175473854,
-          "created": "2018-07-01 3:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 29.296154451775795,
-          "created": "2018-07-01 4:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 19.661309538604975,
-          "created": "2018-07-01 5:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 12.123627852515751,
-          "created": "2018-07-01 6:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 12.051196381640455,
-          "created": "2018-07-01 7:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 19.3041460107207,
+          "proposal_price": 10.779458536946354,
           "created": "2018-07-01 8:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 22.00000689815754,
-          "created": "2018-07-01 9:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 27.647229046649358,
-          "created": "2018-07-01 10:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 13.391597043487659,
-          "created": "2018-07-01 11:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 11.885672204888518,
-          "created": "2018-07-01 12:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 34.19107434100501,
-          "created": "2018-07-01 1:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 19.557897900708443,
-          "created": "2018-07-01 2:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 38.6357804556099,
-          "created": "2018-07-01 3:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 16.848774846755475,
-          "created": "2018-07-01 4:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 26.670487932456105,
-          "created": "2018-07-01 5:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 16.853839150676365,
-          "created": "2018-07-01 6:38:35"
-        },
-        {
-          "user_id": 4,
-          "item_id": 3,
-          "proposal_price": 29.027384146366547,
-          "created": "2018-07-01 7:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 24.667855455712406,
-          "created": "2018-07-01 8:38:35"
-        },
-        {
-          "user_id": 1,
-          "item_id": 3,
-          "proposal_price": 39.15253592709947,
-          "created": "2018-07-01 9:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 21.82436071327603,
-          "created": "2018-07-01 10:38:35"
-        },
-        {
-          "user_id": 2,
-          "item_id": 3,
-          "proposal_price": 28.77949506604418,
-          "created": "2018-07-01 11:38:35"
-        },
-        {
-          "user_id": 3,
-          "item_id": 3,
-          "proposal_price": 17.79392526425509,
-          "created": "2018-07-02 12:38:35"
         }
+      ],
+      "users_bidding": [
+        1
+      ],
+      "users_favorite": [
+        1
       ]
     },
     {
@@ -672,7 +351,7 @@
       "title": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
       "description": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
       "created": "2016-04-25 1:59:40",
-      "updated": "2016-04-26 1:59:40",
+      "updated": "2016-04-26 11:59:40",
       "end_time": "2016-05-03 1:59:40",
       "location": "Canada",
       "price": 50,
@@ -682,17 +361,48 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "4-0",
           "user_id": 0,
           "item_id": 4,
-          "proposal_price": 50.03895866779779,
-          "created": "2016-04-25 1:59:40"
+          "proposal_price": 50.84677074944197,
+          "created": "2016-04-26 1:59:40"
         },
         {
+          "bid_id": "4-1",
+          "user_id": 0,
+          "item_id": 4,
+          "proposal_price": 50.423040606011185,
+          "created": "2016-04-26 2:59:40"
+        },
+        {
+          "bid_id": "4-2",
+          "user_id": 0,
+          "item_id": 4,
+          "proposal_price": 51.72729271226322,
+          "created": "2016-04-26 4:59:40"
+        },
+        {
+          "bid_id": "4-3",
           "user_id": 2,
           "item_id": 4,
-          "proposal_price": 50.22943849744331,
-          "created": "2016-04-25 2:59:40"
+          "proposal_price": 53.518430382649775,
+          "created": "2016-04-26 7:59:40"
+        },
+        {
+          "bid_id": "4-4",
+          "user_id": 2,
+          "item_id": 4,
+          "proposal_price": 50.92431691716148,
+          "created": "2016-04-26 11:59:40"
         }
+      ],
+      "users_bidding": [
+        0,
+        2
+      ],
+      "users_favorite": [
+        0,
+        2
       ]
     },
     {
@@ -703,7 +413,7 @@
       "title": "Peaker4Life Sterling Necklace 18\" chain INCLUDED",
       "description": "Peaker4Life Sterling Necklace 18&quot; chain INCLUDED",
       "created": "2017-09-27 10:54:28",
-      "updated": "2017-09-28 10:54:28",
+      "updated": "2017-09-30 8:54:28",
       "end_time": "2017-10-05 10:54:28",
       "location": "Canada",
       "price": 50,
@@ -713,89 +423,157 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "5-0",
           "user_id": 2,
           "item_id": 5,
-          "proposal_price": 50.49917164223055,
-          "created": "2017-09-27 10:54:28"
+          "proposal_price": 50.67586944522681,
+          "created": "2017-09-28 10:54:28"
         },
         {
+          "bid_id": "5-1",
           "user_id": 2,
           "item_id": 5,
-          "proposal_price": 51.540524963470446,
-          "created": "2017-09-27 11:54:28"
+          "proposal_price": 51.35918098676934,
+          "created": "2017-09-28 11:54:28"
         },
         {
-          "user_id": 0,
-          "item_id": 5,
-          "proposal_price": 52.755338674167774,
-          "created": "2017-09-27 12:54:28"
-        },
-        {
-          "user_id": 0,
-          "item_id": 5,
-          "proposal_price": 51.91473302989481,
-          "created": "2017-09-27 1:54:28"
-        },
-        {
+          "bid_id": "5-2",
           "user_id": 4,
           "item_id": 5,
-          "proposal_price": 53.2176037443276,
-          "created": "2017-09-27 2:54:28"
+          "proposal_price": 51.61798277901253,
+          "created": "2017-09-28 1:54:28"
         },
         {
+          "bid_id": "5-3",
           "user_id": 0,
           "item_id": 5,
-          "proposal_price": 53.03253474050152,
-          "created": "2017-09-27 3:54:28"
+          "proposal_price": 52.41865721265198,
+          "created": "2017-09-28 4:54:28"
         },
         {
+          "bid_id": "5-4",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 51.48007809104063,
+          "created": "2017-09-28 8:54:28"
+        },
+        {
+          "bid_id": "5-5",
           "user_id": 4,
           "item_id": 5,
-          "proposal_price": 56.69780482102067,
-          "created": "2017-09-27 4:54:28"
+          "proposal_price": 55.487258009196324,
+          "created": "2017-09-28 1:54:28"
         },
         {
-          "user_id": 2,
+          "bid_id": "5-6",
+          "user_id": 3,
           "item_id": 5,
-          "proposal_price": 57.93046055722047,
-          "created": "2017-09-27 5:54:28"
+          "proposal_price": 55.45845431262178,
+          "created": "2017-09-28 7:54:28"
         },
         {
-          "user_id": 2,
+          "bid_id": "5-7",
+          "user_id": 3,
           "item_id": 5,
-          "proposal_price": 56.183475363999435,
-          "created": "2017-09-27 6:54:28"
+          "proposal_price": 55.27483916229525,
+          "created": "2017-09-28 2:54:28"
         },
         {
+          "bid_id": "5-8",
+          "user_id": 4,
+          "item_id": 5,
+          "proposal_price": 57.04896908208677,
+          "created": "2017-09-28 10:54:28"
+        },
+        {
+          "bid_id": "5-9",
           "user_id": 0,
           "item_id": 5,
-          "proposal_price": 50.96927669796355,
-          "created": "2017-09-27 7:54:28"
+          "proposal_price": 56.453048823458815,
+          "created": "2017-09-28 7:54:28"
         },
         {
-          "user_id": 2,
+          "bid_id": "5-10",
+          "user_id": 0,
           "item_id": 5,
-          "proposal_price": 56.66360298229735,
-          "created": "2017-09-27 8:54:28"
+          "proposal_price": 57.1208756932131,
+          "created": "2017-09-28 5:54:28"
         },
         {
-          "user_id": 2,
+          "bid_id": "5-11",
+          "user_id": 3,
           "item_id": 5,
-          "proposal_price": 53.56638846008358,
-          "created": "2017-09-27 9:54:28"
+          "proposal_price": 59.890194775419594,
+          "created": "2017-09-28 4:54:28"
         },
         {
-          "user_id": 2,
+          "bid_id": "5-12",
+          "user_id": 0,
           "item_id": 5,
-          "proposal_price": 53.795297526002095,
-          "created": "2017-09-27 10:54:28"
+          "proposal_price": 59.69398279687651,
+          "created": "2017-09-28 4:54:28"
         },
         {
+          "bid_id": "5-13",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 58.56006064698093,
+          "created": "2017-09-28 5:54:28"
+        },
+        {
+          "bid_id": "5-14",
           "user_id": 2,
           "item_id": 5,
-          "proposal_price": 50.35639841624083,
-          "created": "2017-09-27 11:54:28"
+          "proposal_price": 62.72943763164986,
+          "created": "2017-09-28 7:54:28"
+        },
+        {
+          "bid_id": "5-15",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 64.65489292887982,
+          "created": "2017-09-28 10:54:28"
+        },
+        {
+          "bid_id": "5-16",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 50.60090424034046,
+          "created": "2017-09-29 2:54:28"
+        },
+        {
+          "bid_id": "5-17",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 66.03976574789866,
+          "created": "2017-09-29 7:54:28"
+        },
+        {
+          "bid_id": "5-18",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 62.53753322609427,
+          "created": "2017-09-30 1:54:28"
+        },
+        {
+          "bid_id": "5-19",
+          "user_id": 0,
+          "item_id": 5,
+          "proposal_price": 55.1506402893775,
+          "created": "2017-09-30 8:54:28"
         }
+      ],
+      "users_bidding": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        2,
+        3,
+        4
       ]
     },
     {
@@ -806,7 +584,7 @@
       "title": "MPC Sterling Silver Mountain Peak Ring Sz 5 to 10",
       "description": "MPC Sterling Silver Mountain Peak Ring Sz 6 to 10",
       "created": "2016-09-10 2:13:03",
-      "updated": "2016-09-11 2:13:03",
+      "updated": "2016-09-12 11:13:03",
       "end_time": "2016-09-18 2:13:03",
       "location": "Canada",
       "price": 45,
@@ -816,233 +594,143 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "6-0",
           "user_id": 0,
           "item_id": 6,
-          "proposal_price": 45.33006477097121,
-          "created": "2016-09-10 2:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 45.277995512405454,
-          "created": "2016-09-10 3:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 45.88619912112962,
-          "created": "2016-09-10 4:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 48.732190916844885,
-          "created": "2016-09-10 5:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 45.59493670040032,
-          "created": "2016-09-10 6:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 46.95281482639466,
-          "created": "2016-09-10 7:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 48.085966763836716,
-          "created": "2016-09-10 8:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 46.406331334177686,
-          "created": "2016-09-10 9:13:03"
-        },
-        {
-          "user_id": 4,
-          "item_id": 6,
-          "proposal_price": 50.30246029681926,
-          "created": "2016-09-10 10:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 54.03737322948147,
-          "created": "2016-09-10 11:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 47.89674280965104,
-          "created": "2016-09-10 12:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 50.46249485825433,
-          "created": "2016-09-10 1:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 52.88987375519718,
-          "created": "2016-09-10 2:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 46.262455454381026,
-          "created": "2016-09-10 3:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 45.08125768966721,
-          "created": "2016-09-10 4:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 59.360848041403756,
-          "created": "2016-09-10 5:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 48.35296357741303,
-          "created": "2016-09-10 6:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 52.343955414601375,
-          "created": "2016-09-10 7:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 45.01732338880786,
-          "created": "2016-09-10 8:13:03"
-        },
-        {
-          "user_id": 4,
-          "item_id": 6,
-          "proposal_price": 46.43302261797693,
-          "created": "2016-09-10 9:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 54.25199077487059,
-          "created": "2016-09-10 10:13:03"
-        },
-        {
-          "user_id": 4,
-          "item_id": 6,
-          "proposal_price": 64.40415761165883,
-          "created": "2016-09-10 11:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 63.73128072269362,
-          "created": "2016-09-11 12:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 47.857511042353394,
-          "created": "2016-09-11 1:13:03"
-        },
-        {
-          "user_id": 4,
-          "item_id": 6,
-          "proposal_price": 59.33844195661686,
+          "proposal_price": 45.692497968318065,
           "created": "2016-09-11 2:13:03"
         },
         {
-          "user_id": 3,
+          "bid_id": "6-1",
+          "user_id": 0,
           "item_id": 6,
-          "proposal_price": 62.066264377606714,
+          "proposal_price": 46.32908397193591,
           "created": "2016-09-11 3:13:03"
         },
         {
-          "user_id": 2,
+          "bid_id": "6-2",
+          "user_id": 4,
           "item_id": 6,
-          "proposal_price": 56.135460785670354,
-          "created": "2016-09-11 4:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 64.08676823022043,
+          "proposal_price": 45.66844947262261,
           "created": "2016-09-11 5:13:03"
         },
         {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 68.05092090381383,
-          "created": "2016-09-11 6:13:03"
-        },
-        {
+          "bid_id": "6-3",
           "user_id": 2,
           "item_id": 6,
-          "proposal_price": 72.87742694534565,
-          "created": "2016-09-11 7:13:03"
-        },
-        {
-          "user_id": 3,
-          "item_id": 6,
-          "proposal_price": 47.92640375847108,
+          "proposal_price": 47.93138864596395,
           "created": "2016-09-11 8:13:03"
         },
         {
-          "user_id": 2,
+          "bid_id": "6-4",
+          "user_id": 4,
           "item_id": 6,
-          "proposal_price": 68.48810053829436,
-          "created": "2016-09-11 9:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 54.06458029647244,
-          "created": "2016-09-11 10:13:03"
-        },
-        {
-          "user_id": 2,
-          "item_id": 6,
-          "proposal_price": 47.23656964044513,
-          "created": "2016-09-11 11:13:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 6,
-          "proposal_price": 49.695360270012706,
+          "proposal_price": 48.1935999642242,
           "created": "2016-09-11 12:13:03"
         },
         {
+          "bid_id": "6-5",
           "user_id": 0,
           "item_id": 6,
-          "proposal_price": 57.796628460970936,
-          "created": "2016-09-11 1:13:03"
+          "proposal_price": 48.043001862749826,
+          "created": "2016-09-11 5:13:03"
         },
         {
-          "user_id": 3,
+          "bid_id": "6-6",
+          "user_id": 2,
           "item_id": 6,
-          "proposal_price": 56.00403353032202,
+          "proposal_price": 46.39514025422056,
+          "created": "2016-09-11 11:13:03"
+        },
+        {
+          "bid_id": "6-7",
+          "user_id": 2,
+          "item_id": 6,
+          "proposal_price": 48.63025264790018,
+          "created": "2016-09-11 6:13:03"
+        },
+        {
+          "bid_id": "6-8",
+          "user_id": 2,
+          "item_id": 6,
+          "proposal_price": 47.378291913790406,
           "created": "2016-09-11 2:13:03"
         },
         {
+          "bid_id": "6-9",
           "user_id": 3,
           "item_id": 6,
-          "proposal_price": 66.00562271121089,
-          "created": "2016-09-11 3:13:03"
+          "proposal_price": 45.89466812761659,
+          "created": "2016-09-11 11:13:03"
+        },
+        {
+          "bid_id": "6-10",
+          "user_id": 0,
+          "item_id": 6,
+          "proposal_price": 47.47970231379585,
+          "created": "2016-09-11 9:13:03"
+        },
+        {
+          "bid_id": "6-11",
+          "user_id": 0,
+          "item_id": 6,
+          "proposal_price": 53.174309577599736,
+          "created": "2016-09-11 8:13:03"
+        },
+        {
+          "bid_id": "6-12",
+          "user_id": 4,
+          "item_id": 6,
+          "proposal_price": 46.623896961727645,
+          "created": "2016-09-11 8:13:03"
+        },
+        {
+          "bid_id": "6-13",
+          "user_id": 0,
+          "item_id": 6,
+          "proposal_price": 52.17662045477085,
+          "created": "2016-09-11 9:13:03"
+        },
+        {
+          "bid_id": "6-14",
+          "user_id": 2,
+          "item_id": 6,
+          "proposal_price": 48.761171073671484,
+          "created": "2016-09-11 11:13:03"
+        },
+        {
+          "bid_id": "6-15",
+          "user_id": 4,
+          "item_id": 6,
+          "proposal_price": 49.006266619729544,
+          "created": "2016-09-12 2:13:03"
+        },
+        {
+          "bid_id": "6-16",
+          "user_id": 4,
+          "item_id": 6,
+          "proposal_price": 46.630022635430805,
+          "created": "2016-09-12 6:13:03"
+        },
+        {
+          "bid_id": "6-17",
+          "user_id": 2,
+          "item_id": 6,
+          "proposal_price": 49.553148703935776,
+          "created": "2016-09-12 11:13:03"
         }
+      ],
+      "users_bidding": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        2,
+        3,
+        4
       ]
     },
     {
@@ -1053,7 +741,7 @@
       "title": "MPC Sterling Mountain Peaks Bracelet/Anklet 8.5\"",
       "description": "MPC Sterling Mountain Peaks Bracelet/Anklet 8.5&quot;",
       "created": "2016-04-02 3:09:02",
-      "updated": "2016-04-03 3:09:02",
+      "updated": "2016-04-05 11:09:02",
       "end_time": "2016-04-10 3:09:02",
       "location": "Canada",
       "price": 53,
@@ -1063,53 +751,157 @@
       "status": "bidding",
       "bidding_info": [
         {
+          "bid_id": "7-0",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 53.675913418402025,
+          "created": "2016-04-03 3:09:02"
+        },
+        {
+          "bid_id": "7-1",
+          "user_id": 4,
+          "item_id": 7,
+          "proposal_price": 54.011671491647014,
+          "created": "2016-04-03 4:09:02"
+        },
+        {
+          "bid_id": "7-2",
           "user_id": 3,
           "item_id": 7,
-          "proposal_price": 53.79414245605628,
-          "created": "2016-04-02 3:09:02"
+          "proposal_price": 55.17349749160112,
+          "created": "2016-04-03 6:09:02"
         },
         {
-          "user_id": 0,
-          "item_id": 7,
-          "proposal_price": 53.15742415778142,
-          "created": "2016-04-02 4:09:02"
-        },
-        {
-          "user_id": 0,
-          "item_id": 7,
-          "proposal_price": 54.925605299988895,
-          "created": "2016-04-02 5:09:02"
-        },
-        {
-          "user_id": 2,
-          "item_id": 7,
-          "proposal_price": 54.71221185244547,
-          "created": "2016-04-02 6:09:02"
-        },
-        {
+          "bid_id": "7-3",
           "user_id": 3,
           "item_id": 7,
-          "proposal_price": 55.45812251632858,
-          "created": "2016-04-02 7:09:02"
+          "proposal_price": 55.17495854356624,
+          "created": "2016-04-03 9:09:02"
         },
         {
+          "bid_id": "7-4",
           "user_id": 0,
           "item_id": 7,
-          "proposal_price": 57.6365178353646,
-          "created": "2016-04-02 8:09:02"
+          "proposal_price": 53.592183206160236,
+          "created": "2016-04-03 1:09:02"
         },
         {
-          "user_id": 2,
+          "bid_id": "7-5",
+          "user_id": 4,
           "item_id": 7,
-          "proposal_price": 58.22589409792413,
-          "created": "2016-04-02 9:09:02"
+          "proposal_price": 58.94717690739581,
+          "created": "2016-04-03 5:09:02"
         },
         {
+          "bid_id": "7-6",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 56.127989007619405,
+          "created": "2016-04-03 11:09:02"
+        },
+        {
+          "bid_id": "7-7",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 53.15032612892717,
+          "created": "2016-04-03 6:09:02"
+        },
+        {
+          "bid_id": "7-8",
+          "user_id": 4,
+          "item_id": 7,
+          "proposal_price": 53.530221091747926,
+          "created": "2016-04-03 2:09:02"
+        },
+        {
+          "bid_id": "7-9",
+          "user_id": 3,
+          "item_id": 7,
+          "proposal_price": 55.36755295658717,
+          "created": "2016-04-03 10:09:02"
+        },
+        {
+          "bid_id": "7-10",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 55.738306338046534,
+          "created": "2016-04-03 8:09:02"
+        },
+        {
+          "bid_id": "7-11",
           "user_id": 2,
           "item_id": 7,
-          "proposal_price": 53.29208540681492,
-          "created": "2016-04-02 10:09:02"
+          "proposal_price": 58.95296863811396,
+          "created": "2016-04-03 7:09:02"
+        },
+        {
+          "bid_id": "7-12",
+          "user_id": 3,
+          "item_id": 7,
+          "proposal_price": 54.808807734321555,
+          "created": "2016-04-03 7:09:02"
+        },
+        {
+          "bid_id": "7-13",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 65.29190653866898,
+          "created": "2016-04-03 8:09:02"
+        },
+        {
+          "bid_id": "7-14",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 63.96280954879829,
+          "created": "2016-04-03 10:09:02"
+        },
+        {
+          "bid_id": "7-15",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 61.36753833573417,
+          "created": "2016-04-04 1:09:02"
+        },
+        {
+          "bid_id": "7-16",
+          "user_id": 4,
+          "item_id": 7,
+          "proposal_price": 66.85406564842685,
+          "created": "2016-04-04 5:09:02"
+        },
+        {
+          "bid_id": "7-17",
+          "user_id": 3,
+          "item_id": 7,
+          "proposal_price": 56.26940512419891,
+          "created": "2016-04-04 10:09:02"
+        },
+        {
+          "bid_id": "7-18",
+          "user_id": 0,
+          "item_id": 7,
+          "proposal_price": 65.22367678112761,
+          "created": "2016-04-05 4:09:02"
+        },
+        {
+          "bid_id": "7-19",
+          "user_id": 3,
+          "item_id": 7,
+          "proposal_price": 58.24173561530506,
+          "created": "2016-04-05 11:09:02"
         }
+      ],
+      "users_bidding": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        2,
+        3,
+        4
       ]
     },
     {
@@ -1120,7 +912,7 @@
       "title": "Handmade Black Baroque Pearl \"Princess Jewels\" Earrings",
       "description": "Handmade Black Baroque Pearl &quot;Princess Jewels&quot; Earrings",
       "created": "2019-04-29 10:03:31",
-      "updated": "2019-04-30 10:03:31",
+      "updated": "2019-04-30 8:03:31",
       "end_time": "2019-05-07 10:03:31",
       "location": "United States",
       "price": 35,
@@ -1130,275 +922,48 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 35.016366704392205,
-          "created": "2019-04-29 10:03:31"
-        },
-        {
+          "bid_id": "8-0",
           "user_id": 1,
           "item_id": 8,
-          "proposal_price": 35.139153996828576,
-          "created": "2019-04-29 11:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 36.23258260394079,
-          "created": "2019-04-29 12:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 35.524874898504784,
-          "created": "2019-04-29 1:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 38.50618576092768,
-          "created": "2019-04-29 2:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 37.801332651335926,
-          "created": "2019-04-29 3:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 40.038264293489185,
-          "created": "2019-04-29 4:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 36.872866102073544,
-          "created": "2019-04-29 5:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 43.957043115133004,
-          "created": "2019-04-29 6:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 38.4160801500823,
-          "created": "2019-04-29 7:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 38.52875862940257,
-          "created": "2019-04-29 8:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 45.773326563828235,
-          "created": "2019-04-29 9:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 42.92654688635309,
-          "created": "2019-04-29 10:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 45.78502196956633,
-          "created": "2019-04-29 11:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 48.34845153668586,
-          "created": "2019-04-30 12:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 50.29227726439713,
-          "created": "2019-04-30 1:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 37.050482108307634,
-          "created": "2019-04-30 2:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 44.84717324102091,
-          "created": "2019-04-30 3:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 36.38065173086721,
-          "created": "2019-04-30 4:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 35.978914444201145,
-          "created": "2019-04-30 5:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 47.67261972723584,
-          "created": "2019-04-30 6:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 40.927606954570344,
-          "created": "2019-04-30 7:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 46.6136986039581,
-          "created": "2019-04-30 8:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 40.93069998527756,
-          "created": "2019-04-30 9:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 55.08075460928697,
+          "proposal_price": 35.43206920577323,
           "created": "2019-04-30 10:03:31"
         },
         {
-          "user_id": 3,
+          "bid_id": "8-1",
+          "user_id": 4,
           "item_id": 8,
-          "proposal_price": 39.98382873601837,
+          "proposal_price": 36.819450466742964,
           "created": "2019-04-30 11:03:31"
         },
         {
+          "bid_id": "8-2",
           "user_id": 1,
           "item_id": 8,
-          "proposal_price": 49.74598623284279,
-          "created": "2019-04-30 12:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 42.72326181238798,
+          "proposal_price": 37.95164633864872,
           "created": "2019-04-30 1:03:31"
         },
         {
+          "bid_id": "8-3",
           "user_id": 1,
           "item_id": 8,
-          "proposal_price": 45.73069988259596,
-          "created": "2019-04-30 2:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 48.762712974519324,
-          "created": "2019-04-30 3:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 57.088177513881945,
+          "proposal_price": 37.10722871323808,
           "created": "2019-04-30 4:03:31"
         },
         {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 40.816501617790124,
-          "created": "2019-04-30 5:03:31"
-        },
-        {
+          "bid_id": "8-4",
           "user_id": 1,
           "item_id": 8,
-          "proposal_price": 45.060659573954055,
-          "created": "2019-04-30 6:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 51.01564602949539,
-          "created": "2019-04-30 7:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 67.226479607764,
+          "proposal_price": 39.20235468186993,
           "created": "2019-04-30 8:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 38.30904770885686,
-          "created": "2019-04-30 9:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 46.775735923766504,
-          "created": "2019-04-30 10:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 50.90754610700704,
-          "created": "2019-04-30 11:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 71.27046085563444,
-          "created": "2019-05-01 12:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 50.74373128381065,
-          "created": "2019-05-01 1:03:31"
-        },
-        {
-          "user_id": 1,
-          "item_id": 8,
-          "proposal_price": 40.86037210294734,
-          "created": "2019-05-01 2:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 49.240755480987545,
-          "created": "2019-05-01 3:03:31"
-        },
-        {
-          "user_id": 0,
-          "item_id": 8,
-          "proposal_price": 44.92281898199861,
-          "created": "2019-05-01 4:03:31"
-        },
-        {
-          "user_id": 4,
-          "item_id": 8,
-          "proposal_price": 43.60291643164588,
-          "created": "2019-05-01 5:03:31"
-        },
-        {
-          "user_id": 3,
-          "item_id": 8,
-          "proposal_price": 52.53849262635572,
-          "created": "2019-05-01 6:03:31"
         }
+      ],
+      "users_bidding": [
+        1,
+        4
+      ],
+      "users_favorite": [
+        1,
+        4
       ]
     },
     {
@@ -1409,7 +974,7 @@
       "title": "Native American Handmade Floral Seed Bead Hair Barrette",
       "description": "Native American Handmade Floral Seed Bead Hair Barrette",
       "created": "2019-04-13 7:23:54",
-      "updated": "2019-04-14 7:23:54",
+      "updated": "2019-04-14 5:23:54",
       "end_time": "2019-04-21 7:23:54",
       "location": "United States",
       "price": 35,
@@ -1419,251 +984,51 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 35.97887462864926,
-          "created": "2019-04-13 7:23:54"
-        },
-        {
+          "bid_id": "9-0",
           "user_id": 0,
           "item_id": 9,
-          "proposal_price": 36.60804892427559,
-          "created": "2019-04-13 8:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 35.69493716600412,
-          "created": "2019-04-13 9:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 36.332581760368065,
-          "created": "2019-04-13 10:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 38.14232585951717,
-          "created": "2019-04-13 11:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 35.763071764421035,
-          "created": "2019-04-13 12:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 40.73583598053529,
-          "created": "2019-04-13 1:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 35.70815174025224,
-          "created": "2019-04-13 2:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 41.95717973702453,
-          "created": "2019-04-13 3:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 39.595911051430846,
-          "created": "2019-04-13 4:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 41.25539208666461,
-          "created": "2019-04-13 5:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 40.180045978168124,
-          "created": "2019-04-13 6:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 37.721819167496065,
-          "created": "2019-04-13 7:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 37.6732432707215,
-          "created": "2019-04-13 8:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 39.42080693245651,
-          "created": "2019-04-13 9:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 48.707764035779135,
-          "created": "2019-04-13 10:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 36.83802124928313,
-          "created": "2019-04-13 11:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 41.48244121871462,
-          "created": "2019-04-14 12:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 47.27480501927547,
-          "created": "2019-04-14 1:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 52.29237373196127,
-          "created": "2019-04-14 2:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 49.14838188702257,
-          "created": "2019-04-14 3:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 56.87617320971746,
-          "created": "2019-04-14 4:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 50.51484822646943,
-          "created": "2019-04-14 5:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 54.21768415688322,
-          "created": "2019-04-14 6:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 43.70625617115083,
+          "proposal_price": 35.466880494603764,
           "created": "2019-04-14 7:23:54"
         },
         {
-          "user_id": 0,
+          "bid_id": "9-1",
+          "user_id": 3,
           "item_id": 9,
-          "proposal_price": 57.26292792659002,
+          "proposal_price": 36.73068506482677,
           "created": "2019-04-14 8:23:54"
         },
         {
-          "user_id": 3,
+          "bid_id": "9-2",
+          "user_id": 1,
           "item_id": 9,
-          "proposal_price": 36.16946762137457,
-          "created": "2019-04-14 9:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 42.90356923604713,
+          "proposal_price": 35.38981063940933,
           "created": "2019-04-14 10:23:54"
         },
         {
-          "user_id": 1,
+          "bid_id": "9-3",
+          "user_id": 4,
           "item_id": 9,
-          "proposal_price": 43.52053455394549,
-          "created": "2019-04-14 11:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 53.07030116436975,
-          "created": "2019-04-14 12:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 60.33313153616176,
+          "proposal_price": 35.00029686120818,
           "created": "2019-04-14 1:23:54"
         },
         {
+          "bid_id": "9-4",
           "user_id": 1,
           "item_id": 9,
-          "proposal_price": 57.832868338289735,
-          "created": "2019-04-14 2:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 35.35814230235554,
-          "created": "2019-04-14 3:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 37.95634518521553,
-          "created": "2019-04-14 4:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 59.450036229975446,
+          "proposal_price": 36.354295620405814,
           "created": "2019-04-14 5:23:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 9,
-          "proposal_price": 41.05957726938812,
-          "created": "2019-04-14 6:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 43.93102638784913,
-          "created": "2019-04-14 7:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 56.34783892761226,
-          "created": "2019-04-14 8:23:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 9,
-          "proposal_price": 37.22665526255625,
-          "created": "2019-04-14 9:23:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 9,
-          "proposal_price": 73.78003023573925,
-          "created": "2019-04-14 10:23:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 9,
-          "proposal_price": 40.12844509170953,
-          "created": "2019-04-14 11:23:54"
         }
+      ],
+      "users_bidding": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        1,
+        3
       ]
     },
     {
@@ -1674,7 +1039,7 @@
       "title": "Native American Handmade \"OOAK\" Genuine Red Fish Scales and Turquoise ",
       "description": "Native American Handmade &quot;OOAK&quot; Genuine Red Fish Scales and Turquoise ",
       "created": "2019-04-11 12:09:54",
-      "updated": "2019-04-12 12:09:54",
+      "updated": "2019-04-12 7:09:54",
       "end_time": "2019-04-19 12:09:54",
       "location": "United States",
       "price": 60,
@@ -1684,203 +1049,93 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 60.91482576944666,
-          "created": "2019-04-11 12:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 61.18733458503801,
-          "created": "2019-04-11 1:09:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 60.53927558163208,
-          "created": "2019-04-11 2:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 61.001321409533396,
-          "created": "2019-04-11 3:09:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 62.342522884417086,
-          "created": "2019-04-11 4:09:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 60.07513010146506,
-          "created": "2019-04-11 5:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 64.30166739730039,
-          "created": "2019-04-11 6:09:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 10,
-          "proposal_price": 60.110915744605734,
-          "created": "2019-04-11 7:09:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 10,
-          "proposal_price": 65.23319846072272,
-          "created": "2019-04-11 8:09:54"
-        },
-        {
+          "bid_id": "10-0",
           "user_id": 1,
           "item_id": 10,
-          "proposal_price": 68.20515176619936,
-          "created": "2019-04-11 9:09:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 10,
-          "proposal_price": 61.302415340700925,
-          "created": "2019-04-11 10:09:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 10,
-          "proposal_price": 67.99763391845015,
-          "created": "2019-04-11 11:09:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 10,
-          "proposal_price": 63.102283346555495,
+          "proposal_price": 60.635267673914534,
           "created": "2019-04-12 12:09:54"
         },
         {
+          "bid_id": "10-1",
           "user_id": 0,
           "item_id": 10,
-          "proposal_price": 61.134507916731806,
+          "proposal_price": 61.90284452798049,
           "created": "2019-04-12 1:09:54"
         },
         {
-          "user_id": 4,
+          "bid_id": "10-2",
+          "user_id": 3,
           "item_id": 10,
-          "proposal_price": 64.31369232828375,
-          "created": "2019-04-12 2:09:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 72.68988430619069,
+          "proposal_price": 60.06755457431018,
           "created": "2019-04-12 3:09:54"
         },
         {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 65.757564841062,
-          "created": "2019-04-12 4:09:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 10,
-          "proposal_price": 62.2973561462186,
-          "created": "2019-04-12 5:09:54"
-        },
-        {
+          "bid_id": "10-3",
           "user_id": 1,
           "item_id": 10,
-          "proposal_price": 77.85874136464392,
+          "proposal_price": 60.54244917361042,
           "created": "2019-04-12 6:09:54"
         },
         {
-          "user_id": 3,
+          "bid_id": "10-4",
+          "user_id": 4,
           "item_id": 10,
-          "proposal_price": 67.81655488064698,
-          "created": "2019-04-12 7:09:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 10,
-          "proposal_price": 77.57741590365062,
-          "created": "2019-04-12 8:09:54"
-        },
-        {
-          "user_id": 0,
-          "item_id": 10,
-          "proposal_price": 71.3118902032778,
-          "created": "2019-04-12 9:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 70.98666499203712,
+          "proposal_price": 62.33560875179712,
           "created": "2019-04-12 10:09:54"
         },
         {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 73.95113931096259,
-          "created": "2019-04-12 11:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 80.21326049245171,
-          "created": "2019-04-12 12:09:54"
-        },
-        {
-          "user_id": 4,
-          "item_id": 10,
-          "proposal_price": 85.55106502581611,
-          "created": "2019-04-12 1:09:54"
-        },
-        {
+          "bid_id": "10-5",
           "user_id": 1,
           "item_id": 10,
-          "proposal_price": 76.13541047002087,
-          "created": "2019-04-12 2:09:54"
-        },
-        {
-          "user_id": 1,
-          "item_id": 10,
-          "proposal_price": 81.05610725965994,
+          "proposal_price": 65.14096433949089,
           "created": "2019-04-12 3:09:54"
         },
         {
+          "bid_id": "10-6",
           "user_id": 3,
           "item_id": 10,
-          "proposal_price": 61.39371303171134,
+          "proposal_price": 64.30619413108349,
+          "created": "2019-04-12 9:09:54"
+        },
+        {
+          "bid_id": "10-7",
+          "user_id": 4,
+          "item_id": 10,
+          "proposal_price": 67.85167155147121,
           "created": "2019-04-12 4:09:54"
         },
         {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 67.49858159287948,
-          "created": "2019-04-12 5:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 61.778350889329225,
-          "created": "2019-04-12 6:09:54"
-        },
-        {
-          "user_id": 3,
-          "item_id": 10,
-          "proposal_price": 71.04935073801846,
-          "created": "2019-04-12 7:09:54"
-        },
-        {
+          "bid_id": "10-8",
           "user_id": 1,
           "item_id": 10,
-          "proposal_price": 87.32965771565571,
-          "created": "2019-04-12 8:09:54"
+          "proposal_price": 63.135042259279544,
+          "created": "2019-04-12 12:09:54"
+        },
+        {
+          "bid_id": "10-9",
+          "user_id": 0,
+          "item_id": 10,
+          "proposal_price": 69.29282447871725,
+          "created": "2019-04-12 9:09:54"
+        },
+        {
+          "bid_id": "10-10",
+          "user_id": 4,
+          "item_id": 10,
+          "proposal_price": 62.618095049491124,
+          "created": "2019-04-12 7:09:54"
         }
+      ],
+      "users_bidding": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        1,
+        3
       ]
     },
     {
@@ -1891,7 +1146,7 @@
       "title": "Native American \"OOAK\" Turquoise Nugget Necklace/Chocker",
       "description": "Native American &quot;OOAK&quot; Turquoise Nugget Necklace/Chocker",
       "created": "2019-04-04 1:19:46",
-      "updated": "2019-04-05 1:19:46",
+      "updated": "2019-04-14 3:19:46",
       "end_time": "2019-04-12 1:19:46",
       "location": "United States",
       "price": 35,
@@ -1901,239 +1156,205 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 35.608696056560454,
-          "created": "2019-04-04 1:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 35.824945561662815,
-          "created": "2019-04-04 2:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 36.318240176839446,
-          "created": "2019-04-04 3:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 36.40198316687737,
-          "created": "2019-04-04 4:19:46"
-        },
-        {
-          "user_id": 0,
-          "item_id": 11,
-          "proposal_price": 35.043054571254,
-          "created": "2019-04-04 5:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 38.41627159710664,
-          "created": "2019-04-04 6:19:46"
-        },
-        {
+          "bid_id": "11-0",
           "user_id": 4,
           "item_id": 11,
-          "proposal_price": 35.20221622765453,
-          "created": "2019-04-04 7:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 41.698742275991584,
-          "created": "2019-04-04 8:19:46"
-        },
-        {
-          "user_id": 4,
-          "item_id": 11,
-          "proposal_price": 42.23335438610981,
-          "created": "2019-04-04 9:19:46"
-        },
-        {
-          "user_id": 1,
-          "item_id": 11,
-          "proposal_price": 42.22687078532486,
-          "created": "2019-04-04 10:19:46"
-        },
-        {
-          "user_id": 1,
-          "item_id": 11,
-          "proposal_price": 41.21608509091901,
-          "created": "2019-04-04 11:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 42.1807349213453,
-          "created": "2019-04-04 12:19:46"
-        },
-        {
-          "user_id": 0,
-          "item_id": 11,
-          "proposal_price": 40.48408496780563,
-          "created": "2019-04-04 1:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 44.088769889857815,
-          "created": "2019-04-04 2:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 41.71933856283766,
-          "created": "2019-04-04 3:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 36.52291706404941,
-          "created": "2019-04-04 4:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 49.81270081539009,
-          "created": "2019-04-04 5:19:46"
-        },
-        {
-          "user_id": 0,
-          "item_id": 11,
-          "proposal_price": 35.075984437269966,
-          "created": "2019-04-04 6:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 38.46481701311586,
-          "created": "2019-04-04 7:19:46"
-        },
-        {
-          "user_id": 0,
-          "item_id": 11,
-          "proposal_price": 43.06895398359332,
-          "created": "2019-04-04 8:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 45.15325056605911,
-          "created": "2019-04-04 9:19:46"
-        },
-        {
-          "user_id": 4,
-          "item_id": 11,
-          "proposal_price": 41.39558044208563,
-          "created": "2019-04-04 10:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 55.827908778547325,
-          "created": "2019-04-04 11:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 58.353837801716914,
-          "created": "2019-04-05 12:19:46"
-        },
-        {
-          "user_id": 4,
-          "item_id": 11,
-          "proposal_price": 59.928897740224144,
+          "proposal_price": 35.409092722027246,
           "created": "2019-04-05 1:19:46"
         },
         {
-          "user_id": 4,
+          "bid_id": "11-1",
+          "user_id": 3,
           "item_id": 11,
-          "proposal_price": 49.587967514421564,
+          "proposal_price": 36.06739695301688,
           "created": "2019-04-05 2:19:46"
         },
         {
-          "user_id": 4,
+          "bid_id": "11-2",
+          "user_id": 3,
           "item_id": 11,
-          "proposal_price": 54.6142761603694,
-          "created": "2019-04-05 3:19:46"
-        },
-        {
-          "user_id": 0,
-          "item_id": 11,
-          "proposal_price": 54.05902502182175,
+          "proposal_price": 37.75794169101201,
           "created": "2019-04-05 4:19:46"
         },
         {
-          "user_id": 3,
+          "bid_id": "11-3",
+          "user_id": 4,
           "item_id": 11,
-          "proposal_price": 37.71871579370969,
-          "created": "2019-04-05 5:19:46"
-        },
-        {
-          "user_id": 1,
-          "item_id": 11,
-          "proposal_price": 52.45533513665607,
-          "created": "2019-04-05 6:19:46"
-        },
-        {
-          "user_id": 1,
-          "item_id": 11,
-          "proposal_price": 58.328170954535096,
+          "proposal_price": 37.995423907362245,
           "created": "2019-04-05 7:19:46"
         },
         {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 35.73552205966113,
-          "created": "2019-04-05 8:19:46"
-        },
-        {
+          "bid_id": "11-4",
           "user_id": 4,
           "item_id": 11,
-          "proposal_price": 65.01591965005856,
-          "created": "2019-04-05 9:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 64.74136315513101,
-          "created": "2019-04-05 10:19:46"
-        },
-        {
-          "user_id": 3,
-          "item_id": 11,
-          "proposal_price": 47.6295042384782,
+          "proposal_price": 35.63731539043685,
           "created": "2019-04-05 11:19:46"
         },
         {
-          "user_id": 3,
+          "bid_id": "11-5",
+          "user_id": 1,
           "item_id": 11,
-          "proposal_price": 61.694135794423026,
-          "created": "2019-04-05 12:19:46"
+          "proposal_price": 40.86704872555533,
+          "created": "2019-04-05 4:19:46"
         },
         {
+          "bid_id": "11-6",
           "user_id": 3,
           "item_id": 11,
-          "proposal_price": 71.00768225471504,
+          "proposal_price": 38.51385016488855,
+          "created": "2019-04-05 10:19:46"
+        },
+        {
+          "bid_id": "11-7",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 37.53765054840762,
+          "created": "2019-04-05 5:19:46"
+        },
+        {
+          "bid_id": "11-8",
+          "user_id": 3,
+          "item_id": 11,
+          "proposal_price": 36.74266215299242,
           "created": "2019-04-05 1:19:46"
         },
         {
-          "user_id": 3,
+          "bid_id": "11-9",
+          "user_id": 1,
           "item_id": 11,
-          "proposal_price": 35.53451365740528,
-          "created": "2019-04-05 2:19:46"
+          "proposal_price": 41.99803880809417,
+          "created": "2019-04-05 10:19:46"
         },
         {
+          "bid_id": "11-10",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 37.92599213361146,
+          "created": "2019-04-05 8:19:46"
+        },
+        {
+          "bid_id": "11-11",
           "user_id": 3,
           "item_id": 11,
-          "proposal_price": 67.90965031582076,
-          "created": "2019-04-05 3:19:46"
+          "proposal_price": 44.674627296029556,
+          "created": "2019-04-05 7:19:46"
+        },
+        {
+          "bid_id": "11-12",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 36.75784880980162,
+          "created": "2019-04-05 7:19:46"
+        },
+        {
+          "bid_id": "11-13",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 35.90038003855676,
+          "created": "2019-04-05 8:19:46"
+        },
+        {
+          "bid_id": "11-14",
+          "user_id": 0,
+          "item_id": 11,
+          "proposal_price": 45.347328377696854,
+          "created": "2019-04-05 10:19:46"
+        },
+        {
+          "bid_id": "11-15",
+          "user_id": 3,
+          "item_id": 11,
+          "proposal_price": 40.041049894033684,
+          "created": "2019-04-06 1:19:46"
+        },
+        {
+          "bid_id": "11-16",
+          "user_id": 4,
+          "item_id": 11,
+          "proposal_price": 41.10821802231177,
+          "created": "2019-04-06 5:19:46"
+        },
+        {
+          "bid_id": "11-17",
+          "user_id": 0,
+          "item_id": 11,
+          "proposal_price": 38.17186730940009,
+          "created": "2019-04-06 10:19:46"
+        },
+        {
+          "bid_id": "11-18",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 47.4264079603834,
+          "created": "2019-04-07 3:19:46"
+        },
+        {
+          "bid_id": "11-19",
+          "user_id": 4,
+          "item_id": 11,
+          "proposal_price": 51.57545942310754,
+          "created": "2019-04-07 10:19:46"
+        },
+        {
+          "bid_id": "11-20",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 37.241011132859825,
+          "created": "2019-04-08 6:19:46"
+        },
+        {
+          "bid_id": "11-21",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 50.38983446825361,
+          "created": "2019-04-09 3:19:46"
+        },
+        {
+          "bid_id": "11-22",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 48.898191135565,
+          "created": "2019-04-10 1:19:46"
+        },
+        {
+          "bid_id": "11-23",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 37.301410461475896,
+          "created": "2019-04-11 12:19:46"
+        },
+        {
+          "bid_id": "11-24",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 37.75262379938002,
+          "created": "2019-04-12 12:19:46"
+        },
+        {
+          "bid_id": "11-25",
+          "user_id": 0,
+          "item_id": 11,
+          "proposal_price": 46.57538086355417,
+          "created": "2019-04-13 1:19:46"
+        },
+        {
+          "bid_id": "11-26",
+          "user_id": 1,
+          "item_id": 11,
+          "proposal_price": 48.79375538060759,
+          "created": "2019-04-14 3:19:46"
         }
+      ],
+      "users_bidding": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "users_favorite": [
+        0,
+        1,
+        3
       ]
     },
     {
@@ -2154,119 +1375,76 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 0,
-          "item_id": 12,
-          "proposal_price": 25.957845776577667,
-          "created": "2010-09-26 7:57:36"
-        },
-        {
+          "bid_id": "12-0",
           "user_id": 2,
           "item_id": 12,
-          "proposal_price": 26.769990603346663,
-          "created": "2010-09-26 8:57:36"
+          "proposal_price": 25.527886638570365,
+          "created": "2010-09-27 7:57:36"
         },
         {
-          "user_id": 4,
-          "item_id": 12,
-          "proposal_price": 27.14563063830918,
-          "created": "2010-09-26 9:57:36"
-        },
-        {
+          "bid_id": "12-1",
           "user_id": 0,
           "item_id": 12,
-          "proposal_price": 26.370207257908525,
-          "created": "2010-09-26 10:57:36"
+          "proposal_price": 25.538769670988863,
+          "created": "2010-09-27 8:57:36"
         },
         {
-          "user_id": 0,
-          "item_id": 12,
-          "proposal_price": 29.313790309677284,
-          "created": "2010-09-26 11:57:36"
-        },
-        {
+          "bid_id": "12-2",
           "user_id": 2,
           "item_id": 12,
-          "proposal_price": 28.924202691526023,
-          "created": "2010-09-26 12:57:36"
+          "proposal_price": 25.190392539752136,
+          "created": "2010-09-27 10:57:36"
         },
         {
-          "user_id": 0,
-          "item_id": 12,
-          "proposal_price": 27.933091090564776,
-          "created": "2010-09-26 1:57:36"
-        },
-        {
-          "user_id": 4,
-          "item_id": 12,
-          "proposal_price": 30.914186025276926,
-          "created": "2010-09-26 2:57:36"
-        },
-        {
+          "bid_id": "12-3",
           "user_id": 2,
           "item_id": 12,
-          "proposal_price": 28.254387975682526,
-          "created": "2010-09-26 3:57:36"
-        },
-        {
-          "user_id": 2,
-          "item_id": 12,
-          "proposal_price": 28.57854819927355,
-          "created": "2010-09-26 4:57:36"
-        },
-        {
-          "user_id": 1,
-          "item_id": 12,
-          "proposal_price": 30.448700093824055,
-          "created": "2010-09-26 5:57:36"
-        },
-        {
-          "user_id": 4,
-          "item_id": 12,
-          "proposal_price": 35.97213302499468,
-          "created": "2010-09-26 6:57:36"
-        },
-        {
-          "user_id": 4,
-          "item_id": 12,
-          "proposal_price": 25.988071414021142,
-          "created": "2010-09-26 7:57:36"
-        },
-        {
-          "user_id": 1,
-          "item_id": 12,
-          "proposal_price": 37.800502938605376,
-          "created": "2010-09-26 8:57:36"
-        },
-        {
-          "user_id": 0,
-          "item_id": 12,
-          "proposal_price": 26.06957850387465,
-          "created": "2010-09-26 9:57:36"
-        },
-        {
-          "user_id": 2,
-          "item_id": 12,
-          "proposal_price": 31.75737208598564,
-          "created": "2010-09-26 10:57:36"
-        },
-        {
-          "user_id": 1,
-          "item_id": 12,
-          "proposal_price": 36.06227907559978,
-          "created": "2010-09-26 11:57:36"
-        },
-        {
-          "user_id": 4,
-          "item_id": 12,
-          "proposal_price": 34.85047380628788,
-          "created": "2010-09-27 12:57:36"
-        },
-        {
-          "user_id": 0,
-          "item_id": 12,
-          "proposal_price": 42.22833507208824,
+          "proposal_price": 26.264424377532436,
           "created": "2010-09-27 1:57:36"
+        },
+        {
+          "bid_id": "12-4",
+          "user_id": 2,
+          "item_id": 12,
+          "proposal_price": 28.34193020583831,
+          "created": "2010-09-27 5:57:36"
+        },
+        {
+          "bid_id": "12-5",
+          "user_id": 0,
+          "item_id": 12,
+          "proposal_price": 26.848584249741442,
+          "created": "2010-09-27 10:57:36"
+        },
+        {
+          "bid_id": "12-6",
+          "user_id": 0,
+          "item_id": 12,
+          "proposal_price": 31.990702490788387,
+          "created": "2010-09-27 4:57:36"
+        },
+        {
+          "bid_id": "12-7",
+          "user_id": 0,
+          "item_id": 12,
+          "proposal_price": 30.58471432627189,
+          "created": "2010-09-27 11:57:36"
+        },
+        {
+          "bid_id": "12-8",
+          "user_id": 2,
+          "item_id": 12,
+          "proposal_price": 26.56801710892357,
+          "created": "2010-09-27 7:57:36"
         }
+      ],
+      "users_bidding": [
+        0,
+        2
+      ],
+      "users_favorite": [
+        0,
+        2
       ]
     },
     {
@@ -2287,257 +1465,77 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 2,
-          "item_id": 13,
-          "proposal_price": 30.756000623763008,
-          "created": "2012-06-23 5:21:11"
-        },
-        {
-          "user_id": 1,
-          "item_id": 13,
-          "proposal_price": 30.39213127456932,
-          "created": "2012-06-23 6:21:11"
-        },
-        {
+          "bid_id": "13-0",
           "user_id": 0,
           "item_id": 13,
-          "proposal_price": 32.254893694486455,
-          "created": "2012-06-23 7:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 30.76119612308526,
-          "created": "2012-06-23 8:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 31.242768309226758,
-          "created": "2012-06-23 9:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 30.688669317918567,
-          "created": "2012-06-23 10:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 36.05839938806082,
-          "created": "2012-06-23 11:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 33.488430448096075,
-          "created": "2012-06-23 12:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 32.130918925010825,
-          "created": "2012-06-23 1:21:11"
-        },
-        {
-          "user_id": 1,
-          "item_id": 13,
-          "proposal_price": 31.326883053892498,
-          "created": "2012-06-23 2:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 33.00623909202524,
-          "created": "2012-06-23 3:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 41.31806746438009,
-          "created": "2012-06-23 4:21:11"
-        },
-        {
-          "user_id": 2,
-          "item_id": 13,
-          "proposal_price": 34.9780055691937,
-          "created": "2012-06-23 5:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 42.51564315081775,
-          "created": "2012-06-23 6:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 32.10718139454103,
-          "created": "2012-06-23 7:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 34.83556266778226,
-          "created": "2012-06-23 8:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 31.485667077172085,
-          "created": "2012-06-23 9:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 34.930277536894934,
-          "created": "2012-06-23 10:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 31.049082359901437,
-          "created": "2012-06-23 11:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 33.507420429123385,
-          "created": "2012-06-24 12:21:11"
-        },
-        {
-          "user_id": 1,
-          "item_id": 13,
-          "proposal_price": 34.691761582704345,
-          "created": "2012-06-24 1:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 37.39596862255921,
-          "created": "2012-06-24 2:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 30.12234374904561,
-          "created": "2012-06-24 3:21:11"
-        },
-        {
-          "user_id": 2,
-          "item_id": 13,
-          "proposal_price": 46.532420630143264,
-          "created": "2012-06-24 4:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 34.845003285513805,
+          "proposal_price": 30.608160942999742,
           "created": "2012-06-24 5:21:11"
         },
         {
-          "user_id": 0,
+          "bid_id": "13-1",
+          "user_id": 1,
           "item_id": 13,
-          "proposal_price": 38.96778991035324,
+          "proposal_price": 31.400990481395095,
           "created": "2012-06-24 6:21:11"
         },
         {
+          "bid_id": "13-2",
           "user_id": 0,
           "item_id": 13,
-          "proposal_price": 47.90772371640721,
-          "created": "2012-06-24 7:21:11"
-        },
-        {
-          "user_id": 2,
-          "item_id": 13,
-          "proposal_price": 54.608910929159805,
+          "proposal_price": 32.41957163863483,
           "created": "2012-06-24 8:21:11"
         },
         {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 52.43640610741721,
-          "created": "2012-06-24 9:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 37.721168664128804,
-          "created": "2012-06-24 10:21:11"
-        },
-        {
+          "bid_id": "13-3",
           "user_id": 2,
           "item_id": 13,
-          "proposal_price": 57.70971279556585,
+          "proposal_price": 31.382044115809876,
           "created": "2012-06-24 11:21:11"
         },
         {
-          "user_id": 1,
+          "bid_id": "13-4",
+          "user_id": 0,
           "item_id": 13,
-          "proposal_price": 55.76418833702785,
-          "created": "2012-06-24 12:21:11"
-        },
-        {
-          "user_id": 2,
-          "item_id": 13,
-          "proposal_price": 45.60190541249092,
-          "created": "2012-06-24 1:21:11"
-        },
-        {
-          "user_id": 1,
-          "item_id": 13,
-          "proposal_price": 52.351154728196896,
-          "created": "2012-06-24 2:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 46.56137161496332,
+          "proposal_price": 32.676462376652005,
           "created": "2012-06-24 3:21:11"
         },
         {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 60.485166920642364,
-          "created": "2012-06-24 4:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 49.190358928831344,
-          "created": "2012-06-24 5:21:11"
-        },
-        {
-          "user_id": 4,
-          "item_id": 13,
-          "proposal_price": 39.67070196632163,
-          "created": "2012-06-24 6:21:11"
-        },
-        {
+          "bid_id": "13-5",
           "user_id": 1,
           "item_id": 13,
-          "proposal_price": 54.78617428543971,
-          "created": "2012-06-24 7:21:11"
-        },
-        {
-          "user_id": 0,
-          "item_id": 13,
-          "proposal_price": 65.78283768092334,
+          "proposal_price": 31.312426596001025,
           "created": "2012-06-24 8:21:11"
         },
         {
-          "user_id": 4,
+          "bid_id": "13-6",
+          "user_id": 2,
           "item_id": 13,
-          "proposal_price": 69.45069622047215,
+          "proposal_price": 35.624664140587335,
+          "created": "2012-06-24 2:21:11"
+        },
+        {
+          "bid_id": "13-7",
+          "user_id": 2,
+          "item_id": 13,
+          "proposal_price": 35.75582288929774,
           "created": "2012-06-24 9:21:11"
         },
         {
-          "user_id": 2,
+          "bid_id": "13-8",
+          "user_id": 1,
           "item_id": 13,
-          "proposal_price": 31.465910690509652,
-          "created": "2012-06-24 10:21:11"
+          "proposal_price": 30.777872234272987,
+          "created": "2012-06-24 5:21:11"
         }
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2
+      ],
+      "users_favorite": [
+        1,
+        2
       ]
     },
     {
@@ -2548,7 +1546,7 @@
       "title": "Hand/ wrist warmers,fingerless gloves, in med/dark brown Alpaca",
       "description": "Hand/ wrist warmers,fingerless gloves, in med/dark brown Alpaca",
       "created": "2011-01-17 3:28:03",
-      "updated": "2011-01-18 3:28:03",
+      "updated": "2011-01-18 6:28:03",
       "end_time": "2011-01-25 3:28:03",
       "location": "United States",
       "price": 35,
@@ -2558,42 +1556,32 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 4,
-          "item_id": 14,
-          "proposal_price": 35.58809485183206,
-          "created": "2011-01-17 3:28:03"
-        },
-        {
-          "user_id": 4,
-          "item_id": 14,
-          "proposal_price": 35.86403997819211,
-          "created": "2011-01-17 4:28:03"
-        },
-        {
-          "user_id": 0,
-          "item_id": 14,
-          "proposal_price": 37.27266179115194,
-          "created": "2011-01-17 5:28:03"
-        },
-        {
+          "bid_id": "14-0",
           "user_id": 2,
           "item_id": 14,
-          "proposal_price": 38.389313747173915,
-          "created": "2011-01-17 6:28:03"
+          "proposal_price": 35.159532013033406,
+          "created": "2011-01-18 3:28:03"
         },
         {
-          "user_id": 4,
+          "bid_id": "14-1",
+          "user_id": 1,
           "item_id": 14,
-          "proposal_price": 38.5683675262466,
-          "created": "2011-01-17 7:28:03"
+          "proposal_price": 35.13707872960591,
+          "created": "2011-01-18 4:28:03"
         },
         {
-          "user_id": 2,
+          "bid_id": "14-2",
+          "user_id": 1,
           "item_id": 14,
-          "proposal_price": 37.85366922132342,
-          "created": "2011-01-17 8:28:03"
+          "proposal_price": 35.22669946025258,
+          "created": "2011-01-18 6:28:03"
         }
-      ]
+      ],
+      "users_bidding": [
+        1,
+        2
+      ],
+      "users_favorite": []
     },
     {
       "id": 15,
@@ -2603,7 +1591,7 @@
       "title": "crocheted mittens in greens and blues",
       "description": "crocheted mittens in greens and blues",
       "created": "2010-09-26 8:28:21",
-      "updated": "2010-09-27 8:28:21",
+      "updated": "2010-10-01 2:28:21",
       "end_time": "2010-10-04 8:28:21",
       "location": "United States",
       "price": 25,
@@ -2613,18 +1601,160 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 1,
+          "bid_id": "15-0",
+          "user_id": 2,
           "item_id": 15,
-          "proposal_price": 25.447805254229376,
-          "created": "2010-09-26 8:28:21"
+          "proposal_price": 25.692912481624077,
+          "created": "2010-09-27 8:28:21"
         },
         {
+          "bid_id": "15-1",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 25.646085637498604,
+          "created": "2010-09-27 9:28:21"
+        },
+        {
+          "bid_id": "15-2",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 27.078299744936878,
+          "created": "2010-09-27 11:28:21"
+        },
+        {
+          "bid_id": "15-3",
           "user_id": 4,
           "item_id": 15,
-          "proposal_price": 25.761019910353166,
-          "created": "2010-09-26 9:28:21"
+          "proposal_price": 28.24455291362232,
+          "created": "2010-09-27 2:28:21"
+        },
+        {
+          "bid_id": "15-4",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 27.73512477809211,
+          "created": "2010-09-27 6:28:21"
+        },
+        {
+          "bid_id": "15-5",
+          "user_id": 0,
+          "item_id": 15,
+          "proposal_price": 28.363352018782255,
+          "created": "2010-09-27 11:28:21"
+        },
+        {
+          "bid_id": "15-6",
+          "user_id": 0,
+          "item_id": 15,
+          "proposal_price": 29.750247081276743,
+          "created": "2010-09-27 5:28:21"
+        },
+        {
+          "bid_id": "15-7",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 25.93127066321413,
+          "created": "2010-09-27 12:28:21"
+        },
+        {
+          "bid_id": "15-8",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 28.452200762522953,
+          "created": "2010-09-27 8:28:21"
+        },
+        {
+          "bid_id": "15-9",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 30.881381444928447,
+          "created": "2010-09-27 5:28:21"
+        },
+        {
+          "bid_id": "15-10",
+          "user_id": 4,
+          "item_id": 15,
+          "proposal_price": 30.77187544127247,
+          "created": "2010-09-27 3:28:21"
+        },
+        {
+          "bid_id": "15-11",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 27.387783071594825,
+          "created": "2010-09-27 2:28:21"
+        },
+        {
+          "bid_id": "15-12",
+          "user_id": 4,
+          "item_id": 15,
+          "proposal_price": 25.19938538020412,
+          "created": "2010-09-27 2:28:21"
+        },
+        {
+          "bid_id": "15-13",
+          "user_id": 0,
+          "item_id": 15,
+          "proposal_price": 25.506339988892698,
+          "created": "2010-09-27 3:28:21"
+        },
+        {
+          "bid_id": "15-14",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 37.09505221282144,
+          "created": "2010-09-27 5:28:21"
+        },
+        {
+          "bid_id": "15-15",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 40.79566635055974,
+          "created": "2010-09-27 8:28:21"
+        },
+        {
+          "bid_id": "15-16",
+          "user_id": 2,
+          "item_id": 15,
+          "proposal_price": 26.897998056869582,
+          "created": "2010-09-28 12:28:21"
+        },
+        {
+          "bid_id": "15-17",
+          "user_id": 1,
+          "item_id": 15,
+          "proposal_price": 31.864018058382104,
+          "created": "2010-09-29 5:28:21"
+        },
+        {
+          "bid_id": "15-18",
+          "user_id": 1,
+          "item_id": 15,
+          "proposal_price": 32.46633993808457,
+          "created": "2010-09-29 11:28:21"
+        },
+        {
+          "bid_id": "15-19",
+          "user_id": 4,
+          "item_id": 15,
+          "proposal_price": 32.1778771933237,
+          "created": "2010-09-30 6:28:21"
+        },
+        {
+          "bid_id": "15-20",
+          "user_id": 4,
+          "item_id": 15,
+          "proposal_price": 31.655844018931166,
+          "created": "2010-10-01 2:28:21"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "users_favorite": []
     },
     {
       "id": 16,
@@ -2634,7 +1764,7 @@
       "title": "Christmas Quote Wood Vinyl Sign Wall  Hanging Front Door Decor Wreath",
       "description": "Christmas Quote Wood Vinyl Sign Wall  Hanging Front Door Decor Wreath",
       "created": "2017-11-01 11:16:55",
-      "updated": "2017-11-02 11:16:55",
+      "updated": "2017-11-02 8:16:55",
       "end_time": "2017-11-09 11:16:55",
       "location": "United States",
       "price": 15.99,
@@ -2644,78 +1774,83 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 3,
-          "item_id": 16,
-          "proposal_price": 16.081431668618823,
-          "created": "2017-11-01 11:16:55"
-        },
-        {
-          "user_id": 3,
-          "item_id": 16,
-          "proposal_price": 16.130564836329157,
-          "created": "2017-11-01 12:16:55"
-        },
-        {
-          "user_id": 5,
-          "item_id": 16,
-          "proposal_price": 17.051552701790193,
-          "created": "2017-11-01 1:16:55"
-        },
-        {
-          "user_id": 5,
-          "item_id": 16,
-          "proposal_price": 19.284176241837574,
-          "created": "2017-11-01 2:16:55"
-        },
-        {
-          "user_id": 2,
-          "item_id": 16,
-          "proposal_price": 20.764146589861284,
-          "created": "2017-11-01 3:16:55"
-        },
-        {
-          "user_id": 3,
-          "item_id": 16,
-          "proposal_price": 16.562551755805263,
-          "created": "2017-11-01 4:16:55"
-        },
-        {
+          "bid_id": "16-0",
           "user_id": 1,
           "item_id": 16,
-          "proposal_price": 21.363426527367924,
-          "created": "2017-11-01 5:16:55"
+          "proposal_price": 16.899095887632903,
+          "created": "2017-11-02 11:16:55"
         },
         {
-          "user_id": 5,
-          "item_id": 16,
-          "proposal_price": 21.418729450217043,
-          "created": "2017-11-01 6:16:55"
-        },
-        {
-          "user_id": 1,
-          "item_id": 16,
-          "proposal_price": 19.241116390901635,
-          "created": "2017-11-01 7:16:55"
-        },
-        {
+          "bid_id": "16-1",
           "user_id": 0,
           "item_id": 16,
-          "proposal_price": 18.253337856672605,
-          "created": "2017-11-01 8:16:55"
+          "proposal_price": 16.221388043685437,
+          "created": "2017-11-02 12:16:55"
         },
         {
-          "user_id": 2,
+          "bid_id": "16-2",
+          "user_id": 0,
           "item_id": 16,
-          "proposal_price": 23.476964276367074,
-          "created": "2017-11-01 9:16:55"
+          "proposal_price": 18.432600373760316,
+          "created": "2017-11-02 2:16:55"
         },
         {
+          "bid_id": "16-3",
           "user_id": 1,
           "item_id": 16,
-          "proposal_price": 18.112227431710064,
-          "created": "2017-11-01 10:16:55"
+          "proposal_price": 16.864664465211465,
+          "created": "2017-11-02 5:16:55"
+        },
+        {
+          "bid_id": "16-4",
+          "user_id": 1,
+          "item_id": 16,
+          "proposal_price": 16.38637965407384,
+          "created": "2017-11-02 9:16:55"
+        },
+        {
+          "bid_id": "16-5",
+          "user_id": 1,
+          "item_id": 16,
+          "proposal_price": 21.284093231283283,
+          "created": "2017-11-02 2:16:55"
+        },
+        {
+          "bid_id": "16-6",
+          "user_id": 2,
+          "item_id": 16,
+          "proposal_price": 21.3918356435471,
+          "created": "2017-11-02 8:16:55"
+        },
+        {
+          "bid_id": "16-7",
+          "user_id": 3,
+          "item_id": 16,
+          "proposal_price": 16.44150844137861,
+          "created": "2017-11-02 3:16:55"
+        },
+        {
+          "bid_id": "16-8",
+          "user_id": 2,
+          "item_id": 16,
+          "proposal_price": 20.34415872141642,
+          "created": "2017-11-02 11:16:55"
+        },
+        {
+          "bid_id": "16-9",
+          "user_id": 0,
+          "item_id": 16,
+          "proposal_price": 20.800797982936277,
+          "created": "2017-11-02 8:16:55"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "users_favorite": []
     },
     {
       "id": 17,
@@ -2725,7 +1860,7 @@
       "title": "Christmas Holiday Quote Red Wood Vinyl Sign Wall Hanging Door Sign ",
       "description": "Christmas Holiday Quote Red Wood Vinyl Sign Wall Hanging Door Sign ",
       "created": "2017-11-01 11:31:17",
-      "updated": "2017-11-02 11:31:17",
+      "updated": "2017-11-02 6:31:17",
       "end_time": "2017-11-09 11:31:17",
       "location": "United States",
       "price": 15.99,
@@ -2735,228 +1870,111 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 16.868970821529295,
-          "created": "2017-11-01 11:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 17.028137519735,
-          "created": "2017-11-01 12:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 18.885178697360875,
-          "created": "2017-11-01 1:31:17"
-        },
-        {
+          "bid_id": "17-0",
           "user_id": 3,
           "item_id": 17,
-          "proposal_price": 19.833003460159773,
-          "created": "2017-11-01 2:31:17"
-        },
-        {
-          "user_id": 0,
-          "item_id": 17,
-          "proposal_price": 16.678281054978633,
-          "created": "2017-11-01 3:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 20.869404058604637,
-          "created": "2017-11-01 4:31:17"
-        },
-        {
-          "user_id": 2,
-          "item_id": 17,
-          "proposal_price": 19.70115080629961,
-          "created": "2017-11-01 5:31:17"
-        },
-        {
-          "user_id": 2,
-          "item_id": 17,
-          "proposal_price": 18.400149324662863,
-          "created": "2017-11-01 6:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 22.411155575835707,
-          "created": "2017-11-01 7:31:17"
-        },
-        {
-          "user_id": 3,
-          "item_id": 17,
-          "proposal_price": 19.61271974497506,
-          "created": "2017-11-01 8:31:17"
-        },
-        {
-          "user_id": 3,
-          "item_id": 17,
-          "proposal_price": 18.176417899375128,
-          "created": "2017-11-01 9:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 27.477668975999435,
-          "created": "2017-11-01 10:31:17"
-        },
-        {
-          "user_id": 2,
-          "item_id": 17,
-          "proposal_price": 26.550410423924625,
-          "created": "2017-11-01 11:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 29.037053363378625,
-          "created": "2017-11-02 12:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 24.029835901978913,
-          "created": "2017-11-02 1:31:17"
-        },
-        {
-          "user_id": 2,
-          "item_id": 17,
-          "proposal_price": 29.095931907177082,
-          "created": "2017-11-02 2:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 28.039386134675333,
-          "created": "2017-11-02 3:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 24.329889784937443,
-          "created": "2017-11-02 4:31:17"
-        },
-        {
-          "user_id": 0,
-          "item_id": 17,
-          "proposal_price": 24.491263648829722,
-          "created": "2017-11-02 5:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 21.67144961057461,
-          "created": "2017-11-02 6:31:17"
-        },
-        {
-          "user_id": 0,
-          "item_id": 17,
-          "proposal_price": 19.061068141498524,
-          "created": "2017-11-02 7:31:17"
-        },
-        {
-          "user_id": 3,
-          "item_id": 17,
-          "proposal_price": 30.3884708120039,
-          "created": "2017-11-02 8:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 36.28415781377053,
-          "created": "2017-11-02 9:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 16.580437347902237,
-          "created": "2017-11-02 10:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 38.68195130137372,
+          "proposal_price": 16.933487214239307,
           "created": "2017-11-02 11:31:17"
         },
         {
-          "user_id": 3,
+          "bid_id": "17-1",
+          "user_id": 1,
           "item_id": 17,
-          "proposal_price": 36.012496402386134,
+          "proposal_price": 16.92290945645877,
           "created": "2017-11-02 12:31:17"
         },
         {
-          "user_id": 3,
+          "bid_id": "17-2",
+          "user_id": 2,
           "item_id": 17,
-          "proposal_price": 41.28169336899344,
-          "created": "2017-11-02 1:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 26.348467717805157,
+          "proposal_price": 18.554863664608273,
           "created": "2017-11-02 2:31:17"
         },
         {
-          "user_id": 0,
+          "bid_id": "17-3",
+          "user_id": 3,
           "item_id": 17,
-          "proposal_price": 27.244442576875123,
-          "created": "2017-11-02 3:31:17"
-        },
-        {
-          "user_id": 0,
-          "item_id": 17,
-          "proposal_price": 34.65332512142047,
-          "created": "2017-11-02 4:31:17"
-        },
-        {
-          "user_id": 0,
-          "item_id": 17,
-          "proposal_price": 33.37373112861765,
+          "proposal_price": 19.515428712339382,
           "created": "2017-11-02 5:31:17"
         },
         {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 26.506044013536076,
-          "created": "2017-11-02 6:31:17"
-        },
-        {
+          "bid_id": "17-4",
           "user_id": 0,
           "item_id": 17,
-          "proposal_price": 41.52915367039779,
-          "created": "2017-11-02 7:31:17"
-        },
-        {
-          "user_id": 1,
-          "item_id": 17,
-          "proposal_price": 19.41656246627594,
-          "created": "2017-11-02 8:31:17"
-        },
-        {
-          "user_id": 5,
-          "item_id": 17,
-          "proposal_price": 33.48344804794048,
+          "proposal_price": 16.353987930112645,
           "created": "2017-11-02 9:31:17"
         },
         {
+          "bid_id": "17-5",
           "user_id": 3,
           "item_id": 17,
-          "proposal_price": 28.021784114658537,
-          "created": "2017-11-02 10:31:17"
+          "proposal_price": 18.175208253547307,
+          "created": "2017-11-02 2:31:17"
         },
         {
+          "bid_id": "17-6",
+          "user_id": 3,
+          "item_id": 17,
+          "proposal_price": 20.893012164249512,
+          "created": "2017-11-02 8:31:17"
+        },
+        {
+          "bid_id": "17-7",
+          "user_id": 1,
+          "item_id": 17,
+          "proposal_price": 18.312772691662424,
+          "created": "2017-11-02 3:31:17"
+        },
+        {
+          "bid_id": "17-8",
           "user_id": 2,
           "item_id": 17,
-          "proposal_price": 21.17973015547641,
+          "proposal_price": 18.399288889556335,
           "created": "2017-11-02 11:31:17"
+        },
+        {
+          "bid_id": "17-9",
+          "user_id": 0,
+          "item_id": 17,
+          "proposal_price": 25.893822674125595,
+          "created": "2017-11-02 8:31:17"
+        },
+        {
+          "bid_id": "17-10",
+          "user_id": 2,
+          "item_id": 17,
+          "proposal_price": 23.64637853890517,
+          "created": "2017-11-02 6:31:17"
+        },
+        {
+          "bid_id": "17-11",
+          "user_id": 2,
+          "item_id": 17,
+          "proposal_price": 26.36836789427082,
+          "created": "2017-11-02 5:31:17"
+        },
+        {
+          "bid_id": "17-12",
+          "user_id": 2,
+          "item_id": 17,
+          "proposal_price": 20.760456282929155,
+          "created": "2017-11-02 5:31:17"
+        },
+        {
+          "bid_id": "17-13",
+          "user_id": 3,
+          "item_id": 17,
+          "proposal_price": 24.779258636346917,
+          "created": "2017-11-02 6:31:17"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "users_favorite": []
     },
     {
       "id": 18,
@@ -2966,7 +1984,7 @@
       "title": "Merry Christmas Wood Vinyl Sign Old Fashion Holiday Decor Rustic Farm",
       "description": "Merry Christmas Wood Vinyl Sign Old Fashion Holiday Decor Rustic Farm",
       "created": "2019-10-13 12:18:21",
-      "updated": "2019-10-14 12:18:21",
+      "updated": "2019-10-14 9:18:21",
       "end_time": "2019-10-21 12:18:21",
       "location": "United States",
       "price": 29.99,
@@ -2976,90 +1994,61 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 0,
-          "item_id": 18,
-          "proposal_price": 30.45163492087185,
-          "created": "2019-10-13 12:18:21"
-        },
-        {
-          "user_id": 2,
-          "item_id": 18,
-          "proposal_price": 30.66001480227647,
-          "created": "2019-10-13 1:18:21"
-        },
-        {
+          "bid_id": "18-0",
           "user_id": 3,
           "item_id": 18,
-          "proposal_price": 31.6797693561346,
-          "created": "2019-10-13 2:18:21"
-        },
-        {
-          "user_id": 5,
-          "item_id": 18,
-          "proposal_price": 32.62999293447247,
-          "created": "2019-10-13 3:18:21"
-        },
-        {
-          "user_id": 3,
-          "item_id": 18,
-          "proposal_price": 31.571188170134693,
-          "created": "2019-10-13 4:18:21"
-        },
-        {
-          "user_id": 2,
-          "item_id": 18,
-          "proposal_price": 31.20052011503429,
-          "created": "2019-10-13 5:18:21"
-        },
-        {
-          "user_id": 0,
-          "item_id": 18,
-          "proposal_price": 34.51124783548256,
-          "created": "2019-10-13 6:18:21"
-        },
-        {
-          "user_id": 1,
-          "item_id": 18,
-          "proposal_price": 33.44217354799193,
-          "created": "2019-10-13 7:18:21"
-        },
-        {
-          "user_id": 5,
-          "item_id": 18,
-          "proposal_price": 38.86242601612312,
-          "created": "2019-10-13 8:18:21"
-        },
-        {
-          "user_id": 2,
-          "item_id": 18,
-          "proposal_price": 38.618609914191936,
-          "created": "2019-10-13 9:18:21"
-        },
-        {
-          "user_id": 1,
-          "item_id": 18,
-          "proposal_price": 32.692349430670184,
-          "created": "2019-10-13 10:18:21"
-        },
-        {
-          "user_id": 3,
-          "item_id": 18,
-          "proposal_price": 40.13714336488749,
-          "created": "2019-10-13 11:18:21"
-        },
-        {
-          "user_id": 5,
-          "item_id": 18,
-          "proposal_price": 37.494903195868105,
+          "proposal_price": 30.47330965459741,
           "created": "2019-10-14 12:18:21"
         },
         {
+          "bid_id": "18-1",
           "user_id": 2,
           "item_id": 18,
-          "proposal_price": 31.519341873385468,
+          "proposal_price": 31.17633473591283,
           "created": "2019-10-14 1:18:21"
+        },
+        {
+          "bid_id": "18-2",
+          "user_id": 3,
+          "item_id": 18,
+          "proposal_price": 32.0749688844677,
+          "created": "2019-10-14 3:18:21"
+        },
+        {
+          "bid_id": "18-3",
+          "user_id": 1,
+          "item_id": 18,
+          "proposal_price": 30.96987737665526,
+          "created": "2019-10-14 6:18:21"
+        },
+        {
+          "bid_id": "18-4",
+          "user_id": 1,
+          "item_id": 18,
+          "proposal_price": 31.014316522335715,
+          "created": "2019-10-14 10:18:21"
+        },
+        {
+          "bid_id": "18-5",
+          "user_id": 3,
+          "item_id": 18,
+          "proposal_price": 32.79296419772572,
+          "created": "2019-10-14 3:18:21"
+        },
+        {
+          "bid_id": "18-6",
+          "user_id": 2,
+          "item_id": 18,
+          "proposal_price": 31.91914023276705,
+          "created": "2019-10-14 9:18:21"
         }
-      ]
+      ],
+      "users_bidding": [
+        1,
+        2,
+        3
+      ],
+      "users_favorite": []
     },
     {
       "id": 19,
@@ -3069,7 +2058,7 @@
       "title": "Christmas Chair Heaven Wood Vinyl Signs Holiday Wall Hanging Plaque",
       "description": "Christmas Chair Heaven Wood Vinyl Signs Holiday Wall Hanging Plaque",
       "created": "2016-10-13 1:58:38",
-      "updated": "2016-10-14 1:58:38",
+      "updated": "2016-10-22 2:58:38",
       "end_time": "2016-10-21 1:58:38",
       "location": "United States",
       "price": 15.99,
@@ -3079,96 +2068,195 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 2,
-          "item_id": 19,
-          "proposal_price": 16.82910538784754,
-          "created": "2016-10-13 1:58:38"
-        },
-        {
-          "user_id": 5,
-          "item_id": 19,
-          "proposal_price": 16.749785755827006,
-          "created": "2016-10-13 2:58:38"
-        },
-        {
-          "user_id": 2,
-          "item_id": 19,
-          "proposal_price": 17.790561025712147,
-          "created": "2016-10-13 3:58:38"
-        },
-        {
-          "user_id": 5,
-          "item_id": 19,
-          "proposal_price": 19.74454693787454,
-          "created": "2016-10-13 4:58:38"
-        },
-        {
-          "user_id": 2,
-          "item_id": 19,
-          "proposal_price": 17.28326838373889,
-          "created": "2016-10-13 5:58:38"
-        },
-        {
+          "bid_id": "19-0",
           "user_id": 1,
           "item_id": 19,
-          "proposal_price": 18.883833536084303,
-          "created": "2016-10-13 6:58:38"
+          "proposal_price": 16.113779691253637,
+          "created": "2016-10-14 1:58:38"
         },
         {
+          "bid_id": "19-1",
           "user_id": 3,
           "item_id": 19,
-          "proposal_price": 16.51613012367125,
-          "created": "2016-10-13 7:58:38"
+          "proposal_price": 16.7404050182883,
+          "created": "2016-10-14 2:58:38"
         },
         {
-          "user_id": 1,
+          "bid_id": "19-2",
+          "user_id": 2,
           "item_id": 19,
-          "proposal_price": 18.378346076055077,
-          "created": "2016-10-13 8:58:38"
+          "proposal_price": 18.69225163211305,
+          "created": "2016-10-14 4:58:38"
         },
         {
-          "user_id": 5,
+          "bid_id": "19-3",
+          "user_id": 2,
           "item_id": 19,
-          "proposal_price": 18.339781968172293,
-          "created": "2016-10-13 9:58:38"
+          "proposal_price": 16.52554223739355,
+          "created": "2016-10-14 7:58:38"
         },
         {
+          "bid_id": "19-4",
+          "user_id": 2,
+          "item_id": 19,
+          "proposal_price": 17.893026061566687,
+          "created": "2016-10-14 11:58:38"
+        },
+        {
+          "bid_id": "19-5",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 21.687374307943394,
+          "created": "2016-10-14 4:58:38"
+        },
+        {
+          "bid_id": "19-6",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 17.84991034520737,
+          "created": "2016-10-14 10:58:38"
+        },
+        {
+          "bid_id": "19-7",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 21.56940968257003,
+          "created": "2016-10-14 5:58:38"
+        },
+        {
+          "bid_id": "19-8",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 23.3985044396192,
+          "created": "2016-10-14 1:58:38"
+        },
+        {
+          "bid_id": "19-9",
+          "user_id": 2,
+          "item_id": 19,
+          "proposal_price": 17.216241445862327,
+          "created": "2016-10-14 10:58:38"
+        },
+        {
+          "bid_id": "19-10",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 24.004967494273934,
+          "created": "2016-10-14 8:58:38"
+        },
+        {
+          "bid_id": "19-11",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 27.137838703068766,
+          "created": "2016-10-14 7:58:38"
+        },
+        {
+          "bid_id": "19-12",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 18.11132406045354,
+          "created": "2016-10-14 7:58:38"
+        },
+        {
+          "bid_id": "19-13",
           "user_id": 0,
           "item_id": 19,
-          "proposal_price": 16.02343313503104,
-          "created": "2016-10-13 10:58:38"
+          "proposal_price": 23.667772238257065,
+          "created": "2016-10-14 8:58:38"
         },
         {
-          "user_id": 1,
+          "bid_id": "19-14",
+          "user_id": 2,
           "item_id": 19,
-          "proposal_price": 21.65453466548774,
-          "created": "2016-10-13 11:58:38"
+          "proposal_price": 29.656512783492698,
+          "created": "2016-10-14 10:58:38"
         },
         {
+          "bid_id": "19-15",
           "user_id": 3,
           "item_id": 19,
-          "proposal_price": 18.613810592583505,
-          "created": "2016-10-13 12:58:38"
+          "proposal_price": 22.102702489638624,
+          "created": "2016-10-15 1:58:38"
         },
         {
-          "user_id": 5,
+          "bid_id": "19-16",
+          "user_id": 3,
           "item_id": 19,
-          "proposal_price": 21.110734948858585,
-          "created": "2016-10-13 1:58:38"
+          "proposal_price": 19.97081161091477,
+          "created": "2016-10-15 5:58:38"
         },
         {
-          "user_id": 5,
+          "bid_id": "19-17",
+          "user_id": 2,
           "item_id": 19,
-          "proposal_price": 28.235056357630093,
-          "created": "2016-10-13 2:58:38"
+          "proposal_price": 29.73728799976861,
+          "created": "2016-10-15 10:58:38"
         },
         {
-          "user_id": 5,
+          "bid_id": "19-18",
+          "user_id": 0,
           "item_id": 19,
-          "proposal_price": 23.938099731903655,
-          "created": "2016-10-13 3:58:38"
+          "proposal_price": 31.601158708961705,
+          "created": "2016-10-16 4:58:38"
+        },
+        {
+          "bid_id": "19-19",
+          "user_id": 1,
+          "item_id": 19,
+          "proposal_price": 29.057729722989954,
+          "created": "2016-10-16 11:58:38"
+        },
+        {
+          "bid_id": "19-20",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 27.841302277059214,
+          "created": "2016-10-17 7:58:38"
+        },
+        {
+          "bid_id": "19-21",
+          "user_id": 3,
+          "item_id": 19,
+          "proposal_price": 36.38264663970976,
+          "created": "2016-10-18 4:58:38"
+        },
+        {
+          "bid_id": "19-22",
+          "user_id": 2,
+          "item_id": 19,
+          "proposal_price": 37.16649747717541,
+          "created": "2016-10-19 2:58:38"
+        },
+        {
+          "bid_id": "19-23",
+          "user_id": 1,
+          "item_id": 19,
+          "proposal_price": 22.514362150339316,
+          "created": "2016-10-20 1:58:38"
+        },
+        {
+          "bid_id": "19-24",
+          "user_id": 1,
+          "item_id": 19,
+          "proposal_price": 40.93974540941569,
+          "created": "2016-10-21 1:58:38"
+        },
+        {
+          "bid_id": "19-25",
+          "user_id": 1,
+          "item_id": 19,
+          "proposal_price": 34.67046906471087,
+          "created": "2016-10-22 2:58:38"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "users_favorite": []
     },
     {
       "id": 20,
@@ -3178,7 +2266,7 @@
       "title": "âO.K.â 24 X 30 Oil Painting ",
       "description": "&ldquo;O.K.&rdquo; 24 X 30 Oil Painting ",
       "created": "2018-01-29 3:03:42",
-      "updated": "2018-01-30 3:03:42",
+      "updated": "2018-01-30 9:03:42",
       "end_time": "2018-02-06 3:03:42",
       "location": "United States",
       "price": 666,
@@ -3188,168 +2276,39 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 0,
-          "item_id": 20,
-          "proposal_price": 666.3778104821547,
-          "created": "2018-01-29 3:03:42"
-        },
-        {
+          "bid_id": "20-0",
           "user_id": 3,
           "item_id": 20,
-          "proposal_price": 666.6405243938312,
-          "created": "2018-01-29 4:03:42"
-        },
-        {
-          "user_id": 0,
-          "item_id": 20,
-          "proposal_price": 667.7422434664782,
-          "created": "2018-01-29 5:03:42"
-        },
-        {
-          "user_id": 0,
-          "item_id": 20,
-          "proposal_price": 668.8654119130888,
-          "created": "2018-01-29 6:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 669.1735304503892,
-          "created": "2018-01-29 7:03:42"
-        },
-        {
-          "user_id": 2,
-          "item_id": 20,
-          "proposal_price": 668.1646089013428,
-          "created": "2018-01-29 8:03:42"
-        },
-        {
-          "user_id": 2,
-          "item_id": 20,
-          "proposal_price": 668.8665724877822,
-          "created": "2018-01-29 9:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 671.524636854545,
-          "created": "2018-01-29 10:03:42"
-        },
-        {
-          "user_id": 3,
-          "item_id": 20,
-          "proposal_price": 672.1104226104296,
-          "created": "2018-01-29 11:03:42"
-        },
-        {
-          "user_id": 2,
-          "item_id": 20,
-          "proposal_price": 669.5002191573991,
-          "created": "2018-01-29 12:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 676.8401267173467,
-          "created": "2018-01-29 1:03:42"
-        },
-        {
-          "user_id": 1,
-          "item_id": 20,
-          "proposal_price": 674.1865578809046,
-          "created": "2018-01-29 2:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 673.2094353605276,
-          "created": "2018-01-29 3:03:42"
-        },
-        {
-          "user_id": 3,
-          "item_id": 20,
-          "proposal_price": 673.9986168093657,
-          "created": "2018-01-29 4:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 672.6095060720054,
-          "created": "2018-01-29 5:03:42"
-        },
-        {
-          "user_id": 1,
-          "item_id": 20,
-          "proposal_price": 667.6439298088653,
-          "created": "2018-01-29 6:03:42"
-        },
-        {
-          "user_id": 2,
-          "item_id": 20,
-          "proposal_price": 678.757067171385,
-          "created": "2018-01-29 7:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 673.1259572689015,
-          "created": "2018-01-29 8:03:42"
-        },
-        {
-          "user_id": 2,
-          "item_id": 20,
-          "proposal_price": 680.804186107588,
-          "created": "2018-01-29 9:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 674.8312610361603,
-          "created": "2018-01-29 10:03:42"
-        },
-        {
-          "user_id": 1,
-          "item_id": 20,
-          "proposal_price": 671.5132967145895,
-          "created": "2018-01-29 11:03:42"
-        },
-        {
-          "user_id": 3,
-          "item_id": 20,
-          "proposal_price": 669.8773793934281,
-          "created": "2018-01-30 12:03:42"
-        },
-        {
-          "user_id": 0,
-          "item_id": 20,
-          "proposal_price": 675.20179334757,
-          "created": "2018-01-30 1:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 668.8418975313325,
-          "created": "2018-01-30 2:03:42"
-        },
-        {
-          "user_id": 4,
-          "item_id": 20,
-          "proposal_price": 688.5102032372052,
+          "proposal_price": 666.4013117238131,
           "created": "2018-01-30 3:03:42"
         },
         {
+          "bid_id": "20-1",
           "user_id": 3,
           "item_id": 20,
-          "proposal_price": 676.1238619209103,
+          "proposal_price": 666.5135257180791,
           "created": "2018-01-30 4:03:42"
         },
         {
-          "user_id": 1,
+          "bid_id": "20-2",
+          "user_id": 3,
           "item_id": 20,
-          "proposal_price": 692.7461515842463,
-          "created": "2018-01-30 5:03:42"
+          "proposal_price": 668.1641394219213,
+          "created": "2018-01-30 6:03:42"
+        },
+        {
+          "bid_id": "20-3",
+          "user_id": 0,
+          "item_id": 20,
+          "proposal_price": 669.3484665940484,
+          "created": "2018-01-30 9:03:42"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        3
+      ],
+      "users_favorite": []
     },
     {
       "id": 21,
@@ -3359,7 +2318,7 @@
       "title": "âStep Lightly &amp; Leave Nothing but Memoriesâ 24x24 PAINting ",
       "description": "&ldquo;Step Lightly &amp; Leave Nothing but Memories&rdquo; 24x24 PAINting ",
       "created": "2018-01-28 7:48:01",
-      "updated": "2018-01-29 7:48:01",
+      "updated": "2018-01-29 2:48:01",
       "end_time": "2018-02-05 7:48:01",
       "location": "United States",
       "price": 222,
@@ -3369,102 +2328,90 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 222.02721370315615,
-          "created": "2018-01-28 7:48:01"
-        },
-        {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 222.96800378110987,
-          "created": "2018-01-28 8:48:01"
-        },
-        {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 222.714406910057,
-          "created": "2018-01-28 9:48:01"
-        },
-        {
-          "user_id": 0,
-          "item_id": 21,
-          "proposal_price": 222.65850126368653,
-          "created": "2018-01-28 10:48:01"
-        },
-        {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 224.10560068719772,
-          "created": "2018-01-28 11:48:01"
-        },
-        {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 226.74453650664677,
-          "created": "2018-01-28 12:48:01"
-        },
-        {
+          "bid_id": "21-0",
           "user_id": 4,
           "item_id": 21,
-          "proposal_price": 226.62007616481353,
-          "created": "2018-01-28 1:48:01"
+          "proposal_price": 222.9257773693712,
+          "created": "2018-01-29 7:48:01"
         },
         {
-          "user_id": 1,
-          "item_id": 21,
-          "proposal_price": 225.0183020198644,
-          "created": "2018-01-28 2:48:01"
-        },
-        {
-          "user_id": 3,
-          "item_id": 21,
-          "proposal_price": 225.50672232746163,
-          "created": "2018-01-28 3:48:01"
-        },
-        {
-          "user_id": 3,
-          "item_id": 21,
-          "proposal_price": 231.00941356021556,
-          "created": "2018-01-28 4:48:01"
-        },
-        {
-          "user_id": 3,
-          "item_id": 21,
-          "proposal_price": 227.026204974535,
-          "created": "2018-01-28 5:48:01"
-        },
-        {
-          "user_id": 4,
-          "item_id": 21,
-          "proposal_price": 226.24073702227784,
-          "created": "2018-01-28 6:48:01"
-        },
-        {
+          "bid_id": "21-1",
           "user_id": 0,
           "item_id": 21,
-          "proposal_price": 223.6722471665414,
-          "created": "2018-01-28 7:48:01"
+          "proposal_price": 222.98252983822863,
+          "created": "2018-01-29 8:48:01"
         },
         {
-          "user_id": 3,
-          "item_id": 21,
-          "proposal_price": 232.77341874445153,
-          "created": "2018-01-28 8:48:01"
-        },
-        {
+          "bid_id": "21-2",
           "user_id": 2,
           "item_id": 21,
-          "proposal_price": 229.64780968847,
-          "created": "2018-01-28 9:48:01"
+          "proposal_price": 224.77723150853572,
+          "created": "2018-01-29 10:48:01"
         },
         {
+          "bid_id": "21-3",
+          "user_id": 1,
+          "item_id": 21,
+          "proposal_price": 222.0798451160207,
+          "created": "2018-01-29 1:48:01"
+        },
+        {
+          "bid_id": "21-4",
           "user_id": 0,
           "item_id": 21,
-          "proposal_price": 222.33538695203316,
-          "created": "2018-01-28 10:48:01"
+          "proposal_price": 222.48780685043238,
+          "created": "2018-01-29 5:48:01"
+        },
+        {
+          "bid_id": "21-5",
+          "user_id": 2,
+          "item_id": 21,
+          "proposal_price": 226.87937842935892,
+          "created": "2018-01-29 10:48:01"
+        },
+        {
+          "bid_id": "21-6",
+          "user_id": 1,
+          "item_id": 21,
+          "proposal_price": 225.17006924512825,
+          "created": "2018-01-29 4:48:01"
+        },
+        {
+          "bid_id": "21-7",
+          "user_id": 0,
+          "item_id": 21,
+          "proposal_price": 228.55643664966829,
+          "created": "2018-01-29 11:48:01"
+        },
+        {
+          "bid_id": "21-8",
+          "user_id": 4,
+          "item_id": 21,
+          "proposal_price": 229.06298951393083,
+          "created": "2018-01-29 7:48:01"
+        },
+        {
+          "bid_id": "21-9",
+          "user_id": 2,
+          "item_id": 21,
+          "proposal_price": 228.5306712490497,
+          "created": "2018-01-29 4:48:01"
+        },
+        {
+          "bid_id": "21-10",
+          "user_id": 0,
+          "item_id": 21,
+          "proposal_price": 232.1516278528886,
+          "created": "2018-01-29 2:48:01"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "users_favorite": []
     },
     {
       "id": 22,
@@ -3474,7 +2421,7 @@
       "title": "\"Mirage\" Original Oil Painting on Canvas",
       "description": "&quot;Mirage&quot; Original Oil Painting on Canvas",
       "created": "2014-02-26 9:28:56",
-      "updated": "2014-02-27 9:28:56",
+      "updated": "2014-03-10 3:28:56",
       "end_time": "2014-03-06 9:28:56",
       "location": "United States",
       "price": 111,
@@ -3484,246 +2431,210 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 111.83859618097705,
-          "created": "2014-02-26 9:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 111.7940902914827,
-          "created": "2014-02-26 10:28:56"
-        },
-        {
-          "user_id": 2,
-          "item_id": 22,
-          "proposal_price": 111.73209958419218,
-          "created": "2014-02-26 11:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 114.10542552950787,
-          "created": "2014-02-26 12:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 112.85950450684027,
-          "created": "2014-02-26 1:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 116.53302425423522,
-          "created": "2014-02-26 2:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 111.30535650358198,
-          "created": "2014-02-26 3:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 115.37918724430199,
-          "created": "2014-02-26 4:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 119.9120053144833,
-          "created": "2014-02-26 5:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 111.72379279566184,
-          "created": "2014-02-26 6:28:56"
-        },
-        {
+          "bid_id": "22-0",
           "user_id": 4,
           "item_id": 22,
-          "proposal_price": 112.76652378715663,
-          "created": "2014-02-26 7:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 113.79224764896217,
-          "created": "2014-02-26 8:28:56"
-        },
-        {
-          "user_id": 4,
-          "item_id": 22,
-          "proposal_price": 112.30293802991841,
-          "created": "2014-02-26 9:28:56"
-        },
-        {
-          "user_id": 1,
-          "item_id": 22,
-          "proposal_price": 116.25432800612144,
-          "created": "2014-02-26 10:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 112.30192236510459,
-          "created": "2014-02-26 11:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 119.77958581740265,
-          "created": "2014-02-27 12:28:56"
-        },
-        {
-          "user_id": 1,
-          "item_id": 22,
-          "proposal_price": 118.69455191693433,
-          "created": "2014-02-27 1:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 127.62902893564154,
-          "created": "2014-02-27 2:28:56"
-        },
-        {
-          "user_id": 1,
-          "item_id": 22,
-          "proposal_price": 111.354126028587,
-          "created": "2014-02-27 3:28:56"
-        },
-        {
-          "user_id": 2,
-          "item_id": 22,
-          "proposal_price": 115.52744651447884,
-          "created": "2014-02-27 4:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 111.81507918670174,
-          "created": "2014-02-27 5:28:56"
-        },
-        {
-          "user_id": 1,
-          "item_id": 22,
-          "proposal_price": 127.42558637731764,
-          "created": "2014-02-27 6:28:56"
-        },
-        {
-          "user_id": 4,
-          "item_id": 22,
-          "proposal_price": 113.53931475246037,
-          "created": "2014-02-27 7:28:56"
-        },
-        {
-          "user_id": 2,
-          "item_id": 22,
-          "proposal_price": 129.3679238493757,
-          "created": "2014-02-27 8:28:56"
-        },
-        {
-          "user_id": 1,
-          "item_id": 22,
-          "proposal_price": 134.87681183104115,
+          "proposal_price": 111.68247088049027,
           "created": "2014-02-27 9:28:56"
         },
         {
+          "bid_id": "22-1",
           "user_id": 0,
           "item_id": 22,
-          "proposal_price": 136.07467329936006,
+          "proposal_price": 111.83474302113021,
           "created": "2014-02-27 10:28:56"
         },
         {
-          "user_id": 4,
-          "item_id": 22,
-          "proposal_price": 135.22848773852974,
-          "created": "2014-02-27 11:28:56"
-        },
-        {
+          "bid_id": "22-2",
           "user_id": 0,
           "item_id": 22,
-          "proposal_price": 138.49729495367217,
+          "proposal_price": 111.26574474978868,
           "created": "2014-02-27 12:28:56"
         },
         {
+          "bid_id": "22-3",
           "user_id": 0,
           "item_id": 22,
-          "proposal_price": 133.34425190943526,
-          "created": "2014-02-27 1:28:56"
-        },
-        {
-          "user_id": 4,
-          "item_id": 22,
-          "proposal_price": 123.98054776401644,
-          "created": "2014-02-27 2:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 117.49356966396172,
+          "proposal_price": 113.51452555503235,
           "created": "2014-02-27 3:28:56"
         },
         {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 129.22666892472094,
-          "created": "2014-02-27 4:28:56"
-        },
-        {
-          "user_id": 3,
-          "item_id": 22,
-          "proposal_price": 142.80693249991234,
-          "created": "2014-02-27 5:28:56"
-        },
-        {
+          "bid_id": "22-4",
           "user_id": 2,
           "item_id": 22,
-          "proposal_price": 125.92107174011575,
-          "created": "2014-02-27 6:28:56"
-        },
-        {
-          "user_id": 0,
-          "item_id": 22,
-          "proposal_price": 130.0419484865762,
+          "proposal_price": 113.81966643878008,
           "created": "2014-02-27 7:28:56"
         },
         {
-          "user_id": 0,
+          "bid_id": "22-5",
+          "user_id": 4,
           "item_id": 22,
-          "proposal_price": 114.65880204484999,
-          "created": "2014-02-27 8:28:56"
+          "proposal_price": 112.82269758004331,
+          "created": "2014-02-27 12:28:56"
         },
         {
-          "user_id": 3,
+          "bid_id": "22-6",
+          "user_id": 2,
           "item_id": 22,
-          "proposal_price": 121.09287720834016,
+          "proposal_price": 115.96955659316265,
+          "created": "2014-02-27 6:28:56"
+        },
+        {
+          "bid_id": "22-7",
+          "user_id": 4,
+          "item_id": 22,
+          "proposal_price": 113.57350367905804,
+          "created": "2014-02-27 1:28:56"
+        },
+        {
+          "bid_id": "22-8",
+          "user_id": 1,
+          "item_id": 22,
+          "proposal_price": 112.14715093395729,
           "created": "2014-02-27 9:28:56"
         },
         {
-          "user_id": 4,
+          "bid_id": "22-9",
+          "user_id": 3,
           "item_id": 22,
-          "proposal_price": 141.82090400600072,
-          "created": "2014-02-27 10:28:56"
+          "proposal_price": 120.18084965148863,
+          "created": "2014-02-27 6:28:56"
         },
         {
+          "bid_id": "22-10",
           "user_id": 4,
           "item_id": 22,
-          "proposal_price": 121.78371450066183,
-          "created": "2014-02-27 11:28:56"
+          "proposal_price": 118.31450260023868,
+          "created": "2014-02-27 4:28:56"
         },
         {
+          "bid_id": "22-11",
           "user_id": 0,
           "item_id": 22,
-          "proposal_price": 147.09193510870512,
-          "created": "2014-02-28 12:28:56"
+          "proposal_price": 117.74759329430893,
+          "created": "2014-02-27 3:28:56"
+        },
+        {
+          "bid_id": "22-12",
+          "user_id": 3,
+          "item_id": 22,
+          "proposal_price": 119.59331083887552,
+          "created": "2014-02-27 3:28:56"
+        },
+        {
+          "bid_id": "22-13",
+          "user_id": 2,
+          "item_id": 22,
+          "proposal_price": 112.09303522546516,
+          "created": "2014-02-27 4:28:56"
+        },
+        {
+          "bid_id": "22-14",
+          "user_id": 3,
+          "item_id": 22,
+          "proposal_price": 111.72546874280997,
+          "created": "2014-02-27 6:28:56"
+        },
+        {
+          "bid_id": "22-15",
+          "user_id": 4,
+          "item_id": 22,
+          "proposal_price": 112.07176535538645,
+          "created": "2014-02-27 9:28:56"
+        },
+        {
+          "bid_id": "22-16",
+          "user_id": 3,
+          "item_id": 22,
+          "proposal_price": 119.02583864195168,
+          "created": "2014-02-28 1:28:56"
+        },
+        {
+          "bid_id": "22-17",
+          "user_id": 3,
+          "item_id": 22,
+          "proposal_price": 111.16155665656905,
+          "created": "2014-02-28 6:28:56"
+        },
+        {
+          "bid_id": "22-18",
+          "user_id": 0,
+          "item_id": 22,
+          "proposal_price": 115.42427419290762,
+          "created": "2014-03-01 12:28:56"
+        },
+        {
+          "bid_id": "22-19",
+          "user_id": 1,
+          "item_id": 22,
+          "proposal_price": 116.20492832983325,
+          "created": "2014-03-02 7:28:56"
+        },
+        {
+          "bid_id": "22-20",
+          "user_id": 2,
+          "item_id": 22,
+          "proposal_price": 120.40661917336439,
+          "created": "2014-03-03 3:28:56"
+        },
+        {
+          "bid_id": "22-21",
+          "user_id": 1,
+          "item_id": 22,
+          "proposal_price": 116.03770759027445,
+          "created": "2014-03-04 12:28:56"
+        },
+        {
+          "bid_id": "22-22",
+          "user_id": 3,
+          "item_id": 22,
+          "proposal_price": 127.24857018491204,
+          "created": "2014-03-05 10:28:56"
+        },
+        {
+          "bid_id": "22-23",
+          "user_id": 0,
+          "item_id": 22,
+          "proposal_price": 129.4956446408371,
+          "created": "2014-03-06 9:28:56"
+        },
+        {
+          "bid_id": "22-24",
+          "user_id": 2,
+          "item_id": 22,
+          "proposal_price": 119.26512148667578,
+          "created": "2014-03-07 9:28:56"
+        },
+        {
+          "bid_id": "22-25",
+          "user_id": 2,
+          "item_id": 22,
+          "proposal_price": 123.63440835427693,
+          "created": "2014-03-08 10:28:56"
+        },
+        {
+          "bid_id": "22-26",
+          "user_id": 2,
+          "item_id": 22,
+          "proposal_price": 137.68693804123507,
+          "created": "2014-03-09 12:28:56"
+        },
+        {
+          "bid_id": "22-27",
+          "user_id": 1,
+          "item_id": 22,
+          "proposal_price": 116.69190617680933,
+          "created": "2014-03-10 3:28:56"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": []
     },
     {
       "id": 23,
@@ -3733,7 +2644,7 @@
       "title": "Dumpster Diving Series \"Live Life to the fullest\" Oil Painting",
       "description": "Dumpster Diving Series &quot;Live Life to the fullest&quot; Oil Painting",
       "created": "2014-02-26 10:57:50",
-      "updated": "2014-02-27 10:57:50",
+      "updated": "2014-03-07 1:57:50",
       "end_time": "2014-03-06 10:57:50",
       "location": "United States",
       "price": 222,
@@ -3743,264 +2654,203 @@
       "status": "bidding",
       "bidding_info": [
         {
-          "user_id": 2,
-          "item_id": 23,
-          "proposal_price": 222.3479608755828,
-          "created": "2014-02-26 10:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 223.49178156549848,
-          "created": "2014-02-26 11:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 224.5928885028302,
-          "created": "2014-02-26 12:57:50"
-        },
-        {
-          "user_id": 2,
-          "item_id": 23,
-          "proposal_price": 224.7684623151481,
-          "created": "2014-02-26 1:57:50"
-        },
-        {
+          "bid_id": "23-0",
           "user_id": 1,
           "item_id": 23,
-          "proposal_price": 223.23840730856037,
-          "created": "2014-02-26 2:57:50"
-        },
-        {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 225.1868191257867,
-          "created": "2014-02-26 3:57:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 23,
-          "proposal_price": 227.92191426826648,
-          "created": "2014-02-26 4:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 222.3673075403756,
-          "created": "2014-02-26 5:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 230.81794212606135,
-          "created": "2014-02-26 6:57:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 23,
-          "proposal_price": 230.77557186178962,
-          "created": "2014-02-26 7:57:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 23,
-          "proposal_price": 228.25513010331107,
-          "created": "2014-02-26 8:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 232.13902992901805,
-          "created": "2014-02-26 9:57:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 23,
-          "proposal_price": 225.76352442312486,
-          "created": "2014-02-26 10:57:50"
-        },
-        {
-          "user_id": 2,
-          "item_id": 23,
-          "proposal_price": 229.25993202587378,
-          "created": "2014-02-26 11:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 235.82920673212593,
-          "created": "2014-02-27 12:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 230.26962259274848,
-          "created": "2014-02-27 1:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 238.01294078665418,
-          "created": "2014-02-27 2:57:50"
-        },
-        {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 236.74911386592686,
-          "created": "2014-02-27 3:57:50"
-        },
-        {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 233.0446655584457,
-          "created": "2014-02-27 4:57:50"
-        },
-        {
-          "user_id": 4,
-          "item_id": 23,
-          "proposal_price": 239.30291991777716,
-          "created": "2014-02-27 5:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 239.8113316565558,
-          "created": "2014-02-27 6:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 240.84241683495878,
-          "created": "2014-02-27 7:57:50"
-        },
-        {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 228.61828840076313,
-          "created": "2014-02-27 8:57:50"
-        },
-        {
-          "user_id": 2,
-          "item_id": 23,
-          "proposal_price": 228.51752800042755,
-          "created": "2014-02-27 9:57:50"
-        },
-        {
-          "user_id": 2,
-          "item_id": 23,
-          "proposal_price": 242.22430698861334,
+          "proposal_price": 222.90155297308644,
           "created": "2014-02-27 10:57:50"
         },
         {
-          "user_id": 3,
+          "bid_id": "23-1",
+          "user_id": 2,
           "item_id": 23,
-          "proposal_price": 233.75025392326594,
+          "proposal_price": 223.0967211783201,
           "created": "2014-02-27 11:57:50"
         },
         {
+          "bid_id": "23-2",
           "user_id": 0,
           "item_id": 23,
-          "proposal_price": 239.46150225955034,
-          "created": "2014-02-27 12:57:50"
-        },
-        {
-          "user_id": 3,
-          "item_id": 23,
-          "proposal_price": 229.84306717791898,
+          "proposal_price": 223.62866370687894,
           "created": "2014-02-27 1:57:50"
         },
         {
-          "user_id": 1,
+          "bid_id": "23-3",
+          "user_id": 4,
           "item_id": 23,
-          "proposal_price": 240.22245026483697,
-          "created": "2014-02-27 2:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 229.0997907832712,
-          "created": "2014-02-27 3:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 252.78859971058287,
+          "proposal_price": 223.22906464029393,
           "created": "2014-02-27 4:57:50"
         },
         {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 229.39859661693302,
-          "created": "2014-02-27 5:57:50"
-        },
-        {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 234.5840725621017,
-          "created": "2014-02-27 6:57:50"
-        },
-        {
+          "bid_id": "23-4",
           "user_id": 2,
           "item_id": 23,
-          "proposal_price": 228.36684887771767,
-          "created": "2014-02-27 7:57:50"
-        },
-        {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 237.40679995294346,
+          "proposal_price": 224.97059521508524,
           "created": "2014-02-27 8:57:50"
         },
         {
+          "bid_id": "23-5",
           "user_id": 3,
           "item_id": 23,
-          "proposal_price": 223.50529105098687,
-          "created": "2014-02-27 9:57:50"
+          "proposal_price": 226.59790783466357,
+          "created": "2014-02-27 1:57:50"
         },
         {
+          "bid_id": "23-6",
           "user_id": 0,
           "item_id": 23,
-          "proposal_price": 250.68487159429088,
+          "proposal_price": 228.24178369279048,
+          "created": "2014-02-27 7:57:50"
+        },
+        {
+          "bid_id": "23-7",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 226.43900716353625,
+          "created": "2014-02-27 2:57:50"
+        },
+        {
+          "bid_id": "23-8",
+          "user_id": 3,
+          "item_id": 23,
+          "proposal_price": 223.59348989484064,
           "created": "2014-02-27 10:57:50"
         },
         {
-          "user_id": 3,
+          "bid_id": "23-9",
+          "user_id": 4,
           "item_id": 23,
-          "proposal_price": 244.2972921327688,
-          "created": "2014-02-27 11:57:50"
+          "proposal_price": 222.68525480055771,
+          "created": "2014-02-27 7:57:50"
         },
         {
+          "bid_id": "23-10",
+          "user_id": 2,
+          "item_id": 23,
+          "proposal_price": 222.34572126064705,
+          "created": "2014-02-27 5:57:50"
+        },
+        {
+          "bid_id": "23-11",
+          "user_id": 3,
+          "item_id": 23,
+          "proposal_price": 233.27348804348418,
+          "created": "2014-02-27 4:57:50"
+        },
+        {
+          "bid_id": "23-12",
+          "user_id": 2,
+          "item_id": 23,
+          "proposal_price": 227.87567164659836,
+          "created": "2014-02-27 4:57:50"
+        },
+        {
+          "bid_id": "23-13",
           "user_id": 0,
           "item_id": 23,
-          "proposal_price": 223.51432196421544,
-          "created": "2014-02-28 12:57:50"
+          "proposal_price": 231.8461776078482,
+          "created": "2014-02-27 5:57:50"
         },
         {
-          "user_id": 1,
-          "item_id": 23,
-          "proposal_price": 223.05419503008326,
-          "created": "2014-02-28 1:57:50"
-        },
-        {
+          "bid_id": "23-14",
           "user_id": 3,
           "item_id": 23,
-          "proposal_price": 250.5208420503212,
+          "proposal_price": 225.45850247586145,
+          "created": "2014-02-27 7:57:50"
+        },
+        {
+          "bid_id": "23-15",
+          "user_id": 3,
+          "item_id": 23,
+          "proposal_price": 227.78395465220942,
+          "created": "2014-02-27 10:57:50"
+        },
+        {
+          "bid_id": "23-16",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 237.99261902714696,
           "created": "2014-02-28 2:57:50"
         },
         {
-          "user_id": 0,
-          "item_id": 23,
-          "proposal_price": 262.99038305438376,
-          "created": "2014-02-28 3:57:50"
-        },
-        {
+          "bid_id": "23-17",
           "user_id": 4,
           "item_id": 23,
-          "proposal_price": 250.6248687590451,
-          "created": "2014-02-28 4:57:50"
+          "proposal_price": 228.56047185428605,
+          "created": "2014-02-28 7:57:50"
+        },
+        {
+          "bid_id": "23-18",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 225.63750100784395,
+          "created": "2014-03-01 1:57:50"
+        },
+        {
+          "bid_id": "23-19",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 225.61257700434732,
+          "created": "2014-03-01 8:57:50"
+        },
+        {
+          "bid_id": "23-20",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 239.59414609817202,
+          "created": "2014-03-02 4:57:50"
+        },
+        {
+          "bid_id": "23-21",
+          "user_id": 2,
+          "item_id": 23,
+          "proposal_price": 233.6335589293131,
+          "created": "2014-03-03 1:57:50"
+        },
+        {
+          "bid_id": "23-22",
+          "user_id": 1,
+          "item_id": 23,
+          "proposal_price": 241.5022853027446,
+          "created": "2014-03-03 11:57:50"
+        },
+        {
+          "bid_id": "23-23",
+          "user_id": 2,
+          "item_id": 23,
+          "proposal_price": 224.0169651462941,
+          "created": "2014-03-04 10:57:50"
+        },
+        {
+          "bid_id": "23-24",
+          "user_id": 4,
+          "item_id": 23,
+          "proposal_price": 242.67628827897497,
+          "created": "2014-03-05 10:57:50"
+        },
+        {
+          "bid_id": "23-25",
+          "user_id": 0,
+          "item_id": 23,
+          "proposal_price": 228.072999457984,
+          "created": "2014-03-06 11:57:50"
+        },
+        {
+          "bid_id": "23-26",
+          "user_id": 2,
+          "item_id": 23,
+          "proposal_price": 222.88283435633255,
+          "created": "2014-03-07 1:57:50"
         }
-      ]
+      ],
+      "users_bidding": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "users_favorite": []
     }
   ],
   "users": [
@@ -4008,30 +2858,29 @@
       "user_id": 0,
       "email": "AmeliaOriginals@gmail.com",
       "payment_method": [
+        "Master",
         "WeChat",
         "PayPal",
         "AliPay"
       ],
-      "password": "XaNUwnCRB7",
+      "password": "Md9WzRGqct",
       "first_name": "AmeliaOriginals",
       "last_name": "AmeliaOriginals",
       "phone_number": "0437462649",
-      "dob": "2003-02-06T02:23:45.644Z",
+      "dob": "2009-11-23T05:11:01.338Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
       "location": "United States",
-      "rating": 3,
-      "token": "KxkdGASrf9zMOurfD6DL2gFA08Ze",
+      "rating": 5,
+      "token": "wpSO1xnDEe1EkJEjNZZ9H4IPy87r",
       "favorites": [
-        13,
-        14,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12
       ],
       "auctions": [
         0,
@@ -4044,43 +2893,47 @@
         5,
         6,
         7,
-        8,
         9,
         10,
         11,
-        12
+        12,
+        13,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        23
       ]
     },
     {
       "user_id": 1,
       "email": "Jaqui@gmail.com",
       "payment_method": [
-        "Visa",
-        "Master",
-        "WeChat",
         "PayPal",
         "AliPay"
       ],
-      "password": "b4HJiWxF1u",
+      "password": "Ht8jZiSdRZ",
       "first_name": "Jaqui",
       "last_name": "Jaqui",
       "phone_number": "0437462649",
-      "dob": "2010-01-20T01:03:11.671Z",
+      "dob": "2003-01-27T00:50:08.381Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
       "location": "Canada",
-      "rating": 1,
-      "token": "dM8O33iYNPi7R70N6mlfYYfeRhgA",
+      "rating": 5,
+      "token": "9ifYS2AtGp6lYwgQ5sjMPXAJ6drj",
       "favorites": [
-        13,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23
+        0,
+        1,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        13
       ],
       "auctions": [
         4,
@@ -4097,36 +2950,43 @@
         9,
         10,
         11,
-        12
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23
       ]
     },
     {
       "user_id": 2,
       "email": "cornsilkscreations@yahoo.com",
       "payment_method": [
-        "WeChat",
-        "PayPal",
         "AliPay"
       ],
-      "password": "Cf7CIjaJIw",
+      "password": "IB2fNca5Iq",
       "first_name": "cornsilkscreations",
       "last_name": "cornsilkscreations",
       "phone_number": "0437462649",
-      "dob": "2005-07-04T15:55:27.283Z",
+      "dob": "2010-09-01T11:40:51.686Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
       "location": "United States",
-      "rating": 2,
-      "token": "ZbcfN7aXbaSbOAG9qkHZASn9IsK8",
+      "rating": 3,
+      "token": "MzHZaAbNkrifUXHbjaxMFsc2w1Ye",
       "favorites": [
-        14,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        12,
+        13
       ],
       "auctions": [
         8,
@@ -4135,46 +2995,51 @@
         11
       ],
       "bids": [
+        0,
         1,
         2,
-        3,
         4,
         5,
         6,
         7,
         12,
-        13
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23
       ]
     },
     {
       "user_id": 3,
       "email": "eabRainbowCrafts@yahoo.com",
       "payment_method": [
-        "Visa",
-        "Master",
         "WeChat",
         "PayPal",
         "AliPay"
       ],
-      "password": "l1p62ertXT",
+      "password": "uHj44v7Zjz",
       "first_name": "eabRainbowCrafts",
       "last_name": "eabRainbowCrafts",
       "phone_number": "0437462649",
-      "dob": "2008-10-23T03:43:52.068Z",
+      "dob": "2005-12-24T08:29:31.819Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
       "location": "United States",
-      "rating": 5,
-      "token": "L0r2628nLdp8dYxH9y1Kovim1J0U",
+      "rating": 2,
+      "token": "UXHOiqx5eIl9unB9EIchNea7kqYi",
       "favorites": [
-        11,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23
+        1,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11
       ],
       "auctions": [
         12,
@@ -4183,45 +3048,45 @@
         15
       ],
       "bids": [
-        0,
         1,
-        2,
-        3,
+        5,
         6,
         7,
-        8,
         9,
-        10
+        10,
+        11,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23
       ]
     },
     {
       "user_id": 4,
       "email": "heartfeltgiver@yahoo.com",
       "payment_method": [
-        "Master",
-        "WeChat",
         "PayPal",
         "AliPay"
       ],
-      "password": "3qF3zstrl3",
+      "password": "feZZbKsadw",
       "first_name": "heartfeltgiver",
       "last_name": "heartfeltgiver",
       "phone_number": "0437462649",
-      "dob": "2005-08-20T12:17:24.473Z",
+      "dob": "2002-06-14T09:20:00.041Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
       "location": "United States",
-      "rating": 5,
-      "token": "8APazFYyX5RXweoz9aLMmJ24Ms8B",
+      "rating": 4,
+      "token": "EHcfZa9Z0Py2rNltnZUNFk8v4sza",
       "favorites": [
-        11,
-        12,
-        13,
-        14,
-        15,
-        20,
-        21,
-        22,
-        23
+        1,
+        2,
+        5,
+        6,
+        7,
+        8
       ],
       "auctions": [
         16,
@@ -4230,47 +3095,47 @@
         19
       ],
       "bids": [
-        0,
         1,
         2,
-        3,
         5,
         6,
+        7,
         8,
         9,
-        10
+        10,
+        11,
+        15,
+        21,
+        22,
+        23
       ]
     },
     {
       "user_id": 5,
       "email": "STAIN@gmail.com",
       "payment_method": [
+        "Master",
+        "WeChat",
         "PayPal",
         "AliPay"
       ],
-      "password": "dzDflhIQcp",
+      "password": "dnkIBlOVrz",
       "first_name": "STAIN",
       "last_name": "STAIN",
       "phone_number": "0437462649",
-      "dob": "2002-07-03T23:45:16.565Z",
+      "dob": "2010-06-29T15:46:55.403Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/75/1e/751ea6bfd692acc99e12df375d814d818d31ae28099023d6760d3a6c4a49b327.jpg",
       "location": "United States",
-      "rating": 5,
-      "token": "IzYgfvCgCLCQrpuFY5qH6RpKSfo8",
-      "favorites": [
-        18,
-        19
-      ],
+      "rating": 1,
+      "token": "tc6va9dUSAQZkFzdPMKJOdfzUtP1",
+      "favorites": [],
       "auctions": [
         20,
         21,
         22,
         23
       ],
-      "bids": [
-        16,
-        17
-      ]
+      "bids": []
     }
   ]
 }
