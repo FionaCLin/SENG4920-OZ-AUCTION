@@ -73,10 +73,6 @@ const routes = [
         component: () => import("pages/Profile")
       },
       {
-        path: "/avatar",
-        component: () => import("pages/Profile")
-      },
-      {
         path: "/inbox",
         component: () => import("pages/Profile")
       }

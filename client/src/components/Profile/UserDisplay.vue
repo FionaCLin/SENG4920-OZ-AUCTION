@@ -38,6 +38,7 @@ export default {
             "Last Name": this.detail.last_name,
             Email: this.detail.email,
             Phone: this.detail.phone_number,
+            DOB: this.detail.dob,
             "Payment Method": this.detail.payment_method.join(", "),
             Location: this.detail.location
           };

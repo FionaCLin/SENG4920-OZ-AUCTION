@@ -34,17 +34,28 @@
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
       />
-
       <q-input
-        v-model="age"
+        v-model="phone"
         filled
-        type="number"
-        label="Your age *"
+        label="Your phone *"
+        hint="Phone"
         lazy-rules
-        :rules="[
-          val => (val !== null && val !== '') || 'Please type your age',
-          val => (val > 0 && val < 100) || 'Please type a real age'
-        ]"
+        :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
+      />
+      <q-input
+        v-model="location"
+        filled
+        label="Your location *"
+        hint="Location"
+        lazy-rules
+        :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
+      />
+
+      <TimeInput
+        v-model="dob"
+        :date="dob"
+        :label="`Your DOB *`"
+        @update-time="dob = $event"
       />
 
       <q-field filled label="Payment Method" stack-label>
@@ -86,8 +97,11 @@
 </template>
 
 <script>
+import moment from "moment";
+import TimeInput from "../../components/auctionItem/TimeInput";
 export default {
   name: "ProfileEdit",
+  components: { TimeInput },
   filters: {
     formatPaymentMethod(val) {
       if (val && Array.isArray(val)) return val.join(", ");
@@ -101,12 +115,13 @@ export default {
       firstName: this.detail.firstName,
       lastName: this.detail.lastName,
       email: this.detail.email,
-      age: this.detail.age,
+      dob: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
+      location: this.detail.location,
+      phone: this.detail.phone_number,
       paymentMethod: this.detail.payment_method,
       methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
     };
   },
-
   methods: {
     onSubmit() {
       this.$refs.ProfileForm.validate().then(
@@ -134,12 +149,15 @@ export default {
     },
 
     onReset() {
-      this.$data.firstName = this.detail.firstName;
-      this.$data.lastName = this.detail.lastName;
+      this.$data.firstName = this.detail.first_name;
+      this.$data.lastName = this.detail.last_name;
       this.$data.email = this.detail.email;
-      this.$data.age = this.detail.age;
-      this.$data.password = this.detail.password;
-      this.$data.seller = this.detail.seller;
+      this.$data.location = this.detail.location;
+      this.$data.phone = this.detail.phone_number;
+      this.$data.dob = moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format(
+        "YYYY-MM-DD"
+      );
+      this.$data.paymentMethod = this.detail.payment_method;
     }
   }
 };

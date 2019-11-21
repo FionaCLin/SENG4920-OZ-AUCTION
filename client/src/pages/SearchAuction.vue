@@ -209,17 +209,6 @@ export default {
         .get("/auction/search-key/" + this.$data.normal.search)
         .then(async res => {
           this.$data.loading = true;
-          await res.data.map(async e => {
-            let user = this.$store.getters["auction/getSeller"](e.seller_id);
-            if (user) {
-              e.user = user;
-            } else {
-              let { data } = await this.$axios.get(
-                `/account/manage_profile/${e.seller_id}`
-              );
-              e.user = data.data;
-            }
-          });
 
           return res.data;
         })
@@ -232,17 +221,6 @@ export default {
         .get(`/auction/search/filter${query}`)
         .then(async res => {
           this.$data.loading = true;
-          await res.data.map(async e => {
-            let user = this.$store.getters["auction/getSeller"](e.seller_id);
-            if (user) {
-              e.user = user;
-            } else {
-              let { data } = await this.$axios.get(
-                `/account/manage_profile/${e.seller_id}`
-              );
-              e.user = data.data;
-            }
-          });
 
           return res.data;
         })
