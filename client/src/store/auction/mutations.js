@@ -25,7 +25,9 @@ export function addItem(state, newAucton) {
 
 export function updateItem(state, id, data) {
   let auction = state.myAuctions.find(x => x.id == id);
-  for (let k of Object.keys(data)) {
+  for (let k of Object.keys(auction)) {
+    console.log(k);
     auction[k] = data[k];
   }
+  return state;
 }

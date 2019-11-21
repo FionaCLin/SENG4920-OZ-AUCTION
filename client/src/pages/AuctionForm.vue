@@ -285,16 +285,31 @@ export default {
           }
         }
         console.log(payload, this.id);
+        let id = this.id;
 
-        this.$store.dispatch("auction/update", payload).then(res => {
-          console.log(res, "!!!");
-          if (res.status != 200) {
-            warning.message = res.data.message;
-            this.$q.notify(warning);
-            return;
-          }
-          this.$router.push("/myauctions").catch(() => {});
-        });
+        this.$store
+          .dispatch("auction/update", { id, payload })
+          .then(res => {
+            console.log(res, "!!!");
+            if (res && res.status != 200) {
+              warning.message = res.data.message;
+              this.$q.notify(warning);
+              return;
+            }
+            for (let k of payload) {
+              console.log(k, "@@@");
+            }
+            this.$router
+              .push({
+                name: "auctionItem",
+                params: {
+                  id: this.id,
+                  item: this.auction
+                }
+              })
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
       } else {
         this.createAuction();
       }

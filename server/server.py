@@ -1047,45 +1047,45 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="Update auction item details")
     def put(self, item_id):
         user_input = request.json
-        # try:
-        au_col = mydb['auctions']
-        user_col = mydb['user']
-        retrieved_item = au_col.find_one({'id': int(item_id)})
-        del retrieved_item['_id']
+        try:
+            au_col = mydb['auctions']
+            user_col = mydb['user']
+            retrieved_item = au_col.find_one({'id': int(item_id)})
+            del retrieved_item['_id']
 
-        if retrieved_item is None:
-            return {"message":  "Specified item does not exist"}, 404
+            if retrieved_item is None:
+                return {"message":  "Specified item does not exist"}, 404
 
-        seller_id = int(retrieved_item['seller_id'])
-        seller = user_col.find_one({"user_id": seller_id})
+            seller_id = int(retrieved_item['seller_id'])
+            seller = user_col.find_one({"user_id": seller_id})
 
-        update_data = {}
-        for k in ['category', 'title', "description", "end_time", "price", "image", "location"]:
-            if k in user_input.keys() and retrieved_item[k] != user_input[k]:
-                if k == 'end_time' and not validate_datetime_str(user_input['end_time']):
-                    return {'message': 'Bad Request: invalid end_time format'}
-                update_data[k] = user_input[k]
+            update_data = {}
+            for k in ['category', 'title', "description", "end_time", "price", "image", "location"]:
+                if k in user_input.keys() and retrieved_item[k] != user_input[k]:
+                    if k == 'end_time' and not validate_datetime_str(user_input['end_time']):
+                        return {'message': 'Bad Request: invalid end_time format'}
+                    update_data[k] = user_input[k]
 
-        # Input validation: End_time validation
+            # Input validation: End_time validation
 
-        update_data['updated'] = datetime.datetime.now().strftime(
-            '%Y-%m-%d %H:%M:%S')
-        # update auction in user's auctions list
-        # for auction in seller['auctions']:
-        #     if auction['id'] == int(item_id):
-        #         auction_to_be_updated_index = seller['auctions'].index(auction)
-        #
-        # updated_auction = seller['auctions'][auction_to_be_updated_index]
-        # for k in update_data.keys():
-        #     updated_auction[k] = update_data[k]
-        #
-        # seller['auctions'][auction_to_be_updated_index] = updated_auction
+            update_data['updated'] = datetime.datetime.now().strftime(
+                '%Y-%m-%d %H:%M:%S')
+            # update auction in user's auctions list
+            # for auction in seller['auctions']:
+            #     if auction['id'] == int(item_id):
+            #         auction_to_be_updated_index = seller['auctions'].index(auction)
+            #
+            # updated_auction = seller['auctions'][auction_to_be_updated_index]
+            # for k in update_data.keys():
+            #     updated_auction[k] = update_data[k]
+            #
+            # seller['auctions'][auction_to_be_updated_index] = updated_auction
 
-        au_col.update_one({"id": int(item_id)}, {
-            "$set": update_data})
-        return {"message": "Auction details have been updated"}, 200
-        # except:
-        #     return {"message":  "Auction details fail to updated"}, 404
+            au_col.update_one({"id": int(item_id)}, {
+                "$set": update_data})
+            return {"message": "Auction details have been updated"}, 200
+        except:
+            return {"message":  "Auction details fail to updated"}, 404
 
 
 # search by key
