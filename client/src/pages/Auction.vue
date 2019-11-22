@@ -16,7 +16,7 @@
         <ImagesDisplay :image="auction.image" />
         <div>
           <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
-          <q-btn v-if="isDelable()" flat @click="delItem">
+          <q-btn v-if="isDelable()" flat @click="confirm = !confirm">
             <q-icon name="delete_forever" />Delete
           </q-btn>
         </div>
@@ -25,6 +25,11 @@
     <div v-if="auction.bidding_info.length" class="col-12">
       <BidDetail :biddings="auction.bidding_info" />
     </div>
+    <Confirmation
+      :state="confirm"
+      @confirm="delItem"
+      @toggle="confirm = !confirm"
+    />
   </q-page>
 </template>
 
@@ -32,17 +37,20 @@
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
 import ImagesDisplay from "../components/auctionItem/ImagesDisplay";
+import Confirmation from "../components/Confirmation";
 
 export default {
   name: "AuctionPage",
   components: {
     ItemDetail,
     BidDetail,
+    Confirmation,
     ImagesDisplay
   },
   data() {
     return {
-      auction: this.auction_item
+      auction: this.auction_item,
+      confirm: false
     };
   },
   computed: {
