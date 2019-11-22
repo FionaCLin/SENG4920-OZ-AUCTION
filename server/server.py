@@ -668,9 +668,9 @@ class AuctionsOperations(Resource):
                 "created": created_time.strftime('%Y-%m-%d %H:%M:%S'),
                 "updated": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "bidding_info": [],
-                "status": "bidding",
-                "users_bidding": [],
-                "users_favorite": []
+                "status": "BIDDING",
+                "users_bidding":[],
+                "users_favourite":[]
             }
 
         user_input = request.json
@@ -684,7 +684,12 @@ class AuctionsOperations(Resource):
         # Input validation: End_time validation
         end_time = user_input['end_time']
         if not validate_datetime_str(end_time):
-            return {'message': 'Bad Request: invalid end_time format'}
+            return {'message': 'Bad Request: invalid end_time format'},400
+
+        # Input validation: Start price cannot be negative
+        price = user_input['price']
+        if price <= 0 :
+            return {"message": 'Bad Request: start price must be greater than 0'},400
 
         # Input validation: End_time should be later than create time
         end_time = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
@@ -804,9 +809,14 @@ class AddFavAuction(Resource):
         fav = set(user["favorites"])
         fav.add(auction_id)
         if len(fav) != len(user['favorites']):
+            # update user's favourite field
             user["favorites"].append(auction_id)
+            # update auction's users_favorite field
+            auction["users_favorite"].append(user_id)
+
 
         user_col.update_one({"user_id": user_id}, {"$set": user})
+        auc_col.update_one({"id":auction_id},{"$set": auction})
 
         response = {
             "message": "favourite auction is added",
@@ -916,7 +926,7 @@ class Rating(Resource):
         del auction['_id']
 
         auction_status = auction['status']
-        if auction_status != "Accepted":
+        if auction_status != "ACCEPTED":
             response = {
                 "message": "The auction is currently in bidding or already declined",
                 "result": "Fail"
@@ -939,8 +949,8 @@ class Rating(Resource):
 
         # end of validations
         rating_info = user_input
-        rating_info["rating_id"] = user_col.count_documents({})
-        user_col.insert_one(rating_info)
+        # rating_info["rating_id"] = user_col.count_documents({})
+        # user_col.insert_one(rating_info)
 
         response = {
             "message": "The auction has been rated",
@@ -1036,21 +1046,20 @@ class SingleAuctionItemOperations(Resource):
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
-        if len(retrieved_item['users_bidding']) != 0:
-            return {"message": "Auction has biddings"}, 404
+        # Validation: auction can only be deleted if there is no bidding on this item
+        if len(retrieved_item['bidding_info']) != 0:
+            return {"message": "Auction can only be deleted when there is no bidding on this item"},404
 
         seller_id = int(retrieved_item['seller_id'])
         seller = user_col.find_one({"user_id": seller_id}, {"_id": 0})
 
         try:
-            res = au_col.remove({"id": int(item_id)})
-            # remove the specified auction from the auction list of the user
-            # seller['auctions'] = \
-            #     [x for x in seller['auctions'] if int(x["id"]) != int(item_id)]
+            au_col.remove({"id": int(item_id)})
+            # remove the specified auction from the auction , bids and fav list of the user
 
-            seller['auctions'].remove(item_id)
-            seller['bids'].remove(item_id)
-            seller['favorites'].remove(item_id)
+            seller['auctions'].remove(int(item_id))
+            # seller['bids'].remove(int(item_id))
+            seller['favorites'].remove(int(item_id))
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully", "data": retrieved_item}, 200
@@ -1064,16 +1073,9 @@ class SingleAuctionItemOperations(Resource):
     def put(self, item_id):
         update_data = {}
         user_input = request.json
-        print(user_input, user_input.keys())
-
-        try:
-            if 'price' in user_input.keys():
-                update_data['price'] = float(user_input['price'])
-                if update_data['price'] < 0:
-                    return {'result': "fail", "message": 'Price must be positive'}, 400
-        except TypeError:
-            return {'result': "fail", "message": 'invalid price'}, 400
-
+                   
+       
+        # Input validation: End_time validation
         if 'end_time' in user_input.keys() and not validate_datetime_str(user_input['end_time']):
             return {'message': 'invalid end_time format'}, 400
         elif 'end_time' in user_input.keys():
@@ -1086,8 +1088,18 @@ class SingleAuctionItemOperations(Resource):
             if retrieved_item is None:
                 return {"message":  "Specified item does not exist"}, 404
 
-            seller_id = int(retrieved_item['seller_id'])
-            seller = user_col.find_one({"user_id": seller_id})
+             # Input validation: Price should be positive
+            try:
+                if 'price' in user_input.keys():
+                    update_data['price'] = float(user_input['price'])
+                    if update_data['price'] < 0:
+                        return {'result': "fail", "message": 'Price must be positive'}, 400
+                    # Input validation: Price can only be updated when there is no bidding on this item
+                    if len(retrieved_item['bidding_info']) != 0:
+                        return {'message': 'Price can only be updated when '
+                                            'there is no bidding on this item'},400
+            except TypeError:
+                return {'result': "fail", "message": 'invalid price'}, 400
 
             for k in ['category', 'title', "description", "image", "location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
@@ -1098,7 +1110,6 @@ class SingleAuctionItemOperations(Resource):
                     else:
                         return {'result': "fail", "message": k+" can't be empty"}, 400
 
-            # Input validation: End_time validation
 
             update_data['updated'] = datetime.datetime.now().strftime(
                 '%Y-%m-%d %H:%M:%S')
@@ -1274,17 +1285,27 @@ class BiddingManagement(Resource):
             current_highest_price = sorted_bidding_info_list[0]["proposal_price"]
         if_overbid = True if new_proposed_price > current_highest_price else False
         if if_overbid and new_proposed_price > item_min_price:
-            bid_id = au_col.count_documents({})
+            bid_id = ""
             new_bidding_info = {
-                # "bid_id":bid_id,
+                "bid_id": bid_id,
                 "created": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             }
             for key in user_input.keys():
                 new_bidding_info[key] = user_input[key]
             retrieved_item["bidding_info"].append(new_bidding_info)
+
+            # update bid_id to format :"0-0"
+            bid_index = retrieved_item["bidding_info"].index(new_bidding_info)
+            bid_id = item_id + "-" + bid_index
+            retrieved_item["bidding_info"][bid_index]["bid_id"] = bid_id
+
             # insert into database
             # au_col.insert_one(new_bidding_info)
-            del new_bidding_info["_id"]
+            # del new_bidding_info["_id"]
+
+            # update the user_bidding field in auction (user ids who bid on this item)
+            retrieved_item["users_bidding"].append(int(user_id))
+            # update the bids field in user (auction id the that the user has bid on)
             buyer['bids'].append(item_id)
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
             user_col.update_one({"user_id": int(user_id)}, {"$set": buyer})
@@ -1329,11 +1350,11 @@ class AcceptOrDeclineBiddings(Resource):
 
         status_code = 200
         if operation == "accept":
-            retrieved_item["status"] = "Accepted"
+            retrieved_item["status"] = "ACCEPTED"
             result = "OK"
             message = "The bid is accepted successfully"
         elif operation == "decline":
-            retrieved_item["status"] = "Declined"
+            retrieved_item["status"] = "DECLINED"
             result = "OK"
             message = "The bid is declined successfully"
         else:
@@ -1354,7 +1375,7 @@ class AcceptOrDeclineBiddings(Resource):
         return response, status_code
 
 
-@ns_bidding.route('/<bid_id>')
+@ns_bidding.route('/<bid_id>') # the bid id is of format : "2-0"
 @api.param('bid_id', 'Bidding ID given when the bid was proposed')
 class SingleBiddingOperations(Resource):
     @api.response(200, 'OK')
@@ -1363,15 +1384,27 @@ class SingleBiddingOperations(Resource):
     def get(self, bid_id):
         au_col = mydb["auctions"]
         result = "OK"
-        retrieved_item = au_col.find_one({"bid_id": int(bid_id)})
+        item_id = bid_id.split("-")[0]
+        retrieved_item = au_col.find_one({"bid_id": int(item_id)})
+        # validation 1: item not found
         if retrieved_item is None:
             result = "Fail"
             return {"result": result, "message": "Item not found"}, 404
         del retrieved_item["_id"]
+        bidding_info = retrieved_item['bidding_info']
+        for info in bidding_info:
+            if info["bid_id"] == bid_id:
+                returned_info = info
+
+        # validation 2: bidding_info not found
+        if result is None:
+            result = "Fail"
+            return {"result": result, "message": "Bidding info not found"}, 404
+
         response = \
             {
                 "result": result,
-                "data": retrieved_item
+                "data": returned_info
             }
 
         return response, 200
@@ -1395,7 +1428,7 @@ class SingleBiddingOperations(Resource):
         if retrieved_item is None:
             return {"result": result, "message": "Specified auction item does not exist"}, 404
 
-        if retrieved_item["status"] == "Accepted":
+        if retrieved_item["status"] == "ACCEPTED":
             return {"result": result, "message": "The bid is already accepted"}
 
         buyer_id = retrieved_bid["user_id"]
@@ -1403,17 +1436,18 @@ class SingleBiddingOperations(Resource):
         del buyer['_id']
 
         try:
-            au_col.remove({"bid_id": int(bid_id)})
+            # au_col.remove({"bid_id": int(bid_id)})
 
             # remove the specified bidding from the bidding_info of the auction
             retrieved_item['bidding_info'] = \
                 [x for x in retrieved_item['bidding_info']
-                    if int(x["bid_id"]) != int(bid_id)]
+                    if x["bid_id"] != bid_id]
+            # remove user id from the users_bidding field in auction
+            retrieved_item['users_favorite'].remove(int(buyer_id))
+
             au_col.update_one({"id": int(item_id)}, {"$set": retrieved_item})
-            # remove the specified bidding from the bids of the user
-            # buyer['bids'] = \
-            #     [x for x in buyer['bids'] if int(x["bid_id"]) != int(bid_id)]
-            buyer['bids'].remove(item_id)
+
+            buyer['bids'].remove(int(item_id))
 
             user_col.update_one({"user_id": int(buyer_id)}, {"$set": buyer})
             return {"message": "Specified bidding is deleted successfully"}
