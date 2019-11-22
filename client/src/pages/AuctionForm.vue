@@ -241,7 +241,7 @@ export default {
         title: this.$data["title"],
         description: this.$data["description"],
         price: Number(this.$data["price"]),
-        end_time: this.$data["end_time"],
+        end_time: moment(this.$data["end_time"]).format("YYYY-MM-DD h:mm:ss"),
         location: this.$data["location"],
         category: this.$data["category"],
         image: this.$data["image"]
@@ -332,15 +332,17 @@ export default {
         ps.push(p);
       });
       Promise.allSettled(ps)
-        .then(res => {
-          console.log("uploading the image");
-          this.$data.image = res;
-          console.log(this.$data.image);
-        })
-        .catch(err => {
-          warning.message = err.message;
-          this.$q.notify(warning);
-        })
+        .then(
+          res => {
+            console.log("uploading the image");
+            this.$data.image = res;
+            console.log(this.$data.image);
+          },
+          err => {
+            warning.message = err.message;
+            this.$q.notify(warning);
+          }
+        )
         .finally(() => {
           this.$data.imgsupload = false;
           console.log(this.$data.imgsupload);
