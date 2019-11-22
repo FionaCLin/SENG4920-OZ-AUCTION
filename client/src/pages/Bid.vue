@@ -94,7 +94,7 @@ export default {
         })
         .then(res => {
           this.$store.commit('user/addFavorite', this.id);
-          this.favorite.set;
+          this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
                   color: "green-4",
@@ -117,7 +117,7 @@ export default {
         })
         .then(res => {
           this.$store.commit('user/removeFavorite', this.id);
-          this.favorite.set;
+          this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
                   color: "green-4",
