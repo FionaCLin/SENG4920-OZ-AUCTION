@@ -1134,7 +1134,6 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
-
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
@@ -1152,17 +1151,18 @@ class Auction_search2(Resource):
 
         # change data format
         if startDate is None:
-            startDate = '2000-01-10 00:00:00'
+            startDate = "2000-01-01 00:00:00"
         if endDate is None:
-            endDate = datetime.datetime.now().strftime("'%Y-%m-%d %H:%M:%S'")
+            endDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        endDateP = datetime.datetime.strptime(endDate, "'%Y-%m-%d %H:%M:%S'")
+        endDateP = datetime.datetime.strptime(endDate, "%Y-%m-%d %H:%M:%S")
         startDateP = datetime.datetime.strptime(
-            startDate, "'%Y-%m-%d %H:%M:%S'")
+            startDate, "%Y-%m-%d %H:%M:%S")
 
         cursor = collection.find()
 
         for entry in cursor:
+            #print(entry)
             entry['_id'] = str(entry['_id'])
             result.append(entry)
             mid.append(entry)
@@ -1190,7 +1190,6 @@ class Auction_search2(Resource):
                     result.remove(entry)
 
         # location is db
-
         return result, 200
 
 
