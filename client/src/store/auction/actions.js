@@ -20,8 +20,9 @@ export function getAllAuctions({ commit }) {
     .get(`auction`)
     .then(res => {
       let auctions = res.data.result;
-      console.log(auctions, "#####");
+      console.log(auctions, "###1##");
       commit("updateAuctions", auctions);
+      return res;
     })
     .catch(err => console.log(err.response));
 }
@@ -29,8 +30,11 @@ export function getAllAuctions({ commit }) {
 export function getMyAutions({ commit }, id) {
   return axiosInstance
     .get(`account/get_user_auctions/${id}`)
-    .then(async res => {
+    .then(res => {
+      let auctions = res.data.data;
+      console.log(auctions, "####2#");
       commit("updateMyAuctions", res.data.data);
+      return res;
     })
     .catch(err => console.log(err.response));
 }
@@ -38,8 +42,11 @@ export function getMyAutions({ commit }, id) {
 export function getMyBiddings({ commit }, id) {
   return axiosInstance
     .get(`account/get_user_biddings/${id}`)
-    .then(async res => {
+    .then(res => {
+      let auctions = res.data;
+      console.log(auctions, "##3###");
       commit("updateMyBiddings", res.data.data);
+      return res;
     })
     .catch(err => console.log(err.response));
 }
@@ -47,8 +54,11 @@ export function getMyBiddings({ commit }, id) {
 export function getMyFavorite({ commit }, id) {
   return axiosInstance
     .get(`account/get_user_favorites/${id}`)
-    .then(async res => {
+    .then(res => {
+      let auctions = res.data.data;
+      console.log(auctions, "###4##");
       commit("updateMyWishList", res.data.data);
+      return res;
     })
     .catch(err => console.log(err.response));
 }
@@ -56,19 +66,14 @@ export function getMyFavorite({ commit }, id) {
 export function create({ commit }, payload) {
   return axiosInstance
     .post("/auction", payload)
-    .then(async res => {
+    .then(res => {
       let newAuction = res.data.data;
-      // let user = await axiosInstance
-      //   .get(`/account/manage_profile/${payload.seller_id}`)
-      //   .then(res => res.data.data);
-      // console.log(user, "#####@@#$@!#RFEWRGVEDSFVSDFVSDF");
-      // newAuction["user"] = user;
-      // console.log(newAuction);
       commit("addItem", newAuction);
+      return res;
     })
     .catch(err => {
       console.log(err.response);
-      return err.response;
+      return err;
     });
 }
 
