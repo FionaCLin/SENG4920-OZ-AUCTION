@@ -82,8 +82,7 @@ export function update({ commit }, { id, payload }) {
   return axiosInstance
     .put(`/auction/${id}`, payload)
     .then(res => {
-      // console.log(res);
-      commit("updateItem", payload);
+      commit("updateItem", { id, payload });
       return res;
     })
     .catch(err => {

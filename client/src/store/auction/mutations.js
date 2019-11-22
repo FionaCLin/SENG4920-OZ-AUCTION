@@ -23,11 +23,11 @@ export function addItem(state, newAucton) {
   state.myAuctions.push(newAucton);
 }
 
-export function updateItem(state, id, data) {
-  let auction = state.myAuctions.find(x => x.id == id);
-  for (let k of Object.keys(auction)) {
-    console.log(k);
-    auction[k] = data[k];
+export function updateItem(state, { id, payload }) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  let auction = state.myAuctions[aIndex];
+  for (let k of Object.keys(payload)) {
+    auction[k] = payload[k];
   }
   return state;
 }
