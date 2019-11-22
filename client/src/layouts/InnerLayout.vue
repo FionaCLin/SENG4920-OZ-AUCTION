@@ -47,7 +47,7 @@
                 <q-separator />
                 <q-btn-group spread>
                   <q-btn label="Profile" to="/profile" />
-                  <q-btn label="Signout" />
+                  <q-btn label="Signout" @click="signout" />
                 </q-btn-group>
               </q-list>
             </q-menu>
@@ -189,7 +189,8 @@ export default {
       search: null,
       user: this.$store.state.user,
       selected: "",
-      ready: false
+      ready: false,
+      token:""
     };
   },
   created() {
@@ -216,6 +217,19 @@ export default {
       this.$data.ready = true;
       console.log(res, this.$data.ready, "ready");
     });
+  },
+  methods: {
+    signout() {
+      this.token = localStorage.getItem("token");
+      console.log(this.token);
+      this.$axios
+        .delete(`/account/signout/${this.token}`)
+        .then(res => {
+          console.log(res);
+          localStorage.removeItem("token");
+          this.$router.push('/');
+        });
+    }
   }
 };
 </script>
