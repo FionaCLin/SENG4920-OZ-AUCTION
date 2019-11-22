@@ -1,29 +1,37 @@
 <template>
   <q-page>
-    <div class="row">
+    <div class="row justify-center">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
           <ImagesDisplay :image="auction.image" />
         </div>
-        <div class="q-pa-sm">
-          <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
-            <q-icon name="favorite" />
-          </q-btn>
-          <q-btn v-else class="q-ml-lg" flat @click="addFavorite">
-            <q-icon name="favorite_border" />
-          </q-btn>
-        </div>
-        <div class="q-ma-xs row">
-          <q-input
-            v-model="bidPrice"
-            prefix="AUD$"
-            class="q-ml-lg"
-            type="number"
-          />
-          <q-btn class="q-ml-xs" @click="placeBid">
-            <q-icon name="gavel" />Place Bid
-          </q-btn>
-          <div class="q-ml-lg text-red">{{ error }}</div>
+        <div class="q-px-md row">
+          <div class="col-10 row">
+            <q-input
+              v-model="bidPrice"
+              prefix="AUD$"
+              class="col-6"
+              type="number"
+            />
+            <q-btn  class="col-6" @click="placeBid">
+              <q-icon name="gavel" />Place Bid
+            </q-btn>
+            <div class="q-ml-lg text-red">{{ error }}</div>
+          </div>
+          <div class="col-2" style="position: relative;">
+            <q-btn v-if="favorite" class="myFavorite" flat @click="removeFavorite">
+              <q-icon name="favorite" />
+              <q-tooltip>
+                Remove from My Wishlist
+              </q-tooltip>
+            </q-btn>
+            <q-btn v-else class="myFavorite" flat @click="addFavorite">
+              <q-icon name="favorite_border" />
+              <q-tooltip>
+                Add to My Wishlist
+              </q-tooltip>
+            </q-btn>
+          </div>
         </div>
       </div>
       <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
@@ -163,3 +171,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .myFavorite {
+    padding: 10%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row">
+    <div class="row justify-center">
       <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
         <ItemDetail :auction="auction" />
         <div v-if="auction.bidding_info.length" class="q-ma-lg">

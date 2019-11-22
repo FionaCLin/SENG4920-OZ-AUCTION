@@ -9,21 +9,23 @@
         v-if="k === 'Seller'"
         @click="userProfile(auction.seller)"
       >
-        <q-item-section avatar>
-          <q-avatar size="60px" font-size="52px">
-            <img :src="auction.seller.avatar" />
-          </q-avatar>
-        </q-item-section>
-        <q-item-section class="q-ma-xs">
-          <q-item-label>{{ auction.seller_name }}</q-item-label>
-          <q-item-label caption>
-            <q-icon
-              v-for="n in auction.seller.rating"
-              :key="n"
-              name="star"
-            ></q-icon>
-          </q-item-label>
-        </q-item-section>
+        <div class="row">
+          <q-item-section avatar>
+            <q-avatar size="60px" font-size="52px">
+              <img :src="auction.seller.avatar" />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section class="q-ma-xs">
+            <q-item-label>{{ auction.seller_name }}</q-item-label>
+            <q-item-label caption>
+              <q-icon
+                v-for="n in auction.seller.rating"
+                :key="n"
+                name="star"
+              ></q-icon>
+            </q-item-label>
+          </q-item-section>
+        </div>
       </q-item-section>
       <q-item-section v-else>
         <q-item-label v-if="k === 'Start Price'" caption>{{
