@@ -127,7 +127,7 @@
         </div>
       </div>
     </div>
-    <div v-if="searchResult.length">
+    <div v-if="searchResult && searchResult.length > 0">
       <MyAuctionsList :items="searchResult" />
     </div>
     <div v-else-if="loading" class="flex flex-center">
