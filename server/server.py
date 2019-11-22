@@ -503,9 +503,9 @@ class User_favorites(Resource):
                             del bid['user_id']
                             break
 
-            del retrieved_item['users_bidding']
+                del retrieved_item['users_bidding']
 
-            retrieved_favorites.append(retrieved_item)
+                retrieved_favorites.append(retrieved_item)
 
             response = {
                 "message": "OK",

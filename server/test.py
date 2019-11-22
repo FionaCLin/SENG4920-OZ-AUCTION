@@ -10,7 +10,7 @@ import pymongo
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 sample_input = json.load(
-    open(os.path.join(dir_path, 'sampleoutput.json'), 'r'))
+    open(os.path.join(dir_path, 'seedData.json'), 'r'))
 
 client = pymongo.MongoClient(config.MONGO_URI)
 mydb = client[config.MONGO_DB]
