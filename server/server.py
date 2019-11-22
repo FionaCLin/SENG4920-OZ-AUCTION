@@ -692,8 +692,7 @@ class AuctionsOperations(Resource):
             return {'message': "Bad Request: end time must be later than the created time "}, 400
         try:
             au_col.insert_one(new_auction)
-            del new_auction['_id']
-
+            new_auction = getAuctionWithSellerByAuctionId(new_auction['id'])
             message = "Auction create successfully"
             response = \
                 {
@@ -710,7 +709,6 @@ class AuctionsOperations(Resource):
         except:
             return {'message': 'Bad Request'}, 400
 
-  
     @api.response(200, 'OK')
     @api.response(404, 'No auction data stored in database')
     @api.param('base', 'The item to start at(default 0)')
@@ -1055,9 +1053,9 @@ class SingleAuctionItemOperations(Resource):
             seller['favorites'].remove(item_id)
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
-            return {"message": "Specified item is deleted successfully", "data": retrieved_item}
+            return {"message": "Specified item is deleted successfully", "data": retrieved_item}, 200
         except:
-            return {"message": "Failed to delete specified item"}, 200
+            return {"message": "Failed to delete specified item"}, 400
 
     @api.response(200, 'OK')
     @api.response(404, 'Specified item does not exist')
@@ -1071,15 +1069,15 @@ class SingleAuctionItemOperations(Resource):
         try:
             if 'price' in user_input.keys():
                 update_data['price'] = float(user_input['price'])
-            if update_data['price'] < 0:
-                return {'result': "fail", "message": 'Price must be positive'}, 400
+                if update_data['price'] < 0:
+                    return {'result': "fail", "message": 'Price must be positive'}, 400
         except TypeError:
             return {'result': "fail", "message": 'invalid price'}, 400
 
-        if 'end_time' in user_input.keys() and validate_datetime_str(user_input['end_time']):
+        if 'end_time' in user_input.keys() and not validate_datetime_str(user_input['end_time']):
+            return {'message': 'invalid end_time format'}, 400
+        elif 'end_time' in user_input.keys():
             update_data['end_time'] = update_data['end_time']
-        else: 
-            return {'message': 'invalid end_time format'} , 400
         try:
             au_col = mydb['auctions']
             user_col = mydb['user']
@@ -1091,10 +1089,14 @@ class SingleAuctionItemOperations(Resource):
             seller_id = int(retrieved_item['seller_id'])
             seller = user_col.find_one({"user_id": seller_id})
 
-            for k in ['category', 'title', "description","image", "location"]:
+            for k in ['category', 'title', "description", "image", "location"]:
                 if k in user_input.keys() and retrieved_item[k] != user_input[k]:
-                    
-                    update_data[k] = user_input[k]
+                    if isinstance(user_input[k], str) and user_input[k] != "":
+                        update_data[k] = user_input[k]
+                    elif not isinstance(user_input[k], str): # image is a list
+                        update_data[k] = user_input[k]
+                    else:
+                        return {'result': "fail", "message": k+" can't be empty"}, 400
 
             # Input validation: End_time validation
 

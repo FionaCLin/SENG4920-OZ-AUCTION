@@ -39,10 +39,9 @@ export default {
       user: {
         "First Name": this.detail.first_name,
         "Last Name": this.detail.last_name,
+        Location: this.detail.location,
         Email: this.detail.email,
-        DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format(
-          "YYYY-MM-DD h:mm:ss"
-        ),
+        DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
         Phone: this.detail.phone_number,
         "Payment Method": this.detail.payment_method.join(", ")
       }
