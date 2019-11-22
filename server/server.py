@@ -394,6 +394,7 @@ class User_auctions(Resource):
 
         retrieved_auctions = []
         auction_id_list = single_user["auctions"]
+        # print(auction_id_list)
         for single_auction in auction_id_list:
             try:
                 retrieved_item = getAuctionWithSellerByAuctionId(
@@ -670,7 +671,7 @@ class AuctionsOperations(Resource):
                 "bidding_info": [],
                 "status": "BIDDING",
                 "users_bidding":[],
-                "users_favourite":[]
+                "users_favorite":[]
             }
 
         user_input = request.json
@@ -698,6 +699,7 @@ class AuctionsOperations(Resource):
         try:
             au_col.insert_one(new_auction)
             new_auction = getAuctionWithSellerByAuctionId(new_auction['id'])
+            # print("PASSED get auction with seller by auction id")
             message = "Auction create successfully"
             response = \
                 {
@@ -707,7 +709,20 @@ class AuctionsOperations(Resource):
 
             # add auction to user's 'auction' field
             seller = user_col.find_one({"user_id":  user_input['seller_id']})
-            seller['auctions'].append(auction_id)
+            # Validation: if the seller exists
+            if seller is None:
+                return {"message":"The seller does not exist"},404
+
+            # add the auction id to seller's auction when there is no duplicates
+            auction_set = set(seller['auctions'])
+            auction_set.add(int(auction_id))
+            if len(auction_set) != seller['auctions']:
+                seller['auctions'].append(int(auction_id))
+
+
+            # print(str(auction_id))
+            # print(seller['auctions'])
+            # print("PASSED remove")
             user_col.update_one({"user_id":  user_input['seller_id']}, {
                                 "$set": {"auctions": seller['auctions']}})  # :-()
             return response, 200
@@ -1040,26 +1055,33 @@ class SingleAuctionItemOperations(Resource):
     def delete(self, item_id):
         au_col = mydb['auctions']
         user_col = mydb['user']
-
-        retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
-
+        item_id = int(item_id)
+        retrieved_item = getAuctionWithSellerByAuctionId(item_id)
+        # retrieved_item = au_col.find_one({"id":int(item_id)}, {"_id": 0})
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
         # Validation: auction can only be deleted if there is no bidding on this item
         if len(retrieved_item['bidding_info']) != 0:
-            return {"message": "Auction can only be deleted when there is no bidding on this item"},404
+            return {"message": "Auction can only be deleted when there is no bidding on this item"},400
 
         seller_id = int(retrieved_item['seller_id'])
         seller = user_col.find_one({"user_id": seller_id}, {"_id": 0})
-
         try:
-            au_col.remove({"id": int(item_id)})
+            au_col.remove({"id": item_id})
             # remove the specified auction from the auction , bids and fav list of the user
 
-            seller['auctions'].remove(int(item_id))
-            # seller['bids'].remove(int(item_id))
-            seller['favorites'].remove(int(item_id))
+            seller['auctions'].remove(item_id)
+
+            # remove this auction from all users' fav list
+            # well no one actually does this =.=
+
+            for user in user_col.find({}):
+                user_id = int(user['user_id'])
+                new_user_info = user
+                if item_id in new_user_info['favorites']:
+                    new_user_info['favorites'].remove(item_id)
+                    user_col.update_one({"user_id": user_id}, {"$set": new_user_info})
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully", "data": retrieved_item}, 200
