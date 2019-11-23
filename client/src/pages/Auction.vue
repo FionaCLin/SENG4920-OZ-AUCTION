@@ -12,7 +12,7 @@
             <q-icon name="delete_forever" />Delete
           </q-btn>
           <q-item-section>
-            <div v-if="auction.status === 'bidding'">
+            <div v-if="auction.status === 'BIDDING'">
               <div v-if="auction.bidding_info.length" class="row">
                 <q-btn class="q-px-md" color="green-4" flat @click="accept = true">
                   <q-icon name="check" />Accept
