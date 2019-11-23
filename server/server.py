@@ -1313,7 +1313,7 @@ class BiddingManagement(Resource):
 
             # update bid_id to format :"0-0"
             bid_index = retrieved_item["bidding_info"].index(new_bidding_info)
-            bid_id = item_id + "-" + bid_index
+            bid_id = str(item_id) + "-" + str(bid_index)
             retrieved_item["bidding_info"][bid_index]["bid_id"] = bid_id
 
             # insert into database
