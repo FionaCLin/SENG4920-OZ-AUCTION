@@ -12,7 +12,7 @@
             <q-form
               :ref="edit ? 'EditAuctionForm' : 'CreateAuctionForm'"
               class="q-gutter-md"
-              @submit="onSubmit"
+              @submit.once="onSubmit"
             >
               <q-input
                 v-model="title"
@@ -139,8 +139,9 @@
                 color="primary"
                 label="Submit"
                 :disabled="!edit && !image.length"
-                @click="onSubmit()"
+                @click.once="onSubmit()"
               />
+
               <q-btn
                 v-if="step > 1"
                 style="float:right;"
@@ -161,7 +162,7 @@
           <q-btn
             style="float:right;"
             color="primary"
-            to="/user/myAuction"
+            to="/user/myauctions"
             label="See my new Auction"
             @click="viewCreatedAuction()"
           />
