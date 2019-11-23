@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="status" persistent>
+  <q-dialog v-model="state" persistent>
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="delete" color="primary" text-color="white" />
