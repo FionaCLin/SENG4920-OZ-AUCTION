@@ -103,13 +103,18 @@ def getAuctionWithSellerByAuctionId(id=None):
                 "users_bidding": 1
             }
         }]
-
     au_col = mydb['auctions']
-    res = au_col.aggregate(pineline)
 
-    if isinstance(id, int):
+    res = au_col.aggregate(pineline)
+    res=list(res)
+    
+    if isinstance(id, int) and len(res)!=0:
         return list(res)[0]
-    return list(res)
+    elif  res == []:
+        return None
+    else:
+        return res
+   
 
 
 class Token_authentication:
@@ -381,7 +386,6 @@ class User_auctions(Resource):
     @api.doc(description="get user's auctions")
     def get(self, request_user_id):
         col = mydb['user']
-        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
         # del single_user['_id']
 
@@ -391,13 +395,13 @@ class User_auctions(Resource):
                 "data": ""
             }
             return response, 404
+        try:
 
-        retrieved_auctions = []
-        auction_id_list = single_user["auctions"]
-        for single_auction in auction_id_list:
-            try:
-                retrieved_item = getAuctionWithSellerByAuctionId(
-                    int(single_auction))
+            retrieved_auctions = []
+            auction_id_list = single_user["auctions"]
+            print(auction_id_list)
+            retrieved_items = [x for x in getAuctionWithSellerByAuctionId() if x['id'] in auction_id_list]
+            for retrieved_item in retrieved_items:
                 buyers = getBuyerInfoByIds(
                     [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
@@ -411,8 +415,8 @@ class User_auctions(Resource):
 
                 del retrieved_item['users_bidding']
                 retrieved_auctions.append(retrieved_item)
-            except:
-                return {"message":  "Specified item does not exist"}, 404
+        except:
+            return {"message":  "Specified item does not exist"}, 404
 
         response = {
             "message": "OK",
@@ -428,7 +432,6 @@ class User_biddings(Resource):
     @api.doc(description="get user's biddings")
     def get(self, request_user_id):
         col = mydb['user']
-        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
         if single_user is None:
             response = {
@@ -440,9 +443,9 @@ class User_biddings(Resource):
         try:
             retrieved_favorites = []
             auction_id_list = single_user["bids"]
-            for single_auction in auction_id_list:
-                retrieved_item = getAuctionWithSellerByAuctionId(
-                    int(single_auction))
+            retrieved_items = [x for x in getAuctionWithSellerByAuctionId() if x['id'] in auction_id_list]
+            
+            for retrieved_item in retrieved_items:
                 buyers = getBuyerInfoByIds(
                     [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
@@ -473,7 +476,6 @@ class User_favorites(Resource):
     @api.doc(description="get user's favorites")
     def get(self, request_user_id):
         col = mydb['user']
-        au_col = mydb['auctions']
         single_user = col.find_one({"user_id": int(request_user_id)})
         # del single_user['_id']
 
@@ -487,11 +489,9 @@ class User_favorites(Resource):
         try:
             retrieved_favorites = []
             auction_id_list = single_user["favorites"]
-            for single_auction in auction_id_list:
-                # retrieved_item = au_col.find_one({'id': int(single_auction)})
-                # del retrieved_item['_id']
-                retrieved_item = getAuctionWithSellerByAuctionId(
-                    int(single_auction))
+            retrieved_items = [x for x in getAuctionWithSellerByAuctionId() if x['id'] in auction_id_list]
+                
+            for retrieved_item in retrieved_items:
                 buyers = getBuyerInfoByIds(
                     [str(id) for id in retrieved_item['users_bidding']])
                 if len(retrieved_item['users_bidding']) == 1:
@@ -734,7 +734,6 @@ class AuctionsOperations(Resource):
             return {'result': "fail", "message": 'invalid limit'}, 400
         au_col = mydb['auctions']
         retrieved_items = []
-        max_result_size = 10
         res = getAuctionWithSellerByAuctionId()
         for item in res[:max_result_size]:
 
@@ -1038,11 +1037,9 @@ class SingleAuctionItemOperations(Resource):
     @api.response(404, 'Specified item does not exist')
     @api.doc(description="Delete an auction")
     def delete(self, item_id):
-        au_col = mydb['auctions']
         user_col = mydb['user']
-
+        au_col =mydb['auctions']
         retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
-
         if retrieved_item is None:
             return {"message": "Specified item does not exist"}, 404
 
@@ -1054,12 +1051,13 @@ class SingleAuctionItemOperations(Resource):
         seller = user_col.find_one({"user_id": seller_id}, {"_id": 0})
 
         try:
-            au_col.remove({"id": int(item_id)})
-            # remove the specified auction from the auction , bids and fav list of the user
+            au_col.delete_one({"id": int(item_id)})
 
+            # remove the specified auction from the auction , bids and fav list of the user
             seller['auctions'].remove(int(item_id))
             # seller['bids'].remove(int(item_id))
-            seller['favorites'].remove(int(item_id))
+            if int(item_id) in seller['favorites']:
+                seller['favorites'].remove(int(item_id))
 
             user_col.update_one({"user_id": seller_id}, {"$set": seller})
             return {"message": "Specified item is deleted successfully", "data": retrieved_item}, 200
