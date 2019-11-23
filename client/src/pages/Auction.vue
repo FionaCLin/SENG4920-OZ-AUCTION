@@ -100,7 +100,12 @@ export default {
       console.log("@@@");
       this.$store.dispatch("auction/deleteAuction", this.id).then(res => {
         console.log(res);
-        this.$router.push("/myauctions").catch(err => console.log(err));
+        this.$router
+          .push({
+            name: "myauctions",
+            items: this.$store.state.auction.myAuctions
+          })
+          .catch(err => console.log(err));
       });
     }
   }

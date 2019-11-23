@@ -190,7 +190,7 @@ export default {
       user: this.$store.state.user,
       selected: "",
       ready: false,
-      token:""
+      token: ""
     };
   },
   created() {
@@ -222,13 +222,11 @@ export default {
     signout() {
       this.token = localStorage.getItem("token");
       console.log(this.token);
-      this.$axios
-        .delete(`/account/signout/${this.token}`)
-        .then(res => {
-          console.log(res);
-          localStorage.removeItem("token");
-          this.$router.push('/');
-        });
+      this.$axios.delete(`/account/signout/${this.token}`).then(res => {
+        console.log(res);
+        localStorage.removeItem("token");
+        this.$router.push("/");
+      });
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="state" persistent>
+  <q-dialog v-model="status" persistent>
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="delete" color="primary" text-color="white" />
@@ -29,6 +29,11 @@
 <script>
 export default {
   name: "Confirmation",
-  props: ["state"]
+  props: ["state"],
+  data() {
+    return {
+      status: this.state
+    };
+  }
 };
 </script>
