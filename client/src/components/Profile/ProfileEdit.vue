@@ -3,24 +3,22 @@
     <q-form
       ref="ProfileForm"
       class="q-gutter-md"
-      @submit="onSubmit"
+      @submit.once="onSubmit"
       @reset="onReset"
     >
       <q-input
-        v-model="firstName"
+        v-model="first_name"
         filled
         label="First name *"
-        hint="First Name"
         lazy-rules
         :rules="[
           val => (val && val.length > 0) || 'Please type your full name'
         ]"
       />
       <q-input
-        v-model="lastName"
+        v-model="last_name"
         filled
         label="Last name *"
-        hint="Last Name"
         lazy-rules
         :rules="[
           val => (val && val.length > 0) || 'Please type your full name'
@@ -30,27 +28,24 @@
         v-model="email"
         filled
         label="Your email *"
-        hint="Email"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
       />
       <q-input
-        v-model="phone"
+        v-model="phone_number"
         filled
         label="Your phone *"
-        hint="Phone"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
+        :rules="[val => (val && val.length > 0) || 'Please enter valid Phone']"
       />
-      <q-input
+      <q-select
         v-model="location"
         filled
-        label="Your location *"
-        hint="Location"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
+        label="Location"
+        use-input
+        :options="optionsLocation"
+        @filter="filterLocFn"
       />
-
       <TimeInput
         v-model="dob"
         :date="dob"
@@ -59,7 +54,7 @@
       />
 
       <q-field filled label="Payment Method" stack-label>
-        <strong>{{ paymentMethod | formatPaymentMethod }}</strong>
+        <strong>{{ payment_method | formatPaymentMethod }}</strong>
       </q-field>
       <div class="q-pa-md">
         <div class="q-px-sm"></div>
@@ -67,7 +62,7 @@
           <q-checkbox
             v-for="(k, m) in methods"
             :key="m"
-            v-model="paymentMethod"
+            v-model="payment_method"
             :val="k"
             :label="k"
             color="teal"
@@ -98,7 +93,9 @@
 
 <script>
 import moment from "moment";
+import { countries, warning } from "../../helper";
 import TimeInput from "../../components/auctionItem/TimeInput";
+
 export default {
   name: "ProfileEdit",
   components: { TimeInput },
@@ -112,15 +109,22 @@ export default {
   data() {
     return {
       edit: true,
-      firstName: this.detail.firstName,
-      lastName: this.detail.lastName,
+      first_name: this.detail.first_name,
+      last_name: this.detail.last_name,
       email: this.detail.email,
-      dob: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
+      dob: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss"),
       location: this.detail.location,
-      phone: this.detail.phone_number,
-      paymentMethod: this.detail.payment_method,
+      phone_number: this.detail.phone_number,
+      payment_method: this.detail.payment_method,
       methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
     };
+  },
+  computed: {
+    optionsLocation: {
+      get() {
+        return countries.map(x => x.name);
+      }
+    }
   },
   methods: {
     onSubmit() {
@@ -128,36 +132,68 @@ export default {
         success => {
           if (success) {
             // yay, models are correct
-            this.$emit("editDetail", this.$data);
-
-            this.$emit("updateEdit", false);
+            let data = {};
+            for (let k of Object.keys(this.detail)) {
+              if (k == "dob" && this.$data[k]) {
+                let oldVal = moment(this.detail[k], "YYYY-MM-DD h:mm:ss");
+                let newVal = moment(this.$data[k], "YYYY-MM-DD h:mm:ss");
+                if (!oldVal.isSame(newVal)) {
+                  data[k] = newVal;
+                }
+              } else if (
+                k !== "dob" &&
+                this.$data[k] &&
+                this.detail[k] !== this.$data[k]
+              ) {
+                data[k] = this.$data[k];
+              }
+            }
+            console.log(data);
+            this.$store
+              .dispatch("user/updateProfile", data)
+              .then(res => {
+                console.log(res);
+                this.$emit("updateEdit", false);
+                this.$emit("editDetail", data);
+              })
+              .catch(err => {
+                warning.message = err.data.message;
+                this.$q.notify(warning);
+              });
           }
         },
         err => {
           console.log(err);
-
-          // oh no, user has filled in
-          // at least an invalid value
-          // this.$q.notify({
-          //   color: 'red-5',
-          //   textColor: 'white',
-          //   icon: 'warning',
-          //   message: err.message
-          // })
+          warning.message = err.data.message;
+          this.$q.notify(warning);
         }
       );
     },
+    filterLocFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsLocation = countries.map(x => x.name);
+        });
+        return;
+      }
 
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsLocation = countries
+          .map(x => x.name)
+          .filter(v => v.toLowerCase().indexOf(needle) > -1);
+      });
+    },
     onReset() {
-      this.$data.firstName = this.detail.first_name;
-      this.$data.lastName = this.detail.last_name;
+      this.$data.first_name = this.detail.first_name;
+      this.$data.last_name = this.detail.last_name;
       this.$data.email = this.detail.email;
       this.$data.location = this.detail.location;
-      this.$data.phone = this.detail.phone_number;
+      this.$data.phone_number = this.detail.phone_number;
       this.$data.dob = moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format(
         "YYYY-MM-DD"
       );
-      this.$data.paymentMethod = this.detail.payment_method;
+      this.$data.payment_method = this.detail.payment_method;
     }
   }
 };
