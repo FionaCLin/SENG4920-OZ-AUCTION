@@ -1291,6 +1291,18 @@ class BiddingManagement(Resource):
             if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
+        # Input validation: Bidding should be earlier than the end_date
+        end_time_str = retrieved_item['end_time']
+        end_time = datetime.datetime.strptime(end_time_str, '%Y-%m-%d %H:%M:%S')
+        if end_time <= datetime.datetime.now():
+            return {'message': 'Bad Request: The auction is already ended'},400
+
+        # Input validation: Bidding can only be proposed when the auction is in BIDDING status
+        auction_status = retrieved_item['status']
+        if auction_status != "BIDDING":
+            return {'message': 'Bad Request: The auction is already ' + auction_status}
+
+
         message = "The bid has been proposed successfully"
         status_code = 200
         new_proposed_price = user_input["proposal_price"]
