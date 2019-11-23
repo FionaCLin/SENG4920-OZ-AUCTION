@@ -13,13 +13,18 @@
               class="col-6"
               type="number"
             />
-            <q-btn  class="col-6" @click="placeBid">
+            <q-btn class="col-6" @click="placeBid">
               <q-icon name="gavel" />Place Bid
             </q-btn>
             <div class="q-ml-lg text-red">{{ error }}</div>
           </div>
           <div class="col-2" style="position: relative;">
-            <q-btn v-if="favorite" class="myFavorite" flat @click="removeFavorite">
+            <q-btn
+              v-if="favorite"
+              class="myFavorite"
+              flat
+              @click="removeFavorite"
+            >
               <q-icon name="favorite" />
               <q-tooltip>
                 Remove from My Wishlist
@@ -96,44 +101,46 @@ export default {
     addFavorite() {
       console.log("Add");
       this.$axios
-        .put('/auction/favorite/set', {
-           "user_id": this.$store.state.user.user_id,
-           "auction_id": this.id
+        .put("/auction/favorite/set", {
+          user_id: this.$store.state.user.user_id,
+          auction_id: this.id
         })
         .then(res => {
-          this.$store.commit('user/addFavorite', this.id);
+          this.$store.commit("user/addFavorite", this.id);
+          this.$store.commit("auction/addWishList", this.id);
           this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
-                  color: "green-4",
-                  textColor: "white",
-                  position: "top",
-                  icon: "cloud_done",
-                  message: res.data.message
-                })
+            color: "green-4",
+            textColor: "white",
+            position: "top",
+            icon: "cloud_done",
+            message: res.data.message
+          });
         })
         .catch(err => console.log(err));
     },
     removeFavorite() {
-
       console.log("remove");
       console.log(this.$store.state.user.user_id);
       this.$axios
-        .put('/auction/favorite/unset', {
-           "user_id": this.$store.state.user.user_id,
-           "auction_id": this.id
+        .put("/auction/favorite/unset", {
+          user_id: this.$store.state.user.user_id,
+          auction_id: this.id
         })
         .then(res => {
-          this.$store.commit('user/removeFavorite', this.id);
+          this.$store.commit("user/removeFavorite", this.id);
+          this.$store.commit("auction/removeWishList", this.id);
+
           this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
-                  color: "green-4",
-                  textColor: "white",
-                  position: "top",
-                  icon: "cloud_done",
-                  message: res.data.message
-                })
+            color: "green-4",
+            textColor: "white",
+            position: "top",
+            icon: "cloud_done",
+            message: res.data.message
+          });
         })
         .catch(err => console.log(err));
     },
@@ -173,11 +180,11 @@ export default {
 </script>
 
 <style scoped>
-  .myFavorite {
-    padding: 10%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.myFavorite {
+  padding: 10%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

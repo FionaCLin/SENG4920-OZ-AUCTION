@@ -35,3 +35,16 @@ export function removeMyAuction(state, id) {
   let aIndex = state.myAuctions.findIndex(x => x.id == id);
   state.myAuctions.splice(aIndex, 1);
 }
+export function addWishList(state, id) {
+  console.log(id);
+  id = Number(id);
+  let a = state.myBids.find(x => x.id == id);
+  if (!a) {
+    a = state.myWishList.find(x => x.id == id);
+  }
+  state.myWishList.push(a);
+}
+export function removeWishList(state, id) {
+  let aIndex = state.myWishList.findIndex(x => x.id == id);
+  state.myWishList.splice(aIndex, 1);
+}
