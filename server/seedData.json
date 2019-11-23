@@ -326,7 +326,7 @@
       "image": [
         "https://static.artfire.com/uploads/mfs/items/72/3e/default/723e3621097b174fdf44bb0de6f038d5580e60d077b0d7dbcf3a21becd081081.jpg"
       ],
-      "status": "ACCEPTED",
+      "status": "BIDDING",
       "bidding_info": [
         {
           "bid_id": "3-0",
@@ -591,7 +591,7 @@
       "image": [
         "https://static.artfire.com/uploads/mfs/items/b7/88/default/b7885b641a4d6785b05f4bb91dd572e41b58c776a5e8bcbbc9da3ea60c9da5d6.jpg"
       ],
-      "status": "ACCEPTED",
+      "status": "BIDDING",
       "bidding_info": [
         {
           "bid_id": "6-0",
@@ -919,7 +919,7 @@
       "image": [
         "https://static.artfire.com/uploads/mfs/items/d6/52/default/d65272c39d07d73ed729cc0467e23d0a353bab85ba53b3b5bf82175949db03b2.jpg"
       ],
-      "status": "DECLINED",
+      "status": "BIDDING",
       "bidding_info": [
         {
           "bid_id": "8-0",
@@ -1046,7 +1046,7 @@
       "image": [
         "https://static.artfire.com/uploads/mfs/items/a0/48/default/a048b86ab3aba1db36508b79803b3cb876603ab74be27f6784cccd5b7f4b4194.jpg"
       ],
-      "status": "DECLINED",
+      "status": "BIDDING",
       "bidding_info": [
         {
           "bid_id": "10-0",

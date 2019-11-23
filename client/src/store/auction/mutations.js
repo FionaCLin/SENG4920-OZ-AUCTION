@@ -48,3 +48,8 @@ export function removeWishList(state, id) {
   let aIndex = state.myWishList.findIndex(x => x.id == id);
   state.myWishList.splice(aIndex, 1);
 }
+
+export function updateMyAuctionStatus(state, { id, status }) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  state.myAuctions[aIndex].status = status;
+}
