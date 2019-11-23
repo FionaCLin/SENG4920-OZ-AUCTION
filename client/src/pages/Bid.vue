@@ -78,9 +78,6 @@ export default {
     favorite: {
       get() {
         return this.$store.state.user.favorites.indexOf(Number(this.id)) !== -1;
-      },
-      set() {
-        this.favorite = !this.favorite;
       }
     }
   },
