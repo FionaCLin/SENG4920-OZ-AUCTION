@@ -25,3 +25,9 @@ export function updateCurrentID(state, user) {
   return state;
 }
 
+export function updateUserDetail(state, data) {
+  console.log(state);
+  for (let k of Object.keys(data)) {
+    state[k] = data[k];
+  }
+}

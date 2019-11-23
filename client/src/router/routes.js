@@ -37,7 +37,8 @@ const routes = [
       {
         path: "/",
         name: "myauctions",
-        component: () => import("pages/MyAuctions")
+        component: () => import("pages/MyAuctions"),
+        props: true
       }
     ]
   },
@@ -48,7 +49,8 @@ const routes = [
       {
         path: "/",
         name: "mybiddings",
-        component: () => import("pages/MyBiddings")
+        component: () => import("pages/MyBiddings"),
+        props: true
       }
     ]
   },
@@ -59,7 +61,8 @@ const routes = [
       {
         path: "/",
         name: "mywishlist",
-        component: () => import("pages/MyWishlist")
+        component: () => import("pages/MyWishlist"),
+        props: true
       }
     ]
   },

@@ -16,6 +16,9 @@ export default {
     return {
       myAuction_items: this.$store.state.auction.myWishList
     };
+  },
+  created() {
+    this.$data.myAuction_items = this.$store.state.auction.myWishList;
   }
 };
 </script>

@@ -13,10 +13,10 @@
 
         <q-space />
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat color="grey-8" icon="notifications">
+          <!-- <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating>2</q-badge>
             <q-tooltip>Notifications</q-tooltip>
-          </q-btn>
+          </q-btn> -->
 
           <q-btn round flat>
             <q-avatar size="26px">
@@ -190,13 +190,13 @@ export default {
       user: this.$store.state.user,
       selected: "",
       ready: false,
-      token:""
+      token: ""
     };
   },
   created() {
-    // if (!localStorage.getItem("token") || !this.$store.state.user.token) {
-    //   this.$router.push("/login").catch(() => {});
-    // }
+    if (!localStorage.getItem("token") || !this.$store.state.user.token) {
+      this.$router.push("/login").catch(() => {});
+    }
 
     let promises = [
       this.$store.dispatch("auction/getAllAuctions"),
@@ -222,13 +222,11 @@ export default {
     signout() {
       this.token = localStorage.getItem("token");
       console.log(this.token);
-      this.$axios
-        .delete(`/account/signout/${this.token}`)
-        .then(res => {
-          console.log(res);
-          localStorage.removeItem("token");
-          this.$router.push('/');
-        });
+      this.$axios.delete(`/account/signout/${this.token}`).then(res => {
+        console.log(res);
+        localStorage.removeItem("token");
+        this.$router.push("/");
+      });
     }
   }
 };

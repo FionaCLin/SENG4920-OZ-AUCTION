@@ -15,3 +15,15 @@ export const signin = ({ commit }, creds) => {
   });
 };
 
+export const updateProfile = ({ commit, state }, data) => {
+  return axiosInstance
+    .put(`account/manage_profile/${state.user_id}`, data)
+    .then(res => {
+      commit("updateUserDetail", data);
+      return res;
+    })
+    .catch(err => {
+      console.log(err.response);
+      return err;
+    });
+};

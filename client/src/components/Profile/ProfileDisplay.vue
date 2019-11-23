@@ -40,10 +40,9 @@ export default {
         "First Name": this.detail.first_name,
         "Last Name": this.detail.last_name,
         Email: this.detail.email,
-        DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format(
-          "YYYY-MM-DD h:mm:ss"
-        ),
         Phone: this.detail.phone_number,
+        Location: this.detail.location,
+        DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
         "Payment Method": this.detail.payment_method.join(", ")
       }
     };

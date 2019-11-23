@@ -12,7 +12,7 @@
             <q-form
               :ref="edit ? 'EditAuctionForm' : 'CreateAuctionForm'"
               class="q-gutter-md"
-              @submit="onSubmit"
+              @submit.once="onSubmit"
             >
               <q-input
                 v-model="title"
@@ -139,8 +139,9 @@
                 color="primary"
                 label="Submit"
                 :disabled="!edit && !image.length"
-                @click="onSubmit()"
+                @click.once="onSubmit()"
               />
+
               <q-btn
                 v-if="step > 1"
                 style="float:right;"
@@ -161,7 +162,7 @@
           <q-btn
             style="float:right;"
             color="primary"
-            to="/user/myAuction"
+            to="/user/myauctions"
             label="See my new Auction"
             @click="viewCreatedAuction()"
           />
@@ -185,7 +186,13 @@ let warning = {
   message: "",
   position: "top"
 };
-
+let success = {
+  color: "green-4",
+  textColor: "white",
+  position: "top",
+  icon: "cloud_done",
+  message: ""
+};
 export default {
   name: "AuctionCreateForm",
   components: {
@@ -227,8 +234,10 @@ export default {
       this.$data.category = auction.category;
       this.$data.title = auction.title;
       this.$data.description = auction.description;
-      this.$data.end_time = auction.end_time;
-      this.$data.price = auction.price;
+      (this.$data.end_time = moment(auction.end_time).format(
+        "YYYY-MM-DD h:mm:ss"
+      )),
+        (this.$data.price = auction.price);
       this.$data.location = auction.location;
       this.auction = auction;
     }
@@ -241,7 +250,7 @@ export default {
         title: this.$data["title"],
         description: this.$data["description"],
         price: Number(this.$data["price"]),
-        end_time: this.$data["end_time"],
+        end_time: moment(this.$data["end_time"]).format("YYYY-MM-DD h:mm:ss"),
         location: this.$data["location"],
         category: this.$data["category"],
         image: this.$data["image"]
@@ -258,17 +267,6 @@ export default {
     },
     onSubmit() {
       if (this.edit) {
-        // console.log({
-        //   seller_id: this.$store.state.user.user_id,
-        //   seller_name: this.$store.state.user.first_name,
-        //   title: this.$data["title"],
-        //   description: this.$data["description"],
-        //   price: Number(this.$data["price"]),
-        //   end_time: this.$data["end_time"],
-        //   location: this.$data["location"],
-        //   category: this.$data["category"],
-        //   image: this.$data["image"]
-        // });
         let payload = {};
         for (let k of [
           "title",
@@ -280,8 +278,10 @@ export default {
           "image"
         ]) {
           if (this.$data[k] != this.auction[k]) {
-            console.log(this.$data[k], this.auction[k]);
             payload[k] = this.$data[k];
+            if (k == "end_time") {
+              payload[k] = moment(payload[k]).format("YYYY-MM-DD h:mm:ss");
+            }
           }
         }
         console.log(payload, this.id);
@@ -290,15 +290,13 @@ export default {
         this.$store
           .dispatch("auction/update", { id, payload })
           .then(res => {
-            console.log(res, "!!!");
             if (res && res.status != 200) {
               warning.message = res.data.message;
               this.$q.notify(warning);
               return;
             }
-            for (let k of payload) {
-              console.log(k, "@@@");
-            }
+            success.message = res.data.message;
+            setTimeout(this.$q.notify(success), 1000);
             this.$router
               .push({
                 name: "auctionItem",
@@ -307,7 +305,7 @@ export default {
                   item: this.auction
                 }
               })
-              .catch(err => console.log(err));
+              .catch(() => {});
           })
           .catch(err => console.log(err));
       } else {
@@ -332,15 +330,17 @@ export default {
         ps.push(p);
       });
       Promise.allSettled(ps)
-        .then(res => {
-          console.log("uploading the image");
-          this.$data.image = res;
-          console.log(this.$data.image);
-        })
-        .catch(err => {
-          warning.message = err.message;
-          this.$q.notify(warning);
-        })
+        .then(
+          res => {
+            console.log("uploading the image");
+            this.$data.image = res.map(x => x.value);
+            console.log(res, "PPPPP");
+          },
+          err => {
+            warning.message = err.message;
+            this.$q.notify(warning);
+          }
+        )
         .finally(() => {
           this.$data.imgsupload = false;
           console.log(this.$data.imgsupload);

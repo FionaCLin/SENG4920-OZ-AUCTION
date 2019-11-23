@@ -19,6 +19,14 @@ export function uploadImage(file, done) {
   );
 }
 
+export var warning = {
+  color: "red-5",
+  textColor: "white",
+  icon: "warning",
+  message: "",
+  position: "top"
+};
+
 export var dropdownOpts = [
   "Pet Supplies",
   "Movies",

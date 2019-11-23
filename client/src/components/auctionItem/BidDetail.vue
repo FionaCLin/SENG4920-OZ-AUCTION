@@ -19,9 +19,9 @@
           </q-td>
           <q-td>
             <div @click="userProfile(props.row.buyer)">
-              <span class="text-weight-bold">{{
-                props.row.buyer.first_name + props.row.buyer.last_name
-              }}</span>
+              <span class="text-weight-bold">
+                {{ props.row.buyer.first_name + props.row.buyer.last_name }}
+              </span>
               <div caption>{{ props.row.buyer.location }}</div>
               <div caption>
                 <q-icon
@@ -33,9 +33,7 @@
             </div>
           </q-td>
           <q-td>
-            <div class="text-h6">
-              {{ props.row.proposal_price | currency }}
-            </div>
+            <div class="text-h6">{{ props.row.proposal_price | currency }}</div>
             <div class="text-subtitle1">{{ props.row.created }}</div>
           </q-td>
         </q-tr>
@@ -56,19 +54,22 @@ export default {
     return {
       pagination: {},
       columns: [
-        {
-          name: "price",
-          required: true,
-          label: "",
-          field: "proposal_price",
-          sortable: true
-        },
+        {},
         {
           name: "user",
           required: true,
-          label: "",
+          label: "Competitive bidding",
           field: "user",
+          align: "center",
           sortable: false
+        },
+        {
+          name: "price",
+          required: true,
+          label: "Price",
+          align: "center",
+          field: "proposal_price",
+          sortable: true
         }
       ],
       biddings_info: this.biddings
