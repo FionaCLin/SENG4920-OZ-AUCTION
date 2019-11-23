@@ -87,6 +87,7 @@ def getAuctionWithSellerByAuctionId(id=None):
                 "updated": 1,
                 "end_time": 1,
                 "location": 1,
+                "status": 1,
                 "price": 1,
                 "image": 1,
                 "bidding_info": 1,
