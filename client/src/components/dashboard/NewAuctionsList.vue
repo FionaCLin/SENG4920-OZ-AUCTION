@@ -46,7 +46,8 @@ export default {
         .push({
           name: "biddingItem",
           params: {
-            id: id
+            id: id,
+            from: "newAuction"
           }
         })
         .catch(err => console.log(err));

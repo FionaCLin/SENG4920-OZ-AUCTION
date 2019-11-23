@@ -69,9 +69,22 @@ export default {
   computed: {
     auction: {
       get() {
-        let item = this.$store.state.auction.myBids.find(
-          x => x.id == this.$route.params.id
-        );
+        let item;
+        if (this.from == "newAuction") {
+          item = this.$store.state.auction.auctions.find(
+            x => x.id == this.$route.params.id
+          );
+        }
+        if (this.from == "myBiddings") {
+          item = this.$store.state.auction.myBids.find(
+            x => x.id == this.$route.params.id
+          );
+        }
+        if (this.from == "myWishlist") {
+          item = this.$store.state.auction.myWishList.find(
+            x => x.id == this.$route.params.id
+          );
+        }
         return item;
       }
     },
@@ -88,7 +101,8 @@ export default {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-    this.auction = this.$route.params.item;
+    this.from = this.$route.params.from;
+    this.fetch();
   },
   methods: {
     addFavorite() {

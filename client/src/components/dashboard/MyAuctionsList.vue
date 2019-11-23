@@ -144,7 +144,8 @@ export default {
             name: "auctionItem",
             params: {
               id: auction.id,
-              item: auction
+              item: auction,
+              from: this.alink
             }
           })
           .catch(err => console.log(err));
@@ -154,7 +155,8 @@ export default {
             name: "biddingItem",
             params: {
               id: auction.id,
-              item: auction
+              item: auction,
+              from: this.alink
             }
           })
           .catch(err => console.log(err));
