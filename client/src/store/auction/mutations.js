@@ -1,6 +1,6 @@
 export function placeBidding(state, bid) {
-  let auction = state.myBids.find(x => x.id === bid.item_id);
-  auction.bidding_info.slice(0, bid);
+  let i = state.myBids.findIndex(x => x.id === bid.item_id);
+  state.myBids[i].bidding_info.splice(0, 0, bid);
 }
 //Sync
 export function updateAuctions(state, auctions) {

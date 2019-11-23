@@ -1,16 +1,18 @@
 import { axiosInstance } from "../../boot/axios";
 
 // async
-export function placeBidding({ commit }, bid) {
+export function placeBidding({ commit }, { bid, buyer }) {
   //TODO
   return axiosInstance
     .post("bidding", bid)
     .then(res => {
       bid.bid_id = res.data.data.bid_id;
       bid.created = res.data.data.created;
+      bid.buyer = buyer;
       commit("placeBidding", bid);
+      return res;
     })
-    .catch(err => console.log(err.response));
+    .catch(err => err.response);
 }
 
 export function getAllAuctions({ commit }) {

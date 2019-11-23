@@ -26,15 +26,11 @@
               @click="removeFavorite"
             >
               <q-icon name="favorite" />
-              <q-tooltip>
-                Remove from My Wishlist
-              </q-tooltip>
+              <q-tooltip>Remove from My Wishlist</q-tooltip>
             </q-btn>
             <q-btn v-else class="myFavorite" flat @click="addFavorite">
               <q-icon name="favorite_border" />
-              <q-tooltip>
-                Add to My Wishlist
-              </q-tooltip>
+              <q-tooltip>Add to My Wishlist</q-tooltip>
             </q-btn>
           </div>
         </div>
@@ -67,16 +63,16 @@ export default {
     return {
       bidPrice: 0,
       error: "",
-      auction: this.auction_item,
       id: ""
     };
   },
   computed: {
-    auction_item: {
+    auction: {
       get() {
-        return this.$store.state.auction.myBids.find(
+        let item = this.$store.state.auction.myBids.find(
           x => x.id == this.$route.params.id
         );
+        return item;
       }
     },
     favorite: {
@@ -95,7 +91,7 @@ export default {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-    this.$data.auction = this.$route.params.item;
+    this.auction = this.$route.params.item;
   },
   methods: {
     addFavorite() {
@@ -145,12 +141,14 @@ export default {
         .catch(err => console.log(err));
     },
     fetch() {
+      console.log("fetch again");
       let item;
-      this.$axios
+      return this.$axios
         .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
-          this.$data.auction = item;
+          this.auction = item;
+          console.log("fetch again");
         })
         .catch(err => console.log(err));
     },
@@ -162,15 +160,34 @@ export default {
           return e.proposal_price;
         })
       );
+
       if (this.$data.bidPrice > max) {
         console.log(this.auction.id);
         console.log(this.$data.bidPrice);
         console.log(this.$store.state.user.user_id, "==========");
-        this.$store.dispatch("auction/placeBidding", {
+
+        let buyer = {
+          user_id: this.$store.state.user["user_id"],
+          first_name: this.$store.state.user["first_name"],
+          last_name: this.$store.state.user["last_name"],
+          avatar: this.$store.state.user["avatar"],
+          location: this.$store.state.user["location"],
+          rating: this.$store.state.user["rating"]
+        };
+        let bid = {
           item_id: this.auction.id,
           proposal_price: Number(this.$data.bidPrice),
           user_id: this.$store.state.user.user_id
-        });
+        };
+        this.$store
+          .dispatch("auction/placeBidding", { bid, buyer })
+          .then(res => {
+            console.log(res);
+            this.fetch();
+          })
+          .catch(err => {
+            this.$data.error = err;
+          });
       } else {
         this.$data.error = `* Bidding price $ ${this.$data.bidPrice} must greater than current price $ ${max}.`;
       }
