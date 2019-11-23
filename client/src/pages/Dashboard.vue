@@ -1,9 +1,9 @@
 <template>
   <q-page class="bg-grey-1">
     <!-- <div v-if="ready"> -->
-    <NewAuction :new-auctions="newAuctions" />
+    <NewAuction :alink="`newAuctions`" :new-auctions="newAuctions" />
 
-    <MyAuctionsList :items="auctions" />
+    <MyAuctionsList :alink="`myBiddings`" :items="auctions" />
     <!-- </div> -->
     <!-- <q-page-container v-else class="flex flex-center">
       <q-circular-progress indeterminate size="150px" class="q-ma-md" />

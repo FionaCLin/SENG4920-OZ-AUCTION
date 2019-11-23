@@ -1,6 +1,10 @@
 <template>
   <q-page>
-    <MyAuctionsList :tool="true" :items="myAuction_items" />
+    <MyAuctionsList
+      :alink="`myAuctions`"
+      :tool="true"
+      :items="myAuction_items"
+    />
   </q-page>
 </template>
 
@@ -19,6 +23,7 @@ export default {
   },
   created() {
     this.$data.myAuction_items = this.$store.state.auction.myAuctions;
+    console.log(this.$router.param.path);
   }
 };
 </script>

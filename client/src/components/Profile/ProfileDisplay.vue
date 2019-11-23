@@ -1,7 +1,7 @@
 <template>
   <div class="q-gutter-y-md col-auto q-ma-md">
     <q-field
-      v-for="(val, index) in user"
+      v-for="index in keys"
       :key="index"
       filled
       :label="index"
@@ -9,7 +9,7 @@
     >
       <template>
         <div class="self-center full-width no-outline text-left" tabindex="0">
-          {{ val }}
+          {{ user[index] }}
         </div>
       </template>
     </q-field>
@@ -36,6 +36,15 @@ export default {
   data() {
     return {
       edit: false,
+      keys: [
+        "First Name",
+        "Last Name",
+        "Email",
+        "Phone",
+        "Location",
+        "DOB",
+        "Payment Method"
+      ],
       user: {
         "First Name": this.detail.first_name,
         "Last Name": this.detail.last_name,
@@ -43,7 +52,9 @@ export default {
         Phone: this.detail.phone_number,
         Location: this.detail.location,
         DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
-        "Payment Method": this.detail.payment_method.join(", ")
+        "Payment Method": this.detail.payment_method
+          ? this.detail.payment_method.join(", ")
+          : ""
       }
     };
   }
