@@ -31,3 +31,7 @@ export function updateItem(state, { id, payload }) {
   }
   return state;
 }
+export function removeMyAuction(state, id) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  state.myAuctions.splice(aIndex, 1);
+}

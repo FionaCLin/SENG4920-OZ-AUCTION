@@ -91,20 +91,9 @@ export function update({ commit }, { id, payload }) {
     });
 }
 
-export function deleteAuction({ commit, state }, auction_id) {
-  let auctions = [...state.myAuctions];
-
-  let sellers = null;
-  return axiosInstance
-    .delete(`/auction/${auction_id}`)
-    .then(res => {
-      console.log(auctions, auction_id);
-      let index = auctions.findIndex(i => i.id === auction_id);
-      auctions.splice(index, 1);
-      console.log(auctions, index);
-      console.log(res);
-
-      commit("updateMyAuctions", { auctions, sellers });
-    })
-    .catch(err => console.log(err.response));
+export function deleteAuction({ commit }, auction_id) {
+  return axiosInstance.delete(`/auction/${auction_id}`).then(res => {
+    commit("removeMyAuction", auction_id);
+    return res;
+  });
 }
