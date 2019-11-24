@@ -132,7 +132,7 @@ class Token_authentication:
         }
 
         token = self.serializer.dumps(info)
-        print('token serializer is '+str(token))
+        #print('token serializer is '+str(token))
 
         new_token = token.decode()
         self.active_token.add(new_token)
@@ -154,7 +154,7 @@ class Token_authentication:
         return info['email']
 
     def delete_token(self, token):
-        print('--- now active tokens are '+str(self.active_token))
+        #print('--- now active tokens are '+str(self.active_token))
         self.active_token.discard(token)
         return True
 
@@ -293,7 +293,7 @@ class Register(Resource):
         except:
             return {'message': 'Bad Request!??'}, 400
 
-        print(request.json)
+        #print(request.json)
 
         found = False
         for single_user in cursor:
@@ -304,7 +304,7 @@ class Register(Resource):
         if found == True:
             return {'message': 'Email Already Exists'}, 200
         else:
-            print('+++++++ '+str(id_counter)+' +++++++++')
+            #print('+++++++ '+str(id_counter)+' +++++++++')
             new_user = {
                 "user_id": id_counter,
                 "email": accountInfo["email"],
@@ -323,8 +323,8 @@ class Register(Resource):
             }
             col.insert_one(new_user)
 
-            print("new user is")
-            print(new_user)
+            #print("new user is")
+            #print(new_user)
             return {'message': 'Account Created Successfully!'}, 201
 
 
@@ -343,12 +343,12 @@ class Signin(Resource):
         col = mydb['user']
         cursor = col.find()
 
-        print(account_info)
+        #print(account_info)
 
         for single_user in cursor:
-            print(single_user)
+            #print(single_user)
             if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
-                print('find')
+                #print('find')
                 return_m = {  # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
                     "email": single_user['email'],
@@ -400,7 +400,7 @@ class User_auctions(Resource):
 
             retrieved_auctions = []
             auction_id_list = single_user["auctions"]
-            print(auction_id_list)
+            #print(auction_id_list)
             retrieved_items = [x for x in getAuctionWithSellerByAuctionId() if x['id'] in auction_id_list]
             for retrieved_item in retrieved_items:
                 buyers = getBuyerInfoByIds(
@@ -515,7 +515,7 @@ class User_favorites(Resource):
             return response, 200
 
         except:
-            print(single_user["favorites"], '@@@')
+            #print(single_user["favorites"], '@@@')
 
             return {"message":  "Specified item does not exist"}, 404
 
@@ -564,7 +564,7 @@ class Manage_profile(Resource):
         col = mydb['user']
         single_user = col.find_one({"user_id": int(request_user_id)})
         del single_user['_id']
-        print(single_user)
+        #print(single_user)
 
         if single_user is None:
             response = {
@@ -1196,7 +1196,7 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
-        print(request.args)
+        #print(request.args)
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
@@ -1204,7 +1204,7 @@ class Auction_search2(Resource):
         endPrice = request.args.get('endPrice')
         startPrice = request.args.get('startPrice')
         user_id = request.args.get('user_id')
-        print(category)
+        #print(category)
         if startPrice is None:
             startPrice = 0
         if endPrice is None:
