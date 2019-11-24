@@ -14,7 +14,7 @@ export default {
   computed: {
     myAuction_items: {
       get() {
-        //console.log(this.$store.state.auction.myAuctions.auction_items);
+        console.log(this.$store.state.auction.myAuctions.auction_items);
         return this.$store.state.auction.myAuctions.auction_items;
       }
     }

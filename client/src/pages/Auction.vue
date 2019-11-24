@@ -146,7 +146,7 @@ export default {
         .catch(err => console.log(err));
     },
     delItem() {
-      console.log("@@@");
+      //console.log("@@@");
       this.$store.dispatch("auction/deleteAuction", this.id).then(res => {
         console.log(res);
         this.$router
