@@ -49,8 +49,6 @@ def test_filter_auction():
         for k in expect.keys():
             assert res[i][k] == expect[k]
 
-
-
 if __name__ == "__main__":
     print('##### test API #####')
     #test_filter_auction_first()
