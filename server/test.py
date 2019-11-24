@@ -134,6 +134,7 @@ def test_get_auction_id():
 
 
 if __name__ == "__main__":
+
     test_auction()
     print ('PASSED')
     test_auction_search_keyword()
@@ -148,3 +149,4 @@ if __name__ == "__main__":
     # test_filter_auction_first()
     #test_create_auction()
     # test_filter_auction()
+

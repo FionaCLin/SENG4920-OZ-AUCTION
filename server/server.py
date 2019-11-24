@@ -111,7 +111,7 @@ def getAuctionWithSellerByAuctionId(id=None):
     
     if isinstance(id, int) and len(res)!=0:
         return list(res)[0]
-    elif  res == []:
+    elif res == []:
         return None
     else:
         return res
@@ -132,7 +132,7 @@ class Token_authentication:
         }
 
         token = self.serializer.dumps(info)
-        print('token serializer is '+str(token))
+        #print('token serializer is '+str(token))
 
         new_token = token.decode()
         self.active_token.add(new_token)
@@ -154,7 +154,7 @@ class Token_authentication:
         return info['email']
 
     def delete_token(self, token):
-        print('--- now active tokens are '+str(self.active_token))
+        #print('--- now active tokens are '+str(self.active_token))
         self.active_token.discard(token)
         return True
 
@@ -293,7 +293,7 @@ class Register(Resource):
         except:
             return {'message': 'Bad Request!??'}, 400
 
-        print(request.json)
+        #print(request.json)
 
         found = False
         for single_user in cursor:
@@ -304,7 +304,7 @@ class Register(Resource):
         if found == True:
             return {'message': 'Email Already Exists'}, 200
         else:
-            print('+++++++ '+str(id_counter)+' +++++++++')
+            #print('+++++++ '+str(id_counter)+' +++++++++')
             new_user = {
                 "user_id": id_counter,
                 "email": accountInfo["email"],
@@ -323,8 +323,8 @@ class Register(Resource):
             }
             col.insert_one(new_user)
 
-            print("new user is")
-            print(new_user)
+            #print("new user is")
+            #print(new_user)
             return {'message': 'Account Created Successfully!'}, 201
 
 
@@ -341,6 +341,7 @@ class Signin(Resource):
         except:
             return {'message': 'Bad Request!'}, 400
         col = mydb['user']
+
         single_user = col.find_one({"email":account_info["email"]} ,{"_id":0})
         if single_user is None:
             return {"message": "authorization has been refused."}, 401
@@ -402,7 +403,7 @@ class User_auctions(Resource):
 
             retrieved_auctions = []
             auction_id_list = single_user["auctions"]
-            print(auction_id_list)
+            #print(auction_id_list)
             retrieved_items = [x for x in getAuctionWithSellerByAuctionId() if x['id'] in auction_id_list]
             for retrieved_item in retrieved_items:
                 buyers = getBuyerInfoByIds(
@@ -517,7 +518,7 @@ class User_favorites(Resource):
             return response, 200
 
         except:
-            print(single_user["favorites"], '@@@')
+            #print(single_user["favorites"], '@@@')
 
             return {"message":  "Specified item does not exist"}, 404
 
@@ -566,7 +567,7 @@ class Manage_profile(Resource):
         col = mydb['user']
         single_user = col.find_one({"user_id": int(request_user_id)})
         del single_user['_id']
-        print(single_user)
+        #print(single_user)
 
         if single_user is None:
             response = {
@@ -752,6 +753,11 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
         retrieved_items = []
         res = getAuctionWithSellerByAuctionId()
+        # filter res : select auction in BIDDING
+        res = filter(lambda x: x['status'] == "BIDDING", res)
+        # sort res : sort results by created time
+        res = sorted(res,key=lambda k:datetime.datetime.strptime(k['created'],"%Y-%m-%d %H:%M:%S"),reverse=True)
+
         for item in res[:max_result_size]:
 
             buyers = getBuyerInfoByIds([str(id)
@@ -1034,12 +1040,18 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="get information of an auction item")
     def get(self, item_id):
         try:
+            #print("before GAWSB")
             retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+
             buyers = getBuyerInfoByIds(
                 [str(id) for id in retrieved_item['users_bidding']])
+
+            if not isinstance(buyers, list):
+                buyers = [buyers];
             for bid in retrieved_item['bidding_info']:
                 buyer_info = next(
                     filter(lambda x: x['user_id'] == bid['user_id'], buyers))
+
                 bid['buyer'] = buyer_info
                 del bid['user_id']
 
@@ -1187,6 +1199,7 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
+        #print(request.args)
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
@@ -1194,7 +1207,7 @@ class Auction_search2(Resource):
         endPrice = request.args.get('endPrice')
         startPrice = request.args.get('startPrice')
         user_id = request.args.get('user_id')
-
+        #print(category)
         if startPrice is None:
             startPrice = 0
         if endPrice is None:
@@ -1215,6 +1228,7 @@ class Auction_search2(Resource):
         cursor = getAuctionWithSellerByAuctionId()
 
         for entry in cursor:
+            #print(entry)
             result.append(entry)
             mid.append(entry)
 
@@ -1232,8 +1246,9 @@ class Auction_search2(Resource):
 
         for entry in mid:
             if category and entry['category'] is not None:
-                if entry in result:
-                    result.remove(entry)
+                if category != entry['category']:
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
             if user_id and entry['seller_id'] != int(user_id):
@@ -1289,7 +1304,7 @@ class BiddingManagement(Resource):
         del buyer['_id']
 
         # Input validation: Detect missing fields
-        for k in ['user_id', 'proposal_price']:
+        for k in ['user_id', 'proposal_price', 'item_id']:
             if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
