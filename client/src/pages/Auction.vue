@@ -7,13 +7,14 @@
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-pa-sm q-ma-lg">
         <ImagesDisplay :image="auction.image" />
         <div class="row">
-          <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
-          <q-btn v-if="isDelable()" flat @click="confirm = !confirm">
-            <q-icon name="delete_forever" />Delete
-          </q-btn>
+
           <q-item-section>
             <div v-if="auction.status === 'BIDDING'">
               <div v-if="auction.bidding_info.length" class="row">
+                <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
+                <q-btn v-if="isDelable()" flat @click="confirm = !confirm">
+                  <q-icon name="delete_forever" />Delete
+                </q-btn>
                 <q-btn class="q-px-md" color="green-4" flat @click="accept = true">
                   <q-icon name="check" />Accept
                 </q-btn>

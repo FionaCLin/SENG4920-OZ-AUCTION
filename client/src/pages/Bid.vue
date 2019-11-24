@@ -5,34 +5,46 @@
         <div>
           <ImagesDisplay :image="auction.image" />
         </div>
-        <div class="q-px-md row">
-          <div class="col-10 row">
-            <q-input
-              v-model="bidPrice"
-              prefix="AUD$"
-              class="col-6"
-              type="number"
-            />
-            <q-btn class="col-6" @click="placeBid">
-              <q-icon name="gavel" />Place Bid
-            </q-btn>
-            <div class="q-ml-lg text-red">{{ error }}</div>
+        <div  v-if="auction.status === 'BIDDING'">
+          <div class="q-px-md row">
+            <div class="col-10 row">
+              <q-input
+                v-model="bidPrice"
+                prefix="AUD$"
+                class="col-6"
+                type="number"
+              />
+              <q-btn class="col-6" @click="placeBid">
+                <q-icon name="gavel" />Place Bid
+              </q-btn>
+              <div class="q-ml-lg text-red">{{ error }}</div>
+            </div>
+            <div class="col-2" style="position: relative;">
+              <q-btn
+                v-if="favorite"
+                class="myFavorite"
+                flat
+                @click="removeFavorite"
+              >
+                <q-icon name="favorite" />
+                <q-tooltip>Remove from My Wishlist</q-tooltip>
+              </q-btn>
+              <q-btn v-else class="myFavorite" flat @click="addFavorite">
+                <q-icon name="favorite_border" />
+                <q-tooltip>Add to My Wishlist</q-tooltip>
+              </q-btn>
+            </div>
           </div>
-          <div class="col-2" style="position: relative;">
-            <q-btn
-              v-if="favorite"
-              class="myFavorite"
-              flat
-              @click="removeFavorite"
-            >
-              <q-icon name="favorite" />
-              <q-tooltip>Remove from My Wishlist</q-tooltip>
-            </q-btn>
-            <q-btn v-else class="myFavorite" flat @click="addFavorite">
-              <q-icon name="favorite_border" />
-              <q-tooltip>Add to My Wishlist</q-tooltip>
-            </q-btn>
-          </div>
+        </div>
+        <div v-else-if="auction.status === 'ACCEPTED'">
+          <q-chip size="lg" icon="bookmark">
+            AUCTION FINISHED:  {{ auction.status }}
+          </q-chip>
+        </div>
+        <div v-else-if="auction.status === 'DECLINED'">
+          <q-chip size="lg" icon="bookmark">
+            AUCTION FINISHED:  {{ auction.status }}
+          </q-chip>
         </div>
       </div>
       <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
@@ -136,14 +148,13 @@ export default {
         .catch(err => console.log(err));
     },
     fetch() {
-      console.log("fetch again");
       let item;
       return this.$axios
         .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
           this.$data.auction = item;
-          console.log("fetch again");
+          console.log("new auction is ", this.$data.auction);
         })
         .catch(err => console.log(err));
     },
