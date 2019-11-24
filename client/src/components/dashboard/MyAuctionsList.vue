@@ -45,6 +45,7 @@
         <listView
           :props="props"
           :fields="fields"
+          :alink="alink"
           @check-item="auctionItem"
           @check-profile="userProfile"
         />
@@ -132,9 +133,25 @@ export default {
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
         }
-      ],
-      data: this.items
+        // { name: "action", label: "Action", field: "id", align: "center" }
+      ]
     };
+  },
+  computed: {
+    data: {
+      get() {
+        console.log(this.$data.filter);
+        if (this.$data.filter == "") {
+          return this.items;
+        } else {
+          return this.items.filter(
+            x =>
+              x.title.includes(this.filter) ||
+              x.description.includes(this.filter)
+          );
+        }
+      }
+    }
   },
   methods: {
     auctionItem: function(auction) {

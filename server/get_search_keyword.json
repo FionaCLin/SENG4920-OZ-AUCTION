@@ -1,0 +1,386 @@
+[
+  {
+    "id": 4,
+    "seller_name": "Jaqui",
+    "seller_id": 1,
+    "category": "Crafts",
+    "title": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+    "description": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+    "created": "2016-04-25 1:59:40",
+    "updated": "2016-04-26 11:59:40",
+    "end_time": "2016-05-03 1:59:40",
+    "location": "Canada",
+    "price": 50,
+    "image": [
+      "https://static.artfire.com/uploads/mfs/items/03/81/default/03819102983b5f471b27fa9a1a9ef404354582a587806227b0f3dd3d24e3f9bb.jpg"
+    ],
+    "status": "BIDDING",
+    "bidding_info": [
+      {
+        "bid_id": "4-0",
+        "user_id": 0,
+        "item_id": 4,
+        "proposal_price": 50.84677074944197,
+        "created": "2016-04-26 1:59:40"
+      },
+      {
+        "bid_id": "4-1",
+        "user_id": 0,
+        "item_id": 4,
+        "proposal_price": 50.423040606011185,
+        "created": "2016-04-26 2:59:40"
+      },
+      {
+        "bid_id": "4-2",
+        "user_id": 0,
+        "item_id": 4,
+        "proposal_price": 51.72729271226322,
+        "created": "2016-04-26 4:59:40"
+      },
+      {
+        "bid_id": "4-3",
+        "user_id": 2,
+        "item_id": 4,
+        "proposal_price": 53.518430382649775,
+        "created": "2016-04-26 7:59:40"
+      },
+      {
+        "bid_id": "4-4",
+        "user_id": 2,
+        "item_id": 4,
+        "proposal_price": 50.92431691716148,
+        "created": "2016-04-26 11:59:40"
+      }
+    ],
+    "users_bidding": [
+      0,
+      2
+    ],
+    "seller": {
+      "user_id": 1,
+      "email": "Jaqui@gmail.com",
+      "payment_method": [
+        "PayPal",
+        "AliPay"
+      ],
+      "first_name": "Jaqui",
+      "last_name": "Jaqui",
+      "phone_number": "0437462649",
+      "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+      "location": "Canada",
+      "rating": 5,
+      "favorites": [
+        0,
+        1,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        13
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "seller_name": "Jaqui",
+    "seller_id": 1,
+    "category": "Crafts",
+    "title": "MPC Sterling Silver Mountain Peak Ring Sz 5 to 10",
+    "description": "MPC Sterling Silver Mountain Peak Ring Sz 6 to 10",
+    "created": "2016-09-10 2:13:03",
+    "updated": "2016-09-12 11:13:03",
+    "end_time": "2016-09-18 2:13:03",
+    "location": "Canada",
+    "price": 45,
+    "image": [
+      "https://static.artfire.com/uploads/mfs/items/b7/88/default/b7885b641a4d6785b05f4bb91dd572e41b58c776a5e8bcbbc9da3ea60c9da5d6.jpg"
+    ],
+    "status": "BIDDING",
+    "bidding_info": [
+      {
+        "bid_id": "6-0",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 45.692497968318065,
+        "created": "2016-09-11 2:13:03"
+      },
+      {
+        "bid_id": "6-1",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 46.32908397193591,
+        "created": "2016-09-11 3:13:03"
+      },
+      {
+        "bid_id": "6-2",
+        "user_id": 4,
+        "item_id": 6,
+        "proposal_price": 45.66844947262261,
+        "created": "2016-09-11 5:13:03"
+      },
+      {
+        "bid_id": "6-3",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 47.93138864596395,
+        "created": "2016-09-11 8:13:03"
+      },
+      {
+        "bid_id": "6-4",
+        "user_id": 4,
+        "item_id": 6,
+        "proposal_price": 48.1935999642242,
+        "created": "2016-09-11 12:13:03"
+      },
+      {
+        "bid_id": "6-5",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 48.043001862749826,
+        "created": "2016-09-11 5:13:03"
+      },
+      {
+        "bid_id": "6-6",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 46.39514025422056,
+        "created": "2016-09-11 11:13:03"
+      },
+      {
+        "bid_id": "6-7",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 48.63025264790018,
+        "created": "2016-09-11 6:13:03"
+      },
+      {
+        "bid_id": "6-8",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 47.378291913790406,
+        "created": "2016-09-11 2:13:03"
+      },
+      {
+        "bid_id": "6-9",
+        "user_id": 3,
+        "item_id": 6,
+        "proposal_price": 45.89466812761659,
+        "created": "2016-09-11 11:13:03"
+      },
+      {
+        "bid_id": "6-10",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 47.47970231379585,
+        "created": "2016-09-11 9:13:03"
+      },
+      {
+        "bid_id": "6-11",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 53.174309577599736,
+        "created": "2016-09-11 8:13:03"
+      },
+      {
+        "bid_id": "6-12",
+        "user_id": 4,
+        "item_id": 6,
+        "proposal_price": 46.623896961727645,
+        "created": "2016-09-11 8:13:03"
+      },
+      {
+        "bid_id": "6-13",
+        "user_id": 0,
+        "item_id": 6,
+        "proposal_price": 52.17662045477085,
+        "created": "2016-09-11 9:13:03"
+      },
+      {
+        "bid_id": "6-14",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 48.761171073671484,
+        "created": "2016-09-11 11:13:03"
+      },
+      {
+        "bid_id": "6-15",
+        "user_id": 4,
+        "item_id": 6,
+        "proposal_price": 49.006266619729544,
+        "created": "2016-09-12 2:13:03"
+      },
+      {
+        "bid_id": "6-16",
+        "user_id": 4,
+        "item_id": 6,
+        "proposal_price": 46.630022635430805,
+        "created": "2016-09-12 6:13:03"
+      },
+      {
+        "bid_id": "6-17",
+        "user_id": 2,
+        "item_id": 6,
+        "proposal_price": 49.553148703935776,
+        "created": "2016-09-12 11:13:03"
+      }
+    ],
+    "users_bidding": [
+      0,
+      2,
+      3,
+      4
+    ],
+    "seller": {
+      "user_id": 1,
+      "email": "Jaqui@gmail.com",
+      "payment_method": [
+        "PayPal",
+        "AliPay"
+      ],
+      "first_name": "Jaqui",
+      "last_name": "Jaqui",
+      "phone_number": "0437462649",
+      "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+      "location": "Canada",
+      "rating": 5,
+      "favorites": [
+        0,
+        1,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        13
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 0,
+    "category": "Crafts",
+    "title": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+    "description": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+    "created": "2018-06-30 8:38:35",
+    "updated": "2018-07-01 8:38:35",
+    "end_time": "2018-07-08 8:38:35",
+    "location": "United States",
+    "price": 10,
+    "image": [
+      "https://static.artfire.com/uploads/mfs/items/72/3e/default/723e3621097b174fdf44bb0de6f038d5580e60d077b0d7dbcf3a21becd081081.jpg"
+    ],
+    "status": "BIDDING",
+    "bidding_info": [
+      {
+        "bid_id": "3-0",
+        "user_id": 1,
+        "item_id": 3,
+        "proposal_price": 10.779458536946354,
+        "created": "2018-07-01 8:38:35"
+      }
+    ],
+    "users_bidding": [
+      1
+    ],
+    "seller": {
+      "user_id": 0,
+      "email": "AmeliaOriginals@gmail.com",
+      "payment_method": [
+        "Master",
+        "WeChat",
+        "PayPal",
+        "AliPay"
+      ],
+      "first_name": "AmeliaOriginals",
+      "last_name": "AmeliaOriginals",
+      "phone_number": "0437462649",
+      "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+      "location": "United States",
+      "rating": 5,
+      "favorites": [
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  },
+  {
+    "id": 0,
+    "seller_name": "AmeliaOriginals",
+    "seller_id": 0,
+    "category": "Crafts",
+    "title": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+    "description": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+    "created": "2018-05-28 8:58:45",
+    "updated": "2018-05-29 11:58:45",
+    "end_time": "2018-06-05 8:58:45",
+    "location": "United States",
+    "price": 25,
+    "image": [
+      "https://static.artfire.com/uploads/mfs/items/45/0c/default/450c43c3763c1bb9a40bf975fc3a5ead9bc2b468faa6766ff2e99e9ad7b370e8.jpg"
+    ],
+    "status": "BIDDING",
+    "bidding_info": [
+      {
+        "bid_id": "0-0",
+        "user_id": 2,
+        "item_id": 0,
+        "proposal_price": 25.167634388366217,
+        "created": "2018-05-29 8:58:45"
+      },
+      {
+        "bid_id": "0-1",
+        "user_id": 1,
+        "item_id": 0,
+        "proposal_price": 26.568849772138893,
+        "created": "2018-05-29 9:58:45"
+      },
+      {
+        "bid_id": "0-2",
+        "user_id": 1,
+        "item_id": 0,
+        "proposal_price": 27.418207188725383,
+        "created": "2018-05-29 11:58:45"
+      }
+    ],
+    "users_bidding": [
+      1,
+      2
+    ],
+    "seller": {
+      "user_id": 0,
+      "email": "AmeliaOriginals@gmail.com",
+      "payment_method": [
+        "Master",
+        "WeChat",
+        "PayPal",
+        "AliPay"
+      ],
+      "first_name": "AmeliaOriginals",
+      "last_name": "AmeliaOriginals",
+      "phone_number": "0437462649",
+      "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+      "location": "United States",
+      "rating": 5,
+      "favorites": [
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  }
+]

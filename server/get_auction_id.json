@@ -1,0 +1,172 @@
+{
+  "message": "OK",
+  "data": {
+    "id": 12,
+    "seller_name": "eabRainbowCrafts",
+    "seller_id": 3,
+    "category": "Crafts",
+    "title": "Crocheted Lavender and white mittens",
+    "description": "Crocheted Lavender and white mittens",
+    "created": "2010-09-26 7:57:36",
+    "updated": "2010-09-27 7:57:36",
+    "end_time": "2010-10-04 7:57:36",
+    "location": "United States",
+    "price": 25,
+    "image": [
+      "https://static.artfire.com/uploads/mfs/items/80/ee/default/80ee8b852ceacd1caf1c43989582705a3492529db40c9effcbe88068a76c2eaf.jpg"
+    ],
+    "status": "BIDDING",
+    "bidding_info": [
+      {
+        "bid_id": "12-0",
+        "item_id": 12,
+        "proposal_price": 25.527886638570365,
+        "created": "2010-09-27 7:57:36",
+        "buyer": {
+          "user_id": 2,
+          "first_name": "cornsilkscreations",
+          "last_name": "cornsilkscreations",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+          "location": "United States",
+          "rating": 3
+        }
+      },
+      {
+        "bid_id": "12-1",
+        "item_id": 12,
+        "proposal_price": 25.538769670988863,
+        "created": "2010-09-27 8:57:36",
+        "buyer": {
+          "user_id": 0,
+          "first_name": "AmeliaOriginals",
+          "last_name": "AmeliaOriginals",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+          "location": "United States",
+          "rating": 5
+        }
+      },
+      {
+        "bid_id": "12-2",
+        "item_id": 12,
+        "proposal_price": 25.190392539752136,
+        "created": "2010-09-27 10:57:36",
+        "buyer": {
+          "user_id": 2,
+          "first_name": "cornsilkscreations",
+          "last_name": "cornsilkscreations",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+          "location": "United States",
+          "rating": 3
+        }
+      },
+      {
+        "bid_id": "12-3",
+        "item_id": 12,
+        "proposal_price": 26.264424377532436,
+        "created": "2010-09-27 1:57:36",
+        "buyer": {
+          "user_id": 2,
+          "first_name": "cornsilkscreations",
+          "last_name": "cornsilkscreations",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+          "location": "United States",
+          "rating": 3
+        }
+      },
+      {
+        "bid_id": "12-4",
+        "item_id": 12,
+        "proposal_price": 28.34193020583831,
+        "created": "2010-09-27 5:57:36",
+        "buyer": {
+          "user_id": 2,
+          "first_name": "cornsilkscreations",
+          "last_name": "cornsilkscreations",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+          "location": "United States",
+          "rating": 3
+        }
+      },
+      {
+        "bid_id": "12-5",
+        "item_id": 12,
+        "proposal_price": 26.848584249741442,
+        "created": "2010-09-27 10:57:36",
+        "buyer": {
+          "user_id": 0,
+          "first_name": "AmeliaOriginals",
+          "last_name": "AmeliaOriginals",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+          "location": "United States",
+          "rating": 5
+        }
+      },
+      {
+        "bid_id": "12-6",
+        "item_id": 12,
+        "proposal_price": 31.990702490788387,
+        "created": "2010-09-27 4:57:36",
+        "buyer": {
+          "user_id": 0,
+          "first_name": "AmeliaOriginals",
+          "last_name": "AmeliaOriginals",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+          "location": "United States",
+          "rating": 5
+        }
+      },
+      {
+        "bid_id": "12-7",
+        "item_id": 12,
+        "proposal_price": 30.58471432627189,
+        "created": "2010-09-27 11:57:36",
+        "buyer": {
+          "user_id": 0,
+          "first_name": "AmeliaOriginals",
+          "last_name": "AmeliaOriginals",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+          "location": "United States",
+          "rating": 5
+        }
+      },
+      {
+        "bid_id": "12-8",
+        "item_id": 12,
+        "proposal_price": 26.56801710892357,
+        "created": "2010-09-27 7:57:36",
+        "buyer": {
+          "user_id": 2,
+          "first_name": "cornsilkscreations",
+          "last_name": "cornsilkscreations",
+          "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+          "location": "United States",
+          "rating": 3
+        }
+      }
+    ],
+    "seller": {
+      "user_id": 3,
+      "email": "eabRainbowCrafts@yahoo.com",
+      "payment_method": [
+        "WeChat",
+        "PayPal",
+        "AliPay"
+      ],
+      "first_name": "eabRainbowCrafts",
+      "last_name": "eabRainbowCrafts",
+      "phone_number": "0437462649",
+      "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
+      "location": "United States",
+      "rating": 2,
+      "favorites": [
+        1,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11
+      ]
+    }
+  }
+}

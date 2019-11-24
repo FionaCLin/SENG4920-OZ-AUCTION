@@ -341,33 +341,36 @@ class Signin(Resource):
         except:
             return {'message': 'Bad Request!'}, 400
         col = mydb['user']
-        cursor = col.find()
 
-        #print(account_info)
+        single_user = col.find_one({"email":account_info["email"]} ,{"_id":0})
+        if single_user is None:
+            return {"message": "authorization has been refused."}, 401
 
-        for single_user in cursor:
-            #print(single_user)
-            if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
-                #print('find')
-                return_m = {  # Just response all user informatin change if some of that is not needed
-                    "user_id": single_user['user_id'],
-                    "email": single_user['email'],
-                    "first_name": single_user['first_name'],
-                    "last_name": single_user['last_name'],
-                    "dob": single_user['dob'],
-                    "phone_number": single_user['phone_number'],
-                    "payment_method": single_user['payment_method'],
-                    "favorites": single_user['favorites'],
-                    "auctions": single_user['auctions'],
-                    "location": single_user['location'],
-                    "rating": single_user['rating'],
-                    "avatar": single_user['avatar'],
-                    "bids": single_user['bids'],
-                    "token": auth.generate_token(account_info['email'])
-                }
+        # print(account_info)
+        # print(single_user)
+        if not isinstance(single_user['payment_method'], list):
+            single_user['payment_method']=[]
+        # print('/'*20)
+        # print(single_user)
 
-                return return_m, 200
-        return {"message": "authorization has been refused."}, 401
+        return_m = {  # Just response all user informatin change if some of that is not needed
+            "user_id": single_user['user_id'],
+            "email": single_user['email'],
+            "first_name": single_user['first_name'],
+            "last_name": single_user['last_name'],
+            "dob": single_user['dob'],
+            "phone_number": single_user['phone_number'],
+            "payment_method": single_user['payment_method'],
+            "favorites": single_user['favorites'],
+            "auctions": single_user['auctions'],
+            "location": single_user['location'],
+            "rating": single_user['rating'],
+            "avatar": single_user['avatar'],
+            "bids": single_user['bids'],
+            "token": auth.generate_token(account_info['email'])
+        }
+
+        return return_m, 200
 
 
 @ns_account.route('/signout/<string:token>')
@@ -998,7 +1001,7 @@ class GetRating(Resource):
                     "message": "No ratings on the auction so far",
                     "result": "Fail"
                 }
-            return response, 400
+            return response, 404
 
         response = \
             {

@@ -52,9 +52,10 @@ export default {
         Phone: this.detail.phone_number,
         Location: this.detail.location,
         DOB: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"),
-        "Payment Method": this.detail.payment_method
-          ? this.detail.payment_method.join(", ")
-          : ""
+        "Payment Method": (() =>
+          this.detail.payment_method && this.detail.payment_method.length != 0
+            ? this.detail.payment_method.join(", ")
+            : "No payment method setup yet.")()
       }
     };
   }

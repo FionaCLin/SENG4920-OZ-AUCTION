@@ -1,5 +1,5 @@
 export default {
-  user_id: 1,
+  user_id: null,
   email: "",
   first_name: "",
   last_name: "",

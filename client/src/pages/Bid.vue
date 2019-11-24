@@ -68,27 +68,6 @@ export default {
     };
   },
   computed: {
-    /*auction: {
-      get() {
-        let item;
-        if (this.from == "newAuction") {
-          item = this.$store.state.auction.auctions.find(
-            x => x.id == this.$route.params.id
-          );
-        }
-        if (this.from == "myBiddings") {
-          item = this.$store.state.auction.myBids.find(
-            x => x.id == this.$route.params.id
-          );
-        }
-        if (this.from == "myWishlist") {
-          item = this.$store.state.auction.myWishList.find(
-            x => x.id == this.$route.params.id
-          );
-        }
-        return item;
-      }
-    },*/
     favorite: {
       get() {
         return this.$store.state.user.favorites.indexOf(Number(this.id)) !== -1;
@@ -159,22 +138,22 @@ export default {
         .get(`/auction/${this.id}`)
         .then(res => {
           item = res.data.data;
-          this.auction = item;
+          this.$data.auction = item;
           console.log("fetch again");
         })
         .catch(err => console.log(err));
     },
     placeBid() {
-      console.log(this.auction);
+      console.log(this.$data.auction);
       let max = Math.max.apply(
         Math,
-        this.auction.bidding_info.map(function(e) {
+        this.$data.auction.bidding_info.map(function(e) {
           return e.proposal_price;
         })
       );
 
       if (this.$data.bidPrice > max) {
-        console.log(this.auction.id);
+        console.log(this.$data.auction.id);
         console.log(this.$data.bidPrice);
         console.log(this.$store.state.user.user_id, "==========");
 
@@ -187,7 +166,7 @@ export default {
           rating: this.$store.state.user["rating"]
         };
         let bid = {
-          item_id: this.auction.id,
+          item_id: this.$data.auction.id,
           proposal_price: Number(this.$data.bidPrice),
           user_id: this.$store.state.user.user_id
         };
