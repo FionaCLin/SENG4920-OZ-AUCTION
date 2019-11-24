@@ -5,9 +5,10 @@
       style="min-width: 300px;"
     >
       <q-item>
-        <q-item-section avatar>
+        <q-item-section avatar class="flex flex-center">
           <q-avatar class="self-center" size="100px" font-size="52px">
-            <img :src="userProfile.avatar" />
+            <q-img v-if="userProfile" :src="userProfile.avatar" />
+            <q-icon name="person" />
           </q-avatar>
           <q-card-actions>
             <q-btn flat @click="updatePhoto">Upload</q-btn>
@@ -28,7 +29,7 @@
         </q-item-section>
       </q-item>
     </q-card>
-    <q-dialog v-model="dialog" persistent>
+    <q-dialog v-model="dialog">
       <!-- <q-avatar icon="" color="primary" text-color="white" /> -->
       <div class="text-center">
         <q-uploader
@@ -36,6 +37,8 @@
           batch
           :factory="upload"
           style="width:100%"
+          persistent
+          @focusout="dismiss(e)"
         >
         </q-uploader>
       </div>
@@ -57,10 +60,20 @@ export default {
   data() {
     return {
       edit: false,
-      userProfile: this.$store.state.user,
       dialog: false,
       imgsupload: false
     };
+  },
+  computed: {
+    userProfile: {
+      get() {
+        console.log("Working?", this.$store.state.user);
+        return this.$store.state.user;
+      },
+      set(data) {
+        this.userProfile = data;
+      }
+    }
   },
   beforeMount() {
     this.fetch();
@@ -71,20 +84,15 @@ export default {
   },
   methods: {
     fetch() {
-      if (this.$data.userProfile) {
+      if (this.userProfile["first_name"] !== "") {
+        console.log("no fetch?", this.userProfile);
         return;
       }
-      this.$axios
-        .get(`/account/manage_profile/${this.id}`)
-        .then(res => {
-          console.log(res.data);
-          this.$data.userProfile = res.data.data;
-        })
-        .catch(err => console.log(err));
+      console.log("fetch");
+      this.$store.dispatch("user/updateUserDetail");
     },
     updateDetail(data) {
       console.log(data);
-      this.$data.userProfile = this.$store.state.user;
     },
     updatePhoto() {
       this.$data.dialog = true;
@@ -125,7 +133,8 @@ export default {
           this.$data.imgsupload = false;
           this.$data.dialog = false;
         });
-    }
+    },
+    dismiss() {}
   }
 };
 </script>

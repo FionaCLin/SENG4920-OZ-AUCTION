@@ -107,7 +107,7 @@ export default {
                   color: "red-4",
                   textColor: "white",
                   icon: "cloud_done",
-                  message: "Wrong username or password"
+                  message: "Wrong login detail"
                 });
               });
           }

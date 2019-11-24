@@ -9,6 +9,7 @@ export const signin = ({ commit }, creds) => {
         localStorage.setItem("token", response.data.token);
         commit("updateCurrentID", user);
         resolve(response);
+        return response;
       })
       .catch(err => reject(err));
   });
