@@ -39,7 +39,7 @@ def test_auction_search_keyword():
     r = client.get('/auction/search-key/Silver',follow_redirects=True)
     res = json.loads(r.data.decode('utf8'))
 
-    sample_output = json.load(open(os.path.join(dir_path, 'get_filter.json'), 'r'))
+    sample_output = json.load(open(os.path.join(dir_path, 'get_search_keyword.json'), 'r'))
 
     assert r.status_code == 200
     # print(res)
