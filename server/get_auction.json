@@ -1,0 +1,762 @@
+{
+  "message": "OK",
+  "result_size": 5,
+  "result": [
+    {
+      "id": 0,
+      "seller_name": "AmeliaOriginals",
+      "seller_id": 0,
+      "category": "Crafts",
+      "title": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+      "description": "Silver Wire Woven Tear Drop Pendant with Turquoise Faceted Glass Bead",
+      "created": "2018-05-28 8:58:45",
+      "updated": "2018-05-29 11:58:45",
+      "end_time": "2018-06-05 8:58:45",
+      "location": "United States",
+      "price": 25,
+      "image": [
+        "https://static.artfire.com/uploads/mfs/items/45/0c/default/450c43c3763c1bb9a40bf975fc3a5ead9bc2b468faa6766ff2e99e9ad7b370e8.jpg"
+      ],
+      "status": "BIDDING",
+      "bidding_info": [
+        {
+          "bid_id": "0-0",
+          "item_id": 0,
+          "proposal_price": 25.167634388366217,
+          "created": "2018-05-29 8:58:45",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "0-1",
+          "item_id": 0,
+          "proposal_price": 26.568849772138893,
+          "created": "2018-05-29 9:58:45",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "0-2",
+          "item_id": 0,
+          "proposal_price": 27.418207188725383,
+          "created": "2018-05-29 11:58:45",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        }
+      ],
+      "seller": {
+        "user_id": 0,
+        "email": "AmeliaOriginals@gmail.com",
+        "payment_method": [
+          "Master",
+          "WeChat",
+          "PayPal",
+          "AliPay"
+        ],
+        "first_name": "AmeliaOriginals",
+        "last_name": "AmeliaOriginals",
+        "phone_number": "0437462649",
+        "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+        "location": "United States",
+        "rating": 5,
+        "favorites": [
+          4,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "seller_name": "AmeliaOriginals",
+      "seller_id": 0,
+      "category": "Crafts",
+      "title": "Gold Toned Wire Woven Cursive \"I\" Pendant Necklace",
+      "description": "Gold Toned Wire Woven Cursive &quot;I&quot; Pendant Necklace",
+      "created": "2018-05-29 8:45:50",
+      "updated": "2018-06-02 6:45:50",
+      "end_time": "2018-06-06 8:45:50",
+      "location": "United States",
+      "price": 15,
+      "image": [
+        "https://static.artfire.com/uploads/mfs/items/e7/26/default/e726bf372fc6bc236f9c9f067f3024585bdee7a76a0e8e30807b3a457b752eca.jpg"
+      ],
+      "status": "BIDDING",
+      "bidding_info": [
+        {
+          "bid_id": "1-0",
+          "item_id": 1,
+          "proposal_price": 15.70305148523479,
+          "created": "2018-05-30 8:45:50",
+          "buyer": {
+            "user_id": 3,
+            "first_name": "eabRainbowCrafts",
+            "last_name": "eabRainbowCrafts",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
+            "location": "United States",
+            "rating": 2
+          }
+        },
+        {
+          "bid_id": "1-1",
+          "item_id": 1,
+          "proposal_price": 16.793866248334975,
+          "created": "2018-05-30 9:45:50",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "1-2",
+          "item_id": 1,
+          "proposal_price": 17.899564789370416,
+          "created": "2018-05-30 11:45:50",
+          "buyer": {
+            "user_id": 3,
+            "first_name": "eabRainbowCrafts",
+            "last_name": "eabRainbowCrafts",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
+            "location": "United States",
+            "rating": 2
+          }
+        },
+        {
+          "bid_id": "1-3",
+          "item_id": 1,
+          "proposal_price": 17.931946586730238,
+          "created": "2018-05-30 2:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-4",
+          "item_id": 1,
+          "proposal_price": 15.458672361360218,
+          "created": "2018-05-30 6:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-5",
+          "item_id": 1,
+          "proposal_price": 17.793997892397787,
+          "created": "2018-05-30 11:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-6",
+          "item_id": 1,
+          "proposal_price": 15.59485459931943,
+          "created": "2018-05-30 5:45:50",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "1-7",
+          "item_id": 1,
+          "proposal_price": 20.53291106438273,
+          "created": "2018-05-30 12:45:50",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "1-8",
+          "item_id": 1,
+          "proposal_price": 21.304600991844566,
+          "created": "2018-05-30 8:45:50",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "1-9",
+          "item_id": 1,
+          "proposal_price": 20.06708833348096,
+          "created": "2018-05-30 5:45:50",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "1-10",
+          "item_id": 1,
+          "proposal_price": 19.12274899227387,
+          "created": "2018-05-30 3:45:50",
+          "buyer": {
+            "user_id": 3,
+            "first_name": "eabRainbowCrafts",
+            "last_name": "eabRainbowCrafts",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
+            "location": "United States",
+            "rating": 2
+          }
+        },
+        {
+          "bid_id": "1-11",
+          "item_id": 1,
+          "proposal_price": 24.582840112660655,
+          "created": "2018-05-30 2:45:50",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "1-12",
+          "item_id": 1,
+          "proposal_price": 23.14047972571742,
+          "created": "2018-05-30 2:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-13",
+          "item_id": 1,
+          "proposal_price": 28.472624651521688,
+          "created": "2018-05-30 3:45:50",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "1-14",
+          "item_id": 1,
+          "proposal_price": 24.2196383212667,
+          "created": "2018-05-30 5:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-15",
+          "item_id": 1,
+          "proposal_price": 30.12897652275881,
+          "created": "2018-05-30 8:45:50",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "1-16",
+          "item_id": 1,
+          "proposal_price": 29.559928197117955,
+          "created": "2018-05-31 12:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "1-17",
+          "item_id": 1,
+          "proposal_price": 20.48409286075013,
+          "created": "2018-06-01 5:45:50",
+          "buyer": {
+            "user_id": 3,
+            "first_name": "eabRainbowCrafts",
+            "last_name": "eabRainbowCrafts",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/bd/5c/bd5ccfc55d24b71e76ac505a6c398cb925b42eadc7585f4bcaebca29d2f32ae2.jpg",
+            "location": "United States",
+            "rating": 2
+          }
+        },
+        {
+          "bid_id": "1-18",
+          "item_id": 1,
+          "proposal_price": 25.783575738441648,
+          "created": "2018-06-01 11:45:50",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "1-19",
+          "item_id": 1,
+          "proposal_price": 23.54194591844458,
+          "created": "2018-06-02 6:45:50",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        }
+      ],
+      "seller": {
+        "user_id": 0,
+        "email": "AmeliaOriginals@gmail.com",
+        "payment_method": [
+          "Master",
+          "WeChat",
+          "PayPal",
+          "AliPay"
+        ],
+        "first_name": "AmeliaOriginals",
+        "last_name": "AmeliaOriginals",
+        "phone_number": "0437462649",
+        "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+        "location": "United States",
+        "rating": 5,
+        "favorites": [
+          4,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "seller_name": "AmeliaOriginals",
+      "seller_id": 0,
+      "category": "Crafts",
+      "title": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
+      "description": "Square Ceramic Daisy Pendant on Black Leather Cord Handmade Necklace.",
+      "created": "2018-05-29 8:03:25",
+      "updated": "2018-05-30 8:03:25",
+      "end_time": "2018-06-06 8:03:25",
+      "location": "United States",
+      "price": 15,
+      "image": [
+        "https://static.artfire.com/uploads/mfs/items/ad/95/default/ad9573b6bc14bccdbb901e7a744083a50379c8c3aced53cf15a15c17936051b4.jpg"
+      ],
+      "status": "BIDDING",
+      "bidding_info": [
+        {
+          "bid_id": "2-0",
+          "item_id": 2,
+          "proposal_price": 15.676225851813683,
+          "created": "2018-05-30 8:03:25",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "2-1",
+          "item_id": 2,
+          "proposal_price": 15.428732259451971,
+          "created": "2018-05-30 9:03:25",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "2-2",
+          "item_id": 2,
+          "proposal_price": 17.0431541947524,
+          "created": "2018-05-30 11:03:25",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "2-3",
+          "item_id": 2,
+          "proposal_price": 17.24205751699204,
+          "created": "2018-05-30 2:03:25",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        },
+        {
+          "bid_id": "2-4",
+          "item_id": 2,
+          "proposal_price": 17.532810980520733,
+          "created": "2018-05-30 6:03:25",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "2-5",
+          "item_id": 2,
+          "proposal_price": 15.40586362627171,
+          "created": "2018-05-30 11:03:25",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "2-6",
+          "item_id": 2,
+          "proposal_price": 18.156628807333636,
+          "created": "2018-05-30 5:03:25",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "2-7",
+          "item_id": 2,
+          "proposal_price": 19.433809042352788,
+          "created": "2018-05-30 12:03:25",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "2-8",
+          "item_id": 2,
+          "proposal_price": 18.210318789969207,
+          "created": "2018-05-30 8:03:25",
+          "buyer": {
+            "user_id": 4,
+            "first_name": "heartfeltgiver",
+            "last_name": "heartfeltgiver",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/86/8f/868f423c356e8e4adee722fb67fd7dddb56fb9781011d5b02fc19dd854ecc4fe.jpg",
+            "location": "United States",
+            "rating": 4
+          }
+        }
+      ],
+      "seller": {
+        "user_id": 0,
+        "email": "AmeliaOriginals@gmail.com",
+        "payment_method": [
+          "Master",
+          "WeChat",
+          "PayPal",
+          "AliPay"
+        ],
+        "first_name": "AmeliaOriginals",
+        "last_name": "AmeliaOriginals",
+        "phone_number": "0437462649",
+        "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+        "location": "United States",
+        "rating": 5,
+        "favorites": [
+          4,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "seller_name": "AmeliaOriginals",
+      "seller_id": 0,
+      "category": "Crafts",
+      "title": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+      "description": "Portugues Knitting Pin -Non-Tarnish Silver and Black/Green Shell",
+      "created": "2018-06-30 8:38:35",
+      "updated": "2018-07-01 8:38:35",
+      "end_time": "2018-07-08 8:38:35",
+      "location": "United States",
+      "price": 10,
+      "image": [
+        "https://static.artfire.com/uploads/mfs/items/72/3e/default/723e3621097b174fdf44bb0de6f038d5580e60d077b0d7dbcf3a21becd081081.jpg"
+      ],
+      "status": "BIDDING",
+      "bidding_info": [
+        {
+          "bid_id": "3-0",
+          "item_id": 3,
+          "proposal_price": 10.779458536946354,
+          "created": "2018-07-01 8:38:35",
+          "buyer": {
+            "user_id": 1,
+            "first_name": "Jaqui",
+            "last_name": "Jaqui",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+            "location": "Canada",
+            "rating": 5
+          }
+        }
+      ],
+      "seller": {
+        "user_id": 0,
+        "email": "AmeliaOriginals@gmail.com",
+        "payment_method": [
+          "Master",
+          "WeChat",
+          "PayPal",
+          "AliPay"
+        ],
+        "first_name": "AmeliaOriginals",
+        "last_name": "AmeliaOriginals",
+        "phone_number": "0437462649",
+        "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+        "location": "United States",
+        "rating": 5,
+        "favorites": [
+          4,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "seller_name": "Jaqui",
+      "seller_id": 1,
+      "category": "Crafts",
+      "title": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+      "description": "Sterling Silver Genesa Crystal Pendant Sacred Geometry",
+      "created": "2016-04-25 1:59:40",
+      "updated": "2016-04-26 11:59:40",
+      "end_time": "2016-05-03 1:59:40",
+      "location": "Canada",
+      "price": 50,
+      "image": [
+        "https://static.artfire.com/uploads/mfs/items/03/81/default/03819102983b5f471b27fa9a1a9ef404354582a587806227b0f3dd3d24e3f9bb.jpg"
+      ],
+      "status": "BIDDING",
+      "bidding_info": [
+        {
+          "bid_id": "4-0",
+          "item_id": 4,
+          "proposal_price": 50.84677074944197,
+          "created": "2016-04-26 1:59:40",
+          "buyer": {
+            "user_id": 0,
+            "first_name": "AmeliaOriginals",
+            "last_name": "AmeliaOriginals",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+            "location": "United States",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "4-1",
+          "item_id": 4,
+          "proposal_price": 50.423040606011185,
+          "created": "2016-04-26 2:59:40",
+          "buyer": {
+            "user_id": 0,
+            "first_name": "AmeliaOriginals",
+            "last_name": "AmeliaOriginals",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+            "location": "United States",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "4-2",
+          "item_id": 4,
+          "proposal_price": 51.72729271226322,
+          "created": "2016-04-26 4:59:40",
+          "buyer": {
+            "user_id": 0,
+            "first_name": "AmeliaOriginals",
+            "last_name": "AmeliaOriginals",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/e0/53/e05362e95dd59c9181a9694096ca0825e73089d29a6058522f8115da7d961ea0.jpg",
+            "location": "United States",
+            "rating": 5
+          }
+        },
+        {
+          "bid_id": "4-3",
+          "item_id": 4,
+          "proposal_price": 53.518430382649775,
+          "created": "2016-04-26 7:59:40",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        },
+        {
+          "bid_id": "4-4",
+          "item_id": 4,
+          "proposal_price": 50.92431691716148,
+          "created": "2016-04-26 11:59:40",
+          "buyer": {
+            "user_id": 2,
+            "first_name": "cornsilkscreations",
+            "last_name": "cornsilkscreations",
+            "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
+            "location": "United States",
+            "rating": 3
+          }
+        }
+      ],
+      "seller": {
+        "user_id": 1,
+        "email": "Jaqui@gmail.com",
+        "payment_method": [
+          "PayPal",
+          "AliPay"
+        ],
+        "first_name": "Jaqui",
+        "last_name": "Jaqui",
+        "phone_number": "0437462649",
+        "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/a1/2a/a12a7db3c27ab16af5934ffc11b93ed468dd37fcbf4c84a6927f8ac071d49a2a.jpg",
+        "location": "Canada",
+        "rating": 5,
+        "favorites": [
+          0,
+          1,
+          2,
+          3,
+          8,
+          9,
+          10,
+          11,
+          13
+        ]
+      }
+    }
+  ]
+}

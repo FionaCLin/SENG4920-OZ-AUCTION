@@ -33,6 +33,27 @@ x = mycol.insert_many(mylist)
 server.app.testing = True
 client = server.app.test_client()
         
+
+def test_auction():
+    print ("test auction")
+    r = client.get('/auction?limit=5&base=0',follow_redirects=True)
+    res = json.loads(r.data.decode('utf8'))
+
+    sample_output = json.load(open(os.path.join(dir_path, 'get_auction.json'), 'r'))
+
+    assert r.status_code == 200
+    assert len(res["result"]) == 5
+    for i in range(len(sample_output["result"])):
+        expect = sample_output["result"][i]
+        for k in expect.keys():
+            try:
+                assert res["result"][i][k] == expect[k]
+            except:
+                print ('---')
+                print(res["result"][i][k], expect[k])
+
+
+
 def test_auction_search_keyword():
     # curl -X GET "http://127.0.0.1:9999/auction/search-key/Silver" -H "accept: application/json"
     print ("test auction search keywords")
@@ -42,8 +63,7 @@ def test_auction_search_keyword():
     sample_output = json.load(open(os.path.join(dir_path, 'get_search_keyword.json'), 'r'))
 
     assert r.status_code == 200
-    # print(res)
-    assert len(res)== 4
+    assert len(res) == 4
     for i in range(len(sample_output)):
         expect = sample_output[i]
         for k in expect.keys():
@@ -78,6 +98,7 @@ def test_auction_search_keyword():
 
 if __name__ == "__main__":
     print('##### test API #####')
+    test_auction()
     test_auction_search_keyword()
     # test_filter_auction_first()
     #test_create_auction()
