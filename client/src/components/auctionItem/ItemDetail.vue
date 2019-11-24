@@ -12,7 +12,8 @@
         <div class="row">
           <q-item-section avatar>
             <q-avatar size="60px" font-size="52px">
-              <img :src="auction.seller.avatar" />
+              <q-img :src="auction.seller.avatar" />
+              <q-icon name="person" />
             </q-avatar>
           </q-item-section>
           <q-item-section class="q-ma-xs">

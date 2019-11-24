@@ -32,7 +32,8 @@
               >
                 <div class="absolute-bottom bg-transparent">
                   <q-avatar size="56px" class="q-mb-sm">
-                    <img :src="user.avatar" />
+                    <img v-if="user.avatar" :src="user.avatar" />
+                    <q-icon name="person" />
                   </q-avatar>
                   <div class="text-weight-bold">
                     {{ user.first_name }} {{ user.last_name }}
@@ -201,18 +202,18 @@ export default {
     let promises = [
       this.$store.dispatch("auction/getAllAuctions"),
       this.$store.dispatch(
-        "auction/getMyAutions",
-        this.$store.state.user.user_id
-      ),
-      this.$store.dispatch(
         "auction/getMyBiddings",
-        this.$store.state.user.user_id
-      ),
-      this.$store.dispatch(
-        "auction/getMyFavorite",
         this.$store.state.user.user_id
       )
     ];
+    this.$store.dispatch(
+      "auction/getMyAutions",
+      this.$store.state.user.user_id
+    );
+    this.$store.dispatch(
+      "auction/getMyFavorite",
+      this.$store.state.user.user_id
+    );
     Promise.all(promises).then(res => {
       this.$data.ready = true;
       console.log(res, this.$data.ready, "ready");
