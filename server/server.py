@@ -336,6 +336,7 @@ class Signin(Resource):
     @api.doc(description="Generates a authentication token")
     @api.expect(indicator_model, validate=True)
     def post(self):
+        #print(request.json)
         try:
             account_info = request.json
         except:
@@ -1284,6 +1285,7 @@ class BiddingManagement(Resource):
     def post(self):
         result = "OK"
         user_input = request.json
+        print(user_input)
         item_id = user_input["item_id"]
         user_id = user_input['user_id']
         au_col = mydb['auctions']

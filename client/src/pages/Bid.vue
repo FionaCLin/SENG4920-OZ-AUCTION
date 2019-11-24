@@ -188,10 +188,14 @@ export default {
         this.$store
           .dispatch("auction/placeBidding", { bid, buyer })
           .then(res => {
-            console.log(res);
+            console.log(res.data.message);
+            if( res.status == 400){
+                this.$data.error =res.data.message ;
+            }
             this.fetch();
           })
           .catch(err => {
+            console(err)
             this.$data.error = err;
           });
       } else {
