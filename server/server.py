@@ -1206,11 +1206,11 @@ class Auction_search2(Resource):
         if startDate is None:
             startDate = "2000-01-01 00:00:00"
         if endDate is None:
-            endDate = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            endDate = datetime.datetime.now().strftime("%Y-%m-%d")
 
-        endDateP = datetime.datetime.strptime(endDate, "%Y-%m-%d %H:%M:%S")
+        endDateP = datetime.datetime.strptime(endDate, "%Y-%m-%d")
         startDateP = datetime.datetime.strptime(
-            startDate, "%Y-%m-%d %H:%M:%S")
+            startDate, "%Y-%m-%d")
 
         cursor = getAuctionWithSellerByAuctionId()
 
