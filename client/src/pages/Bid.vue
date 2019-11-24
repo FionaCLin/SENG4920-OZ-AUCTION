@@ -63,11 +63,12 @@ export default {
     return {
       bidPrice: 0,
       error: "",
-      id: ""
+      id: "",
+      auction: null
     };
   },
   computed: {
-    auction: {
+    /*auction: {
       get() {
         let item;
         if (this.from == "newAuction") {
@@ -87,7 +88,7 @@ export default {
         }
         return item;
       }
-    },
+    },*/
     favorite: {
       get() {
         return this.$store.state.user.favorites.indexOf(Number(this.id)) !== -1;

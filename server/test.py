@@ -53,6 +53,6 @@ def test_filter_auction():
 
 if __name__ == "__main__":
     print('##### test API #####')
-    #test_filter_auction_first()
-    #test_create_auction()
+    test_filter_auction_first()
+    test_create_auction()
     test_filter_auction()

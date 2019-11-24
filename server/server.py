@@ -111,7 +111,7 @@ def getAuctionWithSellerByAuctionId(id=None):
     
     if isinstance(id, int) and len(res)!=0:
         return list(res)[0]
-    elif  res == []:
+    elif res == []:
         return None
     else:
         return res
@@ -750,6 +750,11 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
         retrieved_items = []
         res = getAuctionWithSellerByAuctionId()
+        # filter res : select auction in BIDDING
+        res = filter(lambda x: x['status'] == "BIDDING", res)
+        # sort res : sort results by created time
+        res = sorted(res,key=lambda k:datetime.datetime.strptime(k['created'],"%Y-%m-%d %H:%M:%S"),reverse=True)
+
         for item in res[:max_result_size]:
 
             buyers = getBuyerInfoByIds([str(id)
@@ -1032,12 +1037,18 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="get information of an auction item")
     def get(self, item_id):
         try:
+            #print("before GAWSB")
             retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+
             buyers = getBuyerInfoByIds(
                 [str(id) for id in retrieved_item['users_bidding']])
+
+            if not isinstance(buyers, list):
+                buyers = [buyers];
             for bid in retrieved_item['bidding_info']:
                 buyer_info = next(
                     filter(lambda x: x['user_id'] == bid['user_id'], buyers))
+
                 bid['buyer'] = buyer_info
                 del bid['user_id']
 
@@ -1185,6 +1196,7 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
+        print(request.args)
         location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
@@ -1192,7 +1204,7 @@ class Auction_search2(Resource):
         endPrice = request.args.get('endPrice')
         startPrice = request.args.get('startPrice')
         user_id = request.args.get('user_id')
-
+        print(category)
         if startPrice is None:
             startPrice = 0
         if endPrice is None:
@@ -1213,6 +1225,7 @@ class Auction_search2(Resource):
         cursor = getAuctionWithSellerByAuctionId()
 
         for entry in cursor:
+            #print(entry)
             result.append(entry)
             mid.append(entry)
 
@@ -1230,8 +1243,9 @@ class Auction_search2(Resource):
 
         for entry in mid:
             if category and entry['category'] is not None:
-                if entry in result:
-                    result.remove(entry)
+                if category != entry['category']:
+                    if entry in result:
+                        result.remove(entry)
 
         for entry in mid:
             if user_id and entry['seller_id'] != int(user_id):
@@ -1287,9 +1301,21 @@ class BiddingManagement(Resource):
         del buyer['_id']
 
         # Input validation: Detect missing fields
-        for k in ['user_id', 'proposal_price']:
+        for k in ['user_id', 'proposal_price', 'item_id']:
             if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
+
+        # Input validation: Bidding should be earlier than the end_date
+        end_time_str = retrieved_item['end_time']
+        end_time = datetime.datetime.strptime(end_time_str, '%Y-%m-%d %H:%M:%S')
+        if end_time <= datetime.datetime.now():
+            return {'message': 'Bad Request: The auction is already ended'},400
+
+        # Input validation: Bidding can only be proposed when the auction is in BIDDING status
+        auction_status = retrieved_item['status']
+        if auction_status != "BIDDING":
+            return {'message': 'Bad Request: The auction is already ' + auction_status}
+
 
         message = "The bid has been proposed successfully"
         status_code = 200
