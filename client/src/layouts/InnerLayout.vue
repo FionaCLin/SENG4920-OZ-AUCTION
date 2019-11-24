@@ -169,8 +169,10 @@
         <router-view />
       </div>
 
-      <div v-else class="flex flex-center">
-        <q-circular-progress indeterminate size="150px" class="q-ma-md" />
+      <div v-else class="q-pa-md q-gutter-lg">
+        <div class="q-gutter-md row justify-center" style="font-size: 2em; margin: 15% 5%;">
+          <q-spinner-hearts size="120px" color="orange" />
+        </div>
       </div>
     </q-page-container>
   </q-layout>

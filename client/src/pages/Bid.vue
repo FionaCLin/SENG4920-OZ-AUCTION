@@ -106,11 +106,11 @@ export default {
         })
         .then(res => {
           this.$store.commit("user/addFavorite", this.id);
-          this.$store.commit(
-            "auction/addWishList",
-            this.id,
-            this.$data.auction
-          );
+          // this.$store.commit(
+          //   "auction/addWishList",
+          //   this.id,
+          //   this.$data.auction
+          // );
           this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
@@ -133,7 +133,7 @@ export default {
         })
         .then(res => {
           this.$store.commit("user/removeFavorite", this.id);
-          this.$store.commit("auction/removeWishList", this.id);
+          // this.$store.commit("auction/removeWishList", this.id);
 
           this.favorite.get;
           console.log(this.$store.state.user.favorites);
