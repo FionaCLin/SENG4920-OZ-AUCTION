@@ -27,7 +27,7 @@
               filled
               :type="isPwd ? 'password' : 'text'"
               label="Login password"
-              hint="Password with toggle"
+              hint="Password to login"
               :rules="[
                 val =>
                   (val && val.length > 8) ||
