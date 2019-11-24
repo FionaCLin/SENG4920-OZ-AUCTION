@@ -111,7 +111,7 @@ def getAuctionWithSellerByAuctionId(id=None):
     
     if isinstance(id, int) and len(res)!=0:
         return list(res)[0]
-    elif  res == []:
+    elif res == []:
         return None
     else:
         return res
@@ -750,6 +750,11 @@ class AuctionsOperations(Resource):
         au_col = mydb['auctions']
         retrieved_items = []
         res = getAuctionWithSellerByAuctionId()
+        # filter res : select auction in BIDDING
+        res = filter(lambda x: x['status'] == "BIDDING", res)
+        # sort res : sort results by created time
+        res = sorted(res,key=lambda k:datetime.datetime.strptime(k['created'],"%Y-%m-%d %H:%M:%S"),reverse=True)
+
         for item in res[:max_result_size]:
 
             buyers = getBuyerInfoByIds([str(id)
@@ -1032,12 +1037,23 @@ class SingleAuctionItemOperations(Resource):
     @api.doc(description="get information of an auction item")
     def get(self, item_id):
         try:
+            #print("before GAWSB")
             retrieved_item = getAuctionWithSellerByAuctionId(int(item_id))
+
             buyers = getBuyerInfoByIds(
                 [str(id) for id in retrieved_item['users_bidding']])
+
+
             for bid in retrieved_item['bidding_info']:
+                # print("==================")
+                # print(retrieved_item['bidding_info'])
+                # print("==================")
+                # print(buyers)
+                # print("==================")
+
                 buyer_info = next(
                     filter(lambda x: x['user_id'] == bid['user_id'], buyers))
+
                 bid['buyer'] = buyer_info
                 del bid['user_id']
 
@@ -1287,7 +1303,7 @@ class BiddingManagement(Resource):
         del buyer['_id']
 
         # Input validation: Detect missing fields
-        for k in ['user_id', 'proposal_price']:
+        for k in ['user_id', 'proposal_price', 'item_id']:
             if user_input[k] == "" or user_input[k] is None:
                 return {'message': 'Bad Request: field ' + k + ' is missing'}, 400
 
