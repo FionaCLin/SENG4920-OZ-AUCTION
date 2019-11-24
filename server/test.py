@@ -35,7 +35,7 @@ client = server.app.test_client()
         
 
 def test_auction():
-    print ("test auction")
+    print ("===== test auction =====")
     r = client.get('/auction?limit=5&base=0',follow_redirects=True)
     res = json.loads(r.data.decode('utf8'))
 
@@ -56,7 +56,7 @@ def test_auction():
 
 def test_auction_search_keyword():
     # curl -X GET "http://127.0.0.1:9999/auction/search-key/Silver" -H "accept: application/json"
-    print ("test auction search keywords")
+    print ("===== test auction search keywords =====")
     r = client.get('/auction/search-key/Silver',follow_redirects=True)
     res = json.loads(r.data.decode('utf8'))
 
@@ -74,6 +74,28 @@ def test_auction_search_keyword():
                 print(res[i][k], expect[k])
 
 
+
+def test_get_category_auction_id():
+    print ("===== test get category auctionID =====")
+    r = client.get('/auction/get_category/10',follow_redirects=True)
+    res = json.loads(r.data.decode('utf8'))
+
+    sample_output = json.load(open(os.path.join(dir_path, 'get_category_auction_id.json'), 'r'))
+
+    assert r.status_code == 200
+    assert sample_output == res
+
+
+
+def test_get_rating_item_id_fail():
+    print ("===== test get category auctionID =====")
+    r = client.get('/auction/rating/4',follow_redirects=True)
+    res = json.loads(r.data.decode('utf8'))
+
+    sample_output = json.load(open(os.path.join(dir_path, 'get_rating_item_id_fail.json'), 'r'))
+
+    assert r.status_code == 404
+    assert sample_output == res
 
 # def test_filter_auction_first():
 
@@ -97,9 +119,15 @@ def test_auction_search_keyword():
 
 
 if __name__ == "__main__":
-    print('##### test API #####')
     test_auction()
+    print ('PASSED')
     test_auction_search_keyword()
+    print ('PASSED')
+    test_get_category_auction_id()
+    print ('PASSED')
+    test_get_rating_item_id_fail()
+    print ('PASSED')
+
     # test_filter_auction_first()
     #test_create_auction()
     # test_filter_auction()
