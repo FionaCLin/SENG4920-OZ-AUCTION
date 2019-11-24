@@ -94,7 +94,11 @@ export default {
         })
         .then(res => {
           this.$store.commit("user/addFavorite", this.id);
-          this.$store.commit("auction/addWishList", this.id);
+          this.$store.commit(
+            "auction/addWishList",
+            this.id,
+            this.$data.auction
+          );
           this.favorite.get;
           console.log(this.$store.state.user.favorites);
           this.$q.notify({
