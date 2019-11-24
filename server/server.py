@@ -1043,14 +1043,9 @@ class SingleAuctionItemOperations(Resource):
             buyers = getBuyerInfoByIds(
                 [str(id) for id in retrieved_item['users_bidding']])
 
-
+            if not isinstance(buyers, list):
+                buyers = [buyers];
             for bid in retrieved_item['bidding_info']:
-                # print("==================")
-                # print(retrieved_item['bidding_info'])
-                # print("==================")
-                # print(buyers)
-                # print("==================")
-
                 buyer_info = next(
                     filter(lambda x: x['user_id'] == bid['user_id'], buyers))
 
