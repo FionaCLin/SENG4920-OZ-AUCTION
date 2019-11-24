@@ -97,6 +97,21 @@ def test_get_rating_item_id_fail():
     assert r.status_code == 404
     assert sample_output == res
 
+
+
+def test_get_auction_id():
+    print ("===== test get auction id =====")
+    r = client.get('/auction/12',follow_redirects=True)
+    res = json.loads(r.data.decode('utf8'))
+
+    sample_output = json.load(open(os.path.join(dir_path, 'get_auction_id.json'), 'r'))
+
+    assert r.status_code == 200
+    assert sample_output == res
+
+
+
+
 # def test_filter_auction_first():
 
 #     r = client.get('/auction/search/filter', follow_redirects=True)
@@ -127,7 +142,9 @@ if __name__ == "__main__":
     print ('PASSED')
     test_get_rating_item_id_fail()
     print ('PASSED')
-
+    test_get_auction_id()
+    print ('PASSED')
+    
     # test_filter_auction_first()
     #test_create_auction()
     # test_filter_auction()
