@@ -995,7 +995,7 @@ class GetRating(Resource):
                     "message": "No ratings on the auction so far",
                     "result": "Fail"
                 }
-            return response, 400
+            return response, 404
 
         response = \
             {
