@@ -1202,7 +1202,7 @@ class Auction_search2(Resource):
 
         # change data format
         if startDate is None:
-            startDate = "2000-01-01 00:00:00"
+            startDate = "2000-01-01"
         if endDate is None:
             endDate = datetime.datetime.now().strftime("%Y-%m-%d")
 
