@@ -276,6 +276,7 @@ user_profile = api.model(
 )
 
 
+
 @ns_account.route('/register')
 class Register(Resource):
     @api.response(200, 'Email Already Exists')
@@ -300,6 +301,7 @@ class Register(Resource):
             id_counter = id_counter + 1
             if single_user["email"] == accountInfo["email"]:
                 found = True
+
 
         if found == True:
             return {'message': 'Email Already Exists'}, 200
@@ -352,6 +354,7 @@ class Signin(Resource):
                 return_m = {  # Just response all user informatin change if some of that is not needed
                     "user_id": single_user['user_id'],
                     "email": single_user['email'],
+
                     "first_name": single_user['first_name'],
                     "last_name": single_user['last_name'],
                     "dob": single_user['dob'],
@@ -364,10 +367,12 @@ class Signin(Resource):
                     "avatar": single_user['avatar'],
                     "bids": single_user['bids'],
                     "token": auth.generate_token(account_info['email'])
+
                 }
 
                 return return_m, 200
         return {"message": "authorization has been refused."}, 401
+
 
 
 @ns_account.route('/signout/<string:token>')
@@ -418,6 +423,7 @@ class User_auctions(Resource):
                 retrieved_auctions.append(retrieved_item)
         except:
             return {"message":  "Specified item does not exist"}, 404
+
 
         response = {
             "message": "OK",
@@ -531,6 +537,7 @@ class Manage_profile(Resource):
         single_user = col.find_one({"user_id": int(request_user_id)})
         del single_user['_id']
 
+
         new_user_profile = dict()
         new_user_profile["user_id"] = single_user["user_id"]
         new_user_profile["dob"] = single_user["dob"]
@@ -549,6 +556,7 @@ class Manage_profile(Resource):
             "data": new_user_profile
         }
         return response, 200
+
 
     @api.response(200, 'User Profile Updated Successfully')
     @api.response(400, 'Bad Request Error')
@@ -592,6 +600,7 @@ class Manage_profile(Resource):
                 update_single_user[key] = value
         col.update_one({"user_id": int(request_user_id)},
                        {"$set": update_single_user})
+
 
         response = {
             "message": "OK",
