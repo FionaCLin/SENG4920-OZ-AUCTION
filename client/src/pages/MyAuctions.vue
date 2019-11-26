@@ -23,7 +23,6 @@ export default {
   },
   created() {
     this.$data.myAuction_items = this.$store.state.auction.myAuctions;
-    console.log(this.$router.param.path);
   }
 };
 </script>

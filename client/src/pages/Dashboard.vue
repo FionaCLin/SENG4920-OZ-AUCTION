@@ -34,7 +34,6 @@ export default {
     },
     newAuctions: {
       get() {
-        console.log(this.$store.state.auction.auctions);
         return this.$store.state.auction.auctions.map(x => {
           return {
             title: x.title,

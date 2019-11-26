@@ -170,7 +170,10 @@
       </div>
 
       <div v-else class="q-pa-md q-gutter-lg">
-        <div class="q-gutter-md row justify-center" style="font-size: 2em; margin: 15% 5%;">
+        <div
+          class="q-gutter-md row justify-center"
+          style="font-size: 2em; margin: 15% 5%;"
+        >
           <q-spinner-hearts size="120px" color="orange" />
         </div>
       </div>
@@ -179,9 +182,6 @@
 </template>
 
 <script>
-// import Nav from "../components/DashboardSideNav";
-// import mapState from "vuex";
-
 export default {
   name: "HomeLayout",
   props: ["menu"],
@@ -197,10 +197,9 @@ export default {
     };
   },
   created() {
-    // if (!localStorage.getItem("token") || !this.$store.state.user.token) {
-    //   this.$router.push("/login").catch(() => {});
-    // }
+    let user = JSON.parse(localStorage.getItem("user"));
 
+    this.$store.commit("user/updateCurrentID", user);
     let promises = [
       this.$store.dispatch("auction/getAllAuctions"),
       this.$store.dispatch(
@@ -224,7 +223,6 @@ export default {
   methods: {
     signout() {
       this.token = localStorage.getItem("token");
-      console.log(this.token);
       this.$axios.delete(`/account/signout/${this.token}`).then(res => {
         console.log(res);
         localStorage.removeItem("token");

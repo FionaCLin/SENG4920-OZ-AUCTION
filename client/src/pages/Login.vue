@@ -102,7 +102,6 @@ export default {
               })
               .catch(error => {
                 console.log(error);
-
                 this.$q.notify({
                   color: "red-4",
                   textColor: "white",
@@ -114,8 +113,6 @@ export default {
         },
         err => {
           console.log(err);
-          console.log("problems~~~~!");
-
           this.$q.notify({
             color: "red-5",
             textColor: "white",

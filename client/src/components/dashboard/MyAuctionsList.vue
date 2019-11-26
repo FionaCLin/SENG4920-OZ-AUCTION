@@ -5,6 +5,7 @@
       :data="data"
       :grid="grid"
       :columns="columns"
+      :loading="loading"
       row-key="name"
       :pagination.sync="pagination"
       lazy
@@ -63,7 +64,7 @@ export default {
     cardView,
     listView
   },
-  props: ["items", "title", "alink", "tool"],
+  props: ["items", "title", "alink", "tool", "loading"],
   data() {
     return {
       grid: false,
@@ -140,7 +141,6 @@ export default {
   computed: {
     data: {
       get() {
-        console.log(this.$data.filter);
         if (this.$data.filter == "") {
           return this.items;
         } else {
@@ -180,7 +180,6 @@ export default {
       }
     },
     userProfile: function(user) {
-      console.log(user);
       this.$router
         .push({
           name: "userProfile",

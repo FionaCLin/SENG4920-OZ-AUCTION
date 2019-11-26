@@ -63,8 +63,6 @@ export default {
   props: ["props"],
   methods: {
     goto(row) {
-      console.log(row);
-
       this.$emit("check-item", row);
     },
     goProfile(row) {

@@ -906,7 +906,7 @@
     },
     {
       "id": 8,
-      "seller_name": "cornsilkscreations",
+      "seller_name": "Celine Dion",
       "seller_id": 2,
       "category": "Crafts",
       "title": "Handmade Black Baroque Pearl \"Princess Jewels\" Earrings",
@@ -968,7 +968,7 @@
     },
     {
       "id": 9,
-      "seller_name": "cornsilkscreations",
+      "seller_name": "Celine Dion",
       "seller_id": 2,
       "category": "Crafts",
       "title": "Native American Handmade Floral Seed Bead Hair Barrette",
@@ -1033,7 +1033,7 @@
     },
     {
       "id": 10,
-      "seller_name": "cornsilkscreations",
+      "seller_name": "Celine Dion",
       "seller_id": 2,
       "category": "Crafts",
       "title": "Native American Handmade \"OOAK\" Genuine Red Fish Scales and Turquoise ",
@@ -1140,7 +1140,7 @@
     },
     {
       "id": 11,
-      "seller_name": "cornsilkscreations",
+      "seller_name": "Celine Dion",
       "seller_id": 2,
       "category": "Crafts",
       "title": "Native American \"OOAK\" Turquoise Nugget Necklace/Chocker",
@@ -2964,13 +2964,13 @@
     },
     {
       "user_id": 2,
-      "email": "cornsilkscreations@yahoo.com",
+      "email": "CelineDion@yahoo.com",
       "payment_method": [
         "AliPay"
       ],
       "password": "IB2fNca5Iq",
-      "first_name": "cornsilkscreations",
-      "last_name": "cornsilkscreations",
+      "first_name": "Celine",
+      "last_name": "Dion",
       "phone_number": "0437462649",
       "dob": "2010-09-01T11:40:51.686Z",
       "avatar": "https://static.artfire.com/img/1x/crop/65/65/-/uploads/mfs/avatars/c2/aa/c2aa31e7e8fbd101a92b2305b412828690de30b359833067e931506eed6024dd.jpg",
@@ -2978,11 +2978,6 @@
       "rating": 3,
       "token": "MzHZaAbNkrifUXHbjaxMFsc2w1Ye",
       "favorites": [
-        0,
-        1,
-        2,
-        4,
-        5,
         6,
         7,
         12,
@@ -2997,20 +2992,6 @@
       "bids": [
         0,
         1,
-        2,
-        4,
-        5,
-        6,
-        7,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        21,
         22,
         23
       ]

@@ -92,7 +92,6 @@ export function update({ commit }, { id, payload }) {
       return err.response;
     });
 }
-
 export function deleteAuction({ commit }, auction_id) {
   return axiosInstance.delete(`/auction/${auction_id}`).then(res => {
     commit("removeMyAuction", auction_id);

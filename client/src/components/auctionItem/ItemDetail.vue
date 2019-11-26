@@ -52,9 +52,7 @@ export default {
       if (!biddings || biddings.length === 0) return 0;
       let max = Math.max.apply(
         Math,
-        biddings.map(function(e) {
-          return e.proposal_price;
-        })
+        biddings.map(e => e.proposal_price)
       );
       return max;
     }

@@ -30,6 +30,7 @@
                 prefix="$AD"
                 filled
                 type="number"
+                :rules="[val => val > 0 || 'Please enter valid price']"
               />
               <q-select
                 v-model="location"
@@ -52,6 +53,7 @@
                 v-model="end_time"
                 :date="end_time"
                 :label="`Deadline`"
+                :rule="true"
                 @update-time="end_time = $event"
               />
 
@@ -207,7 +209,7 @@ export default {
       imgsupload: false,
       title: "",
       description: "",
-      end_time: moment().format("YYYY-MM-DD h:mm:ss"),
+      end_time: moment().format("YYYY-MM-DD"),
       price: 0,
       image: [],
       optionsCategory: dropdownOpts,
@@ -219,15 +221,12 @@ export default {
     };
   },
   created() {
-    console.log("here1");
     if (this.edit) {
-      console.log("edit", this.edit);
       this.id = Number(this.$route.params.id);
 
       let auction = this.$store.state.auction.myAuctions.find(
         x => x.id === this.id
       );
-      console.log(auction);
       for (let k of Object.keys(auction)) {
         this.$data[k] = auction[k];
       }
@@ -246,7 +245,7 @@ export default {
     createAuction() {
       let payload = {
         seller_id: this.$store.state.user.user_id,
-        seller_name: this.$store.state.user.first_name,
+        seller_name: `${this.$store.state.user.first_name} ${this.$store.state.user.last_name}`,
         title: this.$data["title"],
         description: this.$data["description"],
         price: Number(this.$data["price"]),
@@ -256,7 +255,7 @@ export default {
         image: this.$data["image"]
       };
       this.$store.dispatch("auction/create", payload).then(res => {
-        console.log(res, "!!!");
+        console.log(res);
         if (res.status != 200) {
           warning.message = res.data.message;
           this.$q.notify(warning);
@@ -284,7 +283,6 @@ export default {
             }
           }
         }
-        console.log(payload, this.id);
         let id = this.id;
 
         this.$store
@@ -307,15 +305,17 @@ export default {
               })
               .catch(() => {});
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            warning.message = err.data.message;
+            this.$q.notify(warning);
+            return;
+          });
       } else {
         this.createAuction();
       }
     },
     async upload(file) {
-      console.log(this.$data.imgsupload, 1);
       this.$data.imgsupload = true;
-      console.log(this.$data.imgsupload, 2);
       let ps = [];
       file.forEach(f => {
         let p = new Promise(function(resolve, reject) {
@@ -332,9 +332,7 @@ export default {
       Promise.allSettled(ps)
         .then(
           res => {
-            console.log("uploading the image");
             this.$data.image = res.map(x => x.value);
-            console.log(res, "PPPPP");
           },
           err => {
             warning.message = err.message;
@@ -343,7 +341,6 @@ export default {
         )
         .finally(() => {
           this.$data.imgsupload = false;
-          console.log(this.$data.imgsupload);
         });
     },
     goBack() {

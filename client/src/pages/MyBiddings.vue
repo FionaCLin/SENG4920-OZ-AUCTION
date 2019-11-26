@@ -1,6 +1,10 @@
 <template>
   <q-page>
-    <MyAuctionsList :alink="`myBiddings`" :items="myAuction_items" />
+    <MyAuctionsList
+      :loading="loading"
+      :alink="`myBiddings`"
+      :items="myAuction_items"
+    />
   </q-page>
 </template>
 
@@ -14,14 +18,15 @@ export default {
   },
   data() {
     return {
-      myAuction_items: null,
+      myAuction_items: [],
+      loading: true,
       user: null
     };
   },
   created() {
     this.$data.user = this.$store.state.user.user_id;
   },
-   mounted() {
+  mounted() {
     this.fetch();
   },
   methods: {
@@ -29,9 +34,9 @@ export default {
       return this.$axios
         .get(`/account/get_user_biddings/${this.$data.user}`)
         .then(res => {
-          this.$store.commit('auction/updateMyBiddings', res.data.data);
-          console.log(this.$store.state.auction.myBids);
+          this.$store.commit("auction/updateMyBiddings", res.data.data);
           this.$data.myAuction_items = this.$store.state.auction.myBids;
+          this.$data.loading = false;
         })
         .catch(err => console.log(err));
     }

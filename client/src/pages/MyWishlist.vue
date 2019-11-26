@@ -1,6 +1,10 @@
 <template>
   <q-page>
-    <MyAuctionsList :alink="`myWishlist`" :items="myAuction_items" />
+    <MyAuctionsList
+      :loading="loading"
+      :alink="`myWishlist`"
+      :items="myAuction_items"
+    />
   </q-page>
 </template>
 
@@ -12,16 +16,10 @@ export default {
   components: {
     MyAuctionsList
   },
-  // computed: {
-  //   myAuction_items: {
-  //     get() {
-  //       return this.$store.state.auction.myWishList;
-  //     }
-  //   }
-  // },
   data() {
     return {
-      myAuction_items: null,
+      myAuction_items: [],
+      loading: true,
       user: null
     };
   },
@@ -36,9 +34,9 @@ export default {
       return this.$axios
         .get(`/account/get_user_favorites/${this.$data.user}`)
         .then(res => {
-          this.$store.commit('auction/updateMyWishList', res.data.data);
-          console.log(this.$store.state.auction.myWishList);
+          this.$store.commit("auction/updateMyWishList", res.data.data);
           this.$data.myAuction_items = this.$store.state.auction.myWishList;
+          this.$data.loading = false;
         })
         .catch(err => console.log(err));
     }

@@ -13,7 +13,7 @@
         <q-separator />
         <div class="q-pa-md" style="margin:10px 20px;">
           <q-form ref="SignUpForm" class="q-gutter-md" @submit="onSubmit">
-            <q-input
+            <!-- <q-input
               v-model="name"
               filled
               label="Your full name"
@@ -21,7 +21,7 @@
               :rules="[
                 val => (val && val.length > 0) || 'Please type your full name'
               ]"
-            />
+            /> -->
             <q-input
               v-model="email"
               filled
@@ -97,10 +97,7 @@ import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
-      name: null,
-      age: null,
       isPwd: true,
-      seller: false,
       email: null,
       password: null,
       passwordConfirm: null,
@@ -113,14 +110,12 @@ export default {
         success => {
           if (success) {
             // yay, models are correct
-            console.log(success);
             axiosInstance
               .post("/account/register", {
                 email: this.$data.email,
                 password: this.$data.password
               })
               .then(response => {
-                console.log(response);
                 this.$q.notify({
                   color: "green-4",
                   textColor: "white",
@@ -130,8 +125,6 @@ export default {
                 this.$router.push("/login").catch(err => console.log(err));
               })
               .catch(error => {
-                console.log(error.response);
-
                 this.$q.notify({
                   color: "red-4",
                   textColor: "white",
@@ -141,18 +134,7 @@ export default {
               });
           }
         },
-        err => {
-          console.log(err);
-
-          // oh no, user has filled in
-          // at least an invalid value
-          // this.$q.notify({
-          //   color: 'red-5',
-          //   textColor: 'white',
-          //   icon: 'warning',
-          //   message: err.message
-          // })
-        }
+        err => console.log(err)
       );
     },
 

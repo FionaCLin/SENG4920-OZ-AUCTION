@@ -3,9 +3,12 @@
     <div class="row justify-center">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
-          <ImagesDisplay :image="auction.image" />
+          <ImagesDisplay
+            v-if="auction && auction.image"
+            :image="auction.image"
+          />
         </div>
-        <div  v-if="auction.status === 'BIDDING'">
+        <div v-if="auction && auction.status === 'BIDDING'">
           <div class="q-px-md row">
             <div class="col-10 row">
               <q-input
@@ -36,24 +39,27 @@
             </div>
           </div>
         </div>
-        <div v-else-if="auction.status === 'ACCEPTED'">
-          <q-chip size="lg" icon="bookmark">
-            AUCTION FINISHED:  {{ auction.status }}
-          </q-chip>
+        <div v-if="auction && auction.status === 'ACCEPTED'">
+          <q-chip size="lg" icon="bookmark"
+            >AUCTION FINISHED: {{ auction.status }}</q-chip
+          >
         </div>
-        <div v-else-if="auction.status === 'DECLINED'">
-          <q-chip size="lg" icon="bookmark">
-            AUCTION FINISHED:  {{ auction.status }}
-          </q-chip>
+        <div v-if="auction && auction.status === 'DECLINED'">
+          <q-chip size="lg" icon="bookmark"
+            >AUCTION FINISHED: {{ auction.status }}</q-chip
+          >
         </div>
       </div>
       <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
-        <ItemDetail :auction="auction" />
+        <ItemDetail v-if="auction" :auction="auction" />
       </div>
       <div class="col-10 q-ma-md fit column justify-center item-center">
         <!--  this part will contain the images -->
         <!-- Indicators -->
-        <BidDetail :biddings="auction.bidding_info" />
+        <BidDetail
+          v-if="auction && auction.bidding_info.length"
+          :biddings="auction.bidding_info"
+        />
       </div>
     </div>
   </q-page>
@@ -90,15 +96,12 @@ export default {
     this.fetch();
   },
   created() {
-    console.log("to", this.$route.params.id);
-    console.log(this.$store.state.user);
     this.id = this.$route.params.id;
     this.from = this.$route.params.from;
     this.fetch();
   },
   methods: {
     addFavorite() {
-      console.log("Add");
       this.$axios
         .put("/auction/favorite/set", {
           user_id: this.$store.state.user.user_id,
@@ -106,13 +109,7 @@ export default {
         })
         .then(res => {
           this.$store.commit("user/addFavorite", this.id);
-          // this.$store.commit(
-          //   "auction/addWishList",
-          //   this.id,
-          //   this.$data.auction
-          // );
-          this.favorite.get;
-          console.log(this.$store.state.user.favorites);
+
           this.$q.notify({
             color: "green-4",
             textColor: "white",
@@ -124,8 +121,6 @@ export default {
         .catch(err => console.log(err));
     },
     removeFavorite() {
-      console.log("remove");
-      console.log(this.$store.state.user.user_id);
       this.$axios
         .put("/auction/favorite/unset", {
           user_id: this.$store.state.user.user_id,
@@ -133,10 +128,7 @@ export default {
         })
         .then(res => {
           this.$store.commit("user/removeFavorite", this.id);
-          // this.$store.commit("auction/removeWishList", this.id);
 
-          this.favorite.get;
-          console.log(this.$store.state.user.favorites);
           this.$q.notify({
             color: "green-4",
             textColor: "white",
@@ -147,31 +139,29 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    fetch() {
-      let item;
-      return this.$axios
+    async fetch() {
+      let bidding = await this.$axios
         .get(`/auction/${this.id}`)
         .then(res => {
-          item = res.data.data;
-          this.$data.auction = item;
-          console.log("new auction is ", this.$data.auction);
+          console.log(res.data.data);
+          this.$data.auction = res.data.data;
+          return res.data.data.bidding_info;
         })
         .catch(err => console.log(err));
+      return bidding;
     },
     placeBid() {
-      console.log(this.$data.auction);
-      let max = Math.max.apply(
-        Math,
-        this.$data.auction.bidding_info.map(function(e) {
-          return e.proposal_price;
-        })
-      );
+      let max = this.$data.auction.price;
+      if (this.$data.auction.bidding_info) {
+        max = Math.max.apply(
+          Math,
+          this.$data.auction.bidding_info.map(function(e) {
+            return e.proposal_price;
+          })
+        );
+      }
 
       if (this.$data.bidPrice > max) {
-        console.log(this.$data.auction.id);
-        console.log(this.$data.bidPrice);
-        console.log(this.$store.state.user.user_id, "==========");
-
         let buyer = {
           user_id: this.$store.state.user["user_id"],
           first_name: this.$store.state.user["first_name"],
@@ -189,10 +179,29 @@ export default {
           .dispatch("auction/placeBidding", { bid, buyer })
           .then(res => {
             console.log(res);
+            if (res.status == 200) {
+              this.$q.notify({
+                color: "green-4",
+                textColor: "white",
+                icon: "cloud_done",
+                message: res.data.message
+              });
+            } else {
+              this.$q.notify({
+                color: "red-4",
+                textColor: "white",
+                icon: "warning",
+                message: res.data.message
+              });
+            }
             this.fetch();
           })
-          .catch(err => {
-            this.$data.error = err;
+          .catch(() => {
+            // this.$data.error = err;
+            // if (err && err.response) {
+            //   let message = err.response.data.message;
+            //   this.$data.error = message.slice(message.indexOf(":") + 1);
+            // }
           });
       } else {
         this.$data.error = `* Bidding price $ ${this.$data.bidPrice} must greater than current price $ ${max}.`;

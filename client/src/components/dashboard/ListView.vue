@@ -49,8 +49,6 @@ export default {
   props: ["props", "fields"],
   methods: {
     goto(row) {
-      console.log(row);
-
       this.$emit("check-item", row);
     },
     userProfile(row) {

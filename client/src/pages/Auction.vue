@@ -7,51 +7,39 @@
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-pa-sm q-ma-lg">
         <ImagesDisplay :image="auction.image" />
         <div class="row">
-
           <q-item-section>
-            <div v-if="auction.status === 'BIDDING'">
-              <div v-if="auction.bidding_info.length" class="row">
-                <q-btn flat :to="`edit/${id}`"> <q-icon name="edit" />Update </q-btn>
-                <q-btn v-if="isDelable()" flat @click="confirm = !confirm">
-                  <q-icon name="delete_forever" />Delete
-                </q-btn>
-                <q-btn class="q-px-md" color="green-4" flat @click="accept = true">
-                  <q-icon name="check" />Accept
-                </q-btn>
-                <q-btn class="q-px-md" color="red-4" flat @click="decline = true">
-                  <q-icon name="clear" />Decline
-                </q-btn>
-
-                <q-dialog v-model="accept" persistent>
-                  <q-card>
-                    <q-card-section class="row items-center">
-                      <span class="q-ml-sm">Are you sure to accept the auction?
-                                            You cannot change after clicking confirm.
-                      </span>
-                    </q-card-section>
-
-                    <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="primary" @click="accept = false" v-close-popup />
-                      <q-btn flat label="Confirm" color="primary" @click="acceptBid" v-close-popup />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-                <q-dialog v-model="decline" persistent>
-                  <q-card>
-                    <q-card-section class="row items-center">
-                      <span class="q-ml-sm">Are you sure to decline the auction?
-                                            You cannot change after clicking confirm.
-                      </span>
-                    </q-card-section>
-
-                    <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="primary" @click="decline = false" v-close-popup />
-                      <q-btn flat label="Confirm" color="primary" @click="declineBid" v-close-popup />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-
-              </div>
+            <div v-if="auction.status === 'BIDDING'" class="row">
+              <q-btn flat :to="`edit/${id}`" size="sm">
+                <q-icon name="edit" />Update
+              </q-btn>
+              <q-btn
+                v-if="isDelable()"
+                flat
+                size="sm"
+                @click="confirm = !confirm"
+              >
+                <q-icon name="delete_forever" />Delete
+              </q-btn>
+              <q-btn
+                v-if="!isDelable()"
+                class="q-px-md"
+                color="green-4"
+                flat
+                size="sm"
+                @click="accept = true"
+              >
+                <q-icon name="check" />Accept
+              </q-btn>
+              <q-btn
+                v-if="!isDelable()"
+                size="sm"
+                class="q-px-md"
+                color="red-4"
+                flat
+                @click="decline = true"
+              >
+                <q-icon name="clear" />Decline
+              </q-btn>
             </div>
             <div v-else-if="auction.status === 'ACCEPTED'">
               <q-chip size="lg" icon="bookmark">
@@ -75,6 +63,61 @@
       @confirm="delItem"
       @toggle="confirm = !confirm"
     />
+
+    <q-dialog v-model="accept" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm"
+            >Are you sure to accept the auction? You cannot change after
+            clicking confirm.
+          </span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            label="Cancel"
+            color="primary"
+            @click="accept = false"
+          />
+          <q-btn
+            v-close-popup
+            flat
+            label="Confirm"
+            color="primary"
+            @click="acceptBid"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="decline" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm"
+            >Are you sure to decline the auction? You cannot change after
+            clicking confirm.
+          </span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            label="Cancel"
+            color="primary"
+            @click="decline = false"
+          />
+          <q-btn
+            v-close-popup
+            flat
+            label="Confirm"
+            color="primary"
+            @click="declineBid"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -115,8 +158,6 @@ export default {
     this.fetch();
   },
   created() {
-    console.log("to", this.$route.params.id);
-    console.log("to", this.$route.params.item);
     this.id = this.$route.params.id;
     this.$data.auction = this.$route.params.item;
     this.fetch();
@@ -146,7 +187,6 @@ export default {
         .catch(err => console.log(err));
     },
     delItem() {
-      //console.log("@@@");
       this.$store.dispatch("auction/deleteAuction", this.id).then(res => {
         console.log(res);
         this.$router
@@ -158,13 +198,11 @@ export default {
       });
     },
     acceptBid() {
-      console.log(this.$store.state.user.user_id);
-      console.log(this.id);
       this.$axios
-        .put('/bidding/operations',{
-          "user_id": this.$store.state.user.user_id,
-          "item_id": this.id,
-          "operation": "accept"
+        .put("/bidding/operations", {
+          user_id: this.$store.state.user.user_id,
+          item_id: this.id,
+          operation: "accept"
         })
         .then(res => {
           console.log(res);
@@ -177,10 +215,10 @@ export default {
     },
     declineBid() {
       this.$axios
-        .put('/bidding/operations',{
-          "user_id": this.$store.state.user.user_id,
-          "item_id": this.id,
-          "operation": "decline"
+        .put("/bidding/operations", {
+          user_id: this.$store.state.user.user_id,
+          item_id: this.id,
+          operation: "decline"
         })
         .then(res => {
           console.log(res);

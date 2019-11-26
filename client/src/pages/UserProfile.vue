@@ -59,7 +59,6 @@ export default {
       this.$axios
         .get(`/account/manage_profile/${this.id}`)
         .then(res => {
-          console.log(res.data);
           this.$data.userProfile = res.data.data;
         })
         .catch(err => console.log(err));

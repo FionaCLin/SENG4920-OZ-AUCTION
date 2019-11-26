@@ -75,9 +75,7 @@ export default {
       biddings_info: this.biddings
     };
   },
-  created() {
-    console.log(this.biddings);
-  },
+  created() {},
   methods: {
     userProfile: function(user) {
       this.$router

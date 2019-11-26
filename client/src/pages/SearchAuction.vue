@@ -212,9 +212,7 @@ export default {
 
           return res.data;
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(() => {});
     },
     advancedSearch(query) {
       return this.$axios
@@ -224,9 +222,7 @@ export default {
 
           return res.data;
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(() => {});
     },
     onSubmit() {
       if (this.$data.tab == "one") {
@@ -236,7 +232,6 @@ export default {
               // yay, models are correct
               this.$data.searchResult = [];
               let res = await this.normalSearch();
-              console.log(res, "$$$$$$");
               setTimeout(() => {
                 this.$data.searchResult = res;
                 this.$data.loading = false;
@@ -270,16 +265,13 @@ export default {
                   query.push(`${k}=${this.advanced[k]}`);
                 }
               }
-              console.log(this.$data.advanced, "Target~~~~~~!");
               if (query.length) {
                 query = query.join("&");
                 query = `?${query}`;
               }
 
               this.$data.searchResult = [];
-              console.log(query);
               let res = await this.advancedSearch(query);
-              console.log(res, "$$$$$$", query);
               setTimeout(() => {
                 this.$data.searchResult = res;
                 this.$data.loading = false;
@@ -287,9 +279,6 @@ export default {
             }
           },
           err => {
-            console.log(err);
-            console.log("problems!");
-
             this.$q.notify({
               color: "red-5",
               textColor: "white",

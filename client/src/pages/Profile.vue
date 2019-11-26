@@ -7,8 +7,8 @@
       <q-item>
         <q-item-section avatar class="flex flex-center">
           <q-avatar class="self-center" size="100px" font-size="52px">
-            <q-img v-if="userProfile" :src="userProfile.avatar" />
-            <q-icon name="person" />
+            <q-img v-if="userProfile.avatar" :src="userProfile.avatar" />
+            <q-icon v-else name="person" />
           </q-avatar>
           <q-card-actions>
             <q-btn flat @click="updatePhoto">Upload</q-btn>
@@ -16,7 +16,7 @@
         </q-item-section>
         <q-item-section>
           <ProfileDisplay
-            v-if="!edit"
+            v-if="!edit && userProfile.first_name"
             :detail="userProfile"
             @updateEdit="edit = $event"
           />
@@ -38,7 +38,6 @@
           :factory="upload"
           style="width:100%"
           persistent
-          @focusout="dismiss(e)"
         >
         </q-uploader>
       </div>
@@ -67,7 +66,6 @@ export default {
   computed: {
     userProfile: {
       get() {
-        console.log("Working?", this.$store.state.user);
         return this.$store.state.user;
       },
       set(data) {
@@ -85,24 +83,19 @@ export default {
   methods: {
     fetch() {
       if (this.userProfile["first_name"] !== "") {
-        console.log("no fetch?", this.userProfile);
         return;
       }
-      console.log("fetch");
       this.$store.dispatch("user/updateUserDetail");
     },
     updateDetail(data) {
       console.log(data);
+      this.userProfile.set(data);
     },
     updatePhoto() {
       this.$data.dialog = true;
     },
     async upload(file) {
-      console.log(this.$data.imgsupload, 1, file);
       this.$data.imgsupload = true;
-      console.log(this.$data.imgsupload, 2);
-      // let ps = [];
-      // file.forEach(f => {
       let p = new Promise(function(resolve, reject) {
         uploadImage(file[0], (err, res) => {
           if (err) {
@@ -114,14 +107,11 @@ export default {
       });
       await p
         .then(async res => {
-          this.$data.userProfile.avatar = res;
+          this.userProfile.avatar = res;
           let data = { avatar: res };
           await this.$store
             .dispatch("user/updateProfile", data)
             .then(res => {
-              console.log(res);
-              this.$emit("updateEdit", false);
-              this.$emit("editDetail", data);
               return res;
             })
             .catch(err => {

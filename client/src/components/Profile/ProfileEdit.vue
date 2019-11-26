@@ -112,19 +112,15 @@ export default {
       first_name: this.detail.first_name,
       last_name: this.detail.last_name,
       email: this.detail.email,
-      dob: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss"),
+      dob: this.detail.dob
+        ? moment(this.detail.dob, "YYYY-MM-DD h:mm:ss")
+        : null,
       location: this.detail.location,
       phone_number: this.detail.phone_number,
       payment_method: this.detail.payment_method,
-      methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
+      methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"],
+      optionsLocation: countries.map(x => x.name)
     };
-  },
-  computed: {
-    optionsLocation: {
-      get() {
-        return countries.map(x => x.name);
-      }
-    }
   },
   methods: {
     onSubmit() {
@@ -148,7 +144,6 @@ export default {
                 data[k] = this.$data[k];
               }
             }
-            console.log(data);
             this.$store
               .dispatch("user/updateProfile", data)
               .then(res => {
@@ -163,7 +158,6 @@ export default {
           }
         },
         err => {
-          console.log(err);
           warning.message = err.data.message;
           this.$q.notify(warning);
         }

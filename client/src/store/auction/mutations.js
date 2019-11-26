@@ -36,7 +36,6 @@ export function removeMyAuction(state, id) {
   state.myAuctions.splice(aIndex, 1);
 }
 export function addWishList(state, id, auction) {
-  console.log(id, auction);
   id = Number(id);
   if (auction) {
     state.myWishList.push(a);
