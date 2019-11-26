@@ -5,29 +5,29 @@
         <q-item-label>{{ k }}</q-item-label>
       </q-item-section>
 
-      <!-- <q-item-section
+      <q-item-section
         v-if="k === 'Seller'"
-        @click="userProfile(auction.seller_id)"
+        @click="userProfile(auction.seller)"
       >
-        <q-item-section avatar>
-          <q-avatar size="60px" font-size="52px">
-            <img :src="user_avatar(auction.seller_id)" />
-          </q-avatar>
-        </q-item-section>
-        <q-item-section class="q-ma-xs">
-          <q-item-label>{{ auction.seller_name }}</q-item-label>
-          <q-item-label caption>
-            <q-icon
-              v-for="n in user_rating(auction.seller_id)"
-              :key="n"
-              name="star"
-            ></q-icon>
-          </q-item-label>
-        </q-item-section>
-      </q-item-section> -->
-
-      <q-item-section>
-        <!-- <q-item-section v-else> -->
+        <div class="row">
+          <q-item-section avatar>
+            <q-avatar size="60px" font-size="52px">
+              <img :src="auction.seller.avatar" />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section class="q-ma-xs">
+            <q-item-label>{{ auction.seller_name }}</q-item-label>
+            <q-item-label caption>
+              <q-icon
+                v-for="n in auction.seller.rating"
+                :key="n"
+                name="star"
+              ></q-icon>
+            </q-item-label>
+          </q-item-section>
+        </div>
+      </q-item-section>
+      <q-item-section v-else>
         <q-item-label v-if="k === 'Start Price'" caption>{{
           auction[f] | currency
         }}</q-item-label>
@@ -48,11 +48,11 @@ export default {
       return "$" + Number.parseFloat(value).toFixed(2);
     },
     current_price: function(biddings) {
-      if (!biddings) return 0;
+      if (!biddings || biddings.length === 0) return 0;
       let max = Math.max.apply(
         Math,
         biddings.map(function(e) {
-          return e.price;
+          return e.proposal_price;
         })
       );
       return max;
@@ -64,41 +64,27 @@ export default {
       fields: {
         Title: "title",
         Description: "description",
-        Seller: "",
+        Seller: "seller_name",
         Location: "location",
+        Category: "category",
         "Create Time": "created",
         "End Time": "end_time",
         "Start Price": "price",
-        "Current Price": "biddings"
+        "Current Price": "bidding_info"
       }
     };
   },
   methods: {
-    getUser(id) {
-      let auctions = this.$store.state.auction.auctions.find(
-        x => x.sellers.seller_id === id
-      );
-      console.log(auctions);
-      let user = auctions.sellers;
-      user.name = auctions.auction_items[0].seller_name;
-      return user;
-    },
-    user_avatar(id) {
-      let user = this.getUser(id);
-      return user.avatar;
-    },
-    user_rating(id) {
-      let user = this.getUser(id);
-      return user.rating;
-    },
-    userProfile: function(id) {
-      console.log("from", id);
-      this.$router.push({
-        name: "userProfile",
-        params: {
-          id: id
-        }
-      });
+    userProfile: function(user) {
+      this.$router
+        .push({
+          name: "userProfile",
+          params: {
+            id: user.user_id,
+            user: user
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };

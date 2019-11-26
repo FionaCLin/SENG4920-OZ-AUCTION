@@ -63,9 +63,6 @@
 </template>
 
 <script>
-import { axiosInstance } from "boot/axios";
-//import { LocalStorage } from "quasar";
-
 export default {
   data() {
     return {
@@ -84,28 +81,23 @@ export default {
         success => {
           if (success) {
             // yay, models are correct
-            console.log(success);
-            axiosInstance
-              .post("/account/signin", {
-                username: this.$data.email,
+            this.$store
+              .dispatch("user/signin", {
+                email: this.$data.email,
                 password: this.$data.password
               })
-              .then(response => {
-                console.log(response.data.token);
-                //how to used store state to store
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("user", JSON.stringify(response.data));
-                console.log(JSON.parse(localStorage.getItem('user')));
-                //
-                  this.$q.notify({
+              .then(() => {
+                this.$q.notify({
                   color: "green-4",
                   textColor: "white",
                   position: "top",
                   icon: "cloud_done",
-                  message: response.data.message
+                  message: "Sign in successful, redirect to dashboard"
                 });
                 setTimeout(() => {
-                  this.$router.push("/dashboard");
+                  this.$router
+                    .push("/dashboard")
+                    .catch(err => console.log(err));
                 }, 1000);
               })
               .catch(error => {
@@ -115,7 +107,7 @@ export default {
                   color: "red-4",
                   textColor: "white",
                   icon: "cloud_done",
-                  message: error.response.data.message
+                  message: "Wrong username or password"
                 });
               });
           }
@@ -124,23 +116,12 @@ export default {
           console.log(err);
           console.log("problems~~~~!");
 
-          // oh no, user has filled in
-          // at least an invalid value
           this.$q.notify({
             color: "red-5",
             textColor: "white",
             icon: "warning",
-            // message: "Incorrect username and password"
             message: err.message
           });
-          // oh no, user has filled in
-          // at least an invalid value
-          // this.$q.notify({
-          //   color: 'red-5',
-          //   textColor: 'white',
-          //   icon: 'warning',
-          //   message: err.message
-          // })
         }
       );
     },

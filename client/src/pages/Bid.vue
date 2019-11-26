@@ -1,24 +1,38 @@
 <template>
   <q-page>
-    <div class="row">
+    <div class="row justify-center">
       <div class="col-xs-10 col-sm-5 col-md-4 col-lg-5 q-ma-lg">
         <div>
-          <q-img :src="auction.image" class="q-ma-lg" />
+          <ImagesDisplay :image="auction.image" />
         </div>
-        <div class="q-pa-sm">
-          <q-btn v-if="favorite" class="q-ml-lg" flat @click="removeFavorite">
-            <q-icon name="favorite_border" />
-          </q-btn>
-          <q-btn v-else class="q-ml-lg" flat @click="addFavorite">
-            <q-icon name="favorite" />
-          </q-btn>
-        </div>
-        <div class="q-ma-lg row">
-          <q-input v-model="bidPrice" class="q-ml-lg" type="number" />
-          <q-btn class="q-ml-xs" @click="placeBid">
-            <q-icon name="gavel" />Place Bid
-          </q-btn>
-          <div class="q-ml-lg text-red">{{ error }}</div>
+        <div class="q-px-md row">
+          <div class="col-10 row">
+            <q-input
+              v-model="bidPrice"
+              prefix="AUD$"
+              class="col-6"
+              type="number"
+            />
+            <q-btn class="col-6" @click="placeBid">
+              <q-icon name="gavel" />Place Bid
+            </q-btn>
+            <div class="q-ml-lg text-red">{{ error }}</div>
+          </div>
+          <div class="col-2" style="position: relative;">
+            <q-btn
+              v-if="favorite"
+              class="myFavorite"
+              flat
+              @click="removeFavorite"
+            >
+              <q-icon name="favorite" />
+              <q-tooltip>Remove from My Wishlist</q-tooltip>
+            </q-btn>
+            <q-btn v-else class="myFavorite" flat @click="addFavorite">
+              <q-icon name="favorite_border" />
+              <q-tooltip>Add to My Wishlist</q-tooltip>
+            </q-btn>
+          </div>
         </div>
       </div>
       <div class="col-xs-10 col-sm-6 col-md-5 col-lg-6 q-pa-md">
@@ -27,7 +41,7 @@
       <div class="col-10 q-ma-md fit column justify-center item-center">
         <!--  this part will contain the images -->
         <!-- Indicators -->
-        <BidDetail :biddings="auction.biddings" />
+        <BidDetail :biddings="auction.bidding_info" />
       </div>
     </div>
   </q-page>
@@ -36,25 +50,34 @@
 <script>
 import ItemDetail from "../components/auctionItem/ItemDetail";
 import BidDetail from "../components/auctionItem/BidDetail";
-import { axiosInstance } from "boot/axios";
+import ImagesDisplay from "../components/auctionItem/ImagesDisplay";
 
 export default {
   name: "AuctionPage",
   components: {
     ItemDetail,
-    BidDetail
+    BidDetail,
+    ImagesDisplay
   },
   data() {
     return {
-      auction: null,
       bidPrice: 0,
-      error: ""
+      error: "",
+      id: ""
     };
   },
   computed: {
+    auction: {
+      get() {
+        let item = this.$store.state.auction.myBids.find(
+          x => x.id == this.$route.params.id
+        );
+        return item;
+      }
+    },
     favorite: {
       get() {
-        return this.$store.state.user.favorites.indexOf(this.id) !== -1;
+        return this.$store.state.user.favorites.indexOf(Number(this.id)) !== -1;
       }
     }
   },
@@ -65,44 +88,117 @@ export default {
     console.log("to", this.$route.params.id);
     console.log(this.$store.state.user);
     this.id = this.$route.params.id;
-    this.fetch();
+    this.auction = this.$route.params.item;
   },
   methods: {
-    fetch() {
-      axiosInstance
-        .get(`http://localhost:9999/auction/${this.id}`)
+    addFavorite() {
+      console.log("Add");
+      this.$axios
+        .put("/auction/favorite/set", {
+          user_id: this.$store.state.user.user_id,
+          auction_id: this.id
+        })
         .then(res => {
-          console.log(res.data.data);
-          this.$data.auction = res.data.data;
+          this.$store.commit("user/addFavorite", this.id);
+          this.$store.commit("auction/addWishList", this.id);
+          this.favorite.get;
+          console.log(this.$store.state.user.favorites);
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            position: "top",
+            icon: "cloud_done",
+            message: res.data.message
+          });
         })
         .catch(err => console.log(err));
     },
-    addFavorite: function() {
-      this.$store.commit("user/addFavorite", this.id);
+    removeFavorite() {
+      console.log("remove");
+      console.log(this.$store.state.user.user_id);
+      this.$axios
+        .put("/auction/favorite/unset", {
+          user_id: this.$store.state.user.user_id,
+          auction_id: this.id
+        })
+        .then(res => {
+          this.$store.commit("user/removeFavorite", this.id);
+          this.$store.commit("auction/removeWishList", this.id);
+
+          this.favorite.get;
+          console.log(this.$store.state.user.favorites);
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            position: "top",
+            icon: "cloud_done",
+            message: res.data.message
+          });
+        })
+        .catch(err => console.log(err));
     },
-    removeFavorite: function() {
-      this.$store.commit("user/removeFavorite", this.id);
+    fetch() {
+      console.log("fetch again");
+      let item;
+      return this.$axios
+        .get(`/auction/${this.id}`)
+        .then(res => {
+          item = res.data.data;
+          this.auction = item;
+          console.log("fetch again");
+        })
+        .catch(err => console.log(err));
     },
     placeBid() {
+      console.log(this.auction);
       let max = Math.max.apply(
         Math,
-        this.$data.auction.biddings.map(function(e) {
-          return e.price;
+        this.auction.bidding_info.map(function(e) {
+          return e.proposal_price;
         })
       );
+
       if (this.$data.bidPrice > max) {
-        console.log(this.$data.auction.id);
+        console.log(this.auction.id);
         console.log(this.$data.bidPrice);
-        console.log(this.$store.state.user.id);
-        this.$store.dispatch("auction/placeBidding", {
-          auction_id: this.$data.auction.id,
-          price: this.$data.bidPrice,
-          user_id: this.$store.state.user.id
-        });
+        console.log(this.$store.state.user.user_id, "==========");
+
+        let buyer = {
+          user_id: this.$store.state.user["user_id"],
+          first_name: this.$store.state.user["first_name"],
+          last_name: this.$store.state.user["last_name"],
+          avatar: this.$store.state.user["avatar"],
+          location: this.$store.state.user["location"],
+          rating: this.$store.state.user["rating"]
+        };
+        let bid = {
+          item_id: this.auction.id,
+          proposal_price: Number(this.$data.bidPrice),
+          user_id: this.$store.state.user.user_id
+        };
+        this.$store
+          .dispatch("auction/placeBidding", { bid, buyer })
+          .then(res => {
+            console.log(res);
+            this.fetch();
+          })
+          .catch(err => {
+            this.$data.error = err;
+          });
       } else {
-        this.$data.error = "* Bidding price must greater than current price.";
+        this.$data.error = `* Bidding price $ ${this.$data.bidPrice} must greater than current price $ ${max}.`;
       }
     }
   }
 };
 </script>
+
+<style scoped>
+.myFavorite {
+  padding: 10%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

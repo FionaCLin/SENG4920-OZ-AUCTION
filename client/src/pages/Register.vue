@@ -116,7 +116,7 @@ export default {
             console.log(success);
             axiosInstance
               .post("/account/register", {
-                username: this.$data.email,
+                email: this.$data.email,
                 password: this.$data.password
               })
               .then(response => {
@@ -127,7 +127,7 @@ export default {
                   icon: "cloud_done",
                   message: response.data.message
                 });
-                this.$router.push("/login");
+                this.$router.push("/login").catch(err => console.log(err));
               })
               .catch(error => {
                 console.log(error.response);

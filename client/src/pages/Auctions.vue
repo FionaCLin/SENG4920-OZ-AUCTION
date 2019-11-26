@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <MyAuctionsList :tool="true" :items="myAuction_items" />
+    <MyAuctionsList :items="myAuction_items" />
   </q-page>
 </template>
 

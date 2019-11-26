@@ -10,8 +10,7 @@
             <img :src="userProfile.avatar" />
           </q-avatar>
           <q-card-actions>
-            <q-btn flat>Upload</q-btn>
-            <q-btn flat>Remove</q-btn>
+            <q-btn flat @click="updatePhoto">Upload</q-btn>
           </q-card-actions>
         </q-item-section>
         <q-item-section>
@@ -29,12 +28,25 @@
         </q-item-section>
       </q-item>
     </q-card>
+    <q-dialog v-model="dialog" persistent>
+      <!-- <q-avatar icon="" color="primary" text-color="white" /> -->
+      <div class="text-center">
+        <q-uploader
+          label="Avatar Images Upload"
+          batch
+          :factory="upload"
+          style="width:100%"
+        >
+        </q-uploader>
+      </div>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import ProfileDisplay from "../components/Profile/ProfileDisplay";
 import ProfileEdit from "../components/Profile/ProfileEdit";
+import { uploadImage, warning } from "../helper";
 
 export default {
   name: "Profile",
@@ -44,34 +56,75 @@ export default {
   },
   data() {
     return {
-      edit: false
+      edit: false,
+      userProfile: this.$store.state.user,
+      dialog: false,
+      imgsupload: false
     };
   },
-  computed: {
-    userProfile: {
-      get() {
-        // this.$store.state.user.foreach(element => console.log(element));
-        console.log(typeof this.$store.state.user);
-        return Object.keys(this.$store.state.user)
-          .filter(k => !["logged", "token", "userId"].includes(k))
-          .reduce((obj, key) => {
-            obj[key] = this.$store.state.user[key];
-            return obj;
-          }, {});
-      }
-    }
+  beforeMount() {
+    this.fetch();
+  },
+  created() {
+    this.id = this.$store.state.user.user_id;
+    this.fetch();
   },
   methods: {
-    onUpdate(val) {
-      console.log(val, "Profile");
+    fetch() {
+      if (this.$data.userProfile) {
+        return;
+      }
+      this.$axios
+        .get(`/account/manage_profile/${this.id}`)
+        .then(res => {
+          console.log(res.data);
+          this.$data.userProfile = res.data.data;
+        })
+        .catch(err => console.log(err));
     },
-    updateDetail(val) {
-      Object.keys(val).forEach(k => {
-        if (val[k] !== this.$store.state.user[k]) {
-          // todo add mutation method to update user state
-          console.log(k, val[k], this.$store.state.user[k]);
-        }
+    updateDetail(data) {
+      console.log(data);
+      this.$data.userProfile = this.$store.state.user;
+    },
+    updatePhoto() {
+      this.$data.dialog = true;
+    },
+    async upload(file) {
+      console.log(this.$data.imgsupload, 1, file);
+      this.$data.imgsupload = true;
+      console.log(this.$data.imgsupload, 2);
+      // let ps = [];
+      // file.forEach(f => {
+      let p = new Promise(function(resolve, reject) {
+        uploadImage(file[0], (err, res) => {
+          if (err) {
+            reject(err.message);
+          } else {
+            resolve(res.Location);
+          }
+        });
       });
+      await p
+        .then(async res => {
+          this.$data.userProfile.avatar = res;
+          let data = { avatar: res };
+          await this.$store
+            .dispatch("user/updateProfile", data)
+            .then(res => {
+              console.log(res);
+              this.$emit("updateEdit", false);
+              this.$emit("editDetail", data);
+              return res;
+            })
+            .catch(err => {
+              warning.message = err.data.message;
+              this.$q.notify(warning);
+            });
+        })
+        .finally(() => {
+          this.$data.imgsupload = false;
+          this.$data.dialog = false;
+        });
     }
   }
 };

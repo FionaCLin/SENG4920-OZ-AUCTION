@@ -35,28 +35,35 @@
 import ProfileDisplay from "../components/Profile/UserDisplay";
 
 export default {
-  name: "Profile",
+  name: "UserProfile",
   components: {
     ProfileDisplay
   },
-  computed: {
-    userProfile: {
-      get() {
-        let auctions = this.$store.state.auction.auctions.find(
-          x => x.sellers.seller_id === this.id
-        );
-        // this.$store.state.user.foreach(element => console.log(element));
-        console.log(auctions);
-        let user = auctions.sellers;
-        user.paymentMethod = ["Visa", "Master", "Wechat"];
-        user.name = auctions.auction_items[0].seller_name;
-        return user;
-      }
-    }
+  data() {
+    return {
+      userProfile: null
+    };
+  },
+  beforeMount() {
+    this.fetch();
   },
   created() {
-    console.log("to", this.$route.params.id);
     this.id = this.$route.params.id;
+    this.fetch();
+  },
+  methods: {
+    fetch() {
+      if (this.$data.userProfile) {
+        return;
+      }
+      this.$axios
+        .get(`/account/manage_profile/${this.id}`)
+        .then(res => {
+          console.log(res.data);
+          this.$data.userProfile = res.data.data;
+        })
+        .catch(err => console.log(err));
+    }
   }
 };
 </script>

@@ -1,50 +1,55 @@
-// import { axiosInstance } from "boot/axios";
-
-// export function getMyAuction(state) {
-//   axiosInstance.get()
-//   return state.myAuctions;
-// }
-// export function getMyBids(state) {
-//   return state.myBids;
-// }
-// export function getMyWishList(state) {
-//   return state.myWishList;
-// }
 export function placeBidding(state, bid) {
-  let auction = null;
-  for (let i of state.auctions) {
-    let item = i.auction_items.find(x => x.id === bid.auction_id);
-    console.log(i, item);
-    if (item) {
-      auction = item;
-      break;
-    }
-  }
-  auction.biddings.push({
-    user_id: bid.user_id,
-    price: bid.price,
-    item_id: bid.auction_id,
-    created: new Date()
-  });
-  console.log("mu", state, bid, auction);
+  let i = state.myBids.findIndex(x => x.id === bid.item_id);
+  state.myBids[i].bidding_info.splice(0, 0, bid);
 }
 //Sync
 export function updateAuctions(state, auctions) {
-  console.log(state, auctions, "problem");
   state.auctions = auctions;
 }
 
 export function updateMyAuctions(state, auctions) {
-  console.log(state, auctions, "problem");
   state.myAuctions = auctions;
 }
 
-export function updateMyBiddings(state, auctions) {
-  console.log(state, auctions, "problem");
-  state.myBids = auctions;
+export function updateMyBiddings(state, bids) {
+  state.myBids = bids;
 }
 
-export function updateMyWishList(state, auctions) {
-  console.log(state, auctions, "problem");
-  state.myWishList = auctions;
+export function updateMyWishList(state, favorites) {
+  state.myWishList = favorites;
+}
+
+export function addItem(state, newAucton) {
+  state.myAuctions.push(newAucton);
+}
+
+export function updateItem(state, { id, payload }) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  let auction = state.myAuctions[aIndex];
+  for (let k of Object.keys(payload)) {
+    auction[k] = payload[k];
+  }
+  return state;
+}
+export function removeMyAuction(state, id) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  state.myAuctions.splice(aIndex, 1);
+}
+export function addWishList(state, id) {
+  console.log(id);
+  id = Number(id);
+  let a = state.myBids.find(x => x.id == id);
+  if (!a) {
+    a = state.myWishList.find(x => x.id == id);
+  }
+  state.myWishList.push(a);
+}
+export function removeWishList(state, id) {
+  let aIndex = state.myWishList.findIndex(x => x.id == id);
+  state.myWishList.splice(aIndex, 1);
+}
+
+export function updateMyAuctionStatus(state, { id, status }) {
+  let aIndex = state.myAuctions.findIndex(x => x.id == id);
+  state.myAuctions[aIndex].status = status;
 }

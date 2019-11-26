@@ -1,5 +1,6 @@
 export function addFavorite(state, id) {
   console.log(id);
+  id = Number(id);
   state.favorites.push(id);
 }
 export function removeFavorite(state, id) {
@@ -16,24 +17,17 @@ export function removeFavorite(state, id) {
   console.log("index af", index, state.favorites);
 }
 
-// export const STORAGE_KEY = 'todos-vuejs'
+export function updateCurrentID(state, user) {
+  for (let k of Object.keys(user)) {
+    state[k] = user[k];
+  }
+  console.log(state);
+  return state;
+}
 
-// // for testing
-// if (navigator.userAgent.indexOf('PhantomJS') > -1) {
-//   window.localStorage.clear()
-// }
-
-// export const mutations = {
-//   addTodo (state, todo) {
-//     state.todos.push(todo)
-//   },
-
-//   removeTodo (state, todo) {
-//     state.todos.splice(state.todos.indexOf(todo), 1)
-//   },
-
-//   editTodo (state, { todo, text = todo.text, done = todo.done }) {
-//     todo.text = text
-//     todo.done = done
-//   }
-// }
+export function updateUserDetail(state, data) {
+  console.log(state);
+  for (let k of Object.keys(data)) {
+    state[k] = data[k];
+  }
+}

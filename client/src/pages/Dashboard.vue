@@ -1,21 +1,13 @@
 <template>
   <q-page class="bg-grey-1">
-    <a name="newAuctions">
-      <NewAuction />
-    </a>
+    <!-- <div v-if="ready"> -->
+    <NewAuction :new-auctions="newAuctions" />
 
-    <MyAuctionsList
-      :alink="`auctions`"
-      :title="`My Auctions`"
-      :items="myAuctions"
-    />
-
-    <!-- <MyAuctionsList :alink="`bids`" :title="`My Bids`" :items="myBids" />
-    <MyAuctionsList
-      :alink="`favorites`"
-      :title="`My Favorites`"
-      :items="myWishs"
-    /> -->
+    <MyAuctionsList :items="auctions" />
+    <!-- </div> -->
+    <!-- <q-page-container v-else class="flex flex-center">
+      <q-circular-progress indeterminate size="150px" class="q-ma-md" />
+    </q-page-container> -->
   </q-page>
 </template>
 
@@ -29,36 +21,31 @@ export default {
     NewAuction,
     MyAuctionsList
   },
+  data() {
+    return {
+      ready: this.$store.state.auction.auctions.length
+    };
+  },
   computed: {
-    myAuctions: {
+    auctions: {
       get() {
-        console.log(this.$store.state.auction.myAuctions);
-        return this.$store.state.auction.auctions;
-      }
-    },
-    myBids: {
-      get() {
-        console.log(this.$store.state.auction.myBids);
-
         return this.$store.state.auction.myBids;
       }
     },
-    myWishs: {
+    newAuctions: {
       get() {
-        console.log(this.$store.state.auction.myWishList);
-
-        return this.$store.state.auction.myWishList;
+        console.log(this.$store.state.auction.auctions);
+        return this.$store.state.auction.auctions.map(x => {
+          return {
+            title: x.title,
+            description: x.description,
+            url: x.image[0],
+            id: x.id
+          };
+        });
       }
     }
   },
-  created() {
-    this.$store.dispatch("auction/getAllAuctions");
-    this.$store.dispatch(
-      "auction/getMyAuctions",
-      this.$store.state.user.user_id
-    );
-    this.$store.dispatch("auction/getMyBiddings", 2);
-    this.$store.dispatch("auction/getMyFavorite", 1);
-  }
+  created() {}
 };
 </script>

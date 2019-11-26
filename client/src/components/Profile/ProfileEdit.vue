@@ -3,24 +3,22 @@
     <q-form
       ref="ProfileForm"
       class="q-gutter-md"
-      @submit="onSubmit"
+      @submit.once="onSubmit"
       @reset="onReset"
     >
       <q-input
-        v-model="firstName"
+        v-model="first_name"
         filled
         label="First name *"
-        hint="First Name"
         lazy-rules
         :rules="[
           val => (val && val.length > 0) || 'Please type your full name'
         ]"
       />
       <q-input
-        v-model="lastName"
+        v-model="last_name"
         filled
         label="Last name *"
-        hint="Last Name"
         lazy-rules
         :rules="[
           val => (val && val.length > 0) || 'Please type your full name'
@@ -30,49 +28,33 @@
         v-model="email"
         filled
         label="Your email *"
-        hint="Email"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please enter valid Email']"
       />
-
-      <!-- <q-input
-        v-model="password"
-        filled
-        :type="isPwd ? 'password' : 'text'"
-        label="Login password"
-        hint="Password with toggle"
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-        </template>
-      </q-input>
       <q-input
-        v-model="passwordConfirm"
+        v-model="phone_number"
         filled
-        type="password"
-        label="Confirm password"
-        hint="Enter Login Password"
-        :rules="[val => (val && val != password) || 'Password does not match']"
-      ></q-input> -->
-
-      <q-input
-        v-model="age"
-        filled
-        type="number"
-        label="Your age *"
+        label="Your phone *"
         lazy-rules
-        :rules="[
-          val => (val !== null && val !== '') || 'Please type your age',
-          val => (val > 0 && val < 100) || 'Please type a real age'
-        ]"
+        :rules="[val => (val && val.length > 0) || 'Please enter valid Phone']"
+      />
+      <q-select
+        v-model="location"
+        filled
+        label="Location"
+        use-input
+        :options="optionsLocation"
+        @filter="filterLocFn"
+      />
+      <TimeInput
+        v-model="dob"
+        :date="dob"
+        :label="`Your DOB *`"
+        @update-time="dob = $event"
       />
 
       <q-field filled label="Payment Method" stack-label>
-        <strong>{{ paymentMethod.join(", ") }}</strong>
+        <strong>{{ payment_method | formatPaymentMethod }}</strong>
       </q-field>
       <div class="q-pa-md">
         <div class="q-px-sm"></div>
@@ -80,7 +62,7 @@
           <q-checkbox
             v-for="(k, m) in methods"
             :key="m"
-            v-model="paymentMethod"
+            v-model="payment_method"
             :val="k"
             :label="k"
             color="teal"
@@ -110,61 +92,108 @@
 </template>
 
 <script>
+import moment from "moment";
+import { countries, warning } from "../../helper";
+import TimeInput from "../../components/auctionItem/TimeInput";
+
 export default {
   name: "ProfileEdit",
+  components: { TimeInput },
   filters: {
-    formatPwd(val) {
-      return val.replace(/./g, "*");
+    formatPaymentMethod(val) {
+      if (val && Array.isArray(val)) return val.join(", ");
+      else return "";
     }
   },
   props: ["detail"],
   data() {
     return {
       edit: true,
-      firstName: this.detail.firstName,
-      lastName: this.detail.lastName,
+      first_name: this.detail.first_name,
+      last_name: this.detail.last_name,
       email: this.detail.email,
-      age: this.detail.age,
-      password: this.detail.password,
-      paymentMethod: this.detail.paymentMethod,
-      // seller: this.detail.seller
+      dob: moment(this.detail.dob, "YYYY-MM-DD h:mm:ss"),
+      location: this.detail.location,
+      phone_number: this.detail.phone_number,
+      payment_method: this.detail.payment_method,
       methods: ["Visa", "Master", "WeChat", "PayPal", "AliPay"]
     };
   },
-
+  computed: {
+    optionsLocation: {
+      get() {
+        return countries.map(x => x.name);
+      }
+    }
+  },
   methods: {
     onSubmit() {
       this.$refs.ProfileForm.validate().then(
         success => {
           if (success) {
             // yay, models are correct
-            this.$emit("editDetail", this.$data);
-
-            this.$emit("updateEdit", false);
+            let data = {};
+            for (let k of Object.keys(this.detail)) {
+              if (k == "dob" && this.$data[k]) {
+                let oldVal = moment(this.detail[k], "YYYY-MM-DD h:mm:ss");
+                let newVal = moment(this.$data[k], "YYYY-MM-DD h:mm:ss");
+                if (!oldVal.isSame(newVal)) {
+                  data[k] = newVal;
+                }
+              } else if (
+                k !== "dob" &&
+                this.$data[k] &&
+                this.detail[k] !== this.$data[k]
+              ) {
+                data[k] = this.$data[k];
+              }
+            }
+            console.log(data);
+            this.$store
+              .dispatch("user/updateProfile", data)
+              .then(res => {
+                console.log(res);
+                this.$emit("updateEdit", false);
+                this.$emit("editDetail", data);
+              })
+              .catch(err => {
+                warning.message = err.data.message;
+                this.$q.notify(warning);
+              });
           }
         },
         err => {
           console.log(err);
-
-          // oh no, user has filled in
-          // at least an invalid value
-          // this.$q.notify({
-          //   color: 'red-5',
-          //   textColor: 'white',
-          //   icon: 'warning',
-          //   message: err.message
-          // })
+          warning.message = err.data.message;
+          this.$q.notify(warning);
         }
       );
     },
+    filterLocFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.$data.optionsLocation = countries.map(x => x.name);
+        });
+        return;
+      }
 
+      update(() => {
+        const needle = val.toLowerCase();
+        this.$data.optionsLocation = countries
+          .map(x => x.name)
+          .filter(v => v.toLowerCase().indexOf(needle) > -1);
+      });
+    },
     onReset() {
-      this.$data.firstName = this.detail.firstName;
-      this.$data.lastName = this.detail.lastName;
+      this.$data.first_name = this.detail.first_name;
+      this.$data.last_name = this.detail.last_name;
       this.$data.email = this.detail.email;
-      this.$data.age = this.detail.age;
-      this.$data.password = this.detail.password;
-      this.$data.seller = this.detail.seller;
+      this.$data.location = this.detail.location;
+      this.$data.phone_number = this.detail.phone_number;
+      this.$data.dob = moment(this.detail.dob, "YYYY-MM-DD h:mm:ss").format(
+        "YYYY-MM-DD"
+      );
+      this.$data.payment_method = this.detail.payment_method;
     }
   }
 };
