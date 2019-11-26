@@ -29,3 +29,22 @@ export function placeBidding(state, bid) {
   console.log("mu", state, bid, auction);
 }
 //Sync
+export function updateAuctions(state, auctions) {
+  console.log(state, auctions, "problem");
+  state.auctions = auctions;
+}
+
+export function updateMyAuctions(state, auctions) {
+  console.log(state, auctions, "problem");
+  state.myAuctions = auctions;
+}
+
+export function updateMyBiddings(state, auctions) {
+  console.log(state, auctions, "problem");
+  state.myBids = auctions;
+}
+
+export function updateMyWishList(state, auctions) {
+  console.log(state, auctions, "problem");
+  state.myWishList = auctions;
+}

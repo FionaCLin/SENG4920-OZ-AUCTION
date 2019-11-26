@@ -5,6 +5,7 @@ import uuid
 from flask_cors import CORS
 import re
 import os
+import config
 import csv
 import base64
 from flask import Flask, request, Response
@@ -17,13 +18,10 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 # ===== database connection ===
-client = pymongo.MongoClient("mongodb+srv://jiedian233:0m9n8b7v6c@cluster0-u5lvi.mongodb.net/test?retryWrites=true&w=majority")
-mydb = client["runoobdb"]
+client = pymongo.MongoClient(config.MONGO_URI)
+mydb = client[config.MONGO_DB]
 # =============================
 
-
-UPLOAD_FOLDER = './image/'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 # datetime validation
 def validate_datetime_str(str):
@@ -100,7 +98,6 @@ expire_time = 1000
 auth = Token_authentication(SECRET_KEY, expire_time)
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 api = Api(app, authorizations={
     'API-KEY': {
@@ -202,12 +199,15 @@ user_profile = api.model(
         "email": fields.String,
         "first_name": fields.String,
         "last_name": fields.String,
-        "age": fields.String,
+        "dob": fields.String,
         "phone_number": fields.String,
         "favorites": fields.List(fields.Nested(auction_info)),
+        "avatar": fields.String,
+        "location": fields.String,
         "invisiable": fields.List(fields.Nested(user_profile_invisiable))
     }
 )
+
 
 
 @ns_account.route('/register')
@@ -218,38 +218,47 @@ class Register(Resource):
     @api.doc(description="Register an account")
     @api.expect(indicator_model, validate=True)
     def post(self):
-        alldata = col.select_all_collection()
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
+        col = mydb['user']
+        cursor = col.find()
+        id_counter = 0
+        #alldata = col.select_all_collection()
+        #selected_data = []
+        #for item in alldata:
+        #    if "user_profile" in item:
+        #        selected_data = item["user_profile"]
         try:
             accountInfo = request.json
         except:
-            return {'message': 'Bad Request!'}, 400
-        try:
-            for single_user in selected_data:
-                if single_user["email"] == accountInfo['email']:
-                    return {'message': 'Email Already Exists'}, 200
+            return {'message': 'Bad Request!??'}, 400
 
-            new_user = {
-                "user_id": len(selected_data),
-                "email": accountInfo['email'],
-                "password": accountInfo['password'],
-                "first_name": "",
-                "last_name": "",
-                "age": "",
-                "phone_number": "",
-                "payment_method": "",
-                "favorites": []
-            }
-            col.add_one_dict_to_array(
-                {"col_id": "c1"}, {"$push": {"user_profile": new_user}})
+        print(request.json)
+        
+        for single_user in cursor:
+            if single_user["email"] == accountInfo["email"]:
+                return {'message': 'Email Already Exists'}, 200
+            id_counter  = id_counter + 1
 
-            return {'message': 'Account Created Successfully!'}, 201
+        new_user = {
+            "user_id": id_counter,
+            "email": accountInfo["email"],
+            "password": accountInfo["password"],
+            "first_name": "",
+            "last_name": "",
+            "dob": "",
+            "phone_number": "",
+            "payment_method": "",
+            "favorites": [],
+            "location": "",
+            "rating": 0,
+            "avatar": "",
+            "auctions":[],
+            "bids":[]
+        }
+        col.insert_one(new_user)
 
-        except KeyError:
-            return {'message': 'Bad Request!'}, 400
+        return {'message': 'Account Created Successfully!'}, 201
+
+        
 
 
 @ns_account.route('/signin')
@@ -264,20 +273,43 @@ class Signin(Resource):
             account_info = request.json
         except:
             return {'message': 'Bad Request!'}, 400
+        col = mydb['user']
+        cursor = col.find()
+        print(account_info)
+        #print(account_info)
+        #try:
+            #alldata = col.select_all_collection()
+            #selected_data = []
+            #for item in alldata:
+            #    if "user_profile" in item:
+            #        selected_data = item["user_profile"]
+        for single_user in cursor:
+            print(single_user)
+            if single_user["email"] == account_info["email"] and single_user["password"] == account_info["password"]:
+                print('find')
+                return_m = { # Just response all user informatin change if some of that is not needed
+                    "user_id": single_user['user_id'],
+                    "email": single_user['email'],
+                    # "password": single_user['password'], #no sure if needed
+                    "first_name": single_user['first_name'],
+                    "last_name": single_user['last_name'],
+                    "dob": single_user['dob'],
+                    "phone_number": single_user['phone_number'],
+                    "payment_method": single_user['payment_method'],
+                    "favorites": single_user['favorites'],
+                    "auctions":single_user['auctions'],
+                    "location":single_user['location'],
+                    "rating":single_user['rating'],
+                    "avatar":single_user['avatar'],
+                    "bids":single_user['bids'],
+                    "token":auth.generate_token(account_info['email'])
+                }
 
-        try:
-            alldata = col.select_all_collection()
-            selected_data = []
-            for item in alldata:
-                if "user_profile" in item:
-                    selected_data = item["user_profile"]
+                return return_m, 200
+        return {"message": "authorization has been refused."}, 401
+        #except:
+        #    return {"message": "authorization has been refused."}, 401
 
-            for single_user in selected_data:
-                if single_user["email"] == account_info['email'] and single_user["password"] == account_info['password']:
-                    return {"token": auth.generate_token(account_info['email'])}, 200
-            return {"message": "authorization has been refused."}, 401
-        except:
-            return {"message": "authorization has been refused."}, 401
 
 
 @ns_account.route('/signout/<string:token>')
@@ -290,39 +322,67 @@ class Signout(Resource):
         return {'message': 'Deletion Successful'}, 200
 
 
+
+# @ns_account.route('/<user_id>')
+# @api.param('user_id', 'request user id')
+# class SingleAuctionItemOperations(Resource):
+#     @api.response(200, 'OK')
+#     @api.response(404, 'Specified item does not exist')
+#     @api.doc(description="get information of a user")
+#     def get(self, user_id):
+#         col = mydb['user']
+#         print(user_id)
+#         user = col.find_one({ "user_id": int(user_id)})
+#         del user['_id']
+#         print(user)
+#         return user,200
+
+
+
 @ns_account.route('/manage_profile/<string:request_user_id>')
 class Manage_profile(Resource):
     @api.response(200, 'OK')
     @api.response(404, 'Profile Does Not Exist')
     @api.doc(description="get other user's profile")
     def get(self, request_user_id):
-        alldata = col.select_all_collection()
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
+        col = mydb['user']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
 
-        for single_user in selected_data:
-            if str(single_user["user_id"]) == str(request_user_id):
-                new_user_profile = dict()
-                new_user_profile["age"] = single_user["age"]
-                new_user_profile["phone_number"] = single_user["phone_number"]
-                new_user_profile["email"] = single_user["email"]
-                new_user_profile["first_name"] = single_user["first_name"]
-                new_user_profile["last_name"] = single_user["last_name"]
-                new_user_profile["favorites"] = single_user["favorites"]
+        if single_user is None:
+            response = {
+                "message": "Profile does not exist",
+                "data": ""
+            }
+            return response, 404
+        # alldata = col.select_all_collection()
+        # print(alldata)
+        # selected_data = []
+        # for item in alldata:
+        #     if "user_profile" in item:
+        #         selected_data = item["user_profile"]
 
-                response = {
-                    "message": "OK",
-                    "data": new_user_profile
-                }
-                return response, 200
+        new_user_profile = dict()
+        new_user_profile["user_id"] = single_user["user_id"]
+        new_user_profile["dob"] = single_user["dob"]
+        new_user_profile["phone_number"] = single_user["phone_number"]
+        new_user_profile["email"] = single_user["email"]
+        new_user_profile["first_name"] = single_user["first_name"]
+        new_user_profile["last_name"] = single_user["last_name"]
+        new_user_profile["favorites"] = single_user["favorites"]
+        new_user_profile["avatar"] = single_user["avatar"]
+        new_user_profile["rating"] = single_user["rating"]
+        new_user_profile["location"] = single_user["location"]
+        new_user_profile["payment_method"] = single_user["payment_method"]
 
         response = {
-            "message": "Profile does not exist",
-            "data": ""
+            "message": "OK",
+            "data": new_user_profile
         }
-        return response, 404
+        return response, 200
+
+
+
 
     @api.response(200, 'User Profile Updated Successfully')
     @api.response(400, 'Bad Request Error')
@@ -335,59 +395,45 @@ class Manage_profile(Resource):
         except:
             return {'message': 'Bad Request!', "data": ""}, 400
 
-        alldata = col.select_all_collection()
-        selected_data = []
-        for item in alldata:
-            if "user_profile" in item:
-                selected_data = item["user_profile"]
+        col = mydb['user']
+        single_user = col.find_one({"user_id": int(request_user_id)})
+        del single_user['_id']
+        print(single_user)
 
-        found = False
-        col.delete_specific_collection(
-            {"col_id": "c1"}, {"$unset": {"user_profile": 1}})
-        for single_user in selected_data:
-            if str(single_user["user_id"]) != str(request_user_id):
-                col.add_one_dict_to_array(
-                    {"col_id": "c1"}, {"$push": {"user_profile": single_user}})
-            else:
-                found = True
-                if len(user_profile_json.keys()) != 0:
-                    new_user_profile = dict()
-                    update_single_user = single_user
-                    for key, value in user_profile_json.items():
-                        new_user_profile[key] = value
+        if single_user is None:
+            response = {
+                "message": "Specified user id does not exist",
+                "data": ""
+            }
+            return response, 404
 
-                        if isinstance(value, list):
-                            if key == 'invisiable':
-                                update_single_user["password"] = value[0]["password"]
-                                update_single_user["payment_method"] = value[0]["payment_method"]
-                            elif key == 'favorites':
-                                # print (update_single_user["favorites"])
-                                # print (value[0]["favorites"])
-                                update_single_user["favorites"] = value[0]
-                        else:
-                            update_single_user[key] = value
-                    # selected_data[index] = update_single_user
-                    col.add_one_dict_to_array(
-                        {"col_id": "c1"}, {"$push": {"user_profile": update_single_user}})
-                    response = {
-                        "message": "OK",
-                        "data": new_user_profile
-                    }
-                else:
-                    response = {
-                        "message": "User did not specify any field to update",
-                        "data": single_user
-                    }
-                    return response, 200
-
-        if found == True:
+        if len(user_profile_json.keys()) == 0:
+            response = {
+                "message": "User did not specify any field to update",
+                "data": single_user
+            }
             return response, 200
 
+
+        update_single_user = single_user
+        for key, value in user_profile_json.items():
+
+            if key == 'invisiable':
+                update_single_user["password"] = value[0]["password"]
+                update_single_user["payment_method"] = value[0]["payment_method"]
+            # elif key == 'favorites':
+            #     update_single_user["favorites"] = value[0]
+            else:
+                update_single_user[key] = value
+        col.update_one({"user_id": int(request_user_id)}, {"$set": update_single_user})
+        
         response = {
-            "message": "Specified user id does not exist",
-            "data": ""
+            "message": "OK",
+            "data": update_single_user
         }
-        return response, 404
+        return response, 200
+
+
 
 
 #######################################
@@ -418,12 +464,12 @@ user_input_single_auction_item = api.model(
     {
         "seller_name": fields.String,
         "seller_id": fields.Integer,
-        "category_id": fields.Integer,
+        "category_id": fields.String,
         "title": fields.String,
         "description": fields.String,
         "end_time": fields.String,
         "price": fields.Float,
-        "image": fields.String,
+        "image": fields.List(fields.String),
     }
 )
 
@@ -462,6 +508,10 @@ class CreateSingleAuctionItem(Resource):
     def post(self):
         au_col = mydb['auctions']
 
+        user_col = mydb['user']
+
+        print(request.json)
+
         new_auction = \
             {
                 "id": au_col.count_documents({}),
@@ -475,7 +525,8 @@ class CreateSingleAuctionItem(Resource):
         for i in ['seller_name', 'seller_id', 'category_id', 'title', "description", "end_time", "price", "image"]:
             new_auction[i] = user_input[i]
             # Input validation: Detect missing fields
-            if user_input[i] == "" or user_input[i] is None:
+            #if user_input[i] == "" or user_input[i] is None:
+            if user_input[i] is None:
                 return {'message': 'Bad Request: field ' + i + ' is missing'}, 400
 
         # Input validation: End_time validation
@@ -492,6 +543,12 @@ class CreateSingleAuctionItem(Resource):
                     "message": message,
                     "data": new_auction
                 }
+
+            # Change user
+            seller = user_col.find_one({ "user_id":  user_input['seller_id']})
+            seller['auctions'].append(new_auction)
+            print(seller)
+            user_col.update_one({ "user_id":  user_input['seller_id']},{"$set":{"auctions":seller['auctions']}}) # :-()
             return response, 200
         except:
             return {'message': 'Bad Request'}, 400
@@ -589,7 +646,7 @@ class Auction_search1(Resource):
         collection = mydb['auctions']
         result = []
         easy_search = "\'" + search_key + "\'"
-        print(search_key)
+        
         cursor = collection.find(
             {"$text": {"$search": easy_search}}, {"_id": 0})
         result = []
@@ -613,6 +670,7 @@ class Auction_search2(Resource):
     # @api.expect(user_input_filter)
     @api.param('location', '')
     @api.param('category', '')
+    @api.param('user_id', '')
     @api.param('endPrice', '')
     @api.param('startPrice', '')
     @api.param('endDate', 'YYYY/MM/DD')
@@ -622,17 +680,14 @@ class Auction_search2(Resource):
         collection = mydb['auctions']
         result = []
         mid = []
-        print(request.args)
-        print("123")
-        location = request.args.get('location')
 
+        location = request.args.get('location')
         endDate = request.args.get('endDate')
         startDate = request.args.get('startDate')
-
         category = request.args.get('category')
-
         endPrice = request.args.get('endPrice')
         startPrice = request.args.get('startPrice')
+        user_id = request.args.get('user_id')
 
         if startPrice is None:
             startPrice = 0
@@ -651,18 +706,14 @@ class Auction_search2(Resource):
         startDateP = datetime.datetime.strptime(startDate, "%Y/%m/%d")
 
         cursor = collection.find()
-
+        
         for entry in cursor:
             entry['_id'] = str(entry['_id'])
             result.append(entry)
             mid.append(entry)
 
         for entry in mid:
-            entryDateP = datetime.datetime.strptime(
-                entry['end_time'], "%Y-%m-%d %H:%M:%S")
-            print(entryDateP)
-            print(startDateP)
-            print()
+            entryDateP = datetime.datetime.strptime(entry['end_time'], "%Y-%m-%d %H:%M:%S")
             if entryDateP <= startDateP or entryDateP >= endDateP:
                 if entry in result:
                     result.remove(entry)
@@ -674,6 +725,11 @@ class Auction_search2(Resource):
 
         for entry in mid:
             if category and entry['category_id'] != category:
+                if entry in result:
+                    result.remove(entry)
+       
+        for entry in mid:
+            if user_id and entry['seller_id'] != int(user_id):
                 if entry in result:
                     result.remove(entry)
 

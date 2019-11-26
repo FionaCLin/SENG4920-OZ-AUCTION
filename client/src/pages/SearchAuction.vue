@@ -15,9 +15,13 @@
               <q-tab-panel name="one">
                 <!-- <p>Search with keywords</p> -->
 
-                <q-form class="q-gutter-md myForm" @submit="onSubmit">
+                <q-form
+                  ref="normalForm"
+                  class="q-gutter-md myForm"
+                  @submit="onSubmit"
+                >
                   <q-input
-                    v-model="search"
+                    v-model="normal.search"
                     filled
                     label="Explore the world with keywords"
                     lazy-rules
@@ -38,13 +42,17 @@
               </q-tab-panel>
 
               <q-tab-panel name="two">
-                <q-form class="q-gutter-md myForm" @submit="onSubmit">
+                <q-form
+                  ref="advancedForm"
+                  class="q-gutter-md myForm"
+                  @submit="onSubmit"
+                >
                   <div>
                     <p class="titles">Time Range</p>
                     <div class="row">
                       <div class="col-6 myItem">
                         <q-input
-                          v-model="startDate"
+                          v-model="advanced.startDate"
                           filled
                           label="Start Date"
                           mask="date"
@@ -58,7 +66,7 @@
                                 transition-hide="scale"
                               >
                                 <q-date
-                                  v-model="startDate"
+                                  v-model="advanced.startDate"
                                   @input="() => $refs.qDateProxy.hide()"
                                 />
                               </q-popup-proxy>
@@ -68,7 +76,7 @@
                       </div>
                       <div class="col-6">
                         <q-input
-                          v-model="endDate"
+                          v-model="advanced.endDate"
                           filled
                           label="End Date"
                           mask="date"
@@ -82,7 +90,7 @@
                                 transition-hide="scale"
                               >
                                 <q-date
-                                  v-model="endDate"
+                                  v-model="advanced.endDate"
                                   @input="() => $refs.qDateProxy.hide()"
                                 />
                               </q-popup-proxy>
@@ -97,7 +105,7 @@
                     <div class="row">
                       <div class="col-6 myItem">
                         <q-input
-                          v-model="startPrice"
+                          v-model="advanced.startPrice"
                           label="From Price"
                           filled
                           type="number"
@@ -105,7 +113,7 @@
                       </div>
                       <div class="col-6">
                         <q-input
-                          v-model="endPrice"
+                          v-model="advanced.endPrice"
                           label="To Price"
                           filled
                           type="number"
@@ -116,19 +124,19 @@
                   <div>
                     <p class="titles">Category</p>
                     <q-select
-                      v-model="category"
+                      v-model="advanced.category"
                       filled
                       label="Category"
-                      :options="optionsCategory"
+                      :options="advanced.optionsCategory"
                     />
                   </div>
                   <div>
                     <p class="titles">Location</p>
                     <q-select
-                      v-model="location"
+                      v-model="advanced.location"
                       filled
                       label="Location"
-                      :options="optionsLocation"
+                      :options="advanced.optionsLocation"
                     />
                   </div>
                   <div style="overflow:hidden">
@@ -151,56 +159,111 @@
 </template>
 
 <script>
+//import { axiosInstance } from "boot/axios";
 export default {
   data() {
     return {
-      search: null,
       tab: "one",
-      startDate: "",
-      endDate: "",
-      startPric: "",
-      endPrice: "",
-      category: "",
-      location: "",
-      optionsCategory: [
-        "Pet Supplies",
-        "Movies",
-        "Jewellery & Watches",
-        "Industrial",
-        "Home Entertainment",
-        "Home & Garden",
-        "Health & Beauty",
-        "Sporting Goods",
-        "Musical Instruments",
-        "Music",
-        "Phones & Accessories",
-        "Pottery, Glass",
-        "Services",
-        "Tickets, Travel",
-        "Stamps",
-        "Gift Cards & Vouchers",
-        "Home Appliances",
-        "Food & Drinks",
-        "Crafts",
-        "Dolls, Bears",
-        "Electronics",
-        "Computers/Tablets & Networking",
-        "Coins"
-      ],
-      optionsLocation: ["Australia", "USA", "UK"]
+      advanced: {
+        startDate: null,
+        endDate: null,
+        startPric: null,
+        endPrice: null,
+        category: null,
+        location: null,
+        optionsCategory: [
+          "Pet Supplies",
+          "Movies",
+          "Jewellery & Watches",
+          "Industrial",
+          "Home Entertainment",
+          "Home & Garden",
+          "Health & Beauty",
+          "Sporting Goods",
+          "Musical Instruments",
+          "Music",
+          "Phones & Accessories",
+          "Pottery, Glass",
+          "Services",
+          "Tickets, Travel",
+          "Stamps",
+          "Gift Cards & Vouchers",
+          "Home Appliances",
+          "Food & Drinks",
+          "Crafts",
+          "Dolls, Bears",
+          "Electronics",
+          "Computers/Tablets & Networking",
+          "Coins"
+        ],
+        optionsLocation: ["Australia", "USA", "UK"]
+      },
+      normal: {
+        search: ""
+      }
     };
   },
   methods: {
-    onSubmit() {}
+    onSubmit() { // ask filter api
+      if (this.$data.tab == "one") {
+        this.$refs.normalForm.validate().then(
+          success => {
+            if (success) {
+              // yay, models are correct
+              console.log(this.$data.normal);
+            }
+          },
+          err => {
+            console.log(err);
+            console.log("problems!");
+
+            this.$q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: err.message
+            });
+          }
+        );
+      } else {
+        this.$refs.advancedForm.validate().then(
+          success => {
+            if (success) {
+              // yay, models are correct
+              console.log(this.$data.advanced);
+            }
+          },
+          err => {
+            console.log(err);
+            console.log("problems!");
+
+            this.$q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: err.message
+            });
+          }
+        );
+      }
+    }
   }
 };
 </script>
 
 <style lang="css" scoped>
-.mybox { margin: 5% 10px; }
-.myForm { margin: 20px 20px; }
-.myItem { padding-right: 10px;}
-.titles { padding: 0px 5px; }
+.mybox {
+  margin: 5% 10px;
+}
+.myForm {
+  margin: 20px 20px;
+}
+.myItem {
+  padding-right: 10px;
+}
+.titles {
+  padding: 0px 5px;
+}
 .myPage {
   background-image: url("../statics/search.jpg");
   background-repeat: no-repeat;

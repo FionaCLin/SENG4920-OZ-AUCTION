@@ -7,7 +7,10 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "http://0.0.0.0:9999/"
 });
-
+const myInterceptor = axios.interceptors.request.use(function() {
+  /*...*/
+});
+axiosInstance.interceptors.request.eject(myInterceptor);
 // for use inside Vue files through this.$axios
 Vue.prototype.$axios = axiosInstance;
 
