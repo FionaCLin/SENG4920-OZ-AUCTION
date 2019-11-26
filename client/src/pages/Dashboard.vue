@@ -6,15 +6,7 @@
 
     <MyAuctionsList
       :alink="`auctions`"
-      :title="`My Auctions`"
-      :items="myAuctions"
-    />
-
-    <MyAuctionsList :alink="`bids`" :title="`My Bids`" :items="myBids" />
-    <MyAuctionsList
-      :alink="`favorites`"
-      :title="`My Favorites`"
-      :items="myWishs"
+      :items="auctions"
     />
   </q-page>
 </template>
@@ -30,10 +22,9 @@ export default {
     MyAuctionsList
   },
   computed: {
-    myAuctions: {
+    auctions: {
       get() {
-        console.log(this.$store.state.auction.myAuctions);
-        return this.$store.state.auction.myAuctions;
+        return this.$store.state.auction.auctions;
       }
     },
     myBids: {

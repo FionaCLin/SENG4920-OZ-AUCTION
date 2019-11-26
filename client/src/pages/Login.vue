@@ -87,7 +87,7 @@ export default {
             console.log(success);
             axiosInstance
               .post("/account/signin", {
-                username: this.$data.email,
+                email: this.$data.email,
                 password: this.$data.password
               })
               .then(response => {
@@ -97,7 +97,7 @@ export default {
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("user", JSON.stringify(response.data));
                 console.log(JSON.parse(localStorage.getItem('user')));
-                this.$store.state.user.user_id = response.data.user_id;
+                this.$store.commit("user/updateCurrentID",response.data.user_id);
                 console.log(this.$store.state.user.user_id);
                 //
                   this.$q.notify({

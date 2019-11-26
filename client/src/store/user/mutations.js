@@ -16,24 +16,8 @@ export function removeFavorite(state, id) {
   console.log("index af", index, state.favorites);
 }
 
-// export const STORAGE_KEY = 'todos-vuejs'
+export function updateCurrentID(state, id) {
+  console.log("here is mutation_user " + id);
 
-// // for testing
-// if (navigator.userAgent.indexOf('PhantomJS') > -1) {
-//   window.localStorage.clear()
-// }
-
-// export const mutations = {
-//   addTodo (state, todo) {
-//     state.todos.push(todo)
-//   },
-
-//   removeTodo (state, todo) {
-//     state.todos.splice(state.todos.indexOf(todo), 1)
-//   },
-
-//   editTodo (state, { todo, text = todo.text, done = todo.done }) {
-//     todo.text = text
-//     todo.done = done
-//   }
-// }
+  state.user_id = id;
+}

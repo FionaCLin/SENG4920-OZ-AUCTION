@@ -15,7 +15,11 @@
               <q-tab-panel name="one">
                 <!-- <p>Search with keywords</p> -->
 
-                <q-form ref="normalForm" class="q-gutter-md myForm" @submit="onSubmit">
+                <q-form
+                  ref="normalForm"
+                  class="q-gutter-md myForm"
+                  @submit="onSubmit"
+                >
                   <q-input
                     v-model="normal.search"
                     filled
@@ -38,7 +42,11 @@
               </q-tab-panel>
 
               <q-tab-panel name="two">
-                <q-form ref="advancedForm" class="q-gutter-md myForm" @submit="onSubmit">
+                <q-form
+                  ref="advancedForm"
+                  class="q-gutter-md myForm"
+                  @submit="onSubmit"
+                >
                   <div>
                     <p class="titles">Time Range</p>
                     <div class="row">
@@ -147,15 +155,24 @@
         </div>
       </div>
     </div>
+    <q-page>
+      <MyAuctionsList :items="searchResult" />
+    </q-page>
   </q-page>
 </template>
 
 <script>
+import MyAuctionsList from "../components/dashboard/MyAuctionsList";
 import { axiosInstance } from "boot/axios";
+
 export default {
+  components: {
+    MyAuctionsList
+  },
   data() {
     return {
-      tab: 'one',
+      tab: "one",
+      searchResult: [],
       advanced: {
         startDate: null,
         endDate: null,
@@ -191,42 +208,84 @@ export default {
         optionsLocation: ["Australia", "USA", "UK"]
       },
       normal: {
-        search: ''
+        search: ""
       }
-
     };
   },
   methods: {
-    onSubmit() {
-      console.log(JSON.parse(localStorage.getItem('user')).user_id);
-      axiosInstance
-        .get(`/auction/search/filter`,{
-            params:{
-            startDate:this.$data.advanced.startDate,
-            endDate:this.$data.advanced.endDate,
-            startPrice:this.$data.advanced.startPrice,
-            endPrice:this.$data.advanced.endPrice,
-            category:this.$data.advanced.category,
+    onSubmit() { // ask filter api
+      if (this.$data.tab == "one") {
+        this.$refs.normalForm.validate().then(
+          success => {
+            if (success) {
+              // yay, models are correct
+              console.log(this.$data.normal);
+              axiosInstance
+                .get("/auction/search-key/" + this.$data.normal.search)
+                .then(response => {
+                  console.log(response);
+                  console.log(this.$store.state.auction.myAuctions);
+                  this.$data.searchResult = response.data
+                },
+                err => {
+                  console.log(err);
+                });
             }
-        })
-        .then(res => {
-          console.log(res.data);
-          console.log(this.$store.state.auction.myAuctions.auction_items);
-          this.$data.my_auctions = res.data.auctions;
-        });
-      console.log(this.$data);
+          },
+          err => {
+            console.log(err);
+            console.log("problems!");
+
+            this.$q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: err.message
+            });
+          }
+        );
+      } else {
+        this.$refs.advancedForm.validate().then(
+          success => {
+            if (success) {
+              // yay, models are correct
+              console.log(this.$data.advanced);
+            }
+          },
+          err => {
+            console.log(err);
+            console.log("problems!");
+
+            this.$q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: err.message
+            });
+          }
+        );
+      }
     }
   }
 };
 </script>
 
 <style lang="css" scoped>
-.mybox { margin: 5% 10px; }
-.myForm { margin: 20px 20px; }
-.myItem { padding-right: 10px;}
-.titles { padding: 0px 5px; }
+.mybox {
+  margin: 5% 10px;
+}
+.myForm {
+  margin: 20px 20px;
+}
+.myItem {
+  padding-right: 10px;
+}
+.titles {
+  padding: 0px 5px;
+}
 .myPage {
   background-image: url("../statics/search.jpg");
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100%;
 }

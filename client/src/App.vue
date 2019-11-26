@@ -8,6 +8,7 @@
 export default {
   name: "App",
   created() {
+    this.$store.dispatch("user/identifyCurrentID");
     this.$store.dispatch("auction/getAllAuctions");
     this.$store.dispatch(
       "auction/getMyAuctions",
